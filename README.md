@@ -16,6 +16,8 @@ GitHub: https://github.com/Yokmp/factorio_toolset
 - Mod List: enable/disable installed mods, save mod selections as profiles, apply a profile, and optionally launch Factorio.
 - Settings: inspect and edit startup settings from `mod-settings.dat`, then save them into the same profile file.
 
+Future ideas are tracked in [`TOOLS_ROADMAP.md`](TOOLS_ROADMAP.md).
+
 ## Requirements
 
 - Python 3 with Tkinter
@@ -34,7 +36,7 @@ Required:
 Optional but recommended:
 
 - `README.md`
-- `ROADMAP.md`
+- `TOOLS_ROADMAP.md`
 - `screenshots/`
 
 Generated locally:
