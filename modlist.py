@@ -53,6 +53,10 @@ BUILTIN_PROFILES: dict[str, dict[str, object]] = {
         "label": "Vanilla + DLCs",
         "mods": VANILLA_MODS + DLC_MODS,
     },
+    "ingredient_scrap": {
+        "label": "Ingredient Scrap + DLCs",
+        "mods": VANILLA_MODS + DLC_MODS + ["Ingredient_Scrap"],
+    },
 }
 
 

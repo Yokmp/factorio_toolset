@@ -57,6 +57,17 @@ Example shape:
 - Prefer one clear primary apply action per tab, with secondary actions grouped near the profile list only when they have a distinct meaning.
 - Revisit button labels so `Load`, `Preview`, `Apply`, and `Save` describe exactly what changes immediately and what only changes the visible selection.
 
+## Dependency Check
+
+- Read `info.json` from installed mod folders and zipped mods.
+- Parse required and optional dependencies.
+- When a selected profile enables a mod, resolve its required dependencies.
+- If a required dependency is installed but disabled, offer to enable it automatically or mark it as dependency-enabled.
+- If a required dependency is missing, show it in the mod list as a red row with only its name.
+- Missing dependency rows should not have a checkbox, because they cannot be enabled locally.
+- Keep optional dependencies informational unless the user explicitly enables related behavior later.
+- Surface dependency problems before applying a profile or launching Factorio.
+
 ## Deploy Tool
 
 - Adapt the existing root-level `deploy.py`.
@@ -64,3 +75,9 @@ Example shape:
 - Add dry-run/check mode.
 - Add a UI frame once the CLI contract is stable.
 - Keep it in the top bar as a visible but unavailable tab until then.
+
+## Packaging
+
+- Keep the release package small: Python files, README, screenshots, and optional roadmap.
+- Do not ship generated user files such as `tool-ui.json` or `modlist-profiles.json`.
+- Consider a small zip build command once the file list stabilizes.

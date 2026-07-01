@@ -1,0 +1,2393 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JSON Tree Docs</title>
+<style>
+  :root{
+    --bg:            #1b1c1a;
+    --bg-panel:      #222320;
+    --bg-elevated:   #2a2b27;
+    --bg-row-hover:  #33342f;
+    --border:        #3a3b36;
+    --border-soft:   #2f302b;
+    --text:          #c9c7bd;
+    --text-dim:      #8a887f;
+    --text-title:    #e3b970;
+    --accent:        #e3922d;
+    --accent-soft:   rgba(227,146,45,0.16);
+    --link:          #6fa8dc;
+    --key:           #d7c9a5;
+    --str:           #93b874;
+    --num:           #6fa8dc;
+    --bool:          #c58af2;
+    --null:          #8a887f;
+    --danger:        #c1443b;
+
+    --ribbon-dark:   #141513;
+    --ribbon-mid:    #34352f;
+    --ribbon-light:  #3d3e37;
+    --bevel-light:   rgba(255,255,255,0.07);
+    --bevel-dark:    rgba(0,0,0,0.70);
+    --scroll-track:  #141513;
+    --scroll-thumb:  #55564d;
+    --scroll-thumb-hi: #6c6d62;
+  }
+
+  *{ box-sizing:border-box; }
+
+  html,body{
+    height:100%;
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size:14px;
+  }
+
+  a{ color:var(--link); text-decoration:none; }
+  a:hover{ text-decoration:underline; }
+
+  /* ---------------------------------------------------------- */
+  /* ribbon header texture (used by topbar + panel titlebars)    */
+  /* ---------------------------------------------------------- */
+  .ribbon{
+    position:relative;
+    background-color:var(--ribbon-dark);
+    background-image:
+      repeating-linear-gradient(45deg,
+        rgba(0,0,0,0.38) 0px, rgba(0,0,0,0.38) 2px,
+        transparent 2px, transparent 8px);
+    border:1px solid #000;
+    box-shadow:
+      inset 0 1px 0 var(--bevel-light),
+      inset 0 -1px 0 var(--bevel-dark);
+  }
+  .ribbon.ribbon-mid{
+    background-color:var(--ribbon-mid);
+    background-image:
+      repeating-linear-gradient(45deg,
+        rgba(0,0,0,0.30) 0px, rgba(0,0,0,0.30) 2px,
+        transparent 2px, transparent 8px);
+  }
+  .ribbon.ribbon-accent{
+    background-color:var(--accent);
+    color:#241704;
+    background-image:
+      repeating-linear-gradient(45deg,
+        rgba(0,0,0,0.16) 0px, rgba(0,0,0,0.16) 2px,
+        transparent 2px, transparent 8px);
+  }
+
+  /* ---------------------------------------------------------- */
+  /* top bar                                                     */
+  /* ---------------------------------------------------------- */
+  header.topbar{
+    padding:0 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    height:44px;
+    gap:16px;
+    border-left:none;
+    border-right:none;
+    border-top:none;
+  }
+  header.topbar .brand{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    white-space:nowrap;
+    overflow:hidden;
+  }
+  header.topbar .brand .logo{
+    font-weight:700;
+    color:var(--text-title);
+    letter-spacing:.04em;
+    font-size:15px;
+  }
+  header.topbar .brand .subtitle{
+    color:var(--text-dim);
+    font-size:12px;
+  }
+  header.topbar .crumbs{
+    font-size:12px;
+    color:var(--text-dim);
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    flex:1;
+  }
+  header.topbar .crumbs span.file{
+    color:var(--accent);
+  }
+  header.topbar .actions{
+    display:flex;
+    gap:8px;
+    align-items:center;
+  }
+
+  /* ---------------------------------------------------------- */
+  /* buttons / inputs (factorio-ish flat, small relief)          */
+  /* ---------------------------------------------------------- */
+  button, .btn{
+    background:var(--bg-elevated);
+    color:var(--text);
+    border:1px solid #000;
+    border-radius:2px;
+    padding:6px 12px;
+    font-size:12px;
+    font-weight:600;
+    cursor:pointer;
+    letter-spacing:.02em;
+    box-shadow:
+      inset 0 1px 0 var(--bevel-light),
+      inset 0 -2px 0 var(--bevel-dark);
+  }
+  button:hover, .btn:hover{
+    background:var(--bg-row-hover);
+  }
+  button:active{
+    transform:translateY(1px);
+    box-shadow:
+      inset 0 -1px 0 var(--bevel-light),
+      inset 0 2px 0 var(--bevel-dark);
+  }
+  button.primary{
+    background:var(--accent);
+    color:#231704;
+    border-color:#000;
+  }
+  button.primary:hover{
+    background:#f0a23a;
+  }
+  button:disabled{
+    opacity:.4;
+    cursor:default;
+  }
+  input[type=text]{
+    background:rgba(0,0,0,0.35);
+    border:1px solid #000;
+    color:var(--text);
+    border-radius:2px;
+    padding:6px 8px;
+    font-size:12px;
+    width:100%;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.6);
+  }
+  input[type=text]:focus{
+    outline:none;
+    border-color:var(--accent);
+  }
+  input[type=file]{ display:none; }
+  .field-label{
+    display:block;
+    color:var(--text-dim);
+    font-size:10.5px;
+    margin:4px 0 3px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+  }
+
+  /* ---------------------------------------------------------- */
+  /* layout                                                       */
+  /* ---------------------------------------------------------- */
+  .layout{
+    display:flex;
+    height:calc(100% - 44px);
+  }
+
+  /* right navigation panel */
+  nav.sidebar{
+    width:300px;
+    min-width:220px;
+    max-width:420px;
+    background:var(--bg-panel);
+    border-left:1px solid #000;
+    box-shadow: inset 1px 0 0 var(--bevel-dark);
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    padding:8px;
+    gap:8px;
+    order:2;
+  }
+  nav.sidebar .sidebar-section{
+    padding:0;
+  }
+  nav.sidebar .sidebar-section.grow{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    min-height:0;
+  }
+
+  /* ribbon titlebar used above every sidebar box, e.g. "Main game:" style */
+  .panel-title{
+    display:block;
+    width:100%;
+    border:0;
+    margin:0;
+    text-align:left;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:var(--text-title);
+    padding:6px 10px;
+    font-weight:700;
+    cursor:default;
+  }
+  button.panel-title{
+    cursor:pointer;
+  }
+  button.panel-title:hover,
+  .sidebar-section.active > .panel-title{
+    color:#211704;
+    background:var(--accent);
+  }
+  .sidebar-section.accordion{
+    flex:0 0 auto;
+    display:flex;
+    flex-direction:column;
+    min-height:0;
+  }
+  .sidebar-section.accordion > .inset-box{
+    display:none;
+  }
+  .sidebar-section.accordion.active > .inset-box{
+    display:block;
+  }
+
+  /* sunken/inset content box beneath a panel title, e.g. list panels */
+  .inset-box{
+    background:var(--bg);
+    border:1px solid #000;
+    border-top:none;
+    box-shadow:
+      inset 0 3px 6px rgba(0,0,0,0.55),
+      inset 0 0 0 1px rgba(255,255,255,0.02);
+    padding:8px;
+  }
+  .inset-box.flush{ padding:0; }
+  .sidebar-section.grow .inset-box{
+    flex:1;
+    overflow-y:auto;
+    min-height:0;
+  }
+  .filter-section .inset-box{
+    border-top:1px solid #000;
+  }
+
+  .load-controls{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .load-controls .droparea{
+    border:1px dashed var(--border);
+    border-radius:2px;
+    padding:12px 8px;
+    text-align:center;
+    color:var(--text-dim);
+    font-size:11px;
+    cursor:pointer;
+    transition:border-color .15s, color .15s, background .15s;
+    background:rgba(0,0,0,0.25);
+  }
+  .load-controls .droparea:hover,
+  .load-controls .droparea.dragover{
+    border-color:var(--accent);
+    color:var(--text);
+    background:var(--accent-soft);
+  }
+  .expand-controls{
+    display:flex;
+    gap:6px;
+  }
+  .expand-controls button{ flex:1; }
+  .view-controls{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:6px;
+    margin-top:6px;
+  }
+  .view-controls.three{
+    grid-template-columns:1fr 1fr 1fr;
+  }
+  .view-controls button.active{
+    background:var(--accent);
+    color:#231704;
+  }
+  .view-controls button.hidden{
+    display:none;
+  }
+
+  /* quicklinks / material list */
+  ul.quicklinks{
+    list-style:none;
+    margin:0;
+    padding:0;
+  }
+  ul.quicklinks li a{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:6px 12px;
+    color:var(--text);
+    font-size:12.5px;
+    border-left:2px solid transparent;
+  }
+  ul.quicklinks li a .qtype{
+    margin-left:auto;
+    font-size:10px;
+    color:var(--text-dim);
+    background:var(--bg-elevated);
+    border-radius:2px;
+    padding:1px 5px;
+  }
+  ul.quicklinks li a:hover{
+    background:var(--bg-row-hover);
+    text-decoration:none;
+    color:#fff;
+  }
+  ul.quicklinks li a.active{
+    border-left-color:var(--accent);
+    background:var(--accent-soft);
+    color:var(--text-title);
+  }
+  .quicklinks-empty{
+    padding:10px 12px;
+    color:var(--text-dim);
+    font-size:12px;
+  }
+  .material-title{
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .material-mode{
+    color:var(--text-dim);
+    font-size:10px;
+  }
+
+  /* main / tree area */
+  main.content{
+    order:1;
+    flex:1;
+    overflow-y:auto;
+    padding:16px 24px 40px 24px;
+    display:flex;
+    flex-direction:column;
+  }
+  .content-panel{
+    display:flex;
+    flex-direction:column;
+    flex:1;
+    min-height:0;
+  }
+  .content-panel .ribbon{
+    padding:8px 14px;
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    flex:0 0 auto;
+  }
+  .content-panel .ribbon .doc-title{
+    font-size:14px;
+    color:var(--text-title);
+    font-weight:700;
+    margin:0;
+  }
+  .content-panel .ribbon .doc-sub{
+    color:var(--text-dim);
+    font-size:11.5px;
+    margin:0;
+  }
+  .content-panel .inset-box{
+    flex:1;
+    overflow-y:auto;
+    padding:16px 18px;
+  }
+  #emptyState{
+    background:none;
+    box-shadow:none;
+  }
+
+  .empty-state{
+    margin:0;
+    text-align:left;
+    color:var(--text-dim);
+    max-width:980px;
+  }
+  .empty-state h2{
+    color:var(--text);
+    font-weight:600;
+    font-size:16px;
+    margin:0 0 8px;
+  }
+  .empty-state .btn{
+    margin-top:10px;
+    display:inline-block;
+  }
+  .manual-grid{
+    display:grid;
+    grid-template-columns:minmax(0, 1fr) minmax(0, 1fr);
+    gap:14px;
+    margin-top:14px;
+  }
+  .manual-card{
+    border:1px solid var(--border-soft);
+    background:rgba(0,0,0,0.18);
+    padding:12px;
+  }
+  .manual-card h3{
+    color:var(--text-title);
+    font-size:12px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    margin:0 0 8px;
+  }
+  .manual-card p,
+  .manual-card li{
+    font-size:12px;
+    line-height:1.45;
+  }
+  .manual-card ul{
+    margin:0;
+    padding-left:18px;
+  }
+  .manual-code{
+    margin:8px 0 0;
+    padding:10px;
+    overflow:auto;
+    max-height:420px;
+    color:var(--text);
+    background:#171815;
+    border:1px solid #000;
+    font-size:11.5px;
+    line-height:1.35;
+    box-shadow:inset 0 1px 4px rgba(0,0,0,0.6);
+  }
+
+  /* ---------------------------------------------------------- */
+  /* tree                                                         */
+  /* ---------------------------------------------------------- */
+  ul.tree, ul.tree ul{
+    list-style:none;
+    margin:0;
+    padding-left:18px;
+  }
+  ul.tree{
+    padding-left:0;
+  }
+  ul.tree ul{
+    border-left:1px solid var(--border-soft);
+  }
+
+  li.tree-node{
+    position:relative;
+  }
+  .tree-row{
+    display:flex;
+    align-items:baseline;
+    gap:6px;
+    padding:3px 6px 3px 4px;
+    border-radius:2px;
+    cursor:default;
+  }
+  .tree-row.has-children{
+    cursor:pointer;
+  }
+  .tree-row.has-children:hover,
+  .tree-row.leaf:hover{
+    background:var(--bg-row-hover);
+  }
+  .tree-row .toggle{
+    width:12px;
+    flex:0 0 12px;
+    color:var(--text-dim);
+    font-size:10px;
+    text-align:center;
+    user-select:none;
+  }
+  .tree-row .toggle::before{
+    content:"▶";
+    display:inline-block;
+    transition:transform .1s ease;
+  }
+  li.tree-node.expanded > .tree-row .toggle::before{
+    transform:rotate(90deg);
+  }
+  .tree-row .tkey{
+    color:var(--key);
+    font-weight:600;
+  }
+  .tree-row .tkey.top-level{
+    color:var(--text-title);
+    font-size:14.5px;
+  }
+  .tree-row .colon{
+    color:var(--text-dim);
+  }
+  .tree-row .tmeta{
+    color:var(--text-dim);
+    font-size:11.5px;
+  }
+  .tree-row .tval{
+    font-family: "Consolas","Cascadia Code",monospace;
+    font-size:12.5px;
+    word-break:break-word;
+  }
+  .tval.type-string{ color:var(--str); }
+  .tval.type-number{ color:var(--num); }
+  .tval.type-boolean{ color:var(--bool); }
+  .tval.type-null{ color:var(--null); font-style:italic; }
+
+  ul.tree-children{
+    display:none;
+  }
+  li.tree-node.expanded > ul.tree-children{
+    display:block;
+  }
+
+  li.tree-node.top-section{
+    scroll-margin-top:14px;
+    padding-top:6px;
+    margin-bottom:2px;
+  }
+  li.tree-node.top-section > .tree-row{
+    padding-top:6px;
+    padding-bottom:6px;
+    border-bottom:1px solid var(--border-soft);
+    margin-bottom:2px;
+  }
+  li.tree-node.top-section.flash > .tree-row{
+    background:var(--accent-soft);
+  }
+
+  .match-hit > .tree-row .tkey,
+  .match-hit > .tree-row .tval{
+    background:rgba(227,146,45,.28);
+    border-radius:2px;
+  }
+  li.tree-node.filtered-hidden{
+    display:none;
+  }
+
+  /* ---------------------------------------------------------- */
+  /* production graph                                             */
+  /* ---------------------------------------------------------- */
+  .flow-graph{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+  .flow-card{
+    display:grid;
+    grid-template-columns:minmax(180px,1fr) minmax(220px,1.1fr) minmax(180px,1fr);
+    gap:10px;
+    align-items:stretch;
+  }
+  .flow-column,
+  .flow-node{
+    background:var(--bg-row);
+    border:1px solid #000;
+    box-shadow:
+      inset 1px 1px 0 var(--bevel-light),
+      inset -1px -1px 0 var(--bevel-dark);
+    min-width:0;
+  }
+  .flow-column{
+    padding:8px;
+  }
+  .flow-node{
+    padding:10px;
+    border-color:var(--accent-dark);
+    background:var(--bg-elevated);
+  }
+  .flow-heading{
+    margin:0 0 8px 0;
+    color:var(--text-title);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+  }
+  .flow-name{
+    color:var(--text);
+    font-weight:700;
+    word-break:break-word;
+  }
+  .flow-sub{
+    margin-top:4px;
+    color:var(--text-dim);
+    font-size:11px;
+    word-break:break-word;
+  }
+  .flow-chip{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    width:100%;
+    text-align:left;
+    margin:4px 0;
+    padding:5px 7px;
+    border:1px solid var(--border-soft);
+    background:var(--bg);
+    color:var(--text);
+    cursor:pointer;
+    font:inherit;
+    font-size:12px;
+    box-shadow:inset 1px 1px 0 rgba(255,255,255,0.04);
+  }
+  .flow-chip:hover{
+    background:var(--accent);
+    color:#211704;
+    border-color:var(--accent-dark);
+  }
+  .flow-chip.matched{
+    border-left:3px solid var(--accent);
+    background:var(--accent-soft);
+  }
+  .flow-chip.matched:hover{
+    background:var(--accent);
+  }
+  .flow-chip .amount,
+  .flow-chip .meta{
+    margin-left:auto;
+    color:var(--text-dim);
+    font-size:10px;
+  }
+  .flow-chip:hover .amount,
+  .flow-chip:hover .meta{
+    color:#211704;
+  }
+  .flow-icon{
+    width:18px;
+    height:18px;
+    flex:0 0 18px;
+    object-fit:cover;
+    object-position:left center;
+    image-rendering:auto;
+    background:rgba(0,0,0,0.25);
+    border:1px solid var(--border-soft);
+  }
+  .flow-icon.placeholder{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--text-dim);
+    font-size:10px;
+    line-height:1;
+  }
+  .flow-label{
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .flow-empty{
+    color:var(--text-dim);
+    font-size:12px;
+    padding:4px 0;
+  }
+  @media (max-width: 980px){
+    .flow-card{
+      grid-template-columns:1fr;
+    }
+    .manual-grid{
+      grid-template-columns:1fr;
+    }
+  }
+
+  /* ---------------------------------------------------------- */
+  /* scrollbars - ridged Factorio look, gray idle / orange hover */
+  /* ---------------------------------------------------------- */
+  *{
+    scrollbar-width:auto;
+    scrollbar-color: var(--scroll-thumb) var(--scroll-track);
+  }
+  ::-webkit-scrollbar{ width:15px; height:15px; }
+  ::-webkit-scrollbar-track{
+    background:var(--scroll-track);
+    border-left:1px solid #000;
+  }
+  ::-webkit-scrollbar-corner{ background:var(--scroll-track); }
+  ::-webkit-scrollbar-thumb{
+    background-color:var(--scroll-thumb);
+    background-image: repeating-linear-gradient(
+      0deg,
+      rgba(0,0,0,0.35) 0px, rgba(0,0,0,0.35) 1px,
+      rgba(255,255,255,0.10) 1px, rgba(255,255,255,0.10) 2px,
+      transparent 2px, transparent 5px
+    );
+    border:1px solid #000;
+    box-shadow:
+      inset 1px 1px 0 var(--bevel-light),
+      inset -1px -1px 0 var(--bevel-dark);
+  }
+  ::-webkit-scrollbar-thumb:hover{
+    background-color:var(--accent);
+    background-image: repeating-linear-gradient(
+      0deg,
+      rgba(0,0,0,0.28) 0px, rgba(0,0,0,0.28) 1px,
+      rgba(255,255,255,0.20) 1px, rgba(255,255,255,0.20) 2px,
+      transparent 2px, transparent 5px
+    );
+  }
+  ::-webkit-scrollbar-thumb:active{
+    background-color:#f0a23a;
+  }
+  ::-webkit-scrollbar-button{
+    display:block;
+    height:14px;
+    background-color:var(--ribbon-dark);
+    border:1px solid #000;
+  }
+
+  .status-msg{
+    font-size:11.5px;
+    color:var(--text-dim);
+    padding:0 12px;
+  }
+  .status-msg.error{ color:var(--danger); }
+
+  @media (max-width: 760px){
+    nav.sidebar{ width:230px; }
+    main.content{ padding:16px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar ribbon">
+  <div class="brand">
+    <span class="logo">JSON TREE DOCS</span>
+    <span class="subtitle">local JSON viewer</span>
+  </div>
+  <div class="crumbs" id="crumbs">No file loaded</div>
+  <div class="actions">
+    <button class="primary" id="btnOpenTop">Load file...</button>
+  </div>
+</header>
+
+<div class="layout">
+
+  <nav class="sidebar">
+
+    <div class="sidebar-section">
+      <p class="ribbon panel-title">JSON laden</p>
+      <div class="inset-box">
+        <div class="load-controls">
+          <div class="droparea" id="dropArea">
+            Drop JSON, mod ZIPs, or icons here<br>or click to choose
+          </div>
+          <input type="file" id="fileInput" accept="application/json,.json,.zip,image/png,image/jpeg,image/webp" multiple>
+          <label class="field-label" for="factorioRootInput">Factorio root for unpacked icons</label>
+          <input type="text" id="factorioRootInput" placeholder="F:/Games/Factorio_ModTest">
+          <p class="status-msg" id="loadStatus"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-section filter-section">
+      <div class="inset-box">
+        <input type="text" id="filterInput" placeholder="Filter key or value...">
+      </div>
+    </div>
+
+    <div class="sidebar-section accordion active" data-accordion-section>
+      <button class="ribbon panel-title" type="button" data-accordion-title>Tree Controls</button>
+      <div class="inset-box">
+        <div class="expand-controls">
+          <button id="btnExpandAll">Expand all</button>
+          <button id="btnCollapseAll">Collapse all</button>
+        </div>
+        <div class="view-controls" id="viewControls">
+          <button id="btnTreeView" class="active">Tree</button>
+          <button id="btnProductionView">Production</button>
+          <button id="btnProductChain" class="hidden">Product</button>
+          <button id="btnRecipeChain" class="hidden">Recipe</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-section grow">
+      <p class="ribbon panel-title" id="quicklinksTitle">Materials</p>
+      <div class="inset-box flush">
+        <ul class="quicklinks" id="quicklinks">
+          <li class="quicklinks-empty">No data loaded yet.</li>
+        </ul>
+      </div>
+    </div>
+
+  </nav>
+
+  <main class="content">
+    <div class="content-panel">
+      <div class="ribbon" id="docHeader">
+        <h1 class="doc-title" id="docTitle">JSON Flow Viewer Manual</h1>
+        <p class="doc-sub" id="docSub">Load a JSON file on the right to inspect it as a tree or as an Ingredient Scrap production flow.</p>
+      </div>
+
+      <div class="inset-box">
+        <div class="empty-state" id="emptyState">
+          <h2>Material Flow JSON</h2>
+          <p>
+            The tree mode can display any JSON. The production flow mode expects a root object with
+            a <code>flows</code> array. Each flow represents one recipe step with ingredients, recipe metadata,
+            and results.
+          </p>
+
+          <div class="manual-grid">
+            <div class="manual-card">
+              <h3>Icon lookup order</h3>
+              <p>The production flow checks every ingredient and result for an icon in this order:</p>
+              <pre class="manual-code">entry.icon
+entry.prototype.icon
+entry.result.prototype.icon</pre>
+              <p>
+                A real image is rendered only after the icon has a <code>url</code> field. The URL can be
+                present in the JSON already, or the viewer can create it from loaded ZIPs, dropped image files,
+                <code>asset_roots</code>, or the Factorio root path.
+              </p>
+            </div>
+
+            <div class="manual-card">
+              <h3>Flow shape</h3>
+              <ul>
+                <li><code>flows</code>: array of recipe flow entries.</li>
+                <li><code>recipe.name</code>: recipe id shown in the center column.</li>
+                <li><code>ingredients</code> and <code>results</code>: arrays shown left and right.</li>
+                <li><code>name</code>, <code>type</code>, and <code>amount</code> are enough for a basic chip.</li>
+                <li><code>icon</code> and <code>prototype.icon</code> are optional, but needed for visible icons.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="manual-grid">
+            <div class="manual-card">
+              <h3>Direct URL icon</h3>
+              <pre class="manual-code">{
+  "name": "steam",
+  "prototype": {
+    "icon": {
+      "url": "data:image/png;base64,..."
+    }
+  }
+}</pre>
+            </div>
+
+            <div class="manual-card">
+              <h3>Entry-level icon</h3>
+              <pre class="manual-code">{
+  "name": "steam",
+  "icon": {
+    "url": "icons/steam.png"
+  }
+}</pre>
+            </div>
+          </div>
+
+          <div class="manual-grid">
+            <div class="manual-card">
+              <h3>Minimal example</h3>
+              <pre class="manual-code">{
+  "schema": "ingredient-scrap-material-flow/v1",
+  "flows": [
+    {
+      "material": "prefix-example",
+      "recipe": {
+        "name": "test-prefix-example-mixed",
+        "main_product": "prefix-example-product-mixed"
+      },
+      "ingredients": [
+        { "type": "fluid", "name": "molten-prefix-example", "amount": 20 },
+        { "type": "item", "name": "prefix-example-plate", "amount": 5 }
+      ],
+      "results": [
+        { "type": "item", "name": "prefix-example-product-mixed", "amount": 1 },
+        { "type": "item", "name": "prefix-example-scrap", "amount_min": 1, "amount_max": 3 }
+      ]
+    }
+  ]
+}</pre>
+            </div>
+
+            <div class="manual-card">
+              <h3>Material-flow ingredient</h3>
+              <pre class="manual-code">{
+  "type": "item",
+  "name": "prefix-example-plate",
+  "amount": 5,
+  "prototype": {
+    "type": "item",
+    "name": "prefix-example-plate",
+    "icon": {
+      "path": "__example-mod__/graphics/icons/prefix-example-plate.png",
+      "source": {
+        "mod": "example-mod",
+        "inner_path": "graphics/icons/prefix-example-plate.png"
+      },
+      "url": "data:image/png;base64,..."
+    }
+  }
+}</pre>
+              <p>
+                <code>path</code> and <code>source</code> are metadata. They become visible only when the icon also
+                has <code>url</code>, or when the viewer can resolve that metadata to a local file/blob URL.
+              </p>
+            </div>
+          </div>
+
+          <div class="manual-grid">
+            <div class="manual-card">
+              <h3>Offline and ZIP workflow</h3>
+              <ul>
+                <li>JSON contains <code>source.mod</code> and <code>source.inner_path</code>.</li>
+                <li>The viewer can load a local mod ZIP and find the matching icon inside it.</li>
+                <li>The viewer then creates a <code>blob:</code> URL internally and writes it to <code>icon.url</code>.</li>
+                <li>Ingredient Scrap's test tool can also extract ZIP icons and provide <code>asset_roots</code>.</li>
+              </ul>
+            </div>
+
+            <div class="manual-card">
+              <h3>Useful additions</h3>
+              <ul>
+                <li>Relative URLs such as <code>"url": "icons/prefix-example-plate.png"</code> work when reachable from the HTML file.</li>
+                <li>Mipmap strips and non-square icons are displayed as square chips cropped from the left side.</li>
+                <li>If an icon is missing, hover the placeholder to see the unresolved path.</li>
+              </ul>
+            </div>
+          </div>
+          <button class="primary btn" id="btnOpenEmpty">Choose file</button>
+        </div>
+
+        <ul class="tree" id="treeRoot" style="display:none;"></ul>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var fileInput   = document.getElementById('fileInput');
+  var dropArea    = document.getElementById('dropArea');
+  var loadStatus  = document.getElementById('loadStatus');
+  var factorioRootInput = document.getElementById('factorioRootInput');
+  var crumbs      = document.getElementById('crumbs');
+  var quicklinks  = document.getElementById('quicklinks');
+  var treeRoot    = document.getElementById('treeRoot');
+  var emptyState  = document.getElementById('emptyState');
+  var docTitle    = document.getElementById('docTitle');
+  var docSub      = document.getElementById('docSub');
+  var filterInput = document.getElementById('filterInput');
+  var quicklinksTitle = document.getElementById('quicklinksTitle');
+  var viewControls = document.getElementById('viewControls');
+  var btnTreeView = document.getElementById('btnTreeView');
+  var btnProductionView = document.getElementById('btnProductionView');
+  var btnProductChain = document.getElementById('btnProductChain');
+  var btnRecipeChain = document.getElementById('btnRecipeChain');
+  var currentData = null;
+  var currentFileName = null;
+  var viewMode = 'tree';
+  var materialIndex = null;
+  var selectedMaterial = null;
+  var materialViewMode = 'product';
+  var iconAssets = {
+    exact: {},
+    byInnerPath: {},
+    count: 0
+  };
+  var factorioRoot = '';
+
+  try{
+    factorioRoot = normalizeRootPath(queryParam('factorioRoot') || localStorage.getItem('json-tree-viewer.factorioRoot') || '');
+    factorioRootInput.value = factorioRoot;
+    if (factorioRoot){
+      localStorage.setItem('json-tree-viewer.factorioRoot', factorioRoot);
+    }
+  }catch(err){
+    factorioRoot = '';
+  }
+
+  factorioRootInput.addEventListener('change', function(){
+    factorioRoot = normalizeRootPath(factorioRootInput.value);
+    try{
+      localStorage.setItem('json-tree-viewer.factorioRoot', factorioRoot);
+    }catch(err){}
+    if (currentData){
+      resolveIconsInData(currentData);
+      renderRoot(currentData);
+      loadStatus.textContent = factorioRoot
+        ? 'Using Factorio root: ' + factorioRoot
+        : 'Factorio root cleared.';
+    }
+  });
+
+  function setActiveSidebarSection(section){
+    if (!section) return;
+    section.classList.toggle('active');
+  }
+
+  document.querySelectorAll('[data-accordion-title]').forEach(function(title){
+    title.addEventListener('click', function(){
+      setActiveSidebarSection(title.closest('[data-accordion-section]'));
+    });
+  });
+
+  document.getElementById('btnOpenTop').addEventListener('click', function(){ fileInput.click(); });
+  document.getElementById('btnOpenEmpty').addEventListener('click', function(){ fileInput.click(); });
+  dropArea.addEventListener('click', function(){ fileInput.click(); });
+  btnTreeView.addEventListener('click', function(){ setViewMode('tree'); });
+  btnProductionView.addEventListener('click', function(){ setViewMode('production'); });
+  btnProductChain.addEventListener('click', function(){ setMaterialViewMode('product'); });
+  btnRecipeChain.addEventListener('click', function(){ setMaterialViewMode('recipe'); });
+
+  var initialFilePath = normalizeFileParam(queryParam('file'));
+  var initialStatePath = queryParam('state');
+  var initialJsonPath = normalizeFileParam(queryParam('json'));
+  var initialExample = queryParam('example');
+  if (initialFilePath){
+    loadInitialFile(initialFilePath);
+  } else if (initialStatePath){
+    loadStateScript(initialStatePath);
+  } else if (initialJsonPath){
+    loadJsonPath(initialJsonPath);
+  } else if (initialExample !== '0' && initialExample !== 'false'){
+    loadBundledExample();
+  }
+
+  fileInput.addEventListener('change', function(e){
+    var files = e.target.files ? Array.prototype.slice.call(e.target.files) : [];
+    if (files.length) loadFiles(files);
+    fileInput.value = '';
+  });
+
+  ['dragenter','dragover'].forEach(function(evt){
+    dropArea.addEventListener(evt, function(e){
+      e.preventDefault(); e.stopPropagation();
+      dropArea.classList.add('dragover');
+    });
+  });
+  ['dragleave','drop'].forEach(function(evt){
+    dropArea.addEventListener(evt, function(e){
+      e.preventDefault(); e.stopPropagation();
+      dropArea.classList.remove('dragover');
+    });
+  });
+  dropArea.addEventListener('drop', function(e){
+    var files = e.dataTransfer.files ? Array.prototype.slice.call(e.dataTransfer.files) : [];
+    if (files.length) loadFiles(files);
+  });
+
+  async function loadFiles(files){
+    loadStatus.textContent = 'Reading ' + files.length + ' file' + (files.length === 1 ? '' : 's') + '...';
+    loadStatus.classList.remove('error');
+    var jsonFile = null;
+    var loadedArchives = 0;
+    var loadedImages = 0;
+
+    for (var i = 0; i < files.length; i++){
+      var file = files[i];
+      if (isJsonFile(file)){
+        jsonFile = file;
+      } else if (isZipFile(file)){
+        try{
+          var added = await loadZipAssets(file);
+          loadedArchives += 1;
+          loadedImages += added;
+        }catch(err){
+          loadStatus.textContent = 'ZIP read error in ' + file.name + ': ' + err.message;
+          loadStatus.classList.add('error');
+          return;
+        }
+      } else if (isImageFile(file)){
+        registerLooseImageAsset(file);
+        loadedImages += 1;
+      }
+    }
+
+    if (jsonFile){
+      loadJsonFile(jsonFile, loadedArchives, loadedImages);
+      return;
+    }
+
+    if (currentData){
+      resolveIconsInData(currentData);
+      renderRoot(currentData);
+      loadStatus.textContent = 'Loaded ' + loadedArchives + ' ZIP(s), ' + loadedImages + ' icon asset(s).';
+      return;
+    }
+
+    loadStatus.textContent = loadedImages
+      ? 'Loaded ' + loadedArchives + ' ZIP(s), ' + loadedImages + ' icon asset(s). Now load a JSON file.'
+      : 'No JSON or supported icon assets found.';
+  }
+
+  function loadJsonFile(file, loadedArchives, loadedImages){
+    loadStatus.textContent = 'Reading ' + file.name + '...';
+    loadStatus.classList.remove('error');
+    var reader = new FileReader();
+    reader.onload = function(e){
+      var data;
+      try{
+        data = JSON.parse(e.target.result);
+      }catch(err){
+        loadStatus.textContent = 'Parse error: ' + err.message;
+        loadStatus.classList.add('error');
+        return;
+      }
+      applyDataFactorioRoot(data);
+      resolveIconsInData(data);
+      loadStatus.textContent = 'Loaded: ' + file.name + assetStatusSuffix(loadedArchives, loadedImages);
+      showLoadedData(data, file.name, 'tree');
+    };
+    reader.onerror = function(){
+      loadStatus.textContent = 'File could not be read.';
+      loadStatus.classList.add('error');
+    };
+    reader.readAsText(file);
+  }
+
+  async function loadJsonPath(path){
+    var normalized = String(path || '').replace(/\\/g, '/');
+    loadStatus.textContent = 'Reading ' + normalized + '...';
+    loadStatus.classList.remove('error');
+    try{
+      var response = await fetch(pathToFileUrl(normalized));
+      if (!response.ok) throw new Error(response.status + ' ' + response.statusText);
+      var data = JSON.parse(await response.text());
+      applyDataFactorioRoot(data);
+      resolveIconsInData(data);
+      var fileName = normalized.split('/').pop() || 'material-flow.json';
+      loadStatus.textContent = 'Loaded: ' + fileName;
+      showLoadedData(data, fileName, isMaterialFlowData(data) ? 'production' : 'tree');
+    }catch(err){
+      if (initialStatePath && normalized === String(initialFilePath || '').replace(/\\/g, '/')){
+        loadStateScript(initialStatePath);
+        return;
+      }
+      loadStatus.textContent = 'Auto-load failed: ' + err.message + '. Drop the JSON file here.';
+      loadStatus.classList.add('error');
+    }
+  }
+
+  function normalizeFileParam(path){
+    if (!path) return null;
+    return String(path).replace(/,json$/i, '.json').replace(/,js$/i, '.js');
+  }
+
+  function loadInitialFile(path){
+    var normalized = String(path || '').replace(/\\/g, '/');
+    if (/\.js$/i.test(normalized)){
+      loadStateScript(normalized);
+      return;
+    }
+    loadJsonPath(normalized);
+  }
+
+  async function loadBundledExample(){
+    var exampleName = 'treeview-example.json';
+    try{
+      var baseUrl = window.location.href.split('?')[0].replace(/[^\/]*$/, '');
+      var response = await fetch(baseUrl + exampleName);
+      if (!response.ok) throw new Error(response.status + ' ' + response.statusText);
+      var data = JSON.parse(await response.text());
+      applyDataFactorioRoot(data);
+      resolveIconsInData(data);
+      loadStatus.textContent = 'Loaded example: ' + exampleName;
+      showLoadedData(data, exampleName, 'production');
+    }catch(err){
+      var fallback = bundledExampleData();
+      applyDataFactorioRoot(fallback);
+      resolveIconsInData(fallback);
+      loadStatus.textContent = 'Loaded embedded example. Drop a JSON file to replace it.';
+      showLoadedData(fallback, exampleName, 'production');
+    }
+  }
+
+  function bundledExampleData(){
+    return {
+      schema: 'ingredient-scrap-material-flow/v1',
+      description: 'Embedded fallback for treeview-example.json.',
+      flows: [
+        {
+          material: 'prefix-example',
+          recipe: {
+            name: 'test-prefix-example-mixed',
+            main_product: 'prefix-example-product-mixed',
+            prototype: { type: 'recipe', name: 'test-prefix-example-mixed' }
+          },
+          ingredients: [
+            {
+              type: 'item',
+              name: 'prefix-example-plate',
+              amount: 5,
+              prototype: {
+                type: 'item',
+                name: 'prefix-example-plate',
+                icon: {
+                  url: 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Crect width=%2264%22 height=%2264%22 fill=%22%233a3b36%22/%3E%3Crect x=%2210%22 y=%2220%22 width=%2244%22 height=%2224%22 rx=%223%22 fill=%22%23d8c47a%22 stroke=%22%238a6b24%22 stroke-width=%224%22/%3E%3C/svg%3E'
+                }
+              }
+            },
+            {
+              type: 'fluid',
+              name: 'molten-prefix-example',
+              amount: 20,
+              prototype: {
+                type: 'fluid',
+                name: 'molten-prefix-example',
+                icon: {
+                  url: 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Crect width=%2264%22 height=%2264%22 fill=%22%2320292f%22/%3E%3Cpath d=%22M32 8 C45 25 52 35 52 45 A20 20 0 0 1 12 45 C12 35 19 25 32 8Z%22 fill=%22%23e3922d%22 stroke=%22%23f2c46c%22 stroke-width=%224%22/%3E%3C/svg%3E'
+                }
+              }
+            }
+          ],
+          results: [
+            {
+              type: 'item',
+              name: 'prefix-example-product-mixed',
+              amount: 1,
+              prototype: {
+                type: 'item',
+                name: 'prefix-example-product-mixed',
+                icon: {
+                  url: 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Crect width=%2264%22 height=%2264%22 fill=%22%23222320%22/%3E%3Ccircle cx=%2232%22 cy=%2232%22 r=%2221%22 fill=%22%236fa8dc%22 stroke=%22%23d7c9a5%22 stroke-width=%224%22/%3E%3C/svg%3E'
+                }
+              }
+            },
+            {
+              type: 'item',
+              name: 'prefix-example-scrap',
+              amount_min: 1,
+              amount_max: 3,
+              prototype: {
+                type: 'item',
+                name: 'prefix-example-scrap',
+                icon: {
+                  url: 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20512%20512%22%3E%0A%3Cdefs%3E%0A%20%20%3CradialGradient%20id%3D%22groundShadow%22%20cx%3D%2250%25%22%20cy%3D%2250%25%22%20r%3D%2250%25%22%3E%0A%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23000000%22%20stop-opacity%3D%220.55%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23000000%22%20stop-opacity%3D%220%22%2F%3E%0A%20%20%3C%2FradialGradient%3E%0A%0A%20%20%3ClinearGradient%20id%3D%22steelPlate%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%3Cstop%20offset%3D%220%25%22%20%20stop-color%3D%22%238c8f92%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%2245%25%22%20stop-color%3D%22%236a6d70%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%234a4c4e%22%2F%3E%0A%20%20%3C%2FlinearGradient%3E%0A%20%20%3ClinearGradient%20id%3D%22steelPlateDark%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%3Cstop%20offset%3D%220%25%22%20%20stop-color%3D%22%236f7275%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%233a3c3e%22%2F%3E%0A%20%20%3C%2FlinearGradient%3E%0A%0A%20%20%3ClinearGradient%20id%3D%22gearGrad%22%20x1%3D%2220%25%22%20y1%3D%220%25%22%20x2%3D%2280%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%3Cstop%20offset%3D%220%25%22%20%20stop-color%3D%22%239a5a34%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%2235%25%22%20stop-color%3D%22%237a4326%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%234a2a18%22%2F%3E%0A%20%20%3C%2FlinearGradient%3E%0A%20%20%3ClinearGradient%20id%3D%22gearGradSteel%22%20x1%3D%2220%25%22%20y1%3D%220%25%22%20x2%3D%2280%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%3Cstop%20offset%3D%220%25%22%20%20stop-color%3D%22%238e9296%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%2245%25%22%20stop-color%3D%22%235c6064%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%2334373a%22%2F%3E%0A%20%20%3C%2FlinearGradient%3E%0A%0A%20%20%3ClinearGradient%20id%3D%22beamGrad%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%220%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%3Cstop%20offset%3D%220%25%22%20%20stop-color%3D%22%237d757a%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%2250%25%22%20stop-color%3D%22%2357525a%22%2F%3E%0A%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23332f34%22%2F%3E%0A%20%20%3C%2FlinearGradient%3E%0A%0A%20%20%3Cfilter%20id%3D%22softBlur%22%20x%3D%22-50%25%22%20y%3D%22-50%25%22%20width%3D%22200%25%22%20height%3D%22200%25%22%3E%0A%20%20%20%20%3CfeGaussianBlur%20stdDeviation%3D%226%22%2F%3E%0A%20%20%3C%2Ffilter%3E%0A%20%20%3Cfilter%20id%3D%22tinyBlur%22%20x%3D%22-50%25%22%20y%3D%22-50%25%22%20width%3D%22200%25%22%20height%3D%22200%25%22%3E%0A%20%20%20%20%3CfeGaussianBlur%20stdDeviation%3D%221.4%22%2F%3E%0A%20%20%3C%2Ffilter%3E%0A%3C%2Fdefs%3E%0A%0A%3Cellipse%20cx%3D%22256%22%20cy%3D%22430%22%20rx%3D%22205%22%20ry%3D%2246%22%20fill%3D%22url%28%23groundShadow%29%22%2F%3E%0A%3Cpolygon%20points%3D%2260.4%2C379.4%20246.3%2C319.0%20262.6%2C324.4%20249.1%2C335.0%20279.5%2C328.2%20263.2%2C341.2%20288.3%2C336.6%20245.9%2C354.8%2070.9%2C411.7%22%20fill%3D%22url%28%23beamGrad%29%22%20stroke%3D%22%23161514%22%20stroke-width%3D%222.5%22%20stroke-linejoin%3D%22round%22%2F%3E%0A%3Cline%20x1%3D%2262.4%22%20y1%3D%22385.5%22%20x2%3D%22231.9%22%20y2%3D%22330.4%22%20stroke%3D%22%23a7a1a6%22%20stroke-width%3D%221.4%22%20opacity%3D%220.35%22%2F%3E%0A%3Cline%20x1%3D%2268.9%22%20y1%3D%22405.6%22%20x2%3D%22238.4%22%20y2%3D%22350.5%22%20stroke%3D%22%23a7a1a6%22%20stroke-width%3D%221.4%22%20opacity%3D%220.35%22%2F%3E%0A%3Ccircle%20cx%3D%2298.4%22%20cy%3D%22384.9%22%20r%3D%222.2%22%20fill%3D%22%232b2926%22%20stroke%3D%22%23111%22%20stroke-width%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22136.7%22%20cy%3D%22372.4%22%20r%3D%222.2%22%20fill%3D%22%232b2926%22%20stroke%3D%22%23111%22%20stroke-width%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22175.0%22%20cy%3D%22360.0%22%20r%3D%222.2%22%20fill%3D%22%232b2926%22%20stroke%3D%22%23111%22%20stroke-width%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22213.3%22%20cy%3D%22347.6%22%20r%3D%222.2%22%20fill%3D%22%232b2926%22%20stroke%3D%22%23111%22%20stroke-width%3D%220.6%22%2F%3E%0A%3Cellipse%20cx%3D%22170.0%22%20cy%3D%22367.0%22%20rx%3D%225.4%22%20ry%3D%222.7%22%20fill%3D%22%237a3a1c%22%20opacity%3D%220.25%22%20transform%3D%22rotate%28-18%20170.0%20367.0%29%22%2F%3E%0A%3Cellipse%20cx%3D%22105.6%22%20cy%3D%22387.2%22%20rx%3D%227.5%22%20ry%3D%223.8%22%20fill%3D%22%237a3a1c%22%20opacity%3D%220.25%22%20transform%3D%22rotate%28-18%20105.6%20387.2%29%22%2F%3E%0A%3Cpolygon%20points%3D%22240.4%2C338.5%20415.0%2C375.6%20425.5%2C387.0%20410.0%2C389.1%20437.2%2C397.5%20418.4%2C400.1%20440.4%2C407.8%20398.5%2C402.8%20234.2%2C367.8%22%20fill%3D%22url%28%23beamGrad%29%22%20stroke%3D%22%23161514%22%20stroke-width%3D%222.5%22%20stroke-linejoin%3D%22round%22%2F%3E%0A%3Cline%20x1%3D%22239.2%22%20y1%3D%22344.1%22%20x2%3D%22398.4%22%20y2%3D%22377.9%22%20stroke%3D%22%23a7a1a6%22%20stroke-width%3D%221.4%22%20opacity%3D%220.35%22%2F%3E%0A%3Cline%20x1%3D%22235.4%22%20y1%3D%22362.3%22%20x2%3D%22394.6%22%20y2%3D%22396.1%22%20stroke%3D%22%23a7a1a6%22%20stroke-width%3D%221.4%22%20opacity%3D%220.35%22%2F%3E%0A%3Ccircle%20cx%3D%22268.1%22%20cy%3D%22359.7%22%20r%3D%222.2%22%20fill%3D%22%232b2926%22%20stroke%3D%22%23111%22%20stroke-width%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22304.1%22%20cy%3D%22367.4%22%20r%3D%222.2%22%20fill%3D%22%232b2926%22%20stroke%3D%22%23111%22%20stroke-width%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22340.0%22%20cy%3D%22375.0%22%20r%3D%222.2%22%20fill%3D%22%232b2926%22%20stroke%3D%22%23111%22%20stroke-width%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22375.9%22%20cy%3D%22382.6%22%20r%3D%222.2%22%20fill%3D%22%232b2926%22%20stroke%3D%22%23111%22%20stroke-width%3D%220.6%22%2F%3E%0A%3Cellipse%20cx%3D%22270.5%22%20cy%3D%22358.1%22%20rx%3D%225.3%22%20ry%3D%222.6%22%20fill%3D%22%237a3a1c%22%20opacity%3D%220.25%22%20transform%3D%22rotate%2812%20270.5%20358.1%29%22%2F%3E%0A%3Cellipse%20cx%3D%22364.7%22%20cy%3D%22385.7%22%20rx%3D%225.6%22%20ry%3D%222.8%22%20fill%3D%22%237a3a1c%22%20opacity%3D%220.25%22%20transform%3D%22rotate%2812%20364.7%20385.7%29%22%2F%3E%0A%3Cpolygon%20points%3D%22232.3%2C282.5%20281.5%2C292.2%20331.4%2C296.0%20380.9%2C303.4%20375.1%2C334.6%20373.1%2C366.3%20367.7%2C397.5%20318.0%2C391.8%20269.3%2C379.0%20219.1%2C376.6%20228.6%2C346.0%20224.4%2C313.4%22%20fill%3D%22url%28%23steelPlateDark%29%22%20stroke%3D%22%231c1a18%22%20stroke-width%3D%222.5%22%20stroke-linejoin%3D%22round%22%20opacity%3D%221.0%22%2F%3E%0A%3Ccircle%20cx%3D%22261.3%22%20cy%3D%22342.6%22%20r%3D%223.0%22%20fill%3D%22%232b2926%22%20stroke%3D%22%23111%22%20stroke-width%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22260.7%22%20cy%3D%22342.0%22%20r%3D%221.2%22%20fill%3D%22%23c9c7bd%22%20opacity%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22262.7%22%20cy%3D%22349.4%22%20r%3D%223.0%22%20fill%3D%22%232b2926%22%20stroke%3D%22%23111%22%20stroke-width%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22262.1%22%20cy%3D%22348.8%22%20r%3D%221.2%22%20fill%3D%22%23c9c7bd%22%20opacity%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22312.6%22%20cy%3D%22333.8%22%20r%3D%223.0%22%20fill%3D%22%232b2926%22%20stroke%3D%22%23111%22%20stroke-width%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22312.0%22%20cy%3D%22333.2%22%20r%3D%221.2%22%20fill%3D%22%23c9c7bd%22%20opacity%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22311.9%22%20cy%3D%22346.3%22%20r%3D%223.0%22%20fill%3D%22%232b2926%22%20stroke%3D%22%23111%22%20stroke-width%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22311.3%22%20cy%3D%22345.7%22%20r%3D%221.2%22%20fill%3D%22%23c9c7bd%22%20opacity%3D%220.6%22%2F%3E%0A%3Cellipse%20cx%3D%22288.3%22%20cy%3D%22332.9%22%20rx%3D%229.5%22%20ry%3D%225.7%22%20fill%3D%22%237a3a1c%22%20opacity%3D%220.28%22%20transform%3D%22rotate%2816%20288.3%20332.9%29%22%2F%3E%0A%3Cellipse%20cx%3D%22267.3%22%20cy%3D%22357.7%22%20rx%3D%2212.8%22%20ry%3D%227.7%22%20fill%3D%22%237a3a1c%22%20opacity%3D%220.28%22%20transform%3D%22rotate%28144%20267.3%20357.7%29%22%2F%3E%0A%3Cline%20x1%3D%22309.1%22%20y1%3D%22356.7%22%20x2%3D%22379.8%22%20y2%3D%22347.1%22%20stroke%3D%22%23c9c7bd%22%20stroke-width%3D%221%22%20opacity%3D%220.18%22%2F%3E%0A%3Cline%20x1%3D%22314.0%22%20y1%3D%22346.0%22%20x2%3D%22368.6%22%20y2%3D%22344.9%22%20stroke%3D%22%23c9c7bd%22%20stroke-width%3D%221%22%20opacity%3D%220.18%22%2F%3E%0A%3Cg%20transform%3D%22translate%28190%2C300%29%20rotate%288%29%22%3E%0A%20%20%3Cpath%20d%3D%22M%2069.9%2C-16.0%20L%2091.2%2C-11.5%20L%2089.8%2C11.3%20L%2068.5%2C15.6%20L%2067.2%2C19.6%20L%2058.7%2C28.3%20L%2058.8%2C41.4%20L%2057.5%2C45.9%20L%2067.2%2C65.4%20L%2047.0%2C77.2%20L%2030.4%2C63.2%20L%2027.3%2C66.5%20L%2016.1%2C70.4%20L%204.2%2C71.1%20L%20-4.3%2C72.8%20L%20-16.6%2C72.7%20L%20-26.9%2C65.6%20L%20-30.4%2C63.1%20L%20-47.0%2C77.1%20L%20-66.3%2C64.5%20L%20-56.5%2C45.1%20L%20-57.9%2C40.8%20L%20-57.1%2C27.5%20L%20-68.1%2C19.8%20L%20-69.2%2C15.8%20L%20-90.5%2C11.4%20L%20-92.6%2C-11.7%20L%20-71.3%2C-16.3%20L%20-71.6%2C-16.3%20L%20-88.8%2C-29.8%20L%20-78.3%2C-50.7%20L%20-57.1%2C-45.5%20L%20-55.7%2C-44.4%20L%20-65.6%2C-63.8%20L%20-48.6%2C-79.6%20L%20-31.7%2C-65.8%20L%20-30.9%2C-64.1%20L%20-31.3%2C-85.9%20L%20-9.0%2C-91.1%20L%20-0.0%2C-71.3%20L%20-0.0%2C-70.8%20L%209.0%2C-90.6%20L%2031.2%2C-85.5%20L%2030.7%2C-63.8%20L%2030.8%2C-63.9%20L%2047.5%2C-77.9%20L%2067.1%2C-65.3%20L%2057.4%2C-45.8%20L%2057.0%2C-45.5%20L%2078.2%2C-50.6%20L%2088.8%2C-29.7%20L%2071.5%2C-16.3%20Z%22%20fill%3D%22url%28%23gearGrad%29%22%20stroke%3D%22%23161311%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22%20fill-rule%3D%22evenodd%22%2F%3E%0A%20%20%3Cpath%20d%3D%22M%2029.44%2C0%20A%2029.44%2C29.44%200%201%2C0%20-29.44%2C0%20A%2029.44%2C29.44%200%201%2C0%2029.44%2C0%20Z%22%20fill%3D%22url%28%23gearGrad%29%22%20stroke%3D%22%23161311%22%20stroke-width%3D%223%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%2228.9%22%20fill%3D%22%231c1a18%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%2244.1%22%20cy%3D%2218.6%22%20r%3D%227.4%22%20fill%3D%22%231c1a18%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%22-18.6%22%20cy%3D%2244.1%22%20r%3D%227.4%22%20fill%3D%22%231c1a18%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%22-44.1%22%20cy%3D%22-18.6%22%20r%3D%227.4%22%20fill%3D%22%231c1a18%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%2218.6%22%20cy%3D%22-44.1%22%20r%3D%227.4%22%20fill%3D%22%231c1a18%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%2279.1%22%20fill%3D%22none%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%221.2%22%20opacity%3D%220.10%22%2F%3E%0A%20%20%3Cellipse%20cx%3D%2239.9%22%20cy%3D%22-13.6%22%20rx%3D%227.7%22%20ry%3D%225.4%22%20fill%3D%22%233a1c0e%22%20opacity%3D%220.30%22%2F%3E%0A%20%20%3Cellipse%20cx%3D%2213.5%22%20cy%3D%22-28.0%22%20rx%3D%2211.6%22%20ry%3D%228.2%22%20fill%3D%22%233a1c0e%22%20opacity%3D%220.30%22%2F%3E%0A%20%20%3Cellipse%20cx%3D%2229.9%22%20cy%3D%22-19.1%22%20rx%3D%228.0%22%20ry%3D%225.6%22%20fill%3D%22%233a1c0e%22%20opacity%3D%220.30%22%2F%3E%0A%3C%2Fg%3E%0A%3Cpolygon%20points%3D%22264.7%2C287.3%20304.5%2C270.0%20344.3%2C252.8%20385.3%2C238.6%20397.8%2C262.3%20409.0%2C286.5%20415.3%2C312.7%20375.9%2C331.0%20336.3%2C348.8%20294.7%2C361.4%20288.7%2C335.1%20275.0%2C311.9%22%20fill%3D%22url%28%23steelPlate%29%22%20stroke%3D%22%231c1a18%22%20stroke-width%3D%222.5%22%20stroke-linejoin%3D%22round%22%20opacity%3D%221.0%22%2F%3E%0A%3Ccircle%20cx%3D%22387.9%22%20cy%3D%22303.7%22%20r%3D%222.6%22%20fill%3D%22%232b2926%22%20stroke%3D%22%23111%22%20stroke-width%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22387.3%22%20cy%3D%22303.1%22%20r%3D%221.0%22%20fill%3D%22%23c9c7bd%22%20opacity%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22354.2%22%20cy%3D%22277.3%22%20r%3D%222.6%22%20fill%3D%22%232b2926%22%20stroke%3D%22%23111%22%20stroke-width%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22353.6%22%20cy%3D%22276.7%22%20r%3D%221.0%22%20fill%3D%22%23c9c7bd%22%20opacity%3D%220.6%22%2F%3E%0A%3Cellipse%20cx%3D%22303.5%22%20cy%3D%22299.2%22%20rx%3D%226.6%22%20ry%3D%224.0%22%20fill%3D%22%237a3a1c%22%20opacity%3D%220.28%22%20transform%3D%22rotate%28167%20303.5%20299.2%29%22%2F%3E%0A%3Cellipse%20cx%3D%22339.3%22%20cy%3D%22289.3%22%20rx%3D%2213.9%22%20ry%3D%228.3%22%20fill%3D%22%237a3a1c%22%20opacity%3D%220.28%22%20transform%3D%22rotate%2812%20339.3%20289.3%29%22%2F%3E%0A%3Cellipse%20cx%3D%22339.2%22%20cy%3D%22279.7%22%20rx%3D%2215.2%22%20ry%3D%229.1%22%20fill%3D%22%237a3a1c%22%20opacity%3D%220.28%22%20transform%3D%22rotate%28268%20339.2%20279.7%29%22%2F%3E%0A%3Cellipse%20cx%3D%22329.2%22%20cy%3D%22296.2%22%20rx%3D%227.8%22%20ry%3D%224.7%22%20fill%3D%22%237a3a1c%22%20opacity%3D%220.28%22%20transform%3D%22rotate%28128%20329.2%20296.2%29%22%2F%3E%0A%3Cline%20x1%3D%22335.7%22%20y1%3D%22298.3%22%20x2%3D%22384.1%22%20y2%3D%22273.0%22%20stroke%3D%22%23c9c7bd%22%20stroke-width%3D%221%22%20opacity%3D%220.18%22%2F%3E%0A%3Cline%20x1%3D%22327.5%22%20y1%3D%22304.3%22%20x2%3D%22381.9%22%20y2%3D%22278.2%22%20stroke%3D%22%23c9c7bd%22%20stroke-width%3D%221%22%20opacity%3D%220.18%22%2F%3E%0A%3Cpolygon%20points%3D%22210.6%2C296.7%20349.9%2C199.2%20364.2%2C198.7%20355.3%2C210.5%20378.7%2C196.8%20368.0%2C211.1%20387.5%2C200.6%20356.6%2C226.2%20225.5%2C318.0%22%20fill%3D%22url%28%23beamGrad%29%22%20stroke%3D%22%23161514%22%20stroke-width%3D%222.5%22%20stroke-linejoin%3D%22round%22%2F%3E%0A%3Cline%20x1%3D%22213.5%22%20y1%3D%22300.8%22%20x2%3D%22340.4%22%20y2%3D%22211.9%22%20stroke%3D%22%23a7a1a6%22%20stroke-width%3D%221.4%22%20opacity%3D%220.35%22%2F%3E%0A%3Cline%20x1%3D%22222.7%22%20y1%3D%22314.0%22%20x2%3D%22349.7%22%20y2%3D%22225.1%22%20stroke%3D%22%23a7a1a6%22%20stroke-width%3D%221.4%22%20opacity%3D%220.35%22%2F%3E%0A%3Ccircle%20cx%3D%22242.7%22%20cy%3D%22290.2%22%20r%3D%222.2%22%20fill%3D%22%232b2926%22%20stroke%3D%22%23111%22%20stroke-width%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22271.3%22%20cy%3D%22270.1%22%20r%3D%222.2%22%20fill%3D%22%232b2926%22%20stroke%3D%22%23111%22%20stroke-width%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22300.0%22%20cy%3D%22250.0%22%20r%3D%222.2%22%20fill%3D%22%232b2926%22%20stroke%3D%22%23111%22%20stroke-width%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22328.7%22%20cy%3D%22229.9%22%20r%3D%222.2%22%20fill%3D%22%232b2926%22%20stroke%3D%22%23111%22%20stroke-width%3D%220.6%22%2F%3E%0A%3Cellipse%20cx%3D%22284.3%22%20cy%3D%22257.2%22%20rx%3D%223.9%22%20ry%3D%222.0%22%20fill%3D%22%237a3a1c%22%20opacity%3D%220.25%22%20transform%3D%22rotate%28-35%20284.3%20257.2%29%22%2F%3E%0A%3Cellipse%20cx%3D%22304.8%22%20cy%3D%22246.1%22%20rx%3D%226.9%22%20ry%3D%223.4%22%20fill%3D%22%237a3a1c%22%20opacity%3D%220.25%22%20transform%3D%22rotate%28-35%20304.8%20246.1%29%22%2F%3E%0A%3Cg%20transform%3D%22translate%28330%2C250%29%20rotate%28-15%29%22%3E%0A%20%20%3Cpath%20d%3D%22M%2049.5%2C-13.3%20L%2065.0%2C-9.6%20L%2064.1%2C9.5%20L%2048.6%2C13.0%20L%2050.5%2C13.5%20L%2062.2%2C24.6%20L%2050.9%2C40.3%20L%2035.6%2C35.6%20L%2033.9%2C39.0%20L%2023.0%2C39.8%20L%2017.1%2C49.7%20L%2013.0%2C48.7%20L%209.5%2C64.2%20L%20-9.6%2C65.1%20L%20-13.3%2C49.5%20L%20-13.1%2C49.1%20L%20-24.0%2C60.7%20L%20-41.1%2C51.8%20L%20-36.5%2C36.5%20L%20-38.0%2C33.0%20L%20-46.3%2C26.8%20L%20-48.9%2C16.8%20L%20-50.1%2C13.4%20L%20-65.6%2C9.7%20L%20-65.5%2C-9.7%20L%20-49.9%2C-13.4%20L%20-48.6%2C-13.0%20L%20-60.3%2C-23.9%20L%20-51.9%2C-41.1%20L%20-36.6%2C-36.6%20L%20-35.6%2C-35.6%20L%20-40.3%2C-50.8%20L%20-24.0%2C-60.7%20L%20-13.1%2C-49.0%20L%20-13.4%2C-49.9%20L%20-9.7%2C-65.4%20L%209.5%2C-64.3%20L%2013.1%2C-48.8%20L%2013.3%2C-49.5%20L%2024.2%2C-61.2%20L%2041.1%2C-51.8%20L%2036.5%2C-36.5%20L%2036.5%2C-36.5%20L%2051.9%2C-41.1%20L%2061.5%2C-24.4%20L%2049.9%2C-13.4%20Z%22%20fill%3D%22url%28%23gearGrad%29%22%20stroke%3D%22%23161311%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22%20fill-rule%3D%22evenodd%22%2F%3E%0A%20%20%3Cpath%20d%3D%22M%2021.12%2C0%20A%2021.12%2C21.12%200%201%2C0%20-21.12%2C0%20A%2021.12%2C21.12%200%201%2C0%2021.12%2C0%20Z%22%20fill%3D%22url%28%23gearGrad%29%22%20stroke%3D%22%23161311%22%20stroke-width%3D%223%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%2220.7%22%20fill%3D%22%231c1a18%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%2231.6%22%20cy%3D%2213.4%22%20r%3D%225.3%22%20fill%3D%22%231c1a18%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%22-13.4%22%20cy%3D%2231.6%22%20r%3D%225.3%22%20fill%3D%22%231c1a18%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%22-31.6%22%20cy%3D%22-13.4%22%20r%3D%225.3%22%20fill%3D%22%231c1a18%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%2213.4%22%20cy%3D%22-31.6%22%20r%3D%225.3%22%20fill%3D%22%231c1a18%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%2256.8%22%20fill%3D%22none%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%221.2%22%20opacity%3D%220.10%22%2F%3E%0A%20%20%3Cellipse%20cx%3D%2231.9%22%20cy%3D%226.6%22%20rx%3D%225.4%22%20ry%3D%223.8%22%20fill%3D%22%233a1c0e%22%20opacity%3D%220.30%22%2F%3E%0A%20%20%3Cellipse%20cx%3D%22-31.9%22%20cy%3D%227.6%22%20rx%3D%226.7%22%20ry%3D%224.7%22%20fill%3D%22%233a1c0e%22%20opacity%3D%220.30%22%2F%3E%0A%20%20%3Cellipse%20cx%3D%227.7%22%20cy%3D%22-19.2%22%20rx%3D%227.9%22%20ry%3D%225.5%22%20fill%3D%22%233a1c0e%22%20opacity%3D%220.30%22%2F%3E%0A%20%20%3Cellipse%20cx%3D%2239.9%22%20cy%3D%2220.7%22%20rx%3D%229.2%22%20ry%3D%226.5%22%20fill%3D%22%233a1c0e%22%20opacity%3D%220.30%22%2F%3E%0A%3C%2Fg%3E%0A%3Cg%20transform%3D%22translate%28220%2C215%29%20rotate%2825%29%22%3E%0A%20%20%3Cpath%20d%3D%22M%2038.0%2C-12.3%20L%2050.1%2C-8.9%20L%2048.5%2C8.6%20L%2036.4%2C11.8%20L%2037.5%2C12.2%20L%2045.3%2C22.0%20L%2034.1%2C35.4%20L%2022.4%2C30.9%20L%2022.6%2C31.1%20L%2023.3%2C43.7%20L%207.0%2C50.5%20L%200.0%2C40.0%20L%20-3.2%2C38.3%20L%20-11.4%2C34.9%20L%20-20.4%2C33.6%20L%20-22.9%2C31.5%20L%20-34.6%2C35.9%20L%20-45.0%2C21.9%20L%20-37.1%2C12.0%20L%20-37.4%2C8.8%20L%20-33.8%2C0.0%20L%20-38.6%2C-9.1%20L%20-36.6%2C-11.9%20L%20-44.5%2C-21.6%20L%20-34.0%2C-35.3%20L%20-22.4%2C-30.8%20L%20-22.6%2C-31.2%20L%20-23.3%2C-43.7%20L%20-6.9%2C-49.3%20L%20-0.0%2C-38.8%20L%20-0.0%2C-39.8%20L%207.0%2C-50.3%20L%2023.4%2C-43.9%20L%2022.8%2C-31.4%20L%2022.5%2C-30.9%20L%2034.1%2C-35.5%20L%2044.5%2C-21.6%20L%2036.6%2C-11.9%20Z%22%20fill%3D%22url%28%23gearGrad%29%22%20stroke%3D%22%23161311%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22%20fill-rule%3D%22evenodd%22%2F%3E%0A%20%20%3Cpath%20d%3D%22M%2016.0%2C0%20A%2016.0%2C16.0%200%201%2C0%20-16.0%2C0%20A%2016.0%2C16.0%200%201%2C0%2016.0%2C0%20Z%22%20fill%3D%22url%28%23gearGrad%29%22%20stroke%3D%22%23161311%22%20stroke-width%3D%223%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%2215.7%22%20fill%3D%22%231c1a18%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%2223.9%22%20cy%3D%2210.1%22%20r%3D%224.0%22%20fill%3D%22%231c1a18%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%22-10.1%22%20cy%3D%2223.9%22%20r%3D%224.0%22%20fill%3D%22%231c1a18%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%22-23.9%22%20cy%3D%22-10.1%22%20r%3D%224.0%22%20fill%3D%22%231c1a18%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%2210.1%22%20cy%3D%22-23.9%22%20r%3D%224.0%22%20fill%3D%22%231c1a18%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%2243.0%22%20fill%3D%22none%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%221.2%22%20opacity%3D%220.10%22%2F%3E%0A%20%20%3Cellipse%20cx%3D%2221.4%22%20cy%3D%22-24.0%22%20rx%3D%227.1%22%20ry%3D%225.0%22%20fill%3D%22%233a1c0e%22%20opacity%3D%220.30%22%2F%3E%0A%20%20%3Cellipse%20cx%3D%22-30.6%22%20cy%3D%229.6%22%20rx%3D%224.8%22%20ry%3D%223.3%22%20fill%3D%22%233a1c0e%22%20opacity%3D%220.30%22%2F%3E%0A%20%20%3Cellipse%20cx%3D%228.1%22%20cy%3D%22-23.1%22%20rx%3D%226.5%22%20ry%3D%224.5%22%20fill%3D%22%233a1c0e%22%20opacity%3D%220.30%22%2F%3E%0A%3C%2Fg%3E%0A%3Cpolygon%20points%3D%22203.4%2C191.2%20234.7%2C185.9%20266.0%2C181.0%20297.0%2C174.7%20297.8%2C193.1%20305.8%2C210.4%20306.6%2C228.8%20274.8%2C231.1%20244.2%2C239.8%20213.0%2C245.3%20207.2%2C227.7%20209.4%2C208.7%22%20fill%3D%22url%28%23steelPlate%29%22%20stroke%3D%22%231c1a18%22%20stroke-width%3D%222.5%22%20stroke-linejoin%3D%22round%22%20opacity%3D%221.0%22%2F%3E%0A%3Ccircle%20cx%3D%22232.3%22%20cy%3D%22226.7%22%20r%3D%222.0%22%20fill%3D%22%232b2926%22%20stroke%3D%22%23111%22%20stroke-width%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22231.7%22%20cy%3D%22226.1%22%20r%3D%220.8%22%20fill%3D%22%23c9c7bd%22%20opacity%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22279.8%22%20cy%3D%22201.0%22%20r%3D%222.0%22%20fill%3D%22%232b2926%22%20stroke%3D%22%23111%22%20stroke-width%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22279.2%22%20cy%3D%22200.4%22%20r%3D%220.8%22%20fill%3D%22%23c9c7bd%22%20opacity%3D%220.6%22%2F%3E%0A%3Cellipse%20cx%3D%22261.6%22%20cy%3D%22218.4%22%20rx%3D%228.3%22%20ry%3D%225.0%22%20fill%3D%22%237a3a1c%22%20opacity%3D%220.28%22%20transform%3D%22rotate%2889%20261.6%20218.4%29%22%2F%3E%0A%3Cellipse%20cx%3D%22268.4%22%20cy%3D%22203.1%22%20rx%3D%225.2%22%20ry%3D%223.1%22%20fill%3D%22%237a3a1c%22%20opacity%3D%220.28%22%20transform%3D%22rotate%28162%20268.4%20203.1%29%22%2F%3E%0A%3Cline%20x1%3D%22265.1%22%20y1%3D%22218.9%22%20x2%3D%22309.7%22%20y2%3D%22223.8%22%20stroke%3D%22%23c9c7bd%22%20stroke-width%3D%221%22%20opacity%3D%220.18%22%2F%3E%0A%3Cline%20x1%3D%22270.4%22%20y1%3D%22218.2%22%20x2%3D%22311.5%22%20y2%3D%22203.6%22%20stroke%3D%22%23c9c7bd%22%20stroke-width%3D%221%22%20opacity%3D%220.18%22%2F%3E%0A%3Cg%20transform%3D%22translate%28270%2C175%29%20rotate%28-10%29%22%3E%0A%20%20%3Cpath%20d%3D%22M%2030.1%2C-7.9%20L%2027.8%2C0.0%20L%2030.3%2C8.0%20L%2029.8%2C10.8%20L%2035.5%2C19.5%20L%2025.4%2C31.6%20L%2015.9%2C27.5%20L%2015.7%2C27.2%20L%2014.6%2C37.5%20L%20-0.8%2C39.4%20L%20-5.3%2C30.2%20L%20-5.4%2C30.8%20L%20-12.9%2C37.9%20L%20-26.2%2C29.9%20L%20-23.7%2C19.9%20L%20-23.6%2C19.8%20L%20-33.9%2C20.5%20L%20-40.2%2C6.2%20L%20-31.9%2C0.0%20L%20-32.0%2C-0.0%20L%20-40.3%2C-6.2%20L%20-33.6%2C-20.3%20L%20-23.3%2C-19.6%20L%20-24.3%2C-20.4%20L%20-26.7%2C-30.5%20L%20-12.9%2C-38.0%20L%20-5.4%2C-30.9%20L%20-5.4%2C-30.5%20L%20-0.8%2C-39.8%20L%2014.3%2C-37.0%20L%2015.4%2C-26.7%20L%2015.7%2C-27.3%20L%2025.2%2C-31.4%20L%2035.0%2C-19.2%20L%2029.3%2C-10.6%20Z%22%20fill%3D%22url%28%23gearGrad%29%22%20stroke%3D%22%23161311%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22%20fill-rule%3D%22evenodd%22%2F%3E%0A%20%20%3Cpath%20d%3D%22M%2012.8%2C0%20A%2012.8%2C12.8%200%201%2C0%20-12.8%2C0%20A%2012.8%2C12.8%200%201%2C0%2012.8%2C0%20Z%22%20fill%3D%22url%28%23gearGrad%29%22%20stroke%3D%22%23161311%22%20stroke-width%3D%223%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%2212.5%22%20fill%3D%22%231c1a18%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%2219.2%22%20cy%3D%228.1%22%20r%3D%223.2%22%20fill%3D%22%231c1a18%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%22-8.1%22%20cy%3D%2219.2%22%20r%3D%223.2%22%20fill%3D%22%231c1a18%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%22-19.2%22%20cy%3D%22-8.1%22%20r%3D%223.2%22%20fill%3D%22%231c1a18%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%228.1%22%20cy%3D%22-19.2%22%20r%3D%223.2%22%20fill%3D%22%231c1a18%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%2234.4%22%20fill%3D%22none%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%221.2%22%20opacity%3D%220.10%22%2F%3E%0A%20%20%3Cellipse%20cx%3D%22-6.7%22%20cy%3D%2225.7%22%20rx%3D%225.8%22%20ry%3D%224.0%22%20fill%3D%22%233a1c0e%22%20opacity%3D%220.30%22%2F%3E%0A%20%20%3Cellipse%20cx%3D%2217.3%22%20cy%3D%22-14.3%22%20rx%3D%225.3%22%20ry%3D%223.7%22%20fill%3D%22%233a1c0e%22%20opacity%3D%220.30%22%2F%3E%0A%20%20%3Cellipse%20cx%3D%2215.2%22%20cy%3D%22-16.3%22%20rx%3D%223.8%22%20ry%3D%222.7%22%20fill%3D%22%233a1c0e%22%20opacity%3D%220.30%22%2F%3E%0A%3C%2Fg%3E%0A%3Cpolygon%20points%3D%22135.0%2C399.9%20128.2%2C401.8%20123.3%2C396.9%20125.0%2C390.1%20131.8%2C388.2%20136.7%2C393.1%22%20fill%3D%22%234a4c4e%22%20stroke%3D%22%23141312%22%20stroke-width%3D%221.6%22%2F%3E%0A%3Ccircle%20cx%3D%22130.0%22%20cy%3D%22395.0%22%20r%3D%222.8%22%20fill%3D%22%23282624%22%2F%3E%0A%3Cpolygon%20points%3D%22415.8%2C391.5%20411.6%2C395.8%20405.8%2C394.3%20404.2%2C388.5%20408.4%2C384.2%20414.2%2C385.7%22%20fill%3D%22%234a4c4e%22%20stroke%3D%22%23141312%22%20stroke-width%3D%221.6%22%2F%3E%0A%3Ccircle%20cx%3D%22410.0%22%20cy%3D%22390.0%22%20r%3D%222.4%22%20fill%3D%22%23282624%22%2F%3E%0A%3Cpolygon%20points%3D%22125.9%2C300.9%20122.2%2C305.6%20116.3%2C304.7%20114.1%2C299.1%20117.8%2C294.4%20123.7%2C295.3%22%20fill%3D%22%234a4c4e%22%20stroke%3D%22%23141312%22%20stroke-width%3D%221.6%22%2F%3E%0A%3Ccircle%20cx%3D%22120.0%22%20cy%3D%22300.0%22%20r%3D%222.4%22%20fill%3D%22%23282624%22%2F%3E%0A%3Cpolygon%20points%3D%22397.0%2C300.7%20392.8%2C306.4%20385.9%2C305.7%20383.0%2C299.3%20387.2%2C293.6%20394.1%2C294.3%22%20fill%3D%22%234a4c4e%22%20stroke%3D%22%23141312%22%20stroke-width%3D%221.6%22%2F%3E%0A%3Ccircle%20cx%3D%22390.0%22%20cy%3D%22300.0%22%20r%3D%222.8%22%20fill%3D%22%23282624%22%2F%3E%0A%3Cpolygon%20points%3D%22163.6%2C233.5%20158.8%2C234.8%20155.2%2C231.3%20156.4%2C226.5%20161.2%2C225.2%20164.8%2C228.7%22%20fill%3D%22%234a4c4e%22%20stroke%3D%22%23141312%22%20stroke-width%3D%221.6%22%2F%3E%0A%3Ccircle%20cx%3D%22160.0%22%20cy%3D%22230.0%22%20r%3D%222.0%22%20fill%3D%22%23282624%22%2F%3E%0A%3Cpolygon%20points%3D%22365.0%2C203.2%20359.7%2C206.0%20354.7%2C202.7%20355.0%2C196.8%20360.3%2C194.0%20365.3%2C197.3%22%20fill%3D%22%234a4c4e%22%20stroke%3D%22%23141312%22%20stroke-width%3D%221.6%22%2F%3E%0A%3Ccircle%20cx%3D%22360.0%22%20cy%3D%22200.0%22%20r%3D%222.4%22%20fill%3D%22%23282624%22%2F%3E%0A%3Cpolygon%20points%3D%22224.1%2C152.9%20219.5%2C155.0%20215.5%2C152.1%20215.9%2C147.1%20220.5%2C145.0%20224.5%2C147.9%22%20fill%3D%22%234a4c4e%22%20stroke%3D%22%23141312%22%20stroke-width%3D%221.6%22%2F%3E%0A%3Ccircle%20cx%3D%22220.0%22%20cy%3D%22150.0%22%20r%3D%222.0%22%20fill%3D%22%23282624%22%2F%3E%0A%3Cpolygon%20points%3D%22305.0%2C160.2%20302.4%2C164.4%20297.4%2C164.2%20295.0%2C159.8%20297.6%2C155.6%20302.6%2C155.8%22%20fill%3D%22%234a4c4e%22%20stroke%3D%22%23141312%22%20stroke-width%3D%221.6%22%2F%3E%0A%3Ccircle%20cx%3D%22300.0%22%20cy%3D%22160.0%22%20r%3D%222.0%22%20fill%3D%22%23282624%22%2F%3E%0A%3Cpolygon%20points%3D%2286.0%2C360.6%2082.5%2C365.5%2076.5%2C364.9%2074.0%2C359.4%2077.5%2C354.5%2083.5%2C355.1%22%20fill%3D%22%234a4c4e%22%20stroke%3D%22%23141312%22%20stroke-width%3D%221.6%22%2F%3E%0A%3Ccircle%20cx%3D%2280.0%22%20cy%3D%22360.0%22%20r%3D%222.4%22%20fill%3D%22%23282624%22%2F%3E%0A%3Cg%20transform%3D%22translate%2895%2C400%29%20rotate%2815%29%22%3E%0A%20%20%3Cpolygon%20points%3D%226.5%2C0.0%206.8%2C2.6%206.0%2C5.4%204.1%2C8.0%201.0%2C9.7%20-2.7%2C10.2%20-6.7%2C9.2%20-10.2%2C6.6%20-12.7%2C2.7%20-13.6%2C-2.2%20-12.7%2C-7.3%20-9.7%2C-12.0%20-5.0%2C-15.5%200.9%2C-17.0%207.3%2C-16.3%2013.2%2C-13.2%2017.8%2C-7.9%2020.3%2C-1.1%2020.1%2C6.5%2017.0%2C13.8%2011.4%2C19.7%203.7%2C23.3%20-5.1%2C23.8%20-13.7%2C21.1%20-21.0%2C15.3%20-15.1%2C11.0%20-9.8%2C15.0%20-3.6%2C16.7%202.5%2C16.1%207.7%2C13.4%2011.4%2C9.2%2013.2%2C4.3%2013.0%2C-0.7%2011.2%2C-5.0%208.1%2C-8.1%204.3%2C-9.7%200.5%2C-9.8%20-2.8%2C-8.5%20-5.1%2C-6.3%20-6.4%2C-3.7%20-6.5%2C-1.0%20-5.6%2C1.2%20-4.1%2C2.7%20-2.4%2C3.3%20-0.8%2C3.2%200.3%2C2.5%200.8%2C1.5%200.6%2C0.6%200.0%2C0.0%20-0.8%2C-0.0%22%20fill%3D%22url%28%23steelPlateDark%29%22%20stroke%3D%22%23161514%22%20stroke-width%3D%221.2%22%20opacity%3D%220.92%22%2F%3E%0A%3C%2Fg%3E%0A%3Cg%20transform%3D%22translate%28420%2C400%29%20rotate%28-40%29%22%3E%0A%20%20%3Cpolygon%20points%3D%225.5%2C0.0%205.8%2C2.2%205.1%2C4.6%203.4%2C6.7%200.9%2C8.2%20-2.3%2C8.6%20-5.7%2C7.8%20-8.6%2C5.6%20-10.8%2C2.3%20-11.5%2C-1.8%20-10.7%2C-6.2%20-8.2%2C-10.2%20-4.2%2C-13.1%200.8%2C-14.4%206.2%2C-13.8%2011.2%2C-11.2%2015.1%2C-6.7%2017.2%2C-0.9%2017.0%2C5.5%2014.4%2C11.7%209.6%2C16.7%203.1%2C19.7%20-4.3%2C20.2%20-11.6%2C17.9%20-17.8%2C12.9%20-12.8%2C9.3%20-8.3%2C12.7%20-3.0%2C14.1%202.2%2C13.6%206.5%2C11.3%209.6%2C7.8%2011.1%2C3.6%2011.0%2C-0.6%209.4%2C-4.2%206.8%2C-6.8%203.6%2C-8.2%200.4%2C-8.3%20-2.3%2C-7.2%20-4.3%2C-5.4%20-5.4%2C-3.1%20-5.5%2C-0.9%20-4.7%2C1.0%20-3.5%2C2.3%20-2.0%2C2.8%20-0.7%2C2.7%200.2%2C2.1%200.6%2C1.2%200.5%2C0.5%200.0%2C0.0%20-0.7%2C-0.0%22%20fill%3D%22url%28%23steelPlateDark%29%22%20stroke%3D%22%23161514%22%20stroke-width%3D%221.2%22%20opacity%3D%220.92%22%2F%3E%0A%3C%2Fg%3E%0A%3Cg%20transform%3D%22translate%2860%2C340%29%20rotate%2870%29%22%3E%0A%20%20%3Cpolygon%20points%3D%224.5%2C0.0%204.7%2C1.8%204.2%2C3.8%202.8%2C5.5%200.7%2C6.7%20-1.9%2C7.1%20-4.6%2C6.4%20-7.1%2C4.6%20-8.8%2C1.9%20-9.4%2C-1.5%20-8.8%2C-5.1%20-6.7%2C-8.3%20-3.5%2C-10.7%200.6%2C-11.8%205.0%2C-11.3%209.1%2C-9.1%2012.3%2C-5.5%2014.0%2C-0.7%2013.9%2C4.5%2011.8%2C9.6%207.9%2C13.6%202.6%2C16.1%20-3.5%2C16.5%20-9.5%2C14.6%20-14.6%2C10.6%20-10.5%2C7.6%20-6.8%2C10.4%20-2.5%2C11.6%201.8%2C11.1%205.4%2C9.3%207.9%2C6.4%209.1%2C3.0%209.0%2C-0.5%207.7%2C-3.4%205.6%2C-5.6%203.0%2C-6.7%200.4%2C-6.8%20-1.9%2C-5.9%20-3.6%2C-4.4%20-4.4%2C-2.5%20-4.5%2C-0.7%20-3.9%2C0.8%20-2.8%2C1.9%20-1.7%2C2.3%20-0.6%2C2.2%200.2%2C1.7%200.5%2C1.0%200.4%2C0.4%200.0%2C0.0%20-0.5%2C-0.0%22%20fill%3D%22url%28%23steelPlateDark%29%22%20stroke%3D%22%23161514%22%20stroke-width%3D%221.2%22%20opacity%3D%220.92%22%2F%3E%0A%3C%2Fg%3E%0A%3Cg%20transform%3D%22translate%28430%2C340%29%20rotate%28-100%29%22%3E%0A%20%20%3Cpolygon%20points%3D%225.0%2C0.0%205.3%2C2.0%204.6%2C4.2%203.1%2C6.1%200.8%2C7.5%20-2.1%2C7.8%20-5.1%2C7.1%20-7.9%2C5.1%20-9.8%2C2.1%20-10.5%2C-1.7%20-9.7%2C-5.6%20-7.5%2C-9.2%20-3.9%2C-11.9%200.7%2C-13.1%205.6%2C-12.6%2010.2%2C-10.2%2013.7%2C-6.1%2015.6%2C-0.8%2015.5%2C5.0%2013.1%2C10.6%208.7%2C15.2%202.8%2C17.9%20-3.9%2C18.3%20-10.6%2C16.2%20-16.2%2C11.8%20-11.6%2C8.5%20-7.5%2C11.6%20-2.7%2C12.9%202.0%2C12.4%205.9%2C10.3%208.8%2C7.1%2010.1%2C3.3%2010.0%2C-0.5%208.6%2C-3.8%206.2%2C-6.2%203.3%2C-7.4%200.4%2C-7.5%20-2.1%2C-6.6%20-3.9%2C-4.9%20-4.9%2C-2.8%20-5.0%2C-0.8%20-4.3%2C0.9%20-3.2%2C2.1%20-1.9%2C2.5%20-0.7%2C2.4%200.2%2C1.9%200.6%2C1.1%200.5%2C0.4%200.0%2C0.0%20-0.6%2C-0.0%22%20fill%3D%22url%28%23steelPlateDark%29%22%20stroke%3D%22%23161514%22%20stroke-width%3D%221.2%22%20opacity%3D%220.92%22%2F%3E%0A%3C%2Fg%3E%0A%3Cpolygon%20points%3D%22372.4%2C357.4%20416.3%2C420.1%20414.4%2C427.9%20408.0%2C424.8%20413.5%2C435.7%20405.6%2C431.9%20409.7%2C441.2%20397.3%2C427.9%20356.0%2C368.9%22%20fill%3D%22url%28%23beamGrad%29%22%20stroke%3D%22%23161514%22%20stroke-width%3D%222.5%22%20stroke-linejoin%3D%22round%22%2F%3E%0A%3Cline%20x1%3D%22369.3%22%20y1%3D%22359.6%22%20x2%3D%22409.3%22%20y2%3D%22416.7%22%20stroke%3D%22%23a7a1a6%22%20stroke-width%3D%221.4%22%20opacity%3D%220.35%22%2F%3E%0A%3Cline%20x1%3D%22359.1%22%20y1%3D%22366.7%22%20x2%3D%22399.1%22%20y2%3D%22423.8%22%20stroke%3D%22%23a7a1a6%22%20stroke-width%3D%221.4%22%20opacity%3D%220.35%22%2F%3E%0A%3Ccircle%20cx%3D%22371.9%22%20cy%3D%22374.2%22%20r%3D%222.2%22%20fill%3D%22%232b2926%22%20stroke%3D%22%23111%22%20stroke-width%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22381.0%22%20cy%3D%22387.1%22%20r%3D%222.2%22%20fill%3D%22%232b2926%22%20stroke%3D%22%23111%22%20stroke-width%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22390.0%22%20cy%3D%22400.0%22%20r%3D%222.2%22%20fill%3D%22%232b2926%22%20stroke%3D%22%23111%22%20stroke-width%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22399.0%22%20cy%3D%22412.9%22%20r%3D%222.2%22%20fill%3D%22%232b2926%22%20stroke%3D%22%23111%22%20stroke-width%3D%220.6%22%2F%3E%0A%3Cellipse%20cx%3D%22395.5%22%20cy%3D%22414.0%22%20rx%3D%225.3%22%20ry%3D%222.7%22%20fill%3D%22%237a3a1c%22%20opacity%3D%220.25%22%20transform%3D%22rotate%2855%20395.5%20414.0%29%22%2F%3E%0A%3Cellipse%20cx%3D%22381.6%22%20cy%3D%22394.2%22%20rx%3D%223.6%22%20ry%3D%221.8%22%20fill%3D%22%237a3a1c%22%20opacity%3D%220.25%22%20transform%3D%22rotate%2855%20381.6%20394.2%29%22%2F%3E%0A%3Cellipse%20cx%3D%22396.5%22%20cy%3D%22408.9%22%20rx%3D%224.8%22%20ry%3D%222.4%22%20fill%3D%22%237a3a1c%22%20opacity%3D%220.25%22%20transform%3D%22rotate%2855%20396.5%20408.9%29%22%2F%3E%0A%3Cpolygon%20points%3D%22100.0%2C384.6%20117.2%2C391.0%20134.6%2C396.6%20151.7%2C403.4%20148.4%2C414.3%20142.6%2C424.3%20140.0%2C435.4%20123.4%2C427.3%20105.7%2C422.4%2088.3%2C416.6%2093.0%2C406.2%2095.0%2C394.9%22%20fill%3D%22url%28%23steelPlate%29%22%20stroke%3D%22%231c1a18%22%20stroke-width%3D%222.5%22%20stroke-linejoin%3D%22round%22%20opacity%3D%221.0%22%2F%3E%0A%3Ccircle%20cx%3D%22134.6%22%20cy%3D%22407.8%22%20r%3D%222.0%22%20fill%3D%22%232b2926%22%20stroke%3D%22%23111%22%20stroke-width%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22134.0%22%20cy%3D%22407.2%22%20r%3D%220.8%22%20fill%3D%22%23c9c7bd%22%20opacity%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22136.5%22%20cy%3D%22415.9%22%20r%3D%222.0%22%20fill%3D%22%232b2926%22%20stroke%3D%22%23111%22%20stroke-width%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22135.9%22%20cy%3D%22415.3%22%20r%3D%220.8%22%20fill%3D%22%23c9c7bd%22%20opacity%3D%220.6%22%2F%3E%0A%3Cellipse%20cx%3D%22117.2%22%20cy%3D%22406.0%22%20rx%3D%224.2%22%20ry%3D%222.5%22%20fill%3D%22%237a3a1c%22%20opacity%3D%220.28%22%20transform%3D%22rotate%2863%20117.2%20406.0%29%22%2F%3E%0A%3Cellipse%20cx%3D%22126.8%22%20cy%3D%22410.8%22%20rx%3D%223.8%22%20ry%3D%222.3%22%20fill%3D%22%237a3a1c%22%20opacity%3D%220.28%22%20transform%3D%22rotate%28330%20126.8%20410.8%29%22%2F%3E%0A%3Cellipse%20cx%3D%22111.7%22%20cy%3D%22416.4%22%20rx%3D%224.4%22%20ry%3D%222.6%22%20fill%3D%22%237a3a1c%22%20opacity%3D%220.28%22%20transform%3D%22rotate%28309%20111.7%20416.4%29%22%2F%3E%0A%3Cellipse%20cx%3D%22130.0%22%20cy%3D%22412.9%22%20rx%3D%225.4%22%20ry%3D%223.2%22%20fill%3D%22%237a3a1c%22%20opacity%3D%220.28%22%20transform%3D%22rotate%28261%20130.0%20412.9%29%22%2F%3E%0A%3Cline%20x1%3D%22128.6%22%20y1%3D%22404.3%22%20x2%3D%22152.2%22%20y2%3D%22422.1%22%20stroke%3D%22%23c9c7bd%22%20stroke-width%3D%221%22%20opacity%3D%220.18%22%2F%3E%0A%3Cline%20x1%3D%22120.7%22%20y1%3D%22405.0%22%20x2%3D%22141.1%22%20y2%3D%22413.9%22%20stroke%3D%22%23c9c7bd%22%20stroke-width%3D%221%22%20opacity%3D%220.18%22%2F%3E%0A%3Cpolygon%20points%3D%22373.5%2C339.1%20386.9%2C332.3%20399.2%2C323.6%20412.5%2C316.6%20417.7%2C324.4%20422.8%2C332.2%20426.5%2C340.9%20413.0%2C347.5%20400.1%2C355.1%20387.5%2C363.4%20383.8%2C354.7%20378.9%2C346.8%22%20fill%3D%22url%28%23steelPlateDark%29%22%20stroke%3D%22%231c1a18%22%20stroke-width%3D%222.5%22%20stroke-linejoin%3D%22round%22%20opacity%3D%221.0%22%2F%3E%0A%3Ccircle%20cx%3D%22401.1%22%20cy%3D%22343.2%22%20r%3D%222.0%22%20fill%3D%22%232b2926%22%20stroke%3D%22%23111%22%20stroke-width%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22400.5%22%20cy%3D%22342.6%22%20r%3D%220.8%22%20fill%3D%22%23c9c7bd%22%20opacity%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22405.4%22%20cy%3D%22341.5%22%20r%3D%222.0%22%20fill%3D%22%232b2926%22%20stroke%3D%22%23111%22%20stroke-width%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22404.8%22%20cy%3D%22340.9%22%20r%3D%220.8%22%20fill%3D%22%23c9c7bd%22%20opacity%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22413.8%22%20cy%3D%22337.9%22%20r%3D%222.0%22%20fill%3D%22%232b2926%22%20stroke%3D%22%23111%22%20stroke-width%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22413.2%22%20cy%3D%22337.3%22%20r%3D%220.8%22%20fill%3D%22%23c9c7bd%22%20opacity%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22387.7%22%20cy%3D%22340.6%22%20r%3D%222.0%22%20fill%3D%22%232b2926%22%20stroke%3D%22%23111%22%20stroke-width%3D%220.6%22%2F%3E%0A%3Ccircle%20cx%3D%22387.1%22%20cy%3D%22340.0%22%20r%3D%220.8%22%20fill%3D%22%23c9c7bd%22%20opacity%3D%220.6%22%2F%3E%0A%3Cellipse%20cx%3D%22389.8%22%20cy%3D%22339.1%22%20rx%3D%223.0%22%20ry%3D%221.8%22%20fill%3D%22%237a3a1c%22%20opacity%3D%220.28%22%20transform%3D%22rotate%28343%20389.8%20339.1%29%22%2F%3E%0A%3Cellipse%20cx%3D%22403.5%22%20cy%3D%22334.7%22%20rx%3D%223.2%22%20ry%3D%221.9%22%20fill%3D%22%237a3a1c%22%20opacity%3D%220.28%22%20transform%3D%22rotate%28319%20403.5%20334.7%29%22%2F%3E%0A%3Cline%20x1%3D%22394.3%22%20y1%3D%22345.6%22%20x2%3D%22415.6%22%20y2%3D%22337.2%22%20stroke%3D%22%23c9c7bd%22%20stroke-width%3D%221%22%20opacity%3D%220.18%22%2F%3E%0A%3Cline%20x1%3D%22392.7%22%20y1%3D%22342.9%22%20x2%3D%22408.2%22%20y2%3D%22328.7%22%20stroke%3D%22%23c9c7bd%22%20stroke-width%3D%221%22%20opacity%3D%220.18%22%2F%3E%0A%3C%2Fsvg%3E'
+                }
+              }
+            }
+          ]
+        }
+      ]
+    };
+  }
+
+  function loadStateScript(path){
+    var normalized = String(path || '').replace(/\\/g, '/');
+    loadStatus.textContent = 'Reading ' + normalized + '...';
+    loadStatus.classList.remove('error');
+    var script = document.createElement('script');
+    script.onload = function(){
+      var data = window.__INGREDIENT_SCRAP_MATERIAL_FLOW__;
+      if (!data){
+        loadStatus.textContent = 'Auto-load failed: state script did not contain material flow data.';
+        loadStatus.classList.add('error');
+        return;
+      }
+      applyDataFactorioRoot(data);
+      resolveIconsInData(data);
+      loadStatus.textContent = 'Loaded: material-flow.json';
+      showLoadedData(data, 'material-flow.json', 'production');
+    };
+    script.onerror = function(){
+      if (initialFilePath && initialFilePath !== path && /\.json$/i.test(initialFilePath)){
+        loadJsonPath(initialFilePath);
+        return;
+      }
+      if (initialJsonPath){
+        loadJsonPath(initialJsonPath);
+        return;
+      }
+      loadStatus.textContent = 'Auto-load failed. Drop the JSON file here.';
+      loadStatus.classList.add('error');
+    };
+    script.src = pathToFileUrl(normalized);
+    document.head.appendChild(script);
+  }
+
+  function showLoadedData(data, fileName, preferredMode){
+    crumbs.innerHTML = 'Home <span style="opacity:.5">&gt;</span> <span class="file">' + escapeHtml(fileName) + '</span>';
+    docTitle.textContent = fileName;
+    var count = (typeof data === 'object' && data !== null) ? Object.keys(data).length : 0;
+    docSub.textContent = 'Root node with ' + count + ' top-level key' + (count === 1 ? '' : 's') + '. Click entries to expand or collapse.';
+    currentData = data;
+    currentFileName = fileName;
+    viewMode = preferredMode || 'tree';
+    renderRoot(data);
+  }
+
+  function isJsonFile(file){
+    return /\.json$/i.test(file.name) || file.type === 'application/json';
+  }
+
+  function isZipFile(file){
+    return /\.zip$/i.test(file.name) || file.type === 'application/zip' || file.type === 'application/x-zip-compressed';
+  }
+
+  function isImageFile(file){
+    return /\.(png|jpe?g|webp)$/i.test(file.name) || /^image\//.test(file.type || '');
+  }
+
+  function assetStatusSuffix(loadedArchives, loadedImages){
+    if (!loadedArchives && !loadedImages && !iconAssets.count) return '';
+    var pieces = [];
+    if (loadedArchives) pieces.push(loadedArchives + ' ZIP(s)');
+    if (loadedImages) pieces.push(loadedImages + ' icon asset(s)');
+    if (!pieces.length && iconAssets.count) pieces.push(iconAssets.count + ' cached icon asset(s)');
+    return ' + ' + pieces.join(', ');
+  }
+
+  function registerLooseImageAsset(file){
+    var path = file.webkitRelativePath || file.name;
+    var url = URL.createObjectURL(file);
+    var normalized = normalizePath(path);
+    var source = sourceFromPath(normalized);
+    registerIconAsset(source.mod, source.inner_path, url, normalized);
+  }
+
+  function registerIconAsset(modName, innerPath, url, fullPath){
+    var cleanInner = normalizePath(innerPath || fullPath || '');
+    if (!cleanInner) return;
+    var asset = {
+      url: url,
+      mod: modName || null,
+      inner_path: cleanInner,
+      full_path: normalizePath(fullPath || cleanInner)
+    };
+    if (asset.mod){
+      iconAssets.exact[asset.mod + '|' + cleanInner] = asset;
+    }
+    if (!iconAssets.byInnerPath[cleanInner]){
+      iconAssets.byInnerPath[cleanInner] = asset;
+      iconAssets.count += 1;
+    }
+  }
+
+  async function loadZipAssets(file){
+    var buffer = await file.arrayBuffer();
+    var bytes = new Uint8Array(buffer);
+    var entries = readZipCentralDirectory(bytes);
+    var root = commonZipRoot(entries.map(function(entry){ return entry.name; }));
+    var info = await readZipInfoJson(bytes, entries);
+    var modName = info && info.name || inferModName(file.name);
+    var added = 0;
+
+    for (var i = 0; i < entries.length; i++){
+      var entry = entries[i];
+      if (entry.directory || !isIconPath(entry.name)) continue;
+      var blob = null;
+      try{
+        blob = await zipEntryBlob(bytes, entry);
+      }catch(err){
+        continue;
+      }
+      if (!blob) continue;
+      var fullPath = normalizePath(entry.name);
+      var innerPath = stripRootPath(fullPath, root);
+      var url = URL.createObjectURL(blob);
+      registerIconAsset(modName, innerPath, url, fullPath);
+      added += 1;
+    }
+    return added;
+  }
+
+  function readZipCentralDirectory(bytes){
+    var eocd = findEndOfCentralDirectory(bytes);
+    if (eocd < 0) throw new Error('End of central directory not found');
+    var totalEntries = readUint16(bytes, eocd + 10);
+    var centralOffset = readUint32(bytes, eocd + 16);
+    var entries = [];
+    var offset = centralOffset;
+
+    for (var i = 0; i < totalEntries; i++){
+      if (readUint32(bytes, offset) !== 0x02014b50) break;
+      var method = readUint16(bytes, offset + 10);
+      var compressedSize = readUint32(bytes, offset + 20);
+      var uncompressedSize = readUint32(bytes, offset + 24);
+      var nameLength = readUint16(bytes, offset + 28);
+      var extraLength = readUint16(bytes, offset + 30);
+      var commentLength = readUint16(bytes, offset + 32);
+      var localHeaderOffset = readUint32(bytes, offset + 42);
+      var name = decodeUtf8(bytes.subarray(offset + 46, offset + 46 + nameLength));
+      entries.push({
+        name: normalizePath(name),
+        method: method,
+        compressed_size: compressedSize,
+        uncompressed_size: uncompressedSize,
+        local_header_offset: localHeaderOffset,
+        directory: /\/$/.test(name)
+      });
+      offset += 46 + nameLength + extraLength + commentLength;
+    }
+    return entries;
+  }
+
+  function findEndOfCentralDirectory(bytes){
+    var min = Math.max(0, bytes.length - 0xffff - 22);
+    for (var i = bytes.length - 22; i >= min; i--){
+      if (readUint32(bytes, i) === 0x06054b50) return i;
+    }
+    return -1;
+  }
+
+  async function readZipInfoJson(bytes, entries){
+    for (var i = 0; i < entries.length; i++){
+      if (/\/?info\.json$/i.test(entries[i].name)){
+        var blob = null;
+        try{
+          blob = await zipEntryBlob(bytes, entries[i], 'application/json');
+        }catch(err){
+          return null;
+        }
+        if (!blob) return null;
+        try{
+          return JSON.parse(await blob.text());
+        }catch(err){
+          return null;
+        }
+      }
+    }
+    return null;
+  }
+
+  async function zipEntryBlob(bytes, entry, mimeType){
+    var localOffset = entry.local_header_offset;
+    if (readUint32(bytes, localOffset) !== 0x04034b50) return null;
+    var nameLength = readUint16(bytes, localOffset + 26);
+    var extraLength = readUint16(bytes, localOffset + 28);
+    var dataOffset = localOffset + 30 + nameLength + extraLength;
+    var compressed = bytes.subarray(dataOffset, dataOffset + entry.compressed_size);
+    var type = mimeType || mimeFromPath(entry.name);
+
+    if (entry.method === 0){
+      return new Blob([compressed], { type: type });
+    }
+    if (entry.method === 8){
+      var inflated = await inflateRaw(compressed);
+      return new Blob([inflated], { type: type });
+    }
+    return null;
+  }
+
+  async function inflateRaw(bytes){
+    if (typeof DecompressionStream === 'undefined'){
+      throw new Error('This browser cannot decompress deflated ZIP entries offline');
+    }
+    var formats = ['deflate-raw', 'deflate'];
+    var lastError = null;
+    for (var i = 0; i < formats.length; i++){
+      try{
+        var stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream(formats[i]));
+        return new Uint8Array(await new Response(stream).arrayBuffer());
+      }catch(err){
+        lastError = err;
+      }
+    }
+    throw lastError || new Error('Could not decompress ZIP entry');
+  }
+
+  function readUint16(bytes, offset){
+    return bytes[offset] | (bytes[offset + 1] << 8);
+  }
+
+  function readUint32(bytes, offset){
+    return (bytes[offset] | (bytes[offset + 1] << 8) | (bytes[offset + 2] << 16) | (bytes[offset + 3] << 24)) >>> 0;
+  }
+
+  function decodeUtf8(bytes){
+    return new TextDecoder('utf-8').decode(bytes);
+  }
+
+  function isIconPath(path){
+    return /\.(png|jpe?g|webp)$/i.test(path);
+  }
+
+  function mimeFromPath(path){
+    if (/\.png$/i.test(path)) return 'image/png';
+    if (/\.webp$/i.test(path)) return 'image/webp';
+    if (/\.jpe?g$/i.test(path)) return 'image/jpeg';
+    return 'application/octet-stream';
+  }
+
+  function commonZipRoot(paths){
+    var root = null;
+    for (var i = 0; i < paths.length; i++){
+      var path = normalizePath(paths[i]);
+      var parts = path.split('/');
+      if (parts.length < 2) return '';
+      if (root === null){
+        root = parts[0];
+      } else if (root !== parts[0]){
+        return '';
+      }
+    }
+    return root || '';
+  }
+
+  function stripRootPath(path, root){
+    var normalized = normalizePath(path);
+    if (root && normalized.indexOf(root + '/') === 0){
+      return normalized.slice(root.length + 1);
+    }
+    return normalized;
+  }
+
+  function inferModName(fileName){
+    return String(fileName || '').replace(/\.zip$/i, '').replace(/_[0-9][0-9A-Za-z_.-]*$/, '');
+  }
+
+  function normalizePath(path){
+    return String(path || '').replace(/\\/g, '/').replace(/^\/+/, '');
+  }
+
+  function normalizeRootPath(path){
+    return String(path || '').trim().replace(/\\/g, '/').replace(/\/+$/, '');
+  }
+
+  function queryParam(name){
+    try{
+      return new URLSearchParams(window.location.search).get(name);
+    }catch(err){
+      return null;
+    }
+  }
+
+  function applyDataFactorioRoot(data){
+    if (!data || typeof data !== 'object') return;
+    if (!factorioRoot && data.factorio_root){
+      factorioRoot = normalizeRootPath(data.factorio_root);
+      factorioRootInput.value = factorioRoot;
+      try{
+        localStorage.setItem('json-tree-viewer.factorioRoot', factorioRoot);
+      }catch(err){}
+    }
+  }
+
+  function sourceFromPath(path){
+    var normalized = normalizePath(path);
+    var match = normalized.match(/^__([^/]+)__\/(.+)$/);
+    if (match){
+      return { mod: match[1], inner_path: match[2] };
+    }
+    return { mod: null, inner_path: normalized };
+  }
+
+  function resolveIconsInData(data){
+    walkJson(data, function(value){
+      if (value && typeof value === 'object' && value.path && (!value.url || (value.resolved_source && value.resolved_source.mode === 'file'))){
+        var asset = findIconAsset(value);
+        if (asset){
+          value.url = asset.url;
+          value.resolved_source = {
+            mod: asset.mod,
+            inner_path: asset.inner_path,
+            full_path: asset.full_path
+          };
+        } else {
+          var fileUrl = buildFileIconUrl(value, data);
+          if (fileUrl){
+            value.url = fileUrl.url;
+            value.resolved_source = fileUrl.source;
+          }
+        }
+      }
+    });
+  }
+
+  function findIconAsset(icon){
+    var source = icon.source || sourceFromPath(icon.path);
+    var innerPath = normalizePath(source.inner_path || '');
+    var modName = source.mod || null;
+    if (modName && innerPath && iconAssets.exact[modName + '|' + innerPath]){
+      return iconAssets.exact[modName + '|' + innerPath];
+    }
+    if (innerPath && iconAssets.byInnerPath[innerPath]){
+      return iconAssets.byInnerPath[innerPath];
+    }
+    if (icon.path){
+      var parsed = sourceFromPath(icon.path);
+      if (parsed.mod && parsed.inner_path && iconAssets.exact[parsed.mod + '|' + parsed.inner_path]){
+        return iconAssets.exact[parsed.mod + '|' + parsed.inner_path];
+      }
+      if (parsed.inner_path && iconAssets.byInnerPath[parsed.inner_path]){
+        return iconAssets.byInnerPath[parsed.inner_path];
+      }
+    }
+    return null;
+  }
+
+  function buildFileIconUrl(icon, data){
+    var source = icon.source || sourceFromPath(icon.path);
+    var modName = source && source.mod;
+    var innerPath = normalizePath(source && source.inner_path || '');
+    if (!modName || !innerPath) return null;
+
+    var basePath = unpackedModBasePath(modName, data || {});
+    if (!basePath) return null;
+    var filePath = basePath + '/' + innerPath;
+    return {
+      url: pathToFileUrl(filePath),
+      source: {
+        mod: modName,
+        inner_path: innerPath,
+        full_path: filePath,
+        mode: 'file'
+      }
+    };
+  }
+
+  function unpackedModBasePath(modName, data){
+    var roots = data && data.asset_roots;
+    if (roots && roots[modName] && roots[modName].type === 'directory' && roots[modName].path){
+      return normalizeRootPath(roots[modName].path);
+    }
+    if (!factorioRoot) return null;
+    var activeMods = data && data.active_mods || {};
+    if (modName === 'core') return factorioRoot + '/data/core';
+    if (modName === 'base') return factorioRoot + '/data/base';
+    if (activeMods && activeMods[modName]){
+      if (isBuiltinDataMod(modName)){
+        return factorioRoot + '/data/' + modName;
+      }
+      return factorioRoot + '/mods/' + modName + '_' + activeMods[modName];
+    }
+    return null;
+  }
+
+  function isBuiltinDataMod(modName){
+    return modName === 'quality' ||
+      modName === 'space-age' ||
+      modName === 'elevated-rails';
+  }
+
+  function pathToFileUrl(path){
+    var normalized = String(path || '').replace(/\\/g, '/');
+    if (/^[A-Za-z]:\//.test(normalized)){
+      return 'file:///' + encodeURI(normalized);
+    }
+    if (normalized.indexOf('/') === 0){
+      return 'file://' + encodeURI(normalized);
+    }
+    return encodeURI(normalized);
+  }
+
+  function walkJson(value, visit){
+    visit(value);
+    if (!value || typeof value !== 'object') return;
+    if (Array.isArray(value)){
+      for (var i = 0; i < value.length; i++){
+        walkJson(value[i], visit);
+      }
+      return;
+    }
+    Object.keys(value).forEach(function(key){
+      walkJson(value[key], visit);
+    });
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  function valueType(v){
+    if (v === null) return 'null';
+    if (Array.isArray(v)) return 'array';
+    var t = typeof v;
+    if (t === 'object') return 'object';
+    return t; // string, number, boolean
+  }
+
+  function shortSummary(v, type){
+    if (type === 'object'){
+      var n = Object.keys(v).length;
+      return '{' + n + '}';
+    }
+    if (type === 'array'){
+      return '[' + v.length + ']';
+    }
+    return '';
+  }
+
+  var nodeSeq = 0;
+
+  // Builds an <li> for one key/value pair (or array item).
+  function buildNode(key, value, isTopLevel){
+    var type = valueType(value);
+    var li = document.createElement('li');
+    li.className = 'tree-node';
+    if (isTopLevel) li.classList.add('top-section');
+
+    var row = document.createElement('div');
+    row.className = 'tree-row';
+
+    var isContainer = (type === 'object' || type === 'array');
+
+    if (isContainer){
+      row.classList.add('has-children');
+      var toggle = document.createElement('span');
+      toggle.className = 'toggle';
+      row.appendChild(toggle);
+    } else {
+      row.classList.add('leaf');
+      var spacer = document.createElement('span');
+      spacer.className = 'toggle';
+      spacer.style.visibility = 'hidden';
+      row.appendChild(spacer);
+    }
+
+    if (key !== null){
+      var keySpan = document.createElement('span');
+      keySpan.className = 'tkey' + (isTopLevel ? ' top-level' : '');
+      keySpan.textContent = key;
+      row.appendChild(keySpan);
+
+      var colon = document.createElement('span');
+      colon.className = 'colon';
+      colon.textContent = ':';
+      row.appendChild(colon);
+    }
+
+    if (isContainer){
+      var meta = document.createElement('span');
+      meta.className = 'tmeta';
+      meta.textContent = shortSummary(value, type);
+      row.appendChild(meta);
+    } else {
+      var valSpan = document.createElement('span');
+      valSpan.className = 'tval type-' + type;
+      valSpan.textContent = formatPrimitive(value, type);
+      row.appendChild(valSpan);
+    }
+
+    li.appendChild(row);
+
+    if (isContainer){
+      var childUl = document.createElement('ul');
+      childUl.className = 'tree-children';
+
+      var entries;
+      if (type === 'array'){
+        entries = value.map(function(v, i){ return [String(i), v]; });
+      } else {
+        entries = Object.keys(value).map(function(k){ return [k, value[k]]; });
+      }
+
+      entries.forEach(function(pair){
+        childUl.appendChild(buildNode(pair[0], pair[1], false));
+      });
+
+      li.appendChild(childUl);
+
+      row.addEventListener('click', function(ev){
+        ev.stopPropagation();
+        li.classList.toggle('expanded');
+      });
+    }
+
+    if (isTopLevel && key !== null){
+      li.id = 'section-' + slug(key);
+    }
+
+    nodeSeq++;
+    return li;
+  }
+
+  function formatPrimitive(v, type){
+    if (type === 'string') return '"' + v + '"';
+    if (type === 'null') return 'null';
+    return String(v);
+  }
+
+  function slug(s){
+    return encodeURIComponent(String(s)).replace(/%20/g, '-');
+  }
+
+  function renderRoot(data){
+    updateViewButtons(data);
+    if (viewMode === 'production' && isMaterialFlowData(data)){
+      renderMaterialFlowRoot(data);
+      return;
+    }
+    renderGenericRoot(data);
+  }
+
+  function renderGenericRoot(data){
+    materialIndex = null;
+    selectedMaterial = null;
+    quicklinksTitle.textContent = 'Quicklinks';
+    btnTreeView.classList.add('active');
+    btnProductionView.classList.remove('active');
+    treeRoot.innerHTML = '';
+    quicklinks.innerHTML = '';
+    treeRoot.style.display = '';
+    emptyState.style.display = 'none';
+
+    var type = valueType(data);
+    var entries;
+    if (type === 'array'){
+      entries = data.map(function(v, i){ return [String(i), v]; });
+    } else if (type === 'object'){
+      entries = Object.keys(data).map(function(k){ return [k, data[k]]; });
+    } else {
+      // primitive root, wrap it
+      entries = [[null, data]];
+    }
+
+    if (entries.length === 0){
+      quicklinks.innerHTML = '<li class="quicklinks-empty">No top-level keys found.</li>';
+    }
+
+    entries.forEach(function(pair){
+      var key = pair[0], value = pair[1];
+      var node = buildNode(key, value, true);
+      treeRoot.appendChild(node);
+
+      if (key !== null){
+        var vtype = valueType(value);
+        var li = document.createElement('li');
+        var a = document.createElement('a');
+        a.href = '#section-' + slug(key);
+        a.dataset.target = 'section-' + slug(key);
+
+        var label = document.createElement('span');
+        label.textContent = key;
+        a.appendChild(label);
+
+        var badge = document.createElement('span');
+        badge.className = 'qtype';
+        badge.textContent = shortSummary(value, vtype) || vtype;
+        a.appendChild(badge);
+
+        a.addEventListener('click', function(ev){
+          ev.preventDefault();
+          scrollToSection(key, li, a);
+        });
+
+        li.appendChild(a);
+        quicklinks.appendChild(li);
+      }
+    });
+  }
+
+  function updateViewButtons(data){
+    var hasProduction = isMaterialFlowData(data);
+    btnProductionView.disabled = !hasProduction;
+    btnProductionView.title = hasProduction ? 'Show Ingredient Scrap production chain view' : 'Production view requires ingredient-scrap-material-flow/v1 JSON';
+    btnProductChain.classList.toggle('hidden', !(hasProduction && viewMode === 'production'));
+    btnRecipeChain.classList.toggle('hidden', !(hasProduction && viewMode === 'production'));
+    viewControls.classList.toggle('three', hasProduction && viewMode === 'production');
+  }
+
+  function setViewMode(mode){
+    if (!currentData) return;
+    if (mode === 'production' && !isMaterialFlowData(currentData)) return;
+    viewMode = mode;
+    renderRoot(currentData);
+  }
+
+  function isMaterialFlowData(data){
+    return data && data.schema === 'ingredient-scrap-material-flow/v1' && Array.isArray(data.flows);
+  }
+
+  function buildMaterialIndex(data){
+    var index = {};
+    (data.flows || []).forEach(function(flow){
+      if (!flow || !flow.material) return;
+      if (!index[flow.material]){
+        index[flow.material] = {
+          material: flow.material,
+          modes: {},
+          flows: [],
+          resources: data.resources_by_material && data.resources_by_material[flow.material],
+          recycle: data.recycle_by_material && data.recycle_by_material[flow.material]
+        };
+      }
+      index[flow.material].flows.push(flow);
+      index[flow.material].modes[flow.mode || 'unknown'] = true;
+    });
+    return index;
+  }
+
+  function renderMaterialFlowRoot(data){
+    materialIndex = buildMaterialIndex(data);
+    quicklinksTitle.textContent = 'Materials';
+    btnTreeView.classList.remove('active');
+    btnProductionView.classList.add('active');
+    btnProductChain.classList.toggle('active', materialViewMode === 'product');
+    btnRecipeChain.classList.toggle('active', materialViewMode === 'recipe');
+    treeRoot.innerHTML = '';
+    quicklinks.innerHTML = '';
+    treeRoot.style.display = '';
+    emptyState.style.display = 'none';
+    docTitle.textContent = currentFileName || 'Ingredient Scrap Material Flow';
+    docSub.textContent = Object.keys(materialIndex).length + ' materials, ' + data.flows.length + ' flow entries. Select a material on the right.';
+
+    var names = Object.keys(materialIndex).sort(function(a, b){ return a.localeCompare(b); });
+    if (names.length === 0){
+      quicklinks.innerHTML = '<li class="quicklinks-empty">No materials found.</li>';
+      treeRoot.appendChild(buildNode('material_flow', data, true));
+      return;
+    }
+
+    names.forEach(function(name){
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.href = '#material-' + slug(name);
+      a.dataset.material = name;
+
+      var label = document.createElement('span');
+      label.className = 'material-title';
+      label.textContent = name;
+      a.appendChild(label);
+
+      var mode = document.createElement('span');
+      mode.className = 'qtype material-mode';
+      mode.textContent = Object.keys(materialIndex[name].modes).sort().join('+');
+      a.appendChild(mode);
+
+      a.addEventListener('click', function(ev){
+        ev.preventDefault();
+        selectMaterial(name);
+      });
+      li.appendChild(a);
+      quicklinks.appendChild(li);
+    });
+
+    selectMaterial(names[0]);
+  }
+
+  function setMaterialViewMode(mode){
+    materialViewMode = mode;
+    btnProductChain.classList.toggle('active', mode === 'product');
+    btnRecipeChain.classList.toggle('active', mode === 'recipe');
+    if (materialIndex && selectedMaterial){
+      renderSelectedMaterial();
+    }
+  }
+
+  function selectMaterial(name){
+    selectedMaterial = name;
+    quicklinks.querySelectorAll('a').forEach(function(a){
+      a.classList.toggle('active', a.dataset.material === name);
+    });
+    renderSelectedMaterial();
+  }
+
+  function renderSelectedMaterial(){
+    if (!materialIndex || !selectedMaterial) return;
+    var entry = materialIndex[selectedMaterial];
+    treeRoot.innerHTML = '';
+    treeRoot.appendChild(
+      materialViewMode === 'recipe'
+        ? buildRecipeGraphView(entry)
+        : buildProductGraphView(entry)
+    );
+    docTitle.textContent = selectedMaterial;
+    docSub.textContent = (materialViewMode === 'recipe' ? 'Recipe graph' : 'Product graph') + ' with ' + entry.flows.length + ' flow entries.';
+  }
+
+  function buildProductGraphView(entry){
+    var graph = document.createElement('div');
+    graph.className = 'flow-graph';
+    var grouped = groupFlowsByProduct(entry.flows);
+    Object.keys(grouped).sort(function(a, b){ return a.localeCompare(b); }).forEach(function(product){
+      grouped[product].forEach(function(flow){
+        graph.appendChild(buildFlowCard(flow, product));
+      });
+    });
+    return graph;
+  }
+
+  function buildRecipeGraphView(entry){
+    var graph = document.createElement('div');
+    graph.className = 'flow-graph';
+    var grouped = groupFlowsByRecipe(entry.flows);
+    Object.keys(grouped).sort(function(a, b){ return a.localeCompare(b); }).forEach(function(recipeName){
+      graph.appendChild(buildRecipeCard(recipeName, grouped[recipeName]));
+    });
+    return graph;
+  }
+
+  function groupFlowsByProduct(flows){
+    var grouped = {};
+    flows.forEach(function(flow){
+      var product = flowProductName(flow) || '<unknown product>';
+      if (!grouped[product]) grouped[product] = [];
+      grouped[product].push(flow);
+    });
+    return grouped;
+  }
+
+  function groupFlowsByRecipe(flows){
+    var grouped = {};
+    flows.forEach(function(flow){
+      var recipe = recipeForFlow(flow);
+      var recipeName = recipe && recipe.name || '<unknown recipe>';
+      if (!grouped[recipeName]) grouped[recipeName] = [];
+      grouped[recipeName].push(flow);
+    });
+    return grouped;
+  }
+
+  function buildFlowCard(flow, product){
+    var recipe = recipeForFlow(flow);
+    return buildThreeColumnCard(
+      'Ingredients',
+      ingredientEntriesForFlow(flow),
+      recipe && recipe.name || '<unknown recipe>',
+      product,
+      'Results',
+      resultEntriesForFlow(flow)
+    );
+  }
+
+  function buildRecipeCard(recipeName, flows){
+    var first = flows[0] || {};
+    var product = flowProductName(first);
+    return buildThreeColumnCard(
+      'Ingredients',
+      uniqueByName(flows.reduce(function(all, flow){ return all.concat(ingredientEntriesForFlow(flow)); }, [])),
+      recipeName,
+      product,
+      'Results',
+      uniqueByName(flows.reduce(function(all, flow){ return all.concat(resultEntriesForFlow(flow)); }, []))
+    );
+  }
+
+  function buildThreeColumnCard(leftTitle, leftEntries, recipeName, productName, rightTitle, rightEntries){
+    var card = document.createElement('div');
+    card.className = 'flow-card';
+    card.appendChild(buildFlowColumn(leftTitle, leftEntries, 'ingredient'));
+
+    var node = document.createElement('div');
+    node.className = 'flow-node';
+    var heading = document.createElement('h3');
+    heading.className = 'flow-heading';
+    heading.textContent = 'Recipe';
+    node.appendChild(heading);
+    var name = document.createElement('button');
+    name.className = 'flow-chip';
+    name.type = 'button';
+    name.textContent = recipeName;
+    name.addEventListener('click', function(){ selectRecipe(recipeName); });
+    node.appendChild(name);
+    if (productName){
+      var sub = document.createElement('div');
+      sub.className = 'flow-sub';
+      sub.textContent = 'main product: ' + productName;
+      node.appendChild(sub);
+    }
+    card.appendChild(node);
+
+    card.appendChild(buildFlowColumn(rightTitle, rightEntries, 'result'));
+    return card;
+  }
+
+  function buildFlowColumn(title, entries, kind){
+    var column = document.createElement('div');
+    column.className = 'flow-column';
+    var heading = document.createElement('h3');
+    heading.className = 'flow-heading';
+    heading.textContent = title;
+    column.appendChild(heading);
+    if (!entries || entries.length === 0){
+      var empty = document.createElement('div');
+      empty.className = 'flow-empty';
+      empty.textContent = 'None';
+      column.appendChild(empty);
+      return column;
+    }
+    entries.forEach(function(entry){
+      column.appendChild(buildFlowChip(entry, kind));
+    });
+    return column;
+  }
+
+  function buildFlowChip(entry, kind){
+    var button = document.createElement('button');
+    button.className = 'flow-chip' + (entry && entry.matched_scrap_input ? ' matched' : '');
+    button.type = 'button';
+    var name = entryName(entry);
+    button.appendChild(buildFlowIcon(entry));
+    var label = document.createElement('span');
+    label.className = 'flow-label';
+    label.textContent = name;
+    button.appendChild(label);
+    var amount = entryAmount(entry);
+    if (amount !== ''){
+      var amountSpan = document.createElement('span');
+      amountSpan.className = 'amount';
+      amountSpan.textContent = amount;
+      button.appendChild(amountSpan);
+    }
+    button.addEventListener('click', function(){
+      followGraphItem(name, kind);
+    });
+    return button;
+  }
+
+  function buildFlowIcon(entry){
+    var icon = entryIcon(entry);
+    if (icon && icon.url){
+      var img = document.createElement('img');
+      img.className = 'flow-icon';
+      img.src = icon.url;
+      img.alt = '';
+      return img;
+    }
+    var placeholder = document.createElement('span');
+    placeholder.className = 'flow-icon placeholder';
+    placeholder.textContent = '□';
+    placeholder.title = icon && icon.path ? icon.path : 'Icon not loaded';
+    return placeholder;
+  }
+
+  function entryIcon(entry){
+    if (!entry) return null;
+    if (entry.icon) return entry.icon;
+    if (entry.prototype && entry.prototype.icon) return entry.prototype.icon;
+    if (entry.result && entry.result.prototype && entry.result.prototype.icon) return entry.result.prototype.icon;
+    return null;
+  }
+
+  function recipeForFlow(flow){
+    if (!flow) return null;
+    return flow.source_recipe || flow.recipe || null;
+  }
+
+  function flowProductName(flow){
+    var recipe = recipeForFlow(flow);
+    if (recipe && recipe.main_product) return recipe.main_product;
+    if (Array.isArray(flow && flow.results) && flow.results.length){
+      return entryName(flow.results[0]);
+    }
+    if (flow && flow.scrap) return entryName(flow.scrap);
+    return '';
+  }
+
+  function ingredientEntriesForFlow(flow){
+    var recipe = recipeForFlow(flow);
+    if (flow && Array.isArray(flow.ingredients) && flow.ingredients.length){
+      return flow.ingredients;
+    }
+    if (recipe && Array.isArray(recipe.ingredients) && recipe.ingredients.length){
+      return recipe.ingredients;
+    }
+    return flow && flow.input ? [flow.input] : [];
+  }
+
+  function resultEntriesForFlow(flow){
+    var results = [];
+    var recipe = recipeForFlow(flow);
+    if (flow && Array.isArray(flow.results) && flow.results.length){
+      results = results.concat(flow.results);
+    } else if (recipe && Array.isArray(recipe.results) && recipe.results.length){
+      results = results.concat(recipe.results);
+    } else if (recipe && recipe.main_product_prototype){
+      results.push(recipe.main_product_prototype);
+    } else if (recipe && recipe.main_product){
+      results.push({ name: recipe.main_product });
+    }
+    if (flow && flow.scrap && !results.some(function(result){ return entryName(result) === entryName(flow.scrap); })){
+      results.push(flow.scrap);
+    }
+    return results;
+  }
+
+  function entryName(entry){
+    if (!entry) return '<unknown>';
+    if (entry.name) return entry.name;
+    if (entry.prototype && entry.prototype.name) return entry.prototype.name;
+    return String(entry);
+  }
+
+  function entryAmount(entry){
+    if (!entry) return '';
+    if (entry.amount !== undefined) return String(entry.amount);
+    if (entry.result && entry.result.amount !== undefined) return String(entry.result.amount);
+    return '';
+  }
+
+  function uniqueByName(entries){
+    var seen = {};
+    var result = [];
+    entries.forEach(function(entry){
+      var name = entryName(entry);
+      if (!seen[name]){
+        seen[name] = true;
+        result.push(entry);
+      }
+    });
+    return result;
+  }
+
+  function followGraphItem(name, kind){
+    if (!materialIndex || !name) return;
+    if (materialIndex[name]){
+      selectMaterial(name);
+      return;
+    }
+    var match = null;
+    if (kind === 'result'){
+      match = findFlowByScrap(name) || findFlowByIngredient(name) || findFlowByResult(name);
+    } else if (kind === 'ingredient'){
+      match = findFlowByResult(name) || findFlowByIngredient(name);
+    } else {
+      match = findFlowByIngredient(name) || findFlowByResult(name);
+    }
+    if (match){
+      selectedMaterial = match.material;
+      quicklinks.querySelectorAll('a').forEach(function(a){
+        a.classList.toggle('active', a.dataset.material === selectedMaterial);
+      });
+      renderSelectedMaterial();
+      docSub.textContent = 'Linked from ' + kind + ' "' + name + '" to material "' + selectedMaterial + '".';
+      return;
+    }
+    docSub.textContent = 'No linked recipe or material found for ' + name + '.';
+  }
+
+  function findFlowByIngredient(name){
+    var materials = Object.keys(materialIndex || {});
+    for (var i = 0; i < materials.length; i++){
+      var entry = materialIndex[materials[i]];
+      for (var j = 0; j < entry.flows.length; j++){
+        var flow = entry.flows[j];
+        if (ingredientEntriesForFlow(flow).some(function(ingredient){ return entryName(ingredient) === name; })) return flow;
+      }
+    }
+    return null;
+  }
+
+  function findFlowByScrap(name){
+    var materials = Object.keys(materialIndex || {});
+    for (var i = 0; i < materials.length; i++){
+      var entry = materialIndex[materials[i]];
+      for (var j = 0; j < entry.flows.length; j++){
+        var flow = entry.flows[j];
+        if (flow.scrap && entryName(flow.scrap) === name) return flow;
+      }
+    }
+    return null;
+  }
+
+  function findFlowByResult(name){
+    var materials = Object.keys(materialIndex || {});
+    for (var i = 0; i < materials.length; i++){
+      var entry = materialIndex[materials[i]];
+      for (var j = 0; j < entry.flows.length; j++){
+        var flow = entry.flows[j];
+        if (resultEntriesForFlow(flow).some(function(result){ return entryName(result) === name; })) return flow;
+      }
+    }
+    return null;
+  }
+
+  function selectRecipe(recipeName){
+    if (!materialIndex || !recipeName) return;
+    var materials = Object.keys(materialIndex);
+    for (var i = 0; i < materials.length; i++){
+      var entry = materialIndex[materials[i]];
+      if (entry.flows.some(function(flow){
+        var recipe = recipeForFlow(flow);
+        return recipe && recipe.name === recipeName;
+      })){
+        selectedMaterial = entry.material;
+        materialViewMode = 'recipe';
+        btnProductChain.classList.remove('active');
+        btnRecipeChain.classList.add('active');
+        renderSelectedMaterial();
+        return;
+      }
+    }
+  }
+
+  function scrollToSection(key, liEl, aEl){
+    var target = document.getElementById('section-' + slug(key));
+    if (!target) return;
+
+    target.classList.add('expanded');
+
+    var qlLinks = quicklinks.querySelectorAll('a');
+    qlLinks.forEach(function(l){ l.classList.remove('active'); });
+    aEl.classList.add('active');
+
+    target.scrollIntoView({ behavior:'smooth', block:'start' });
+
+    target.classList.add('flash');
+    setTimeout(function(){ target.classList.remove('flash'); }, 900);
+  }
+
+  document.getElementById('btnExpandAll').addEventListener('click', function(){
+    treeRoot.querySelectorAll('li.tree-node').forEach(function(li){
+      if (li.querySelector(':scope > ul.tree-children')){
+        li.classList.add('expanded');
+      }
+    });
+  });
+
+  document.getElementById('btnCollapseAll').addEventListener('click', function(){
+    treeRoot.querySelectorAll('li.tree-node').forEach(function(li){
+      li.classList.remove('expanded');
+    });
+  });
+
+  // -------------------------------------------------------------
+  // filter: matches keys/values, expands matching branches
+  // -------------------------------------------------------------
+  var filterTimer = null;
+  filterInput.addEventListener('input', function(){
+    clearTimeout(filterTimer);
+    filterTimer = setTimeout(applyFilter, 120);
+  });
+
+  function applyFilter(){
+    var q = filterInput.value.trim().toLowerCase();
+    var allNodes = treeRoot.querySelectorAll('li.tree-node');
+
+    if (!q){
+      allNodes.forEach(function(li){
+        li.classList.remove('filtered-hidden', 'match-hit');
+      });
+      return;
+    }
+
+    allNodes.forEach(function(li){
+      li.classList.remove('match-hit');
+      li.classList.add('filtered-hidden');
+    });
+
+    allNodes.forEach(function(li){
+      var row = li.querySelector(':scope > .tree-row');
+      if (!row) return;
+      var text = row.textContent.toLowerCase();
+      if (text.indexOf(q) !== -1){
+        li.classList.add('match-hit');
+        li.classList.remove('filtered-hidden');
+        var p = li.parentElement;
+        while (p && p !== treeRoot){
+          var parentLi = p.closest('li.tree-node');
+          if (!parentLi) break;
+          parentLi.classList.remove('filtered-hidden');
+          parentLi.classList.add('expanded');
+          p = parentLi.parentElement;
+        }
+      }
+    });
+  }
+
+})();
+</script>
+</body>
+</html>

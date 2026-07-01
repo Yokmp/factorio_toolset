@@ -14,6 +14,7 @@ import subprocess
 import threading
 import tkinter as tk
 import sys
+import webbrowser
 from dataclasses import dataclass
 from pathlib import Path
 from tkinter import filedialog, messagebox, ttk
@@ -1523,6 +1524,363 @@ class SettingsTool(ToolFrame):
         return "break"
 
 
+class MaterialFlowTool(ToolFrame):
+    """Tab for generating Ingredient Scrap material-flow.json and opening the browser viewer."""
+
+    title = "Material Flow"
+
+    def __init__(self, master: tk.Misc, app: ToolApp):
+        super().__init__(master, app)
+        self.factorio_var = tk.StringVar(value=str(app.factorio_exe or modlist.DEFAULT_FACTORIO))
+        self.profiles_json_var = tk.StringVar(value=str(app.profiles_json or modlist.DEFAULT_PROFILES_JSON))
+        settings_file = modlist.config_path_value(app.tool_config, "settings_file", settings.DEFAULT_SETTINGS_FILE)
+        self.settings_file_var = tk.StringVar(value=str(settings_file or settings.DEFAULT_SETTINGS_FILE))
+        self.profile_name_var = tk.StringVar(value=app.last_profile)
+        self.profile_label_var = tk.StringVar(value="")
+        self.output_var = tk.StringVar(value="No dump generated in this UI session.")
+        self.profiles: dict[str, dict[str, object]] = {}
+        self.profile_rows: dict[str, str] = {}
+        self.hover_profile_index: int | None = None
+
+        self.columnconfigure(0, weight=1)
+        self.rowconfigure(1, weight=1)
+        self._build()
+        self.refresh()
+
+    def _panel(self, master: tk.Misc) -> tk.Frame:
+        return tk.Frame(master, bg=PANEL, relief=tk.SUNKEN, bd=2, highlightthickness=1, highlightbackground=LINE)
+
+    def _label(self, master: tk.Misc, text: str, *, muted: bool = False, size: int = 10, bold: bool = False) -> tk.Label:
+        return tk.Label(master, text=text, bg=PANEL, fg=MUTED if muted else BODY_TEXT, font=("Segoe UI", size, "bold" if bold else "normal"))
+
+    def _build(self) -> None:
+        self._build_paths()
+        self._build_main()
+        self._build_footer()
+
+    def _build_paths(self) -> None:
+        paths = self._panel(self)
+        paths.grid(row=0, column=0, sticky="ew", padx=18, pady=(18, 10))
+        paths.columnconfigure(1, weight=1)
+
+        self._label(paths, "Factorio", bold=True).grid(row=0, column=0, sticky="w", padx=(12, 8), pady=(10, 4))
+        ttk.Entry(paths, textvariable=self.factorio_var).grid(row=0, column=1, sticky="ew", pady=(10, 4))
+        factorio_button(paths, "Browse", self.choose_factorio).grid(row=0, column=2, padx=12, pady=(10, 4))
+
+        self._label(paths, "Profiles JSON", bold=True).grid(row=1, column=0, sticky="w", padx=(12, 8), pady=4)
+        ttk.Entry(paths, textvariable=self.profiles_json_var).grid(row=1, column=1, sticky="ew", pady=4)
+        factorio_button(paths, "Browse", self.choose_profiles_json).grid(row=1, column=2, padx=12, pady=4)
+
+        self._label(paths, "Settings", bold=True).grid(row=2, column=0, sticky="w", padx=(12, 8), pady=(4, 10))
+        ttk.Entry(paths, textvariable=self.settings_file_var).grid(row=2, column=1, sticky="ew", pady=(4, 10))
+        factorio_button(paths, "Browse", self.choose_settings_file).grid(row=2, column=2, padx=12, pady=(4, 10))
+
+    def _build_main(self) -> None:
+        main = tk.Frame(self, bg=BG)
+        main.grid(row=1, column=0, sticky="nsew", padx=18, pady=(0, 10))
+        main.columnconfigure(0, weight=1)
+        main.columnconfigure(1, weight=2)
+        main.rowconfigure(0, weight=1)
+
+        profiles_panel = self._panel(main)
+        profiles_panel.grid(row=0, column=0, sticky="nsew", padx=(0, 10))
+        profiles_panel.columnconfigure(0, weight=1)
+        profiles_panel.rowconfigure(1, weight=1)
+        striped_header(profiles_panel, "Profile", PANEL).grid(row=0, column=0, sticky="ew", padx=12, pady=(12, 8))
+        self.profile_list = tk.Listbox(
+            profiles_panel,
+            exportselection=False,
+            activestyle="none",
+            bg=LIST_BG,
+            fg=BODY_TEXT,
+            selectbackground=ORANGE,
+            selectforeground=BUTTON_TEXT,
+            highlightthickness=1,
+            highlightbackground=LINE,
+            relief=tk.SUNKEN,
+            bd=2,
+            font=("Segoe UI", 10),
+        )
+        self.profile_scroll = factorio_scrollbar(profiles_panel, self.profile_list.yview)
+        self.profile_list.configure(yscrollcommand=self.profile_scroll.set)
+        self.profile_list.grid(row=1, column=0, sticky="nsew", padx=(12, 0))
+        self.profile_scroll.grid(row=1, column=1, sticky="ns", padx=(0, 12))
+        self.profile_list.bind("<<ListboxSelect>>", self.on_profile_selected)
+        self.profile_list.bind("<Motion>", self.on_profile_motion)
+        self.profile_list.bind("<Leave>", self.on_profile_leave)
+        self.bind_list_scroll(self.profile_list)
+
+        details_panel = self._panel(main)
+        details_panel.grid(row=0, column=1, sticky="nsew")
+        details_panel.columnconfigure(0, weight=1)
+        details_panel.rowconfigure(1, weight=1)
+        striped_header(details_panel, "Active Mods and Current Settings", PANEL).grid(row=0, column=0, sticky="ew", padx=12, pady=(12, 8))
+        self.details_text = tk.Text(
+            details_panel,
+            bg=LIST_BG,
+            fg=BODY_TEXT,
+            insertbackground=BODY_TEXT,
+            relief=tk.SUNKEN,
+            bd=2,
+            highlightthickness=1,
+            highlightbackground=LINE,
+            wrap=tk.NONE,
+            font=("Consolas", 10),
+        )
+        self.details_scroll = factorio_scrollbar(details_panel, self.details_text.yview)
+        self.details_text.configure(yscrollcommand=self.details_scroll.set)
+        self.details_text.grid(row=1, column=0, sticky="nsew", padx=(12, 0), pady=(0, 12))
+        self.details_scroll.grid(row=1, column=1, sticky="ns", padx=(0, 12), pady=(0, 12))
+        self.bind_text_scroll(self.details_text)
+
+    def _build_footer(self) -> None:
+        footer = tk.Frame(self, bg=BG)
+        footer.grid(row=2, column=0, sticky="ew", padx=18, pady=(0, 18))
+        footer.columnconfigure(3, weight=1)
+        factorio_button(footer, "Refresh", self.refresh).grid(row=0, column=0, sticky="w")
+        factorio_button(footer, "Create Dump and Open Viewer", self.create_dump_and_open_viewer, kind="green").grid(row=0, column=1, padx=8)
+        factorio_button(footer, "Open Viewer", self.open_viewer, kind="orange").grid(row=0, column=2)
+        tk.Label(footer, textvariable=self.output_var, bg=BG, fg=MUTED, anchor="e").grid(row=0, column=3, sticky="ew", padx=(12, 0))
+
+    def factorio_path(self) -> Path:
+        return Path(self.factorio_var.get().strip())
+
+    def profiles_json_path(self) -> Path:
+        return Path(self.profiles_json_var.get().strip() or modlist.DEFAULT_PROFILES_JSON)
+
+    def settings_file_path(self) -> Path:
+        return Path(self.settings_file_var.get().strip() or settings.DEFAULT_SETTINGS_FILE)
+
+    def choose_factorio(self) -> None:
+        selected = filedialog.askopenfilename(parent=self, title="Select factorio.exe", filetypes=[("Factorio executable", "factorio.exe"), ("Executable", "*.exe"), ("All files", "*.*")])
+        if selected:
+            self.factorio_var.set(selected)
+            self.app.factorio_exe = Path(selected)
+            self.app.save_tool_config(factorio=selected, profiles_json=self.profiles_json_path(), settings_file=self.settings_file_path())
+            self.refresh()
+
+    def choose_profiles_json(self) -> None:
+        selected = filedialog.askopenfilename(parent=self, title="Select profiles JSON", filetypes=[("JSON files", "*.json"), ("All files", "*.*")])
+        if selected:
+            self.profiles_json_var.set(selected)
+            self.app.profiles_json = Path(selected)
+            self.app.save_tool_config(factorio=self.factorio_path(), profiles_json=selected, settings_file=self.settings_file_path())
+            self.refresh()
+
+    def choose_settings_file(self) -> None:
+        selected = filedialog.askopenfilename(parent=self, title="Select mod-settings.dat", filetypes=[("Factorio settings", "mod-settings.dat"), ("All files", "*.*")])
+        if selected:
+            self.settings_file_var.set(selected)
+            self.app.save_tool_config(settings_file=selected, profiles_json=self.profiles_json_path())
+            self.refresh()
+
+    def refresh(self, select_profile: str | None = None) -> None:
+        def work() -> dict[str, dict[str, object]]:
+            return modlist.load_profiles(self.profiles_json_path())
+
+        def done(profiles: dict[str, dict[str, object]]) -> None:
+            self.profiles = profiles
+            if select_profile is not None:
+                self.profile_name_var.set(select_profile)
+            self.render_profiles(profiles)
+            self.app.status("Material Flow profiles refreshed")
+
+        self.app.run_worker(work, done, "Refreshing Material Flow profiles...", "Refresh failed")
+
+    def render_profiles(self, profiles: dict[str, dict[str, object]]) -> None:
+        selected = self.profile_name_var.get()
+        self.profile_rows = {f"{name}: {modlist.profile_label(name, profiles)}": name for name in sorted(profiles)}
+        self.profile_list.delete(0, tk.END)
+        self.hover_profile_index = None
+        selected_index: int | None = None
+        for index, row in enumerate(self.profile_rows):
+            self.profile_list.insert(tk.END, row)
+            self.profile_list.itemconfigure(index, background=LIST_BG, foreground=BODY_TEXT)
+            if self.profile_rows[row] == selected:
+                selected_index = index
+        if selected_index is None and self.profile_rows:
+            selected_index = 0
+        if selected_index is not None:
+            self.profile_list.selection_set(selected_index)
+            self.profile_list.see(selected_index)
+            self.on_profile_selected()
+        else:
+            self.profile_name_var.set("")
+            self.render_details()
+
+    def on_profile_selected(self, _event: tk.Event | None = None) -> None:
+        self.reset_profile_item_styles()
+        selection = self.profile_list.curselection()
+        if not selection:
+            self.profile_name_var.set("")
+            self.render_details()
+            return
+        row = self.profile_list.get(selection[0])
+        profile_name = self.profile_rows[row]
+        self.profile_name_var.set(profile_name)
+        self.profile_label_var.set(modlist.profile_label(profile_name, self.profiles))
+        self.app.save_tool_config(factorio=self.factorio_path(), profiles_json=self.profiles_json_path(), settings_file=self.settings_file_path(), last_profile=profile_name)
+        self.render_details()
+
+    def render_details(self) -> None:
+        profile_name = self.profile_name_var.get()
+        lines: list[str] = []
+        if not profile_name:
+            lines.append("No profile selected.")
+        else:
+            enabled = sorted(modlist.enabled_mods_for_profile(profile_name, self.profiles), key=str.lower)
+            profile_values = modlist.profile_settings(profile_name, self.profiles)
+            current_values = self.current_settings_for_profile(profile_name)
+            lines.extend([
+                f"Profile: {profile_name}",
+                f"Label:   {modlist.profile_label(profile_name, self.profiles)}",
+                "",
+                f"Active mods ({len(enabled)}):",
+            ])
+            lines.extend(f"  - {name}" for name in enabled)
+            lines.extend(["", f"Current startup settings ({len(current_values)}):"])
+            if current_values:
+                for key in sorted(current_values):
+                    lines.append(f"  {key} = {current_values[key]!r}")
+            else:
+                lines.append("  <none found>")
+            lines.extend(["", f"Profile-saved settings ({len(profile_values)}):"])
+            if profile_values:
+                for key in sorted(profile_values):
+                    lines.append(f"  {key} = {profile_values[key]!r}")
+            else:
+                lines.append("  <none saved in profile>")
+            lines.extend([
+                "",
+                "Output:",
+                f"  {self.material_flow_path()}",
+                f"  {self.viewer_path()}",
+            ])
+        self.details_text.configure(state=tk.NORMAL)
+        self.details_text.delete("1.0", tk.END)
+        self.details_text.insert("1.0", "\n".join(lines))
+        self.details_text.configure(state=tk.DISABLED)
+
+    def current_settings_for_profile(self, profile_name: str) -> dict[str, Any]:
+        try:
+            enabled_mods = modlist.enabled_mods_for_profile(profile_name, self.profiles)
+            definitions = settings.read_startup_settings_for_mods(enabled_mods, factorio_exe=self.factorio_path())
+            return settings.get_startup_settings(self.settings_file_path(), definitions)
+        except Exception:
+            return {}
+
+    def create_dump_and_open_viewer(self) -> None:
+        profile_name = self.profile_name_var.get()
+        if not profile_name:
+            messagebox.showinfo("No profile selected", "Select a mod profile first.", parent=self)
+            return
+        script = TOOL_DIR / "test" / "run_tests.py"
+        cmd = [
+            sys.executable,
+            str(script),
+            "--factorio",
+            str(self.factorio_path()),
+            "--profile",
+            "default",
+            "--mod-profile",
+            profile_name,
+            "--mod-profiles-json",
+            str(self.profiles_json_path()),
+            "--no-color",
+        ]
+
+        def work() -> subprocess.CompletedProcess[str]:
+            return subprocess.run(cmd, cwd=str(TOOL_DIR.parent), text=True, capture_output=True, check=False)  # noqa: S603 - local tool command.
+
+        def done(result: subprocess.CompletedProcess[str]) -> None:
+            if result.returncode != 0:
+                messagebox.showerror("Dump failed", (result.stdout + "\n" + result.stderr).strip()[-4000:], parent=self)
+                self.app.status("Material Flow dump failed")
+                return
+            self.output_var.set(f"Dump ready: {self.material_flow_path()}")
+            self.app.status("Material Flow dump generated")
+            self.open_viewer()
+
+        self.app.run_worker(work, done, "Generating material-flow.json...", "Dump failed")
+
+    def open_viewer(self) -> None:
+        viewer = self.viewer_path()
+        if not viewer.exists():
+            messagebox.showerror("Viewer missing", f"Viewer not found:\n{viewer}", parent=self)
+            return
+        url = (
+            viewer.resolve().as_uri()
+            + "?factorioRoot="
+            + self.url_quote(str(modlist.factorio_root(self.factorio_path())))
+            + "&file="
+            + self.url_quote(str(self.material_flow_path()))
+            + "&state="
+            + self.url_quote(str(self.material_flow_state_path()))
+        )
+        webbrowser.open(url)
+        self.app.status("Material Flow viewer opened in browser")
+
+    def material_flow_path(self) -> Path:
+        return modlist.factorio_root(self.factorio_path()) / "script-output" / "Ingredient_Scrap" / "material-flow.json"
+
+    def material_flow_state_path(self) -> Path:
+        return modlist.factorio_root(self.factorio_path()) / "script-output" / "Ingredient_Scrap" / "material-flow-data.js"
+
+    def viewer_path(self) -> Path:
+        return TOOL_DIR / "json-tree-viewer.html"
+
+    def url_quote(self, value: str) -> str:
+        from urllib.parse import quote
+
+        return quote(value.replace("\\", "/"), safe="")
+
+    def on_profile_motion(self, event: tk.Event) -> None:
+        index = self.profile_list.nearest(event.y)
+        if index == self.hover_profile_index:
+            return
+        self.reset_profile_item_styles()
+        if 0 <= index < self.profile_list.size() and index not in self.profile_list.curselection():
+            self.profile_list.itemconfigure(index, background=PANEL_HOVER, foreground=BODY_TEXT)
+            self.hover_profile_index = index
+
+    def on_profile_leave(self, _event: tk.Event) -> None:
+        self.reset_profile_item_styles()
+
+    def reset_profile_item_styles(self) -> None:
+        selected = set(self.profile_list.curselection())
+        for index in range(self.profile_list.size()):
+            if index not in selected:
+                self.profile_list.itemconfigure(index, background=LIST_BG, foreground=BODY_TEXT)
+        self.hover_profile_index = None
+
+    def bind_list_scroll(self, widget: tk.Widget) -> None:
+        widget.bind("<MouseWheel>", self.on_list_mousewheel)
+        widget.bind("<Button-4>", self.on_list_mousewheel)
+        widget.bind("<Button-5>", self.on_list_mousewheel)
+
+    def bind_text_scroll(self, widget: tk.Widget) -> None:
+        widget.bind("<MouseWheel>", self.on_text_mousewheel)
+        widget.bind("<Button-4>", self.on_text_mousewheel)
+        widget.bind("<Button-5>", self.on_text_mousewheel)
+
+    def wheel_delta(self, event: tk.Event) -> int:
+        if getattr(event, "num", None) == 4:
+            return -1
+        if getattr(event, "num", None) == 5:
+            return 1
+        return -1 if event.delta > 0 else 1
+
+    def on_list_mousewheel(self, event: tk.Event) -> str:
+        widget = event.widget
+        if isinstance(widget, tk.Listbox):
+            widget.yview_scroll(self.wheel_delta(event) * 3, "units")
+        return "break"
+
+    def on_text_mousewheel(self, event: tk.Event) -> str:
+        self.details_text.yview_scroll(self.wheel_delta(event) * 3, "units")
+        return "break"
+
+
 TOOL_MAP: dict[str, dict[str, Any]] = {
     "modlist": {
         "title": "Mod List",
@@ -1537,6 +1895,14 @@ TOOL_MAP: dict[str, dict[str, Any]] = {
         "version": getattr(settings, "APP_VERSION", None),
         "filename": "settings.py",
         "frame_type": SettingsTool,
+        "min_version": "1.0.0",
+        "max_version": "2.0.0",
+    },
+    "material_flow": {
+        "title": "Material Flow",
+        "version": "1.0.0",
+        "filename": "json-tree-viewer.html",
+        "frame_type": MaterialFlowTool,
         "min_version": "1.0.0",
         "max_version": "2.0.0",
     },

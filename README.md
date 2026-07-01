@@ -36,6 +36,7 @@ Required:
 Optional but recommended:
 
 - `README.md`
+- `README.json`
 - `TOOLS_ROADMAP.md`
 - `screenshots/`
 
