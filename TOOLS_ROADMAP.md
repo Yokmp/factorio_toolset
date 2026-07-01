@@ -64,9 +64,3 @@ Example shape:
 - Add dry-run/check mode.
 - Add a UI frame once the CLI contract is stable.
 - Keep it in the top bar as a visible but unavailable tab until then.
-
-## Packaging
-
-- Keep the release package small: Python files, README, screenshots, and optional roadmap.
-- Do not ship generated user files such as `tool-ui.json` or `modlist-profiles.json`.
-- Consider a small zip build command once the file list stabilizes.
