@@ -9,9 +9,9 @@ GitHub: https://github.com/Yokmp/factorio_toolset
 
 ## Screenshots
 
-![Mod List](screenshots/mod-list.png)
-
-![Settings](screenshots/settings.png)
+| ui.py | json-tree-viewer |
+| :-: | :-: |
+| ![Mod List](screenshots/mod-list.png)<br>![Settings](screenshots/settings.png)<br>![Settings](screenshots/material-flow.png) | ![](screenshots/json-tree-viewer.png) |
 
 ## Included Tools
 
