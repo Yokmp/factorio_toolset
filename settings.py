@@ -2,8 +2,8 @@
 Read and update the Factorio mod-settings.dat startup settings file.
 
 Examples:
-    python tools/settings.py --mod MODNAME --setting SETTING
-    python tools/settings.py --mod MODNAME --setting SETTING --value true
+    python tools/toolset/settings.py --mod MODNAME --setting SETTING
+    python tools/toolset/settings.py --mod MODNAME --setting SETTING --value true
 
 The CLI defaults to the mod-settings.dat next to this mod folder. Factorio stores
 startup settings by setting name inside the file; --mod is kept as a required
@@ -23,10 +23,9 @@ from typing import Any
 
 
 DEFAULT_HEADER = bytes([2, 0, 0, 0, 77, 0, 0, 0, 0])
-DEFAULT_SETTINGS_FILE = Path(__file__).resolve().parents[2] / "mod-settings.dat"
-MOD_DIR = Path(__file__).resolve().parents[1]
-DEFAULT_SETTINGS_LUA = MOD_DIR / "settings.lua"
-DEFAULT_MODS_DIR = MOD_DIR.parent
+TOOL_DIR = Path(__file__).resolve().parent
+DEFAULT_SETTINGS_FILE = Path("mod-settings.dat")
+DEFAULT_SETTINGS_LUA = TOOL_DIR / "settings.lua"
 APP_VERSION = "1.0.0"
 TOOLSET_URL = "https://github.com/Yokmp/factorio_toolset"
 
@@ -230,7 +229,7 @@ def preferred_language() -> str:
     return language.split("_", 1)[0].lower()
 
 
-def read_locale_sections(language: str, fallback_language: str = "en", mod_dir: Path = MOD_DIR) -> dict[str, dict[str, str]]:
+def read_locale_sections(language: str, fallback_language: str = "en", mod_dir: Path = TOOL_DIR) -> dict[str, dict[str, str]]:
     """Read Factorio-style locale cfg sections, with fallback loaded first."""
     sections: dict[str, dict[str, str]] = {}
     for lang in (fallback_language, language):
@@ -376,6 +375,18 @@ def factorio_root(factorio_exe: Path) -> Path:
     return factorio_exe.parent.parent
 
 
+def default_mods_dir(factorio_exe: Path) -> Path:
+    """Return Factorio's mods directory for a portable/local install."""
+    return factorio_root(factorio_exe) / "mods"
+
+
+def default_settings_file(factorio_exe: Path | None = None) -> Path:
+    """Return the best default mod-settings.dat path."""
+    if factorio_exe is not None:
+        return factorio_root(factorio_exe) / "mod-settings.dat"
+    return DEFAULT_SETTINGS_FILE
+
+
 def mod_name_from_directory(directory: Path) -> str | None:
     """Read a mod name from an unpacked mod or Factorio data directory."""
     info_path = directory / "info.json"
@@ -421,7 +432,7 @@ def read_static_startup_settings_from_zip(
 def read_startup_settings_for_mods(
     mod_names: set[str],
     factorio_exe: Path | None = None,
-    mods_dir: Path = DEFAULT_MODS_DIR,
+    mods_dir: Path | None = None,
     language: str | None = None,
 ) -> list[dict[str, Any]]:
     """Parse startup setting definitions for all enabled installed mods."""
@@ -433,6 +444,8 @@ def read_startup_settings_for_mods(
         data_root = factorio_root(factorio_exe) / "data"
         if data_root.exists():
             data_dirs.extend(path for path in data_root.iterdir() if path.is_dir())
+        if mods_dir is None:
+            mods_dir = default_mods_dir(factorio_exe)
 
     for directory in data_dirs:
         name = mod_name_from_directory(directory)
@@ -440,7 +453,7 @@ def read_startup_settings_for_mods(
             definitions.extend(read_static_startup_settings(directory / "settings.lua", language, name, directory))
             found.add(name)
 
-    if mods_dir.exists():
+    if mods_dir is not None and mods_dir.exists():
         for path in sorted(mods_dir.iterdir(), key=lambda item: item.name.lower()):
             if path.is_dir():
                 name = mod_name_from_directory(path)
@@ -504,7 +517,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(
         description="Read or update the local Factorio mod-settings.dat startup setting.",
         epilog=(
-            f"Default settings file: {DEFAULT_SETTINGS_FILE}\n"
+            "Default settings file: derived from --factorio when provided; otherwise ./mod-settings.dat\n"
             "Values are parsed as true, false, nil, integers, floats, or strings. "
             "Factorio stores startup settings by setting name; --mod is required "
             "for command clarity but is not a separate namespace in mod-settings.dat.\n"
@@ -515,15 +528,18 @@ def main() -> int:
     parser.add_argument("--mod", required=True, metavar="MODNAME", help="Mod name label, for example Ingredient_Scrap")
     parser.add_argument("--setting", required=True, metavar="SETTING", help="Startup setting name")
     parser.add_argument("--value", metavar="VALUE", help="Value to write. Omit to print the current value.")
+    parser.add_argument("--factorio", type=Path, help="Factorio executable path used to locate mod-settings.dat when --file is omitted")
     parser.add_argument("--file", type=Path, default=DEFAULT_SETTINGS_FILE, help=argparse.SUPPRESS)
     parser.add_argument("--version", action="version", version=f"%(prog)s {APP_VERSION}")
     args = parser.parse_args()
 
+    settings_file = args.file if args.file != DEFAULT_SETTINGS_FILE else default_settings_file(args.factorio)
+
     if args.value is None:
-        print(json.dumps(get_startup_setting(args.file, args.setting), ensure_ascii=False))
+        print(json.dumps(get_startup_setting(settings_file, args.setting), ensure_ascii=False))
     else:
         value = parse_value(args.value)
-        set_startup_setting(args.file, args.setting, value)
+        set_startup_setting(settings_file, args.setting, value)
         print(f"{args.setting} = {json.dumps(value, ensure_ascii=False)}")
     return 0
 

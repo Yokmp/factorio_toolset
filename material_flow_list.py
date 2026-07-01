@@ -16,9 +16,17 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
+import modlist
 
-DEFAULT_FLOW = Path(r"F:/Games/Factorio_ModTest/script-output/Ingredient_Scrap/material-flow.json")
-DEFAULT_OUT_DIR = Path("tools") / "target-lists"
+DEFAULT_OUT_DIR = Path(__file__).resolve().parent / "target-lists"
+
+
+def default_flow_path(factorio_exe: Path | None = None) -> Path:
+    if factorio_exe is None:
+        tool_config = modlist.load_tool_config()
+        factorio_exe = modlist.config_path_value(tool_config, "factorio", modlist.DEFAULT_FACTORIO)
+    root = modlist.factorio_root(factorio_exe or modlist.DEFAULT_FACTORIO)
+    return root / "script-output" / "Ingredient_Scrap" / "material-flow.json"
 
 
 def result_label(result: dict[str, Any] | None) -> str:
@@ -168,12 +176,14 @@ def write_text(target_list: dict[str, Any], path: Path) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Create text/JSON material target lists from material-flow.json")
-    parser.add_argument("--flow", type=Path, default=DEFAULT_FLOW, help="path to material-flow.json")
+    parser.add_argument("--flow", type=Path, help="path to material-flow.json; defaults to the selected Factorio script-output path")
+    parser.add_argument("--factorio", type=Path, help="Factorio executable path used to locate material-flow.json when --flow is omitted")
     parser.add_argument("--profile", required=True, help="profile name used in output file names")
     parser.add_argument("--out-dir", type=Path, default=DEFAULT_OUT_DIR, help="output directory")
     args = parser.parse_args()
 
-    flow_data = json.loads(args.flow.read_text(encoding="utf-8"))
+    flow_path = args.flow or default_flow_path(args.factorio)
+    flow_data = json.loads(flow_path.read_text(encoding="utf-8"))
     target_list = build_list(flow_data, args.profile)
     args.out_dir.mkdir(parents=True, exist_ok=True)
 

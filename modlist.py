@@ -2,13 +2,13 @@
 Manage the local Factorio mod-list.json profiles.
 
 Examples:
-    python tools/modlist.py show
-    python tools/modlist.py apply vanilla
-    python tools/modlist.py apply vanilla_dlc
-    python tools/modlist.py save my_profile
-    python tools/modlist.py delete my_profile
-    python tools/modlist.py list
-    python tools/modlist.py gui
+    python tools/toolset/modlist.py show
+    python tools/toolset/modlist.py apply vanilla
+    python tools/toolset/modlist.py apply vanilla_dlc
+    python tools/toolset/modlist.py save my_profile
+    python tools/toolset/modlist.py delete my_profile
+    python tools/toolset/modlist.py list
+    python tools/toolset/modlist.py gui
 
 An optional JSON file can add or override profiles:
 {
@@ -32,10 +32,7 @@ from pathlib import Path
 from typing import Any
 
 TOOL_DIR = Path(__file__).resolve().parent
-MOD_DIR = TOOL_DIR.parent
-MODS_DIR = MOD_DIR.parent
 DEFAULT_FACTORIO = Path(r"F:/Games/Factorio_ModTest/bin/x64/factorio.exe")
-MOD_LIST_FILE = MODS_DIR / "mod-list.json"
 DEFAULT_PROFILES_JSON = TOOL_DIR / "modlist-profiles.json"
 TOOL_UI_CONFIG = TOOL_DIR / "tool-ui.json"
 APP_VERSION = "1.0.0"
@@ -104,6 +101,16 @@ def factorio_root(factorio_exe: Path) -> Path:
     return factorio_exe.parent.parent
 
 
+def default_mods_dir(factorio_exe: Path) -> Path:
+    """Return Factorio's mods directory for a portable/local install."""
+    return factorio_root(factorio_exe) / "mods"
+
+
+def default_mod_list_file(factorio_exe: Path) -> Path:
+    """Return Factorio's mod-list.json path for a portable/local install."""
+    return default_mods_dir(factorio_exe) / "mod-list.json"
+
+
 def mod_name_from_zip(zip_path: Path) -> str | None:
     """Read a mod name from a zipped mod by locating its inner info.json."""
     try:
@@ -130,8 +137,9 @@ def mod_name_from_directory(directory: Path) -> str | None:
     return info.get("name")
 
 
-def installed_mod_names(factorio_exe: Path, mods_dir: Path = MODS_DIR) -> set[str]:
+def installed_mod_names(factorio_exe: Path, mods_dir: Path | None = None) -> set[str]:
     """Collect all installed mod names from Factorio data folders and the mods directory."""
+    mods_dir = mods_dir or default_mods_dir(factorio_exe)
     names = {"base"}
     data_dir = factorio_root(factorio_exe) / "data"
     if data_dir.exists():
@@ -141,14 +149,15 @@ def installed_mod_names(factorio_exe: Path, mods_dir: Path = MODS_DIR) -> set[st
                 if isinstance(name, str) and name:
                     names.add(name)
 
-    for path in mods_dir.iterdir():
-        name = None
-        if path.is_dir():
-            name = mod_name_from_directory(path)
-        elif path.suffix.lower() == ".zip":
-            name = mod_name_from_zip(path)
-        if isinstance(name, str) and name:
-            names.add(name)
+    if mods_dir.exists():
+        for path in mods_dir.iterdir():
+            name = None
+            if path.is_dir():
+                name = mod_name_from_directory(path)
+            elif path.suffix.lower() == ".zip":
+                name = mod_name_from_zip(path)
+            if isinstance(name, str) and name:
+                names.add(name)
     return names
 
 
@@ -184,7 +193,7 @@ def enabled_mods_for_profile(profile_name: str, profiles: dict[str, dict[str, ob
     return set(VANILLA_MODS) | set(profiles[profile_name].get("mods") or [])
 
 
-def write_mod_list(enabled_mods: set[str], installed_mods: set[str], mod_list_file: Path = MOD_LIST_FILE) -> None:
+def write_mod_list(enabled_mods: set[str], installed_mods: set[str], mod_list_file: Path) -> None:
     """Write Factorio's mod-list.json with every installed mod marked on or off."""
     all_mods = sorted(installed_mods | enabled_mods, key=str.lower)
     payload = {
@@ -196,7 +205,7 @@ def write_mod_list(enabled_mods: set[str], installed_mods: set[str], mod_list_fi
     mod_list_file.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
-def read_mod_list_entries(mod_list_file: Path = MOD_LIST_FILE) -> list[dict[str, Any]]:
+def read_mod_list_entries(mod_list_file: Path) -> list[dict[str, Any]]:
     """Read valid mod entries from Factorio's mod-list.json."""
     if not mod_list_file.exists():
         return []
@@ -207,13 +216,14 @@ def read_mod_list_entries(mod_list_file: Path = MOD_LIST_FILE) -> list[dict[str,
     return [entry for entry in entries if isinstance(entry, dict) and isinstance(entry.get("name"), str)]
 
 
-def read_enabled_mods(mod_list_file: Path = MOD_LIST_FILE) -> list[str]:
+def read_enabled_mods(mod_list_file: Path) -> list[str]:
     """Return currently enabled mod names from mod-list.json."""
     return [entry["name"] for entry in read_mod_list_entries(mod_list_file) if entry.get("enabled")]
 
 
-def current_mod_states(factorio_exe: Path, mods_dir: Path = MODS_DIR, mod_list_file: Path = MOD_LIST_FILE) -> dict[str, bool]:
+def current_mod_states(factorio_exe: Path, mods_dir: Path | None = None, mod_list_file: Path | None = None) -> dict[str, bool]:
     """Combine installed mods and mod-list.json into a name -> enabled mapping."""
+    mod_list_file = mod_list_file or default_mod_list_file(factorio_exe)
     installed_mods = installed_mod_names(factorio_exe, mods_dir)
     states = {name: False for name in installed_mods}
     for entry in read_mod_list_entries(mod_list_file):
@@ -224,10 +234,11 @@ def current_mod_states(factorio_exe: Path, mods_dir: Path = MODS_DIR, mod_list_f
 def apply_enabled_mods(
     factorio_exe: Path,
     enabled_mods: set[str],
-    mods_dir: Path = MODS_DIR,
-    mod_list_file: Path = MOD_LIST_FILE,
+    mods_dir: Path | None = None,
+    mod_list_file: Path | None = None,
 ) -> dict[str, Any]:
     """Validate and apply an explicit set of enabled mods to mod-list.json."""
+    mod_list_file = mod_list_file or default_mod_list_file(factorio_exe)
     installed_mods = installed_mod_names(factorio_exe, mods_dir)
     missing = sorted(enabled_mods - installed_mods, key=str.lower)
     if missing:
@@ -346,10 +357,11 @@ def apply_profile(
     factorio_exe: Path,
     profile_name: str = "vanilla",
     profiles_json: Path | None = None,
-    mods_dir: Path = MODS_DIR,
-    mod_list_file: Path = MOD_LIST_FILE,
+    mods_dir: Path | None = None,
+    mod_list_file: Path | None = None,
 ) -> dict[str, Any]:
     """Apply the enabled mod list for a named profile."""
+    mod_list_file = mod_list_file or default_mod_list_file(factorio_exe)
     profiles = load_profiles(profiles_json)
     enabled_mods = enabled_mods_for_profile(profile_name, profiles)
     installed_mods = installed_mod_names(factorio_exe, mods_dir)
@@ -437,7 +449,7 @@ def main() -> int:
         return 0
 
     if args.command == "show":
-        enabled = read_enabled_mods()
+        enabled = read_enabled_mods(default_mod_list_file(factorio_exe))
         print("enabled: " + (", ".join(enabled) if enabled else "<none>"))
         return 0
 
@@ -460,7 +472,7 @@ def main() -> int:
         profile_name = save_profile(
             profiles_json,
             args.label or args.profile,
-            set(read_enabled_mods()),
+            set(read_enabled_mods(default_mod_list_file(factorio_exe))),
             profile_name=args.profile,
         )
         update_tool_config(args.config, profiles_json=str(profiles_json), last_profile=profile_name)

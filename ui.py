@@ -2,8 +2,8 @@
 Tkinter UI shell for Factorio Toolset.
 
 Run with:
-    python tools/ui.py
-    python tools/modlist.py gui
+    python tools/toolset/ui.py
+    python tools/toolset/modlist.py gui
 """
 
 from __future__ import annotations
@@ -1114,8 +1114,9 @@ class SettingsTool(ToolFrame):
 
     def __init__(self, master: tk.Misc, app: ToolApp):
         super().__init__(master, app)
-        settings_file = modlist.config_path_value(app.tool_config, "settings_file", settings.DEFAULT_SETTINGS_FILE)
-        self.settings_file_var = tk.StringVar(value=str(settings_file or settings.DEFAULT_SETTINGS_FILE))
+        default_settings = settings.default_settings_file(app.factorio_exe or modlist.DEFAULT_FACTORIO)
+        settings_file = modlist.config_path_value(app.tool_config, "settings_file", default_settings)
+        self.settings_file_var = tk.StringVar(value=str(settings_file or default_settings))
         self.profiles_json_var = tk.StringVar(value=str(app.profiles_json or modlist.DEFAULT_PROFILES_JSON))
         self.profile_name_var = tk.StringVar(value=app.last_profile)
         self.profile_label_var = tk.StringVar()
@@ -1242,7 +1243,7 @@ class SettingsTool(ToolFrame):
             self.refresh()
 
     def settings_file_path(self) -> Path:
-        return Path(self.settings_file_var.get().strip() or settings.DEFAULT_SETTINGS_FILE)
+        return Path(self.settings_file_var.get().strip() or settings.default_settings_file(self.app.factorio_exe or modlist.DEFAULT_FACTORIO))
 
     def profiles_json_path(self) -> Path:
         return Path(self.profiles_json_var.get().strip() or modlist.DEFAULT_PROFILES_JSON)
@@ -1533,8 +1534,9 @@ class MaterialFlowTool(ToolFrame):
         super().__init__(master, app)
         self.factorio_var = tk.StringVar(value=str(app.factorio_exe or modlist.DEFAULT_FACTORIO))
         self.profiles_json_var = tk.StringVar(value=str(app.profiles_json or modlist.DEFAULT_PROFILES_JSON))
-        settings_file = modlist.config_path_value(app.tool_config, "settings_file", settings.DEFAULT_SETTINGS_FILE)
-        self.settings_file_var = tk.StringVar(value=str(settings_file or settings.DEFAULT_SETTINGS_FILE))
+        default_settings = settings.default_settings_file(app.factorio_exe or modlist.DEFAULT_FACTORIO)
+        settings_file = modlist.config_path_value(app.tool_config, "settings_file", default_settings)
+        self.settings_file_var = tk.StringVar(value=str(settings_file or default_settings))
         self.profile_name_var = tk.StringVar(value=app.last_profile)
         self.profile_label_var = tk.StringVar(value="")
         self.output_var = tk.StringVar(value="No dump generated in this UI session.")
@@ -1649,7 +1651,7 @@ class MaterialFlowTool(ToolFrame):
         return Path(self.profiles_json_var.get().strip() or modlist.DEFAULT_PROFILES_JSON)
 
     def settings_file_path(self) -> Path:
-        return Path(self.settings_file_var.get().strip() or settings.DEFAULT_SETTINGS_FILE)
+        return Path(self.settings_file_var.get().strip() or settings.default_settings_file(self.factorio_path()))
 
     def choose_factorio(self) -> None:
         selected = filedialog.askopenfilename(parent=self, title="Select factorio.exe", filetypes=[("Factorio executable", "factorio.exe"), ("Executable", "*.exe"), ("All files", "*.*")])
@@ -1774,23 +1776,23 @@ class MaterialFlowTool(ToolFrame):
         if not profile_name:
             messagebox.showinfo("No profile selected", "Select a mod profile first.", parent=self)
             return
-        script = TOOL_DIR / "test" / "run_tests.py"
+        script = TOOL_DIR / "material_flow.py"
         cmd = [
             sys.executable,
             str(script),
             "--factorio",
             str(self.factorio_path()),
-            "--profile",
+            "--dump-profile",
             "default",
             "--mod-profile",
             profile_name,
             "--mod-profiles-json",
             str(self.profiles_json_path()),
-            "--no-color",
+            "--keep-mod-list",
         ]
 
         def work() -> subprocess.CompletedProcess[str]:
-            return subprocess.run(cmd, cwd=str(TOOL_DIR.parent), text=True, capture_output=True, check=False)  # noqa: S603 - local tool command.
+            return subprocess.run(cmd, cwd=str(TOOL_DIR.parent.parent), text=True, capture_output=True, check=False)  # noqa: S603 - local tool command.
 
         def done(result: subprocess.CompletedProcess[str]) -> None:
             if result.returncode != 0:
@@ -1909,7 +1911,7 @@ TOOL_MAP: dict[str, dict[str, Any]] = {
     "deploy": {
         "title": "Deploy",
         "version": "1.0.0",
-        "filename": "../deploy.py",
+        "filename": "../../deploy.py",
         "min_version": "1.0.0",
         "max_version": "2.0.0",
     },

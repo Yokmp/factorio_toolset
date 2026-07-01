@@ -2,6 +2,8 @@
 
 Small Tkinter tool shell for managing local Factorio convenience tools.
 
+The toolset is intended to be path independent: keep the toolset files together in one folder, then use the Browse buttons or CLI options to point it at `factorio.exe`, profile JSON, and `mod-settings.dat`.
+
 Version: 1.0.0  
 GitHub: https://github.com/Yokmp/factorio_toolset
 
@@ -20,6 +22,8 @@ GitHub: https://github.com/Yokmp/factorio_toolset
 
 Future ideas are tracked in [`TOOLS_ROADMAP.md`](TOOLS_ROADMAP.md).
 
+Material Flow dump integration details are documented in [`MATERIAL_FLOW.md`](MATERIAL_FLOW.md).
+
 ## Requirements
 
 - Python 3 with Tkinter
@@ -34,17 +38,21 @@ Required:
 - `ui.py`
 - `modlist.py`
 - `settings.py`
+- `material_flow.py`
 - `json-tree-viewer.html`
 - `treeview-example.json`
 
 Optional but recommended:
 
 - `README.md`
-- `README.json`
+- `MATERIAL_FLOW.md`
 - `TOOLS_ROADMAP.md`
 - `material_flow_list.py`
-- `test/`
 - `screenshots/`
+
+Ingredient Scrap local integration:
+
+- `../test/` for the Factorio dump/test runner helpers used by `material_flow.py`.
 
 Generated locally:
 
@@ -67,7 +75,7 @@ python ui.py
 Or from the repository root:
 
 ```powershell
-python tools/ui.py
+python tools/toolset/ui.py
 ```
 
 On first use, select the Factorio executable and the relevant Factorio settings/profile paths with the Browse buttons.
@@ -110,6 +118,14 @@ json-tree-viewer.html?file=F:/Games/Factorio_ModTest/script-output/Ingredient_Sc
 ```
 
 The viewer also accepts the older query parameters `json=` and `state=` for compatibility.
+
+For command-line dump generation without the full assertion report, use:
+
+```powershell
+python tools\toolset\material_flow.py --mod-profile vanilla_dlc --dump-profile default --open-viewer
+```
+
+This launches Factorio once, creates a temporary save, enriches `material-flow.json` with icon metadata, and optionally opens the viewer.
 
 ### Flow JSON Shape
 
@@ -156,6 +172,12 @@ The Ingredient Scrap test harness can be run directly from the repository root:
 
 ```powershell
 python tools\test\run_tests.py --profile default --no-color
+```
+
+To generate only `material-flow.json` without printing the test assertion report:
+
+```powershell
+python tools\toolset\material_flow.py --mod-profile vanilla_dlc --dump-profile default
 ```
 
 For mod profile testing:
