@@ -1,0 +1,15336 @@
+---@meta
+---Generated from Factorio prototype-api.json.
+---Factorio 2.1.17 / API 6
+
+---Entity with energy source with specialised animation for charging/discharging. Used for the accumulator entity.
+---@class AccumulatorPrototype : EntityWithOwnerPrototype
+---@field type "accumulator"
+---The capacity of the energy source buffer specifies the capacity of the accumulator.
+---@field energy_source ElectricEnergySource
+---@field chargable_graphics? ChargableGraphics
+---The maximum circuit wire distance for this entity.
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---@field circuit_connector? CircuitConnectorDefinition
+---The name of the signal that is the default for when an accumulator is connected to the circuit network.
+---@field default_output_signal? SignalIDConnector
+
+---This prototype definition is used for the in-game achievements.
+---@class AchievementPrototype : Prototype
+---@field type "achievement"
+---Can't be an empty array.
+---@field icons? IconData[]
+---Path to the icon file.
+---
+---Only loaded, and mandatory if `icons` is not defined.
+---@field icon? FileName
+---The size of the square icon, in pixels. E.g. `32` for a 32px by 32px icon. Must be larger than `0`.
+---
+---The base game uses 128px icons for achievements.
+---
+---Only loaded if `icons` is not defined.
+---@field icon_size? SpriteSizeType
+---Unusable by mods, as this refers to unlocking the achievement through Steam.
+---@field steam_stats_name? string
+---If this is set to `false`, it is not possible to complete the achievement on the peaceful difficulty setting or when the enemy base generation settings have been changed.
+---@field allowed_without_fight? boolean
+
+---@class AchievementPrototypeWithCondition : AchievementPrototype
+---The condition that needs to be met to receive the achievement. Required for `"complete-objective-achievement"`, `"dont-build-entity-achievement"`, and `"dont-craft-manually-achievement"`. Not allowed for `"dont-kill-manually-achievement"` and `"dont-research-before-researching-achievement"`. Only allowed for `"dont-use-entity-in-energy-production-achievement"` if `"last_hour_only"` is `false`.
+---@field objective_condition? "game-finished"|"rocket-launched"|"late-research"
+
+---@class ActivateEquipmentCapsuleAction
+---@field type "equipment-remote"
+---Activation is only implemented for ActiveDefenseEquipmentPrototype.
+---@field equipment EquipmentID
+
+---@class ActivateImpactTriggerEffectItem : TriggerEffectItem
+---@field type "activate-impact"
+---Name of a DeliverCategory.
+---@field deliver_category? string
+
+---@class ActivatePasteTipTrigger : CountBasedTipTrigger
+---@field type "activate-paste"
+
+---Used by discharge defense and personal laser defense.
+---@class ActiveDefenseEquipmentPrototype : EquipmentPrototype
+---@field type "active-defense-equipment"
+---@field automatic boolean
+---@field attack_parameters AttackParameters
+
+---The name of an ActiveTriggerPrototype.
+---@class ActiveTriggerID
+
+---The abstract base of all active trigger prototypes. Active triggers are a special type of trigger delivery mechanism that function of a period of time and do not result in the creation or deletion of entities to function. They are intended to be short-lived objects associated with a surface and cannot be cancelled until they self-destruct. Active triggers support migrations and prototype changes, but require their own named prototype to function.
+---@class ActiveTriggerPrototype : Prototype
+
+---Root style: `"activity_bar"`
+---@class ActivityBarStyleSpecification : BaseStyleSpecification
+---@field type "activity_bar_style"
+---Required on the root style.
+---@field speed? number
+---The thickness of the bar, not the horizontal size.
+---
+---Required on the root style.
+---@field bar_width? integer
+---Required on the root style.
+---@field color? Color
+---Required on the root style.
+---@field bar_background? ElementImageSet
+---Required on the root style.
+---@field bar? ElementImageSet
+---Required on the root style.
+---@field bar_size_ratio? number
+
+---@class ActivityMatchingModifiers
+---@field multiplier? number
+---Cannot be larger than `maximum`.
+---@field minimum? number
+---@field maximum? number
+---@field offset? number
+---@field inverted? boolean
+
+---@class AdvancedMapGenSettings
+---@field asteroids? MapGenPresetAsteroidSettings
+---@field pollution? MapGenPresetPollutionSettings
+---@field enemy_evolution? MapGenPresetEnemyEvolutionSettings
+---@field enemy_expansion? MapGenPresetEnemyExpansionSettings
+---@field difficulty_settings? MapGenPresetDifficultySettings
+
+---@class AdvancedVolumeControl
+---Volume reduction (fade-out) controlled by distance (fraction of audible distance).
+---@field attenuation? Fade
+---Volume reduction (fade-out) or increase (fade-in) controlled by zoom level.
+---@field fades? Fades
+---Has to be in the range [-1.0, 1.0].
+---
+---Positive values are used for night sounds, the volume of the sound is 1.0 when darkness = threshold, 0.0 when darkness = 0.0 and linearly interpolated in between.
+---
+---Negative values are used for day sounds, the sound of the sound is 0.0  when darkness = -threshold, 1.0 when darkness = 1.0 and linearly interpolated in between.
+---@field darkness_threshold? number
+
+---@class AggregationSpecification
+---@field max_count integer
+---If `count_already_playing` is `true`, this will determine maximum progress when instance is counted toward playing sounds.
+---@field progress_threshold? number
+---Has to be greater than or equal to 0.0.
+---@field volume_reduction_rate? number
+---If `false`, the volume of sound instances above `max_count` is calculated according to the formula `volume = (x + 1) ^ (-volume_reduction_rate)`, where `x` is the order number of an instance above the threshold.
+---
+---If `true`, sound instances above `max_count` are removed.
+---@field remove boolean
+---If `true`, already playing sounds are taken into account when checking `max_count`.
+---@field count_already_playing? boolean
+---@field priority? "closest"|"farthest"|"newest"|"oldest"
+
+---@class AgriculturalCraneProperties
+---@field speed AgriculturalCraneSpeed
+---@field min_arm_extent? number
+---@field min_grappler_extent? number
+---In degrees.
+---@field operation_angle? number
+---@field telescope_default_extention? number
+---@field origin Vector3D
+---@field shadow_direction Vector3D
+---@field parts CranePart[]
+
+---@class AgriculturalCraneSpeed
+---@field arm AgriculturalCraneSpeedArm
+---@field grappler AgriculturalCraneSpeedGrappler
+
+---@class AgriculturalCraneSpeedArm
+---May not be 0.
+---@field turn_rate? number
+---Must be positive.
+---@field extension_speed? number
+
+---@class AgriculturalCraneSpeedGrappler
+---May not be 0.
+---@field vertical_turn_rate? number
+---May not be 0.
+---@field horizontal_turn_rate? number
+---Must be positive.
+---@field extension_speed? number
+---@field allow_transpolar_movement? boolean
+
+---@class AgriculturalTowerPrototype : EntityWithOwnerPrototype
+---@field type "agricultural-tower"
+---@field graphics_set? CraftingMachineGraphicsSet
+---@field crane AgriculturalCraneProperties
+---@field energy_source EnergySource
+---@field input_inventory_size ItemStackIndex
+---@field output_inventory_size? ItemStackIndex
+---The amount of energy this agricultural tower uses for each planted or harvested plant.
+---@field energy_usage Energy
+---The amount of energy this agricultural tower uses while the crane is moving.
+---@field crane_energy_usage Energy
+---The radius represents grid tiles which are created around the agricultural tower from its collision box.
+---
+---Must be positive.
+---@field radius number
+---The size of one grid tile a plant is planted into.
+---
+---Must be positive.
+---@field growth_grid_tile_size? integer
+---The minimum radius of empty space a plant requires around it to be planted.
+---
+---Must be greater than or equal to 0 and less than or equal to `growth_grid_tile_size / 2`.
+---@field growth_area_radius? number
+---The maximum offset from the grid tile center which will be applied to the planting spot selected by this agricultural tower.
+---
+---Must be greater than or equal to 0 and less than 1.
+---@field random_growth_offset? number
+---Whether the agricultural tower will start from a random grid tile when given a planting task.
+---@field randomize_planting_tile? boolean
+---@field radius_visualisation_picture? Sprite
+---@field central_orienting_sound? InterruptibleSound
+---@field arm_extending_sound? InterruptibleSound
+---@field grappler_orienting_sound? InterruptibleSound
+---@field grappler_extending_sound? InterruptibleSound
+---@field planting_sound? Sound
+---@field harvesting_sound? Sound
+---@field central_orienting_sound_source? string
+---@field arm_extending_sound_source? string
+---@field grappler_orienting_sound_source? string
+---@field grappler_extending_sound_source? string
+---@field planting_procedure_points? Vector3D[]
+---@field harvesting_procedure_points? Vector3D[]
+---The maximum circuit wire distance for this entity.
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---@field circuit_connector? CircuitConnectorDefinition
+---When missing, all items with plant result will be accepted. When provided, only items on this list that have plant result will be accepted.
+---@field accepted_seeds? ItemID[]
+---The number of module slots in this machine.
+---@field module_slots? ItemStackIndex
+---If set, QualityPrototype::mining_drill_module_slots_bonus will be added to module slots count.
+---@field quality_affects_module_slots? boolean
+---Sets the modules and beacon effects that are allowed to be used on this machine.
+---@field allowed_effects? EffectTypeLimitation
+---Sets the module categories that are allowed to be inserted into this machine.
+---@field allowed_module_categories? ModuleCategoryID[]
+---@field effect_receiver? EffectReceiver
+
+---The name of an AirbornePollutantPrototype.
+---@class AirbornePollutantID
+
+---A type of pollution that can spread throughout the chunks of a map.
+---@class AirbornePollutantPrototype : Prototype
+---@field type "airborne-pollutant"
+---The translated plural string key to use when displaying this pollution's name with an amount. See Tutorial:Localisation.
+---@field localised_name_with_amount? string
+---@field chart_color Color
+---@field icon Sprite
+---@field affects_evolution boolean
+---If true, large amounts of this pollution will cause water tiles to turn a sickly green.
+---@field affects_water_tint boolean
+---If true, trees will occasionally take damage from this pollutant type. When they do, some amount of pollution is removed from the chunk equal to the map's `pollution_restored_per_tree_damage` setting.
+---@field damages_trees? boolean
+
+---A string that specifies where a GUI element should be.
+---@class Alignment
+
+---Triggered when using the "build ghost" hotkey to build something.
+---@class AlternativeBuildTipTrigger : CountBasedTipTrigger
+---@field type "alternative-build"
+
+---This prototype is used to make sound while playing the game. This includes the base game's music, composed by Daniel James Taylor and the Space Age's music, composed by Petr Wajsar.
+---@class AmbientSound
+---@field type "ambient-sound"
+---Specification of the type of the prototype.
+---@field type "ambient-sound"
+---Unique textual identification of the prototype.
+---@field name string
+---Alternative name of the track. It doesn't need to be unique.
+---@field title? string
+---Cannot be less than zero.
+---
+---Cannot be defined if `track_type` is `"hero-track"` or `"script-track"`.
+---@field weight? number
+---@field track_type AmbientSoundType
+---The track can play only on specified planets.
+---
+---If neither `planets` nor `surface_names` is given, the track plays on space platforms and in the space map.
+---
+---Cannot be defined if `track_type` is `"script-track"`.
+---
+---Cannot be defined when `play_on_all_surfaces` is true.
+---@field planets? SpaceLocationID[]
+---The track can play only on surfaces with specified names. It's enough if the specified name is a sub-string of the surface name.
+---
+---If neither `planets` nor `surface_names` is given, the track plays on space platforms and in the space map.
+---
+---Cannot be defined if `track_type` is `"hero-track"` or `"script-track"`.
+---
+---Cannot be defined when `play_on_all_surfaces` is true.
+---@field surface_names? string[]
+---The track can play everywhere.
+---
+---Cannot be defined if `track_type` is `"hero-track"` or `"script-track"`.
+---
+---Cannot be true if `planets` or `surface_names` are defined.
+---@field play_on_all_surfaces? boolean
+---The track cannot play on specified planets.
+---
+---Can be used only if `play_on_all_surfaces` is true or `surface_names` are defined.
+---
+---Cannot be used when `planets` are defined.
+---@field exclude_planets? SpaceLocationID[]
+---The track cannot play on surfaces with specified name. It's enough if the specified name is a sub-string of the surface name.
+---
+---Can be used only if `play_on_all_surfaces` is true or `surface_names` are defined.
+---
+---Cannot exclude a name given in `surface_names`.
+---@field exclude_surface_names? string[]
+---Static music track.
+---
+---One of `sound` or `variable_sound` must be defined. Both cannot be defined together.
+---@field sound? Sound
+---Variable music track.
+---
+---One of `sound` or `variable_sound` must be defined. Both cannot be defined together.
+---@field variable_sound? VariableAmbientSoundVariableSound
+
+---Lets the game know in what instances the audio file is played.
+---@class AmbientSoundType
+
+---An ammo category. Each weapon has an ammo category, and can use any ammo with the same ammo category. Ammo categories can also be upgraded by technologies.
+---@class AmmoCategory : Prototype
+---@field type "ammo-category"
+---@field bonus_gui_order? Order
+---Can't be an empty array.
+---@field icons? IconData[]
+---Path to the icon file.
+---
+---Only loaded if `icons` is not defined.
+---@field icon? FileName
+---The size of the square icon, in pixels. E.g. `32` for a 32px by 32px icon. Must be larger than `0`.
+---
+---Only loaded if `icons` is not defined.
+---@field icon_size? SpriteSizeType
+
+---The name of an AmmoCategory.
+---@class AmmoCategoryID
+
+---@class AmmoDamageModifier : BaseModifier
+---@field type "ammo-damage"
+---If set to `false`, use the icon from UtilitySprites for this technology effect icon.
+---@field infer_icon? boolean
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+---Name of the AmmoCategory that is affected.
+---@field ammo_category AmmoCategoryID
+---Modification value, which will be added to the current ammo damage modifier upon researching.
+---@field modifier number
+
+---Ammo used for a gun.
+---@class AmmoItemPrototype : ItemPrototype
+---@field type "ammo"
+---When using a plain AmmoType (no array), the ammo type applies to everything (`"default"`).
+---
+---When using an array of AmmoTypes, they have the additional AmmoType::source_type property.
+---@field ammo_type AmmoType|AmmoType[]
+---Number of shots before ammo item is consumed. Must be >= `1`.
+---@field magazine_size? number
+---Amount of extra time (in ticks) it takes to reload the weapon after depleting the magazine. Must be >= `0`.
+---@field reload_time? number
+---@field ammo_category AmmoCategoryID
+---@field shoot_protected? boolean
+
+---Used to allow specifying different ammo effects depending on which kind of entity the ammo is used in.
+---
+---If ammo is used in an entity that isn't covered by the defined source_types, e.g. only `"player"` and `"vehicle"` are defined and the ammo is used by a turret, the first defined AmmoType in the AmmoItemPrototype::ammo_type array is used.
+---@class AmmoSourceType
+
+---A turret that consumes ammo items.
+---@class AmmoTurretPrototype : TurretPrototype
+---@field type "ammo-turret"
+---@field energy_source? ElectricEnergySource
+---@field energy_per_shot? Energy
+---Size of the ammo inventory.
+---@field inventory_size ItemStackIndex
+---The amount of ammo that inserters automatically insert into this turret.
+---@field automated_ammo_count ItemCountType
+---@field prepare_with_no_ammo? boolean
+
+---Definition of actual parameters used in attack.
+---@class AmmoType
+---Describes actions taken upon attack happening.
+---@field action? Trigger
+---When true, the gun will be able to shoot even when the target is out of range. Only applies when `target_type` equals `"position"`. The gun will fire at the maximum range in the direction of the target position.
+---@field clamp_position? boolean
+---If true, attacks will always be clamped to max range even if the target is within range. Used for shotguns.
+---@field force_clamp_to_max_range? boolean
+---Energy consumption of a single shot, if applicable.
+---@field energy_consumption? Energy
+---Affects the `range` value of the shooting gun prototype's BaseAttackParameters to give a modified maximum range. The `min_range` value of the gun is unaffected.
+---
+---This has no effect on artillery turrets and wagons even though the bonus appears in the GUI. Forum thread.
+---@field range_modifier? number
+---@field cooldown_modifier? number
+---@field consumption_modifier? number
+---`"entity"` fires at an entity, `"position"` fires directly at a position, `"direction"` fires in a direction.
+---
+---If this is `"entity"`, `clamp_position` is forced to be `false`.
+---@field target_type? "entity"|"position"|"direction"
+---Only exists (and is then mandatory) if the AmmoItemPrototype::ammo_type this AmmoType is defined on has multiple ammo types.
+---
+---Defines for which kind of entity this ammo type applies. Each entity kind can only be used once per array.
+---@field source_type? AmmoSourceType
+---List of entities that can be targeted by this ammo type.
+---@field target_filter? EntityID[]
+
+---@class AndTipTrigger
+---@field type "and"
+---If all of the triggers are fulfilled, this trigger is considered fulfilled.
+---@field triggers TipTrigger[]
+
+---@class AnimatedVector
+---@field rotations VectorRotation[]
+---Default render layer for the rotations.
+---@field render_layer? RenderLayer
+---@field direction_shift? DirectionShift
+
+---Specifies an animation that can be used in the game.
+---
+---Note that if any frame of the animation is specified from the same source as any other Sprite or frame of other animation, it will be shared.
+---@class Animation : AnimationParameters
+---If this property is present, all Animation definitions have to be placed as entries in the array, and they will all be loaded from there. `layers` may not be an empty table. Each definition in the array may also have the `layers` property.
+---
+---`animation_speed` and `max_advance` of the first layer are used for all layers. All layers will run at the same speed.
+---
+---If this property is present, all other properties, including those inherited from AnimationParameters, are ignored.
+---@field layers? Animation[]
+---Only loaded if `layers` is not defined. Mandatory if neither `stripes` nor `filenames` are defined.
+---
+---The path to the sprite file to use.
+---@field filename? FileName
+---Only loaded if `layers` is not defined.
+---@field stripes? Stripe[]
+---Only loaded if neither `layers` nor `stripes` are defined.
+---@field filenames? FileName[]
+---Only loaded if `layers` is not defined and if `filenames` is defined.
+---@field slice? integer
+---Only loaded if `layers` is not defined. Mandatory if `filenames` is defined.
+---@field lines_per_file? integer
+
+---If this is loaded as a single Animation, it applies to all directions. Any direction that is not defined defaults to the north animation.
+---@class Animation4Way
+---@field north Animation
+---@field north_east? Animation
+---@field east? Animation
+---@field south_east? Animation
+---@field south? Animation
+---@field south_west? Animation
+---@field west? Animation
+---@field north_west? Animation
+
+---@class AnimationElement
+---@field render_layer? RenderLayer
+---Used to determine render order for sprites with the same `render_layer` in the same position. Sprites with a higher `secondary_draw_order` are drawn on top.
+---@field secondary_draw_order? integer
+---@field apply_tint? boolean
+---@field always_draw? boolean
+---@field animation? Animation
+
+---This is a list of 1-based frame indices into the spritesheet. The actual length of the animation will then be the length of the frame_sequence (times `repeat_count`, plus the length minus two if `run_mode` is `"forward-then-backward"`). There is a limit for (actual) animation length of 255 frames.
+---
+---Indices can be used in any order, repeated or not used at all. Unused frames are not loaded into VRAM at all, frames referenced multiple times are loaded just once, see here.
+---@class AnimationFrameSequence
+
+---@class AnimationParameters : SpriteParameters
+---The width and height of one frame. If this is a tuple, the first member of the tuple is the width and the second is the height. Otherwise the size is both width and height. Width and height may only be in the range of 0-4096.
+---@field size? SpriteSizeType|[SpriteSizeType, SpriteSizeType]
+---Mandatory if `size` is not defined.
+---
+---Width of one frame in pixels, from 0-4096.
+---@field width? SpriteSizeType
+---Mandatory if `size` is not defined.
+---
+---Height of one frame in pixels, from 0-4096.
+---@field height? SpriteSizeType
+---@field run_mode? AnimationRunMode
+---Can't be `0`.
+---@field frame_count? integer
+---Specifies how many pictures are on each horizontal line in the image file. `0` means that all the pictures are in one horizontal line. Once the specified number of pictures are loaded from a line, the pictures from the next line are loaded. This is to allow having longer animations loaded in to Factorio's graphics matrix than the game engine's width limit of 8192px per input file. The restriction on input files is to be compatible with most graphics cards.
+---@field line_length? integer
+---Modifier of the animation playing speed, the default of `1` means one animation frame per tick (60 fps). The speed of playing can often vary depending on the usage (output of steam engine for example). Has to be greater than `0`.
+---@field animation_speed? number
+---Maximum amount of frames the animation can move forward in one update. Useful to cap the animation speed on entities where it is variable, such as car animations.
+---@field max_advance? number
+---How many times to repeat the animation to complete an animation cycle. E.g. if one layer is 10 frames, a second layer of 1 frame would need `repeat_count = 10` to match the complete cycle.
+---@field repeat_count? integer
+---If `true`, the animation frame count may be cut to half depending on detected hardware and other graphics settings.
+---@field allow_reducing_frames? boolean
+---Number of slices this is sliced into when using the "optimized atlas packing" option. If you are a modder, you can just ignore this property. Example: If this is 4, the sprite will be sliced into a 4×4 grid.
+---@field dice? integer
+---Same as `dice` above, but this specifies only how many slices there are on the x axis.
+---@field dice_x? integer
+---Same as `dice` above, but this specifies only how many slices there are on the y axis.
+---@field dice_y? integer
+---@field frame_sequence? AnimationFrameSequence
+---Only loaded if this is an icon, that is it has the flag `"group=icon"` or `"group=gui"`.
+---
+---Note that `mipmap_count` doesn't make sense in an animation, as it is not possible to layout mipmaps in a way that would load both the animation and the mipmaps correctly (besides animations with just one frame). See here.
+---@field mipmap_count? integer
+---Unused.
+---@field generate_sdf? boolean
+
+---Specifies an animation that can be used with LuaRendering::draw_animation at runtime.
+---@class AnimationPrototype
+---@field type "animation"
+---@field type "animation"
+---Name of the animation. Can be used with LuaRendering::draw_animation at runtime.
+---@field name string
+---If this property is present, all Animation definitions have to be placed as entries in the array, and they will all be loaded from there. `layers` may not be an empty table. Each definition in the array may also have the `layers` property.
+---
+---`animation_speed` and `max_advance` of the first layer are used for all layers. All layers will run at the same speed.
+---
+---If this property is present, all other properties besides `name` and `type` are ignored.
+---@field layers? Animation[]
+---Only loaded if `layers` is not defined. Mandatory if neither `stripes` nor `filenames` are defined.
+---
+---The path to the sprite file to use.
+---@field filename? FileName
+---Only loaded if `layers` is not defined.
+---@field priority? SpritePriority
+---Only loaded if `layers` is not defined.
+---@field flags? SpriteFlags
+---Only loaded if `layers` is not defined.
+---
+---The width and height of one frame. If this is a tuple, the first member of the tuple is the width and the second is the height. Otherwise the size is both width and height. Width and height may only be in the range of 0-4096.
+---@field size? SpriteSizeType|[SpriteSizeType, SpriteSizeType]
+---Only loaded if `layers` is not defined. Mandatory if `size` is not defined.
+---
+---Width of one frame in pixels, from 0-4096.
+---@field width? SpriteSizeType
+---Only loaded if `layers` is not defined. Mandatory if `size` is not defined.
+---
+---Height of one frame in pixels, from 0-4096.
+---@field height? SpriteSizeType
+---Only loaded if `layers` is not defined.
+---
+---Horizontal position of the animation in the source file in pixels.
+---@field x? SpriteSizeType
+---Only loaded if `layers` is not defined.
+---
+---Vertical position of the animation in the source file in pixels.
+---@field y? SpriteSizeType
+---Only loaded if `layers` is not defined.
+---
+---Loaded only when `x` and `y` are both `0`. The first member of the tuple is `x` and the second is `y`.
+---@field position? [SpriteSizeType, SpriteSizeType]
+---Only loaded if `layers` is not defined.
+---
+---The shift in tiles. `util.by_pixel()` can be used to divide the shift by 32 which is the usual pixel height/width of 1 tile in normal resolution. Note that 32 pixel tile height/width is not enforced anywhere - any other tile height or width is also possible.
+---@field shift? Vector
+---Only loaded if `layers` is not defined.
+---@field rotate_shift? boolean
+---Only loaded if `layers` is not defined.
+---@field apply_special_effect? boolean
+---Only loaded if `layers` is not defined.
+---
+---Values other than `1` specify the scale of the sprite on default zoom. A scale of `2` means that the picture will be two times bigger on screen (and thus more pixelated).
+---@field scale? number
+---Only loaded if `layers` is not defined.
+---
+---Only one of `draw_as_shadow`, `draw_as_glow` and `draw_as_light` can be true. This takes precedence over `draw_as_glow` and `draw_as_light`.
+---@field draw_as_shadow? boolean
+---Only loaded if `layers` is not defined.
+---
+---Only one of `draw_as_shadow`, `draw_as_glow` and `draw_as_light` can be true. This takes precedence over `draw_as_light`.
+---
+---Draws first as a normal sprite, then again as a light layer. See https://forums.factorio.com/91682.
+---@field draw_as_glow? boolean
+---Only loaded if `layers` is not defined.
+---
+---Only one of `draw_as_shadow`, `draw_as_glow` and `draw_as_light` can be true.
+---@field draw_as_light? boolean
+---Only loaded if `layers` is not defined.
+---
+---Only loaded if this is an icon, that is it has the flag `"group=icon"` or `"group=gui"`.
+---
+---Note that `mipmap_count` doesn't make sense in an animation, as it is not possible to layout mipmaps in a way that would load both the animation and the mipmaps correctly (besides animations with just one frame). See here.
+---@field mipmap_count? integer
+---Only loaded if `layers` is not defined.
+---@field apply_runtime_tint? boolean
+---Only loaded if `layers` is not defined.
+---@field tint_as_overlay? boolean
+---Only loaded if `layers` is not defined.
+---@field invert_colors? boolean
+---Only loaded if `layers` is not defined.
+---@field tint? Color
+---Only loaded if `layers` is not defined.
+---@field blend_mode? BlendMode
+---Only loaded if `layers` is not defined.
+---
+---Minimal mode is entered when mod loading fails. You are in it when you see the gray box after (part of) the loading screen that tells you a mod error. Modders can ignore this property.
+---@field load_in_minimal_mode? boolean
+---Only loaded if `layers` is not defined.
+---
+---Whether alpha should be pre-multiplied.
+---@field premul_alpha? boolean
+---Only loaded if `layers` is not defined.
+---
+---If `true`, the sprite may be downsampled to half its size on load even when 'Sprite quality' graphics setting is set to 'High'. Whether downsampling happens depends on detected hardware and other graphics settings.
+---@field allow_forced_downscale? boolean
+---Only loaded if `layers` is not defined.
+---
+---Unused.
+---@field generate_sdf? boolean
+---Only loaded if `layers` is not defined.
+---
+---Provides hint to sprite atlas system, so it can try to put sprites that are intended to be used at the same locations to the same sprite atlas.
+---@field surface? SpriteUsageSurfaceHint
+---Only loaded if `layers` is not defined.
+---
+---Provides hint to sprite atlas system, so it can pack sprites that are related to each other to the same sprite atlas.
+---@field usage? SpriteUsageHint
+---Only loaded if `layers` is not defined.
+---@field run_mode? AnimationRunMode
+---Only loaded if `layers` is not defined.
+---
+---Can't be `0`.
+---@field frame_count? integer
+---Only loaded if `layers` is not defined.
+---
+---Once the specified number of pictures is loaded, other pictures are loaded on other line. This is to allow having longer animations in matrix, to input files with too high width. The game engine limits the width of any input files to 8192px, so it is compatible with most graphics cards. `0` means that all the pictures are in one horizontal line.
+---@field line_length? integer
+---Only loaded if `layers` is not defined.
+---
+---Modifier of the animation playing speed, the default of `1` means one animation frame per tick (60 fps). The speed of playing can often vary depending on the usage (output of steam engine for example). Has to be greater than `0`.
+---
+---If `layers` are used, the `animation_speed` only has to be defined in one layer. All layers will run at the same speed.
+---@field animation_speed? number
+---Only loaded if `layers` is not defined.
+---
+---If `layers` are used, `max_advance` of the first layer is used for all layers.
+---
+---Maximum amount of frames the animation can move forward in one update.
+---@field max_advance? number
+---Only loaded if `layers` is not defined.
+---
+---How many times to repeat the animation to complete an animation cycle. E.g. if one layer is 10 frames, a second layer of 1 frame would need `repeat_count = 10` to match the complete cycle.
+---@field repeat_count? integer
+---Only loaded if `layers` is not defined.
+---@field dice? integer
+---Only loaded if `layers` is not defined.
+---@field dice_x? integer
+---Only loaded if `layers` is not defined.
+---@field dice_y? integer
+---Only loaded if `layers` is not defined.
+---@field frame_sequence? AnimationFrameSequence
+---Only loaded if `layers` is not defined.
+---@field stripes? Stripe[]
+---Only loaded if neither `layers` nor `stripes` are defined.
+---@field filenames? FileName[]
+---Only loaded if `layers` is not defined and if `filenames` is defined.
+---@field slice? integer
+---Only loaded if `layers` is not defined. Mandatory if `filenames` is defined.
+---@field lines_per_file? integer
+
+---@class AnimationRunMode
+
+---@class AnimationSheet : AnimationParameters
+---@field variation_count integer
+---@field line_length? integer
+---Only loaded, and mandatory if `filenames` is not defined.
+---
+---The path to the animation file to use.
+---@field filename? FileName
+---@field filenames? FileName[]
+---Mandatory if `filenames` is defined.
+---@field lines_per_file? integer
+
+---@class AnimationVariations
+---The variations are arranged vertically in the file, one row for each variation.
+---@field sheet? AnimationSheet
+---Only loaded if `sheet` is not defined.
+---@field sheets? AnimationSheet[]
+
+---Any basic type (string, number, boolean) or table.
+---@class AnyBasic
+
+---A union of all prototypes. A specific prototype is loaded based on the value of the `type` key.
+---
+---See the Prototypes page for more information.
+---@class AnyPrototype
+
+---Triggered when a space platform starter pack is used to create a space platform.
+---@class ApplyStarterPackTipTrigger : CountBasedTipTrigger
+---@field type "apply-starter-pack"
+
+---Refers to tints defined in TilePrototype::particle_tints.
+---@class ApplyTileTint
+
+---@class AreaTriggerItem : TriggerItem
+---@field type "area"
+---@field radius number
+---@field trigger_from_target? boolean
+---@field target_entities? boolean
+---@field target_enemies? boolean
+---@field show_in_tooltip? boolean
+---@field require_origin_is_valid? boolean
+---@field collision_mode? "distance-from-collision-box"|"distance-from-center"
+
+---An arithmetic combinator.
+---@class ArithmeticCombinatorPrototype : CombinatorPrototype
+---@field type "arithmetic-combinator"
+---@field plus_symbol_sprites? Sprite4Way
+---@field minus_symbol_sprites? Sprite4Way
+---@field multiply_symbol_sprites? Sprite4Way
+---@field divide_symbol_sprites? Sprite4Way
+---@field modulo_symbol_sprites? Sprite4Way
+---@field power_symbol_sprites? Sprite4Way
+---@field left_shift_symbol_sprites? Sprite4Way
+---@field right_shift_symbol_sprites? Sprite4Way
+---@field and_symbol_sprites? Sprite4Way
+---@field or_symbol_sprites? Sprite4Way
+---@field xor_symbol_sprites? Sprite4Way
+
+---Armor to wear on your in-game character for defense and buffs.
+---@class ArmorPrototype : ToolPrototype
+---@field type "armor"
+---Name of the EquipmentGridPrototype that this armor has.
+---@field equipment_grid? EquipmentGridID
+---What amount of damage the armor takes on what type of damage is incoming.
+---@field resistances? Resistance[]
+---By how many slots the inventory of the player is expanded when the armor is worn.
+---@field inventory_size_bonus? ItemStackIndex
+---@field provides_flight? boolean
+---@field collision_box? BoundingBox
+---@field drawing_box? BoundingBox
+---Only loaded if `provides_flight` is `true`.
+---@field takeoff_sound? Sound
+---Only loaded if `provides_flight` is `true`.
+---@field flight_sound? InterruptibleSound
+---Only loaded if `provides_flight` is `true`.
+---@field landing_sound? Sound
+---@field steps_sound? Sound
+---@field moving_sound? Sound
+
+---The arrows used for example in the campaign, they are literally just arrows.
+---@class ArrowPrototype : EntityPrototype
+---@field type "arrow"
+---@field arrow_picture Sprite
+---@field circle_picture? Sprite
+---@field blinking? boolean
+---The entity with the higher number is selectable before the entity with the lower number.
+---
+---The value `0` will be treated the same as `nil`.
+---@field selection_priority? integer
+
+---The entity spawned by the artillery targeting remote.
+---@class ArtilleryFlarePrototype : EntityPrototype
+---@field type "artillery-flare"
+---Picture variation count and individual frame count must be equal to shadow variation count.
+---@field pictures? AnimationVariations
+---@field life_time integer
+---Shadow variation variation count and individual frame count must be equal to picture variation count.
+---@field shadows? AnimationVariations
+---@field render_layer? RenderLayer
+---@field render_layer_when_on_ground? RenderLayer
+---@field regular_trigger_effect? TriggerEffect
+---@field regular_trigger_effect_frequency? integer
+---@field ended_in_water_trigger_effect? TriggerEffect
+---@field movement_modifier_when_on_ground? number
+---@field movement_modifier? number
+---@field creation_shift? Vector
+---@field initial_speed? Vector
+---@field initial_height? number
+---@field initial_vertical_speed? number
+---@field initial_frame_speed? number
+---How many artillery shots should be fired at the position of this flare.
+---@field shots_per_flare? integer
+---How long this flare stays alive after `shots_per_flare` amount of shots have been shot at it.
+---@field early_death_ticks? integer
+---Only artillery turrets/wagons whose ammo's ammo_category matches this category will shoot at this flare. Defaults to all ammo categories being able to shoot at this flare.
+---@field shot_category? AmmoCategoryID
+---@field map_color Color
+---The entity with the higher number is selectable before the entity with the lower number.
+---
+---The value `0` will be treated the same as `nil`.
+---@field selection_priority? integer
+
+---The projectile shot by artillery.
+---@class ArtilleryProjectilePrototype : EntityPrototype
+---@field type "artillery-projectile"
+---@field reveal_map boolean
+---@field picture? Sprite
+---@field shadow? Sprite
+---@field chart_picture? Sprite
+---@field action? Trigger
+---@field final_action? Trigger
+---@field height_from_ground? number
+---Whether the picture of the projectile is rotated to match the direction of travel.
+---@field rotatable? boolean
+---@field map_color Color
+---Must have a collision box size of zero.
+---@field collision_box? BoundingBox
+---The entity with the higher number is selectable before the entity with the lower number.
+---
+---The value `0` will be treated the same as `nil`.
+---@field selection_priority? integer
+
+---@class ArtilleryRangeModifier : SimpleModifier
+---@field type "artillery-range"
+---If set to `false`, use the icon from UtilitySprites for this technology effect icon.
+---@field infer_icon? boolean
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---@class ArtilleryRemoteCapsuleAction
+---@field type "artillery-remote"
+---Name of an ArtilleryFlarePrototype.
+---@field flare EntityID
+---@field play_sound_on_failure? boolean
+
+---@class ArtilleryTriggerDelivery : TriggerDeliveryItem
+---@field type "artillery"
+---Name of a ArtilleryProjectilePrototype.
+---@field projectile EntityID
+---@field starting_speed number
+---@field starting_speed_deviation? number
+---Maximum deviation of the projectile from source orientation, in +/- (`x radians / 2`). Example: `3.14 radians -> +/- (180° / 2)`, meaning up to 90° deviation in either direction of rotation.
+---@field direction_deviation? number
+---@field range_deviation? number
+---@field trigger_fired_artillery? boolean
+
+---An artillery turret.
+---@class ArtilleryTurretPrototype : EntityWithOwnerPrototype
+---@field type "artillery-turret"
+---Name of a GunPrototype.
+---@field gun ItemID
+---Must be > 0.
+---@field inventory_size ItemStackIndex
+---Must be > 0.
+---@field ammo_stack_limit ItemCountType
+---Must be > 0. The amount of ammo that inserters automatically insert into this artillery turret.
+---@field automated_ammo_count? ItemCountType
+---@field turret_rotation_speed number
+---Must be positive.
+---@field manual_range_modifier number
+---@field alert_when_attacking? boolean
+---@field disable_automatic_firing? boolean
+---@field base_picture_secondary_draw_order? integer
+---@field base_picture_render_layer? RenderLayer
+---@field base_picture? Animation4Way
+---@field cannon_base_shift Vector3D
+---@field cannon_base_pictures? RotatedSprite
+---@field cannon_barrel_pictures? RotatedSprite
+---@field rotating_sound? InterruptibleSound
+---@field turn_after_shooting_cooldown? integer
+---@field cannon_parking_frame_count? integer
+---Must be positive.
+---@field cannon_parking_speed? number
+---The maximum circuit wire distance for this entity.
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---@field circuit_connector? CircuitConnectorDefinition
+---@field cannon_barrel_recoil_shiftings? Vector3D[]
+---Only loaded if `cannon_barrel_recoil_shiftings` is loaded.
+---@field cannon_barrel_recoil_shiftings_load_correction_matrix? Vector3D[]
+---Only loaded if `cannon_barrel_recoil_shiftings` is loaded.
+---@field cannon_barrel_light_direction? Vector3D
+---Whether this prototype should be a high priority target for enemy forces. See Military units and structures.
+---@field is_military_target? boolean
+
+---An artillery wagon.
+---@class ArtilleryWagonPrototype : RollingStockPrototype
+---@field type "artillery-wagon"
+---Name of a GunPrototype.
+---@field gun ItemID
+---Must be > 0.
+---@field inventory_size ItemStackIndex
+---Must be > 0.
+---@field ammo_stack_limit ItemCountType
+---Must be > 0. The amount of ammo that inserters automatically insert into this artillery wagon.
+---@field automated_ammo_count? ItemCountType
+---@field turret_rotation_speed number
+---Must be > 0.
+---@field manual_range_modifier number
+---@field disable_automatic_firing? boolean
+---@field cannon_base_pictures? RollingStockRotatedSlopedGraphics
+---@field cannon_base_height? number
+---@field cannon_base_shift_when_vertical? number
+---@field cannon_base_shift_when_horizontal? number
+---@field cannon_barrel_pictures? RollingStockRotatedSlopedGraphics
+---@field rotating_sound? InterruptibleSound
+---@field turn_after_shooting_cooldown? integer
+---@field cannon_parking_frame_count? integer
+---Must be positive.
+---@field cannon_parking_speed? number
+---@field cannon_barrel_recoil_shiftings? Vector3D[]
+---Only loaded if `cannon_barrel_recoil_shiftings` is loaded.
+---@field cannon_barrel_recoil_shiftings_load_correction_matrix? Vector3D[]
+---Only loaded if `cannon_barrel_recoil_shiftings` is loaded.
+---@field cannon_barrel_light_direction? Vector3D
+
+---An assembling machine - like the assembling machines 1/2/3 in the game, but you can use your own recipe categories.
+---@class AssemblingMachinePrototype : CraftingMachinePrototype
+---@field type "assembling-machine"
+---The preset recipe of this machine. This machine does not show a recipe selection if this is set. The base game uses this for the rocket silo.
+---@field fixed_recipe? RecipeID
+---Only loaded if `fixed_recipe` is defined.
+---@field fixed_quality? QualityID
+---The locale key of the title of the GUI that is shown when the player opens the assembling machine. May not be longer than 200 characters.
+---@field gui_title_key? string
+---The maximum circuit wire distance for this entity.
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---@field default_recipe_finished_signal? SignalIDConnector
+---@field default_working_signal? SignalIDConnector
+---Sets the maximum number of item ingredients this machine can craft with. Any recipe with more item ingredients than this will be unavailable in this machine.
+---
+---This only counts item ingredients, not fluid ingredients! This means if ingredient count is 2, and the recipe has 2 item ingredients and 1 fluid ingredient, it can still be crafted in the machine.
+---@field ingredient_count? integer
+---@field max_item_product_count? integer
+---@field circuit_connector? [CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition]
+---@field circuit_connector_flipped? [CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition]
+---@field fluid_boxes_off_when_no_fluid_recipe? boolean
+---Defaults to true if `fixed_recipe` is not given.
+---@field disabled_when_recipe_not_researched? boolean
+
+---The name of an AsteroidChunkPrototype.
+---@class AsteroidChunkID
+
+---@class AsteroidChunkPrototype : Prototype
+---@field type "asteroid-chunk"
+---@field minable? MinableProperties
+---@field dying_trigger_effect? TriggerEffect
+---@field graphics_set? AsteroidGraphicsSet
+---Can't be an empty array.
+---@field icons? IconData[]
+---Path to the icon file.
+---
+---Only loaded, and mandatory if `icons` is not defined.
+---@field icon? FileName
+---The size of the square icon, in pixels. E.g. `32` for a 32px by 32px icon. Must be larger than `0`.
+---
+---Only loaded if `icons` is not defined.
+---@field icon_size? SpriteSizeType
+---@field hide_from_signal_gui? boolean
+
+---@class AsteroidCollectorGraphicsSet
+---@field animation? Animation4Way
+---@field status_lamp_picture_on? RotatedSprite
+---@field status_lamp_picture_full? RotatedSprite
+---@field status_lamp_picture_off? RotatedSprite
+---@field below_arm_pictures? RotatedSprite
+---@field below_ground_pictures? RotatedSprite
+---@field arm_head_animation? RotatedAnimation
+---@field arm_head_top_animation? RotatedAnimation
+---@field arm_link? RotatedSprite
+---Refer to EntityPrototype::water_reflection.
+---@field water_reflection? WaterReflectionDefinition
+
+---@class AsteroidCollectorPrototype : EntityWithOwnerPrototype
+---@field type "asteroid-collector"
+---@field arm_inventory_size? ItemStackIndex
+---@field arm_inventory_size_quality_increase? ItemStackIndex
+---@field inventory_size? ItemStackIndex
+---@field inventory_size_quality_increase? ItemStackIndex
+---@field graphics_set AsteroidCollectorGraphicsSet
+---@field passive_energy_usage Energy
+---@field arm_energy_usage Energy
+---If `arm_energy_usage` is not met, attempts to move slower at the cost of `arm_slow_energy_usage`.
+---@field arm_slow_energy_usage Energy
+---@field energy_usage_quality_scaling? number
+---@field arm_count_base? integer
+---@field arm_count_quality_scaling? integer
+---@field head_collection_radius? number
+---@field collection_box_offset? number
+---@field deposit_radius? number
+---@field arm_speed_base? number
+---@field arm_speed_quality_scaling? number
+---@field arm_angular_speed_cap_base? number
+---@field arm_angular_speed_cap_quality_scaling? number
+---@field tether_size? number
+---@field unpowered_arm_speed_scale? number
+---@field minimal_arm_swing_segment_retraction? integer
+---@field held_items_offset? number
+---@field held_items_spread? number
+---@field held_items_display_count? integer
+---@field munch_sound? Sound
+---@field deposit_sound? Sound
+---@field arm_extend_sound? Sound
+---@field arm_retract_sound? Sound
+---@field energy_source ElectricEnergySource|VoidEnergySource
+---The maximum circuit wire distance for this entity.
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---@field radius_visualisation_picture? Sprite
+---Must be positive.
+---@field collection_radius number
+---@field circuit_connector? [CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition]
+---@field arm_color_gradient? Color[]
+
+---@class AsteroidGraphicsSet
+---@field rotation_speed? number
+---@field normal_strength? number
+---@field light_width? number
+---@field brightness? number
+---@field specular_strength? number
+---@field specular_power? number
+---@field specular_purity? number
+---@field sss_contrast? number
+---@field sss_amount? number
+---@field sprite? Sprite
+---@field variations? AsteroidVariation|AsteroidVariation[]
+---@field lights? LightProperties|LightProperties[]
+---@field ambient_light? Color
+---Refer to EntityPrototype::water_reflection.
+---@field water_reflection? WaterReflectionDefinition
+
+---@class AsteroidPrototype : EntityWithOwnerPrototype
+---@field type "asteroid"
+---How much damage should entities and tiles get for each asteroid health point lost due to collision with these objects.
+---@field damage_per_hp? number
+---@field graphics_set? AsteroidGraphicsSet
+---Emissions cannot be larger than zero, asteroids cannot produce pollution.
+---@field emissions_per_second? table<AirbornePollutantID, number>
+
+---@class AsteroidSettings
+---@field spawning_rate number
+---@field max_ray_portals_expanded_per_tick integer
+
+---@class AsteroidSpawnPoint
+---Must be >= 0.
+---@field probability number
+---Must be > 0.
+---@field speed number
+---Facing the north. Must be in `[0, 1]` range.
+---@field angle_when_stopped? number
+
+---@class AsteroidVariation
+---@field color_texture Sprite
+---@field normal_map Sprite
+---@field roughness_map Sprite
+---@field shadow_shift? Vector
+
+---Loaded as one of the BaseAttackParameters extensions, based on the value of the `type` key.
+---@class AttackParameters
+
+---@class AttackReactionItem
+---@field range number
+---@field action? Trigger
+---@field reaction_modifier? number
+---@field damage_type? DamageTypeID
+
+---@class Attenuation
+---@field curve_type AttenuationType
+---@field tuning_parameter? number
+
+---@class AttenuationType
+
+---A setting in the map creation GUI. Used by the autoplace system.
+---@class AutoplaceControl : Prototype
+---@field type "autoplace-control"
+---Controls in what tab the autoplace is shown in the map generator GUI.
+---@field category "resource"|"terrain"|"cliff"|"enemy"
+---Sets whether this control's richness can be changed. The map generator GUI will only show the richness slider when the `category` is `"resource"`.
+---
+---If the autoplace control is used to generate ores, you probably want this to be true.
+---@field richness? boolean
+---Whether there is an "enable" checkbox for the autoplace control in the map generator GUI. If this is false, the autoplace control cannot be disabled from the GUI.
+---@field can_be_disabled? boolean
+---Whether this settings being lower than default disables fight related achievements.
+---@field related_to_fight_achievements? boolean
+---Hides the autoplace control from the map generation screen.
+---@field hidden? boolean
+
+---The name of an AutoplaceControl.
+---@class AutoplaceControlID
+
+---@class AutoplaceSettings
+---Whether missing autoplace names for this type should be default enabled.
+---@field treat_missing_as_default? boolean
+---Overrides the FrequencySizeRichness provided to the AutoplaceSpecification of the entity/tile/decorative. Takes priority over the FrequencySizeRichness set in the autoplace control.
+---@field settings? table<EntityID|TileID|DecorativeID, FrequencySizeRichness>
+
+---Autoplace specification is used to determine which entities are placed when generating map. Currently it is used for enemy bases, tiles, resources and other entities (trees, fishes, etc.).
+---
+---Autoplace specification describe conditions for placing tiles, entities, and decoratives during surface generation. Autoplace specification defines probability of placement on any given tile and richness, which has different meaning depending on the thing being placed.
+---@class AutoplaceSpecification
+---Name of the AutoplaceControl (row in the map generator GUI) that applies to this entity.
+---@field control? AutoplaceControlID
+---Indicates whether the thing should be placed even if MapGenSettings do not provide frequency/size/richness for it. (either for the specific prototype or for the control named by AutoplaceSpecification.control).
+---
+---If true, normal frequency/size/richness (`value=1`) are used in that case. Otherwise it is treated as if 'none' were selected.
+---@field default_enabled? boolean
+---Force of the placed entity. Can be a custom force name. Only relevant for EntityWithOwnerPrototype.
+---@field force? "enemy"|"player"|"neutral"|string
+---Order for placing the entity (has no effect when placing tiles). Entities whose order compares less are placed earlier (this influences placing multiple entities which collide with itself), from entities with equal order string only one with the highest probability is placed.
+---@field order? Order
+---For entities and decoratives, how many times to attempt to place on each tile. Probability and collisions are taken into account each attempt.
+---@field placement_density? integer
+---Restricts tiles or tile transitions the entity can appear on.
+---@field tile_restriction? TileIDRestriction[]
+---Provides a noise expression that will be evaluated at every point on the map to determine probability.
+---@field probability_expression NoiseExpression
+---If specified, provides a noise expression that will be evaluated to determine richness. Otherwise, `probability_expression` will be used instead.
+---@field richness_expression? NoiseExpression
+---A map of expression name to expression. Used by `probability_expression` and `richness_expression`.
+---
+---Local expressions are meant to store data locally similar to local variables in Lua. Their purpose is to hold noise expressions used multiple times in the named noise expression, or just to tell the reader that the local expression has a specific purpose. Local expressions can access other local definitions and also function parameters, but recursive definitions aren't supported.
+---@field local_expressions? table<string, NoiseExpression>
+---A map of function name to function. Used by `probability_expression` and `richness_expression`.
+---
+---Local functions serve the same purpose as local expressions - they aren't visible outside of the specific prototype and they have access to other local definitions.
+---@field local_functions? table<string, NoiseFunction>
+
+---The abstract base of all AttackParameters.
+---@class BaseAttackParameters
+---Before an entity can attack, the distance (in tiles) between the entity and target must be less than or equal to this.
+---@field range number
+---Number of ticks in which it will be possible to shoot again. If < 1, multiple shots can be performed in one tick.
+---@field cooldown number
+---The minimum distance (in tiles) between an entity and target. If a unit's target is less than this, the unit will attempt to move away before attacking. A flamethrower turret does not move, but has a minimum range. Less than this, it is unable to target an enemy.
+---@field min_range? number
+---If this is <= 0, it is set to 1. Arc from 0 to 1, so for example 0.25 is 90°. Used by the flamethrower turret in the base game. Arcs greater than 0.5 but less than 1 will be clamped to 0.5 as targeting in arcs larger than half circle is not implemented.
+---@field turn_range? number
+---Used when searching for the nearest enemy, when this is > 0, enemies that aren't burning are preferred over burning enemies. Definition of "burning" for this: Entity has sticker attached to it, and the sticker has a spread_fire_entity set.
+---@field fire_penalty? number
+---A higher penalty will discourage turrets from targeting units that would take longer to turn to face.
+---@field rotate_penalty? number
+---A higher penalty will discourage turrets from targeting units with higher health ratio. A negative penalty will encourage turrets to target units with higher health ratio.
+---@field health_penalty? number
+---A higher penalty will discourage turrets from targeting asteroids that are threatening. A negative penalty will encourage turrets to target threatening asteroids.
+---@field threatening_asteroid_penalty? number
+---@field range_mode? RangeMode
+---If less than `range`, the entity will choose a random distance between `range` and `min_attack_distance` and attack from that distance.
+---@field min_attack_distance? number
+---@field damage_modifier? number
+---Must be greater than or equal to `0`.
+---@field ammo_consumption_modifier? number
+---Must be between `0` and `1`.
+---@field cooldown_deviation? number
+---Number of ticks it takes for the weapon to actually shoot after the order for shooting has been made. This also allows to "adjust" the shooting animation to the effect of shooting.
+---
+---CapsuleActions cannot have attack parameters with non-zero warmup.
+---@field warmup? integer
+---Setting this to anything but zero causes homing projectiles to aim for the predicted location based on enemy movement instead of the current enemy location. If set, this property specifies the distance travelled per tick of the fired projectile.
+---@field lead_target_for_projectile_speed? number
+---Setting this to anything but zero causes projectiles to aim for the predicted location based on enemy movement instead of the current enemy location. If set, this property adds a flat number of ticks atop `lead_target_for_projectile_speed` that the shooter must lead.
+---@field lead_target_for_projectile_delay? integer
+---@field movement_slow_down_cooldown? number
+---@field movement_slow_down_factor? number
+---Can be mandatory.
+---@field ammo_type? AmmoType
+---Used in tooltips to set the tooltip category. It is also used to get the locale keys for activation instructions and speed of the action for the tooltip.
+---
+---For example, an activation_type of "throw" will result in the tooltip category "thrown" and the tooltip locale keys "gui.instruction-to-throw" and "description.throwing-speed".
+---@field activation_type? "shoot"|"throw"|"consume"|"activate"
+---Played once at the start of the attack if these are ProjectileAttackParameters.
+---@field sound? LayeredSound
+---@field animation? RotatedAnimation
+---Played during the attack.
+---@field cyclic_sound? CyclicSound
+---@field use_shooter_direction? boolean
+---Mandatory if `ammo_category` is not defined.
+---@field ammo_categories? AmmoCategoryID[]
+---Mandatory if `ammo_categories` is not defined.
+---@field ammo_category? AmmoCategoryID
+---Projectile will be creation position and orientation will be collinear with shooter and target (unless offset projectile center is specified). Used for railgun turrets to avoid unexpected friendly fire incidents.
+---@field true_collinear_ejection? boolean
+
+---The abstract base of all EnergySources. Specifies the way an entity gets its energy.
+---@class BaseEnergySource
+---The pollution an entity emits per minute at full energy consumption. This is exactly the value that is shown in the entity tooltip.
+---@field emissions_per_minute? table<AirbornePollutantID, number>
+---Whether to render the "no power" icon if the entity is low on power. Also applies to the "no fuel" icon when using burner energy sources.
+---@field render_no_power_icon? boolean
+---Whether to render the "no network" icon if the entity is not connected to an electric network.
+---@field render_no_network_icon? boolean
+
+---The abstract base of all Modifiers.
+---@class BaseModifier
+---Can't be an empty array.
+---@field icons? IconData[]
+---Path to the icon file.
+---
+---Only loaded if `icons` is not defined.
+---@field icon? FileName
+---The size of the square icon, in pixels. E.g. `32` for a 32px by 32px icon. Must be larger than `0`.
+---
+---Only loaded if `icons` is not defined.
+---@field icon_size? SpriteSizeType
+---@field hidden? boolean
+
+---@class BasePumpWagonConnectionAnimations
+---@field input? BasePumpWagonConnectionAnimations4Way
+---@field output? BasePumpWagonConnectionAnimations4Way
+
+---@class BasePumpWagonConnectionAnimations4Way
+---@field north Animation
+---@field west Animation
+---@field south Animation
+---@field east Animation
+
+---The abstract base of all StyleSpecifications.
+---@class BaseStyleSpecification
+---Name of a StyleSpecification. This style inherits all property values from its parent.
+---
+---Styles without a parent property default to the root style for their type. The exception to this are the root styles themselves, as they cannot have a parent set. Due to this, for root styles, some style properties are mandatory and behavior may be unexpected, such as an element not showing up because its size defaults to `0`.
+---@field parent? string
+---@field horizontal_align? HorizontalAlign
+---@field vertical_align? VerticalAlign
+---@field ignored_by_search? boolean
+---@field never_hide_by_search? boolean
+---@field horizontally_stretchable? StretchRule
+---@field vertically_stretchable? StretchRule
+---@field horizontally_squashable? StretchRule
+---@field vertically_squashable? StretchRule
+---If this is a tuple, the first member sets `natural_width` and the second sets `natural_height`. Otherwise, both `natural_width` and `natural_height` are set to the same value.
+---@field natural_size? integer|[integer, integer]
+---If this is a tuple, the first member sets `width`, and the second sets `height`. Otherwise, both `width` and `height` are set to the same value.
+---@field size? integer|[integer, integer]
+---Sets `minimal_width`, `maximal_width` and `natural_width` to the same value.
+---@field width? integer
+---Minimal width ensures that the widget will never be smaller than than that size. It can't be squashed to be smaller.
+---@field minimal_width? integer
+---Maximal width ensures that the widget will never be bigger than than that size. It can't be stretched to be bigger.
+---@field maximal_width? integer
+---Natural width specifies the width of the element tries to have, but it can still be squashed/stretched to have a different size.
+---@field natural_width? integer
+---Sets `minimal_height`, `maximal_height` and `natural_height` to the same value.
+---@field height? integer
+---Minimal height ensures that the widget will never be smaller than than that size. It can't be squashed to be smaller.
+---@field minimal_height? integer
+---Maximal height ensures that the widget will never be bigger than than that size. It can't be stretched to be bigger.
+---@field maximal_height? integer
+---Natural height specifies the height of the element tries to have, but it can still be squashed/stretched to have a different size.
+---@field natural_height? integer
+---Sets `top_padding`, `right_padding`, `bottom_padding` and `left_padding` to the same value.
+---@field padding? integer
+---@field top_padding? integer
+---@field right_padding? integer
+---@field bottom_padding? integer
+---@field left_padding? integer
+---Sets `top_margin`, `right_margin`, `bottom_margin` and `left_margin` to the same value.
+---@field margin? integer
+---@field top_margin? integer
+---@field right_margin? integer
+---@field bottom_margin? integer
+---@field left_margin? integer
+---Name of a custom GUI effect, which are hard-coded in the game's engine. Only has one option currently.
+---@field effect? "compilatron-hologram"
+---@field effect_opacity? number
+---@field tooltip? string|number|boolean|nil|table
+
+---Used by personal battery.
+---@class BatteryEquipmentPrototype : EquipmentPrototype
+---@field type "battery-equipment"
+
+---@class BeaconDistributionModifier : SimpleModifier
+---@field type "beacon-distribution"
+---If set to `false`, use the icon from UtilitySprites for this technology effect icon.
+---@field infer_icon? boolean
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---@class BeaconGraphicsSet
+---@field draw_animation_when_idle? boolean
+---@field draw_light_when_idle? boolean
+---@field random_animation_offset? boolean
+---@field module_icons_suppressed? boolean
+---@field reset_animation_when_frozen? boolean
+---@field base_layer? RenderLayer
+---@field animation_layer? RenderLayer
+---@field top_layer? RenderLayer
+---@field animation_progress? number
+---Which tint set in ModulePrototype::beacon_tint should be applied to elements of the `animation_list`, if any.
+---@field apply_module_tint? ModuleTint
+---@field no_modules_tint? Color
+---@field animation_list? AnimationElement[]
+---@field frozen_patch? Sprite
+---@field light? LightDefinition
+---The visualisations available for displaying the modules in the beacon. The visualisation is chosen based on art style, see BeaconModuleVisualizations::art_style and ModulePrototype::art_style.
+---@field module_visualisations? BeaconModuleVisualizations[]
+---@field module_tint_mode? "single-module"|"mix"
+---Refer to EntityPrototype::water_reflection.
+---@field water_reflection? WaterReflectionDefinition
+
+---@class BeaconModuleVisualization
+---@field has_empty_slot? boolean
+---Used to determine render order for sprites with the same `render_layer` in the same position. Sprites with a higher `secondary_draw_order` are drawn on top.
+---@field secondary_draw_order? integer
+---Which tint set in ModulePrototype::beacon_tint should be applied to this, if any.
+---@field apply_module_tint? ModuleTint
+---@field render_layer? RenderLayer
+---@field pictures? SpriteVariations
+
+---@class BeaconModuleVisualizations
+---The visualization is chosen based on the ModulePrototype::art_style, meaning if module art style equals beacon module visualization art style then this visualization is chosen. Vanilla uses `"vanilla"` here.
+---@field art_style string
+---@field use_for_empty_slots? boolean
+---@field tier_offset? integer
+---The outer array contains the different slots, the inner array contains the different layers for those slots (with different tints etc). Example:
+---@field slots? BeaconModuleVisualization[][]
+
+---Entity with the ability to transfer module effects to its neighboring entities.
+---@class BeaconPrototype : EntityWithOwnerPrototype
+---@field type "beacon"
+---The constant power usage of this beacon.
+---@field energy_usage Energy
+---@field energy_source ElectricEnergySource|VoidEnergySource
+---The maximum distance that this beacon can supply its neighbors with its module's effects. Max distance is 64.
+---@field supply_area_distance integer
+---The multiplier of the module's effects, when shared between neighbors.
+---@field distribution_effectivity number
+---Must be 0 or positive.
+---@field distribution_effectivity_bonus_per_quality_level? number
+---The number of module slots in this beacon.
+---@field module_slots ItemStackIndex
+---If set, QualityPrototype::beacon_module_slots_bonus will be added to module slots count.
+---@field quality_affects_module_slots? boolean
+---If set, QualityPrototype::beacon_supply_area_distance_bonus will be added to supply_area_distance. Total value will be clamped to be within range `[0, 64]`.
+---@field quality_affects_supply_area_distance? boolean
+---The graphics for the beacon.
+---@field graphics_set? BeaconGraphicsSet
+---Only loaded if `graphics_set` is not defined.
+---
+---The animation for the beacon, when in use.
+---@field animation? Animation
+---Only loaded if `graphics_set` is not defined.
+---
+---The picture of the beacon when it is not on.
+---@field base_picture? Animation
+---Affects animation speed.
+---@field perceived_performance? PerceivedPerformance
+---@field radius_visualisation_picture? Sprite
+---The types of modules that a player can place inside of the beacon.
+---@field allowed_effects? EffectTypeLimitation
+---Sets the module categories that are allowed to be inserted into this machine.
+---@field allowed_module_categories? ModuleCategoryID[]
+---Extra multiplier applied to the effects received from beacon by the effect receiver based on amount of beacons that are in range of that effect receiver.
+---
+---If there are more beacons that reach the effect receiver than there are entries in this array, then the last entry in the array is used for the multiplier.
+---
+---If this is not defined, then an implicit profile of `{1}` will be used.
+---@field profile? number[]
+---The beacon counter used by effect receiver when deciding which sample to take from `profile`.
+---@field beacon_counter? "total"|"same_type"
+
+---@class BeaconVisualizationTints
+---@field primary? Color
+---@field secondary? Color
+---@field tertiary? Color
+---@field quaternary? Color
+
+---@class BeamAnimationSet
+---Start point of the beam.
+---@field start? Animation
+---End point of the beam.
+---@field ending? Animation
+---Head segment of the beam.
+---@field head? Animation
+---Tail segment of the beam.
+---@field tail? Animation
+---Body segment of the beam.
+---@field body? AnimationVariations
+---@field render_layer? RenderLayer
+
+---@class BeamAttackParameters : BaseAttackParameters
+---@field type "beam"
+---@field source_direction_count? integer
+---@field source_offset? Vector
+
+---@class BeamGraphicsSet
+---@field beam? BeamAnimationSet
+---@field ground? BeamAnimationSet
+---Must be larger than 0.
+---@field desired_segment_length? number
+---@field random_end_animation_rotation? boolean
+---@field transparent_start_end_animations? boolean
+---@field randomize_animation_per_segment? boolean
+---Refer to EntityPrototype::water_reflection.
+---@field water_reflection? WaterReflectionDefinition
+
+---Used as a laser beam.
+---@class BeamPrototype : EntityPrototype
+---@field type "beam"
+---@field action? Trigger
+---@field width number
+---Damage interval can't be 0. A value of 1 will cause the attack to be applied each tick.
+---@field damage_interval integer
+---@field target_offset? Vector
+---@field random_target_offset? boolean
+---Whether this beams should trigger its action every `damage_interval`. If false, the action is instead triggered when its owner triggers shooting.
+---@field action_triggered_automatically? boolean
+---@field graphics_set BeamGraphicsSet
+---The entity with the higher number is selectable before the entity with the lower number.
+---
+---The value `0` will be treated the same as `nil`.
+---@field selection_priority? integer
+
+---@class BeamTriggerDelivery : TriggerDeliveryItem
+---@field type "beam"
+---Name of a BeamPrototype.
+---@field beam EntityID
+---@field add_to_shooter? boolean
+---@field max_length? integer
+---@field duration? integer
+---@field source_offset? Vector
+---@field destroy_with_source_or_target? boolean
+
+---Used by belt immunity equipment.
+---@class BeltImmunityEquipmentPrototype : EquipmentPrototype
+---@field type "belt-immunity-equipment"
+---The continuous power consumption of the belt immunity equipment.
+---@field energy_consumption Energy
+
+---@class BeltReaderLayer
+---@field render_layer? RenderLayer
+---Must have a `frame_count` of `4`, one for each direction.
+---@field sprites RotatedAnimation
+
+---@class BeltStackSizeBonusModifier : SimpleModifier
+---@field type "belt-stack-size-bonus"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---@class BeltTraverseTipTrigger : CountBasedTipTrigger
+---@field type "belt-traverse"
+
+---Determines how sprites/animations should blend with the background. The possible values are listed below.
+---
+---Note that in most of Factorio it is assumed colors are in alpha pre-multiplied format, see FFF #172 - Blending and Rendering. Sprites get pre-multiplied when loaded, unless `premul_alpha` is set to `false` on the sprite/animation itself. Since generating mipmaps doesn't respect `premul_alpha`, lower mipmap levels will be in pre-multiplied format regardless.
+---@class BlendMode
+
+---A blueprint book.
+---@class BlueprintBookPrototype : ItemWithInventoryPrototype
+---@field type "blueprint-book"
+---The inventory size of the item.
+---@field inventory_size ItemStackIndex|"dynamic"
+---Count of items of the same name that can be stored in one inventory slot. Must be 1 when the `"not-stackable"` flag is set.
+---@field stack_size 1
+---If the item will draw its label when held in the cursor in place of the item count.
+---@field draw_label_for_cursor_render? boolean
+
+---A blueprint.
+---@class BlueprintItemPrototype : SelectionToolPrototype
+---@field type "blueprint"
+---Count of items of the same name that can be stored in one inventory slot. Must be 1 when the `"not-stackable"` flag is set.
+---@field stack_size 1
+---Whether the item will draw its label when held in the cursor in place of the item count.
+---@field draw_label_for_cursor_render? boolean
+---The SelectionModeData::mode is hardcoded to `"blueprint"`.
+---
+---The filters are parsed, but then ignored and forced to be empty.
+---@field select SelectionModeData
+---The SelectionModeData::mode is hardcoded to `"blueprint"`.
+---
+---The filters are parsed, but then ignored and forced to be empty.
+---@field alt_select SelectionModeData
+---This property is hardcoded to `false`.
+---@field always_include_tiles? boolean
+
+---@class BoilerPictureSet
+---@field north BoilerPictures
+---@field east BoilerPictures
+---@field south BoilerPictures
+---@field west BoilerPictures
+
+---@class BoilerPictures
+---@field structure Animation
+---Drawn above the `structure`, in the "higher-object-under" RenderLayer. May be useful to correct problems with neighboring pipes overlapping the structure graphics.
+---@field patch? Sprite
+---Animation that is drawn on top of the `structure` when `burning_cooldown` is larger than 1. The animation alpha can be controlled by the energy source light intensity, depending on `fire_flicker_enabled`.
+---
+---The secondary draw order of this is higher than the secondary draw order of `fire_glow`, so this is drawn above `fire_glow`.
+---@field fire? Animation
+---Animation that is drawn on top of the `structure` when `burning_cooldown` is larger than 1. The animation alpha can be controlled by the energy source light intensity, depending on `fire_glow_flicker_enabled`.
+---
+---The secondary draw order of this is lower than the secondary draw order of `fire`, so this is drawn below `fire`.
+---@field fire_glow? Animation
+
+---A boiler. It heats fluid and optionally outputs it as a different fluid.
+---@class BoilerPrototype : EntityWithOwnerPrototype
+---@field type "boiler"
+---@field pictures? BoilerPictureSet
+---@field energy_source EnergySource
+---The input fluid box.
+---
+---If `mode` is `"heat-fluid-inside"`, the fluid is heated up directly in this fluidbox.
+---@field fluid_box FluidBox
+---The output fluid box.
+---
+---If `mode` is `"output-to-separate-pipe"` and this has a filter, the heated input fluid is converted to the output fluid that is set in the filter. The conversion ratio is based on the heat capacity of the fluids: `output_fluid_amount = input_fluid_amount * (input_fluid_heat_capacity / output_fluid_heat_capacity)`
+---
+---If `mode` is `"heat-fluid-inside"`, this fluidbox is unused.
+---@field output_fluid_box FluidBox
+---@field energy_consumption Energy
+---Controls for how many ticks the boiler will show the fire and fire_glow after the energy source runs out of energy.
+---
+---Note that `fire` and `fire_glow` alpha is set to the light intensity of the energy source, so 0 light intensity means the fire is invisible. For burner energy sources, the light intensity will reach zero rather quickly after the boiler runs out of fuel, effectively capping the time that `fire` and `fire_glow` will be shown after the boiler runs out of fuel.
+---@field burning_cooldown integer
+---Only loaded, and mandatory if `mode` is `"output-to-separate-pipe"`. This is the temperature that the input fluid must reach to be moved to the output fluid box.
+---@field target_temperature? number
+---If this is set to false, `fire_glow` alpha is always 1 instead of being controlled by the light intensity of the energy source.
+---@field fire_glow_flicker_enabled? boolean
+---If this is set to false, `fire` alpha is always 1 instead of being controlled by the light intensity of the energy source.
+---@field fire_flicker_enabled? boolean
+---In the `"output-to-separate-pipe"` mode, fluid is transferred from the `fluid_box` to the `output_fluid_box` when enough energy is available to heat the input fluid to the `target_temperature`. Setting a filter on the `output_fluid_box` means that instead of the heated input fluid getting moved to the output, it is converted to the filtered fluid in a ratio based on the heat capacity of the fluids: `output_fluid_amount = input_fluid_amount * (input_fluid_heat_capacity / output_fluid_heat_capacity)`
+---
+---In the `"heat-fluid-inside"` mode, fluid in the `fluid_box` is continuously heated from the input temperature up to its FluidPrototype::max_temperature.
+---@field mode? "heat-fluid-inside"|"output-to-separate-pipe"
+---The maximum circuit wire distance for this entity.
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---@field circuit_connector? [CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition]
+
+---@class BonusUtilityConstants
+---@field artillery_range string
+---@field worker_robots string
+---@field character string
+---@field follower_robots string
+---@field research_speed string
+---@field beacon_distribution string
+---@field inserter string
+---@field stack_inserter string
+---@field bulk_inserter string
+---@field turret_attack string
+---@field mining_productivity string
+---@field train_braking_force string
+
+---@class BoolModifier : BaseModifier
+---The state this modifier will be in upon researching.
+---@field modifier boolean
+
+---@class BorderImageSet
+---@field scale? number
+---@field border_width? integer
+---@field vertical_line? Sprite
+---@field horizontal_line? Sprite
+---@field top_right_corner? Sprite
+---@field bottom_right_corner? Sprite
+---@field bottom_left_corner? Sprite
+---@field top_left_coner? Sprite
+---@field top_t? Sprite
+---@field right_t? Sprite
+---@field bottom_t? Sprite
+---@field left_t? Sprite
+---@field cross? Sprite
+---@field top_end? Sprite
+---@field right_end? Sprite
+---@field bottom_end? Sprite
+---@field left_end? Sprite
+
+---BoundingBoxes are typically centered around the position of an entity.
+---
+---BoundingBoxes are usually specified with the short-hand notation of passing an array of exactly 2 or 3 items.
+---
+---The first tuple item is left_top, the second tuple item is right_bottom. The third tuple item is a float that represents the orientation.
+---
+---Positive x goes towards east, positive y goes towards south. This means that the upper-left point is the least dimension in x and y, and lower-right is the greatest.
+---@class BoundingBox
+---@field left_top MapPosition
+---@field right_bottom MapPosition
+---@field orientation? RealOrientation
+
+---A cursor box, for use in UtilitySprites.
+---@class BoxSpecification
+---@field sprite Sprite
+---Whether this is a complete box or just the top left corner. If this is true, `side_length` and `side_height` must be present. Otherwise `max_side_length` must be present.
+---@field is_whole_box? boolean
+---Only loaded, and mandatory if `is_whole_box` is `true`.
+---@field side_length? number
+---Only loaded, and mandatory if `is_whole_box` is `true`.
+---@field side_height? number
+---Only loaded, and mandatory if `is_whole_box` is `false`.
+---@field max_side_length? number
+
+---This prototype is used for receiving an achievement when the player builds an entity.
+---@class BuildEntityAchievementPrototype : AchievementPrototype
+---@field type "build-entity-achievement"
+---This will trigger the achievement, if this entity is placed.
+---@field to_build EntityID
+---How many entities need to be built.
+---@field amount? integer
+---If this is false, the player carries over their statistics from this achievement through all their saves.
+---@field limited_to_one_game? boolean
+---The achievement must be completed within this time limit.
+---@field within? MapTick
+
+---@class BuildEntityByRobotTipTrigger : CountBasedTipTrigger
+---@field type "build-entity-by-robot"
+
+---@class BuildEntityTechnologyTrigger
+---@field type "build-entity"
+---@field entity EntityIDFilter
+
+---@class BuildEntityTipTrigger : CountBasedTipTrigger
+---@field type "build-entity"
+---@field entity? EntityID
+---@field match_type_only? boolean
+---@field build_by_dragging? boolean
+---Building is considered consecutive when the built entity is the same as the last built entity.
+---@field consecutive? boolean
+---@field linear_power_pole_line? boolean
+---@field build_in_line? boolean
+---@field quality? QualityID
+
+---@class BuildMode
+
+---@class BulkInserterCapacityBonusModifier : SimpleModifier
+---@field type "bulk-inserter-capacity-bonus"
+---If set to `false`, use the icon from UtilitySprites for this technology effect icon.
+---@field infer_icon? boolean
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---@class BurnerEnergySource : BaseEnergySource
+---@field type "burner"
+---@field fuel_inventory_size ItemStackIndex
+---@field burnt_inventory_size? ItemStackIndex
+---@field smoke? SmokeSource[]
+---@field light_flicker? LightFlickeringDefinition
+---`1` means 100% effectivity. Must be greater than `0`. Multiplier of the energy output.
+---@field effectivity? number
+---@field burner_usage? BurnerUsageID
+---The energy source can be used with fuel from these fuel categories.
+---@field fuel_categories? FuelCategoryID[]
+---@field initial_fuel? ItemID
+---@field initial_fuel_percent? number
+---If this burner attempts to auto-refill fuel from the owner character, car, spider vehicle, cargo wagon, or artillery wagon.
+---@field auto_refuel? boolean
+---When set, items consumed and produced by this burner will not appear in item production statistics.
+---@field hide_from_stats? boolean
+
+---An entity that produces power from a burner energy source.
+---@class BurnerGeneratorPrototype : EntityWithOwnerPrototype
+---@field type "burner-generator"
+---The output energy source of the generator. Any emissions specified on this energy source are ignored, they must be specified on `burner`.
+---@field energy_source ElectricEnergySource
+---The input energy source of the generator.
+---@field burner BurnerEnergySource
+---Plays when the generator is active. `idle_animation` must have the same frame count as animation.
+---@field animation? Animation4Way
+---How much energy this generator can produce.
+---@field max_power_output Energy
+---Plays when the generator is inactive. Idle animation must have the same frame count as `animation`.
+---@field idle_animation? Animation4Way
+---Whether the `idle_animation` should also play when the generator is active.
+---@field always_draw_idle_animation? boolean
+---Affects animation speed and working sound.
+---@field perceived_performance? PerceivedPerformance
+
+---The name of a BurnerUsagePrototype.
+---@class BurnerUsageID
+
+---Set of data affecting tooltips, looks of gui slots etc when burner is not supposed to be burning items but eating them.
+---@class BurnerUsagePrototype : Prototype
+---@field type "burner-usage"
+---@field empty_slot_sprite Sprite
+---@field empty_slot_caption string|number|boolean|nil|table
+---@field empty_slot_description? string|number|boolean|nil|table
+---@field icon Sprite
+---@field no_fuel_status? string|number|boolean|nil|table
+---@field accepted_fuel_key string
+---@field burned_in_key string
+
+---Root style: `"button"`
+---@class ButtonStyleSpecification : StyleWithClickableGraphicalSetSpecification
+---@field type "button_style"
+---Name of a FontPrototype.
+---
+---Required on the root style.
+---@field font? string
+---Required on the root style.
+---@field default_font_color? Color
+---Required on the root style.
+---@field hovered_font_color? Color
+---Required on the root style.
+---@field clicked_font_color? Color
+---Required on the root style.
+---@field disabled_font_color? Color
+---Required on the root style.
+---@field selected_font_color? Color
+---Required on the root style.
+---@field selected_hovered_font_color? Color
+---Required on the root style.
+---@field selected_clicked_font_color? Color
+---Required on the root style.
+---@field strikethrough_color? Color
+---Required on the root style.
+---@field pie_progress_color? Color
+---@field clicked_vertical_offset? integer
+---@field draw_shadow_under_picture? boolean
+---@field draw_grayscale_picture? boolean
+---@field invert_colors_of_picture_when_hovered_or_toggled? boolean
+---@field invert_colors_of_picture_when_disabled? boolean
+---@field icon_horizontal_align? HorizontalAlign
+
+---@class CameraEffectTriggerEffectItem : TriggerEffectItem
+---@field type "camera-effect"
+---@field duration integer
+---@field ease_in_duration? integer
+---@field ease_out_duration? integer
+---@field delay? integer
+---@field full_strength_max_distance? integer
+---@field max_distance? integer
+---@field strength? number
+
+---Root style: `"camera"`
+---@class CameraStyleSpecification : EmptyWidgetStyleSpecification
+---@field type "camera_style"
+
+---Loaded as one of the capsule actions, based on the value of the `type` key.
+---@class CapsuleAction
+
+---A capsule, for example a combat robot capsule or the raw fish.
+---@class CapsulePrototype : ItemPrototype
+---@field type "capsule"
+---@field capsule_action CapsuleAction
+---Color of the range radius that is shown around the player when they hold the capsule.
+---@field radius_color? Color
+
+---@class CaptureRobotPrototype : FlyingRobotPrototype
+---@field type "capture-robot"
+---Must be >= 0.001.
+---@field capture_speed? number
+---Must be >= 0.0.
+---@field search_radius? number
+---@field destroy_action? Trigger
+---@field capture_animation? Animation
+
+---@class CaptureSpawnerTechnologyTrigger
+---@field type "capture-spawner"
+---@field entity? EntityID
+
+---Entity with specialized properties for acceleration, braking, and turning.
+---@class CarPrototype : VehiclePrototype
+---@field type "car"
+---Animation speed 1 means 1 frame per tile.
+---@field animation? RotatedAnimation
+---Modifies the efficiency of energy transfer from burner output to wheels.
+---@field effectivity number
+---@field consumption Energy
+---@field rotation_speed number
+---Vehicle will snap the vertical, horizontal or diagonal axis if it's within this angle
+---@field rotation_snap_angle number
+---@field energy_source BurnerEnergySource|VoidEnergySource
+---Animation speed 1 means 1 frame per tile.
+---@field turret_animation? RotatedAnimation
+---Must have the same frame count as `animation`.
+---@field light_animation? RotatedAnimation
+---@field render_layer? RenderLayer
+---If this car prototype uses tank controls to drive.
+---@field tank_driving? boolean
+---If this car prototype keeps the trunk inventory sorted.
+---@field auto_sort_inventory? boolean
+---If this car is immune to movement by belts.
+---@field has_belt_immunity? boolean
+---If this car gets damaged by driving over/against trees.
+---@field immune_to_tree_impacts? boolean
+---If this car gets damaged by driving over/against rocks.
+---@field immune_to_rock_impacts? boolean
+---If this car gets damaged by driving against cliffs.
+---@field immune_to_cliff_impacts? boolean
+---If this car gets damaged by driving into anything.
+---@field immune_to_all_impacts? boolean
+---@field turret_rotation_speed? number
+---Timeout in ticks specifying how long the turret must be inactive to return to the default position.
+---@field turret_return_timeout? integer
+---Size of the car inventory.
+---@field inventory_size ItemStackIndex
+---If set to 0 then the car will not have a Logistics tab.
+---@field trash_inventory_size? ItemStackIndex
+---@field light? LightDefinition
+---@field sound_no_fuel? Sound
+---Cannot be negative.
+---@field driving_sound_volume_modifier? number
+---@field darkness_to_render_light_animation? number
+---@field track_particle_triggers? FootstepTriggerEffectList
+---The names of the  GunPrototypes this car prototype uses.
+---@field guns? ItemID[]
+
+---@class CargoBayConnectableGraphicsSet
+---@field picture? LayeredSprite4Way
+---@field animation? Animation
+---@field animation_render_layer? RenderLayer
+---@field connections? CargoBayConnections
+---Only loaded if this graphics set is used in a property called `graphics_set`, refer to EntityPrototype::water_reflection.
+---@field water_reflection? WaterReflectionDefinition
+
+---@class CargoBayConnections
+---An array of LayeredSpriteVariations groups. One tile can have a maximum of two groups. A group is selected based on tile position and a random variation is picked from that group. This allows having interleaved variations and makes sure the same variation isn't picked for surrounding tiles.
+---
+---Supports at most 255 items.
+---@field tileset? LayeredSpriteVariations[][]
+---A mapping from a bitmask index to a tileset index. A bitmask index mapped to 0 won't be drawn.
+---
+---Tile bitmask uses 8 bits. Bits are assigned from the top-left corner and going clockwise (top-left tile has bit 0 and right tile has bit 7).
+---
+---Mandatory if `tileset` is defined.
+---@field tileset_mapping? table<integer, integer|integer[]>
+---@field bridge_horizontal_narrow? LayeredSpriteVariations
+---@field bridge_horizontal_wide? LayeredSpriteVariations
+---@field bridge_vertical_narrow? LayeredSpriteVariations
+---@field bridge_vertical_wide? LayeredSpriteVariations
+---@field bridge_crossing? LayeredSpriteVariations
+
+---@class CargoBayPrototype : EntityWithOwnerPrototype
+---@field type "cargo-bay"
+---@field graphics_set? CargoBayConnectableGraphicsSet
+---A special variant which renders on space platforms. If not specified, the game will fall back to the regular graphics set.
+---@field platform_graphics_set? CargoBayConnectableGraphicsSet
+---Cannot be 0.
+---@field inventory_size_bonus ItemStackIndex
+---@field has_direction? boolean
+---When set to `true`, inserters will be able to take items out of this cargo bay when it is connected to a cargo landing pad.
+---@field allow_unloading? boolean
+---Only relevant for cargo bays that have allow_unloading set.
+---
+---When `false` this cargo bay will allow item unloading regardless of distance as long as it is connected to a cargo landing pad.
+---
+---When `true` this cargo bay will allow item unloading only when connected to a cargo landing pad and cargo bay is within distance limit set by MaxCargoBayUnloadingDistanceModifier from that cargo landing pad.
+---@field use_unloading_distance_limit? boolean
+---@field hatch_definitions? CargoHatchDefinition[]
+---Has to be 2 for 2x2 grid.
+---@field build_grid_size? 2
+
+---@class CargoHatchDefinition
+---@field hatch_graphics? Animation
+---render layer for the hatch itself.
+---@field hatch_render_layer? RenderLayer
+---render layer for objects entering the hatch.
+---@field entering_render_layer? RenderLayer
+---@field offset? Vector
+---@field pod_shadow_offset? Vector
+---y height relative to hatch position where the pod art gets clipped from sky to regular sorting layer.
+---@field sky_slice_height? number
+---y height relative to hatch position where the pod art gets cut off.
+---@field slice_height? number
+---y height relative to hatch position where the pod travels to during preparing and parking.
+---@field travel_height? number
+---@field busy_timeout_ticks? integer
+---@field hatch_opening_ticks? integer
+---Cannot use `fade_ticks`.
+---@field opening_sound? InterruptibleSound
+---Cannot use `fade_ticks`.
+---@field closing_sound? InterruptibleSound
+---@field cargo_unit_entity_to_spawn? EntityID
+---ProcessionGraphic index pointing to the ProcessionGraphicCatalogue inside the current SpaceLocationPrototype.
+---@field illumination_graphic_index? integer
+---@field receiving_cargo_units? EntityID[]
+
+---@class CargoLandingPadLimitModifier : SimpleModifier
+---@field type "cargo-landing-pad-count"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---@class CargoLandingPadPrototype : EntityWithOwnerPrototype
+---@field type "cargo-landing-pad"
+---@field graphics_set? CargoBayConnectableGraphicsSet
+---@field inventory_size ItemStackIndex
+---@field trash_inventory_size? ItemStackIndex
+---The maximum circuit wire distance for this entity.
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---@field circuit_connector? CircuitConnectorDefinition
+---@field cargo_station_parameters CargoStationParameters
+---@field robot_door? RobotDoorSpecification
+---In chunks. The radius of how many chunks this cargo landing pad charts around itself.
+---@field radar_range? integer
+---The visualisation used when showing cargo bay unloading distance limits.
+---@field radar_visualisation_color? Color
+---@field radius_visualisation_picture? Sprite
+
+---@class CargoPodPrototype : EntityWithOwnerPrototype
+---@field type "cargo-pod"
+---Has to be of type 'pod-catalogue'.
+---@field default_graphic? ProcessionGraphic
+---Has to be of type 'pod-catalogue'.
+---@field default_shadow_graphic? ProcessionGraphic
+---@field procession_graphic_catalogue? ProcessionGraphicCatalogue
+---@field procession_audio_catalogue? ProcessionAudioCatalogue
+---@field shadow_slave_entity? EntityID
+---@field inventory_size ItemStackIndex
+---@field spawned_container EntityID
+---@field impact_trigger? Trigger
+---The entity with the higher number is selectable before the entity with the lower number.
+---
+---The value `0` will be treated the same as `nil`.
+---@field selection_priority? integer
+
+---A cargo station is any entity that has the capacity to send cargo units. In Space Age those are RocketSiloPrototype, SpacePlatformHubPrototype and CargoLandingPadPrototype. Cargo bays may provide additional cargo hatches to cargo stations which are cargo bay connectable.
+---@class CargoStationParameters
+---Packed cargo units will wait for the full order to be completed. This is useful to save rockets in rocket silos when items trickle in slowly. The platform hub has immediate access to items so false is better to allow partial fulfillments.
+---@field prefer_packed_cargo_units? boolean
+---@field hatch_definitions? CargoHatchDefinition[]
+---Big additional hatch that goes over the actual hatches.
+---@field giga_hatch_definitions? GigaCargoHatchDefinition[]
+---If set to false, this station will not accept incoming cargo units even if it has hatches that can. (can occur through linked cargo bays)
+---@field is_input_station? boolean
+---If set to false, this station will not dispatch cargo units even if it has hatches that can. (can occur through linked cargo bays)
+---@field is_output_station? boolean
+
+---A cargo wagon.
+---@class CargoWagonPrototype : RollingStockPrototype
+---@field type "cargo-wagon"
+---Size of the inventory of the wagon. The inventory can be limited using the red bar and filtered. This functionality cannot be turned off.
+---@field inventory_size ItemStackIndex
+---@field quality_affects_inventory_size? boolean
+
+---Jumps between targets and applies a Trigger to them.
+---@class ChainActiveTriggerPrototype : ActiveTriggerPrototype
+---@field type "chain-active-trigger"
+---The trigger to apply when jumping to a new target.
+---@field action? Trigger
+---Max number of jumps per trigger.
+---@field max_jumps? integer
+---Max length of jumps.
+---@field max_range_per_jump? number
+---Max distance jumps are allowed to travel away from the original target.
+---@field max_range? number
+---Tick delay between each jump. `0` means that all jumps are instantaneous.
+---@field jump_delay_ticks? MapTick
+---Chance that a new fork will spawn after each jump. `0` for 0% chance and `1` for 100% chance.
+---
+---Must be between 0 and 1.
+---@field fork_chance? number
+---@field fork_chance_increase_per_quality_level? number
+---Maximum number of forks that can spawn from a single jump.
+---@field max_forks_per_jump? integer
+---Maximum number of forks allowed to spawn for the entire chain.
+---@field max_forks? integer
+
+---@class ChainTriggerDelivery : TriggerDeliveryItem
+---@field type "chain"
+---@field chain ActiveTriggerID
+
+---@class ChangeRecipeProductivityModifier : BaseModifier
+---@field type "change-recipe-productivity"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+---@field recipe RecipeID
+---@field change EffectValue
+
+---@class ChangeSurfaceTipTrigger : CountBasedTipTrigger
+---@field type "change-surface"
+---@field surface string
+
+---This prototype is used for receiving an achievement when the player changes to a surface.
+---@class ChangedSurfaceAchievementPrototype : AchievementPrototype
+---@field type "change-surface-achievement"
+---This will trigger the achievement, if the player changes to this surface.
+---@field surface? string
+
+---The data for one variation of character animations.
+---@class CharacterArmorAnimation
+---@field idle? RotatedAnimation
+---@field idle_with_gun RotatedAnimation
+---@field running? RotatedAnimation
+---Must contain exactly 18 or 40 directions, so all of the combination of gun direction and moving direction can be covered. Some of these variations are used in reverse to save space. You can use the character animation in the base game for reference.
+---@field running_with_gun RotatedAnimation
+---@field mining_with_tool RotatedAnimation
+---flipped_shadow_running_with_gun must be nil or contain exactly 18 directions, so all of the combination of gun direction and moving direction can be covered. Some of these variations are used in reverse to save space. You can use the character animation in the base game for reference. `flipped_shadow_running_with_gun` has to have same frame count as `running_with_gun`.
+---@field flipped_shadow_running_with_gun? RotatedAnimation
+---@field idle_in_air? RotatedAnimation
+---@field idle_with_gun_in_air? RotatedAnimation
+---@field flying? RotatedAnimation
+---Must contain exactly 18 or 40 directions, so all of the combination of gun direction and moving direction can be covered. Some of these variations are used in reverse to save space. You can use the character animation in the base game for reference.
+---@field flying_with_gun? RotatedAnimation
+---@field take_off? RotatedAnimation
+---@field landing? RotatedAnimation
+---The names of the armors this animation data is used for. Don't define this if you want the animations to be used for the player without armor.
+---@field armors? ItemID[]
+---Smoke generator for when in air.
+---@field smoke_in_air? SmokeSource[]
+---Will be clamped to range [0, 1000]. When the character is flying, each SmokeSource in `smoke_in_air` will generate `smoke_cycles_per_tick` * SmokeSource::frequency smokes per tick on average.
+---@field smoke_cycles_per_tick? number
+---Will be clamped to range [0, 1000]. When the character is flying, each SmokeSource in `smoke_in_air` will generate `extra_smoke_cycles_per_tile` * SmokeSource::frequency additional smokes per tile moved.
+---@field extra_smoke_cycles_per_tile? number
+---List of positions in the mining with tool animation when the mining sound and mining particles are created.
+---
+---Overrides CharacterPrototype::mining_with_tool_particles_animation_positions if defined.
+---@field mining_with_tool_particles_animation_positions? number[]
+
+---@class CharacterBuildDistanceModifier : SimpleModifier
+---@field type "character-build-distance"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---The corpse of a CharacterPrototype.
+---@class CharacterCorpsePrototype : EntityPrototype
+---@field type "character-corpse"
+---In ticks. 0 for infinite.
+---@field time_to_live integer
+---@field render_layer? RenderLayer
+---Mandatory if `picture` is not defined.
+---@field pictures? AnimationVariations
+---Only loaded, and mandatory if `pictures` is not defined.
+---@field picture? Animation
+---A mapping of ArmorPrototype name to a number. The number is the Animation that is associated with the armor, e.g. using `1` will associate the armor with the first Animation in the `pictures` table.
+---
+---This mapping can be empty to have no sprite changes based on armor.
+---@field armor_picture_mapping? table<ItemID, integer>
+
+---@class CharacterCraftingSpeedModifier : SimpleModifier
+---@field type "character-crafting-speed"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---@class CharacterHealthBonusModifier : SimpleModifier
+---@field type "character-health-bonus"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---@class CharacterInventorySlotsBonusModifier : SimpleModifier
+---@field type "character-inventory-slots-bonus"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---@class CharacterItemDropDistanceModifier : SimpleModifier
+---@field type "character-item-drop-distance"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---@class CharacterItemPickupDistanceModifier : SimpleModifier
+---@field type "character-item-pickup-distance"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---@class CharacterLogisticRequestsModifier : BoolModifier
+---@field type "character-logistic-requests"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---@class CharacterLogisticTrashSlotsModifier : SimpleModifier
+---@field type "character-logistic-trash-slots"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---@class CharacterLootPickupDistanceModifier : SimpleModifier
+---@field type "character-loot-pickup-distance"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---@class CharacterMiningSpeedModifier : SimpleModifier
+---@field type "character-mining-speed"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---Entity that you move around on the screen during the campaign and freeplay.
+---@class CharacterPrototype : EntityWithOwnerPrototype
+---@field type "character"
+---@field crafting_speed? number
+---@field mining_speed number
+---@field running_speed number
+---@field distance_per_frame number
+---@field maximum_corner_sliding_distance number
+---The sound played when the character's health is low.
+---@field heartbeat? Sound
+---Number of slots in the main inventory. May be 0.
+---@field inventory_size ItemStackIndex
+---Must be between 1 and 15.
+---@field guns_inventory_size? ItemStackIndex
+---@field build_distance integer
+---@field drop_item_distance integer
+---@field reach_distance integer
+---@field reach_resource_distance number
+---@field item_pickup_distance number
+---@field loot_pickup_distance number
+---@field ticks_to_keep_gun integer
+---@field ticks_to_keep_aiming_direction integer
+---@field ticks_to_stay_in_combat integer
+---@field damage_hit_tint Color
+---List of positions in the mining with tool animation when the mining sound and mining particles are created.
+---@field mining_with_tool_particles_animation_positions number[]
+---List of positions in the running animation when the walking sound is played.
+---@field running_sound_animation_positions number[]
+---List of positions in the running animation when the moving sound is played.
+---@field moving_sound_animation_positions number[]
+---@field animations CharacterArmorAnimation[]
+---Names of the crafting categories the character can craft recipes from. The built-in categories can be found here. See also RecipeCategory.
+---@field crafting_categories? RecipeCategoryID[]
+---Names of the resource categories the character can mine resources from.
+---@field mining_categories? ResourceCategoryID[]
+---@field light? LightDefinition
+---@field flying_bob_speed? number
+---The search radius for a non-colliding position to move the player to if they are grounded mid-flight. Must be >= 0.
+---@field grounded_landing_search_radius? number
+---Must be >= 0.
+---@field enter_vehicle_distance? number
+---@field tool_attack_distance? number
+---Time in seconds. Must be positive
+---@field respawn_time? integer
+---Whether this character is moved by belts when standing on them.
+---@field has_belt_immunity? boolean
+---Name of the character corpse that is spawned when this character dies.
+---@field character_corpse? EntityID
+---This collision mask is used when the character is flying.
+---
+---Defaults to the mask from UtilityConstants::default_collision_masks when indexed by `"character/flying"`.
+---@field flying_collision_mask? CollisionMaskConnector
+---@field tool_attack_result? Trigger
+---Triggered every tick of the running animation.
+---@field footstep_particle_triggers? FootstepTriggerEffectList
+---Triggered when the running animation (`animations`) rolls over the frames defined in `right_footprint_frames` and `left_footprint_frames`.
+---@field synced_footstep_particle_triggers? FootstepTriggerEffectList
+---Triggered when the running animation (`animations`) rolls over the frames defined in `right_footprint_frames` and `left_footprint_frames`.
+---@field footprint_particles? FootprintParticle[]
+---Offset from the center of the entity for the left footprint. Used by `footprint_particles`.
+---@field left_footprint_offset? Vector
+---Offset from the center of the entity for the right footprint. Used by `footprint_particles`.
+---@field right_footprint_offset? Vector
+---The frames in the running animation (`animations`) where the right foot touches the ground.
+---@field right_footprint_frames? number[]
+---The frames in the running animation (`animations`) where the left foot touches the ground.
+---@field left_footprint_frames? number[]
+---Whether this prototype should be a high priority target for enemy forces. See Military units and structures.
+---@field is_military_target? boolean
+
+---@class CharacterReachDistanceModifier : SimpleModifier
+---@field type "character-reach-distance"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---@class CharacterResourceReachDistanceModifier : SimpleModifier
+---@field type "character-resource-reach-distance"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---@class CharacterRunningSpeedModifier : SimpleModifier
+---@field type "character-running-speed"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---@class ChargableGraphics
+---@field picture? Sprite
+---@field charge_animation? Animation
+---@field charge_animation_is_looped? boolean
+---@field charge_light? LightDefinition
+---@field charge_cooldown? integer
+---@field discharge_animation? Animation
+---@field discharge_light? LightDefinition
+---@field discharge_cooldown? integer
+
+---@class ChartUtilityConstants
+---@field copper_wire_color Color
+---@field electric_power_pole_color Color
+---@field enabled_switch_color Color
+---@field disabled_switch_color Color
+---@field electric_line_width number
+---@field electric_line_minimum_absolute_width number
+---@field red_wire_color Color
+---@field green_wire_color Color
+---@field circuit_network_member_color Color
+---@field turret_range_color Color
+---@field artillery_range_color Color
+---@field default_friendly_color Color
+---@field default_enemy_color Color
+---@field default_enemy_territory_color Color
+---@field rail_color Color
+---@field elevated_rail_color Color
+---@field rail_ramp_color Color
+---@field entity_ghost_color Color
+---@field tile_ghost_color Color
+---@field vehicle_outer_color Color
+---@field vehicle_outer_color_selected Color
+---@field vehicle_inner_color Color
+---@field vehicle_wagon_connection_color Color
+---@field resource_outline_selection_color Color
+---@field chart_train_stop_text_color Color
+---@field chart_train_stop_disabled_text_color Color
+---@field chart_train_stop_full_text_color Color
+---@field red_signal_color Color
+---@field green_signal_color Color
+---@field blue_signal_color Color
+---@field yellow_signal_color Color
+---@field chart_deconstruct_tint Color
+---@field chart_deconstruct_active_color Color
+---The strings are entity types.
+---@field default_friendly_color_by_type? table<string, Color>
+---The strings are entity types.
+---@field default_color_by_type? table<string, Color>
+---@field explosion_visualization_duration MapTick
+---@field train_path_color Color
+---@field train_preview_path_outline_color Color
+---@field train_current_path_outline_color Color
+---@field chart_logistic_robot_color Color
+---@field chart_construction_robot_color Color
+---@field chart_mobile_construction_robot_color Color
+---@field chart_personal_construction_robot_color Color
+---@field chart_delivery_to_me_logistic_robot_color Color
+---@field zoom_threshold_to_draw_spider_path number
+---@field chart_player_circle_size number
+---Defaults to `1.0`.
+---@field custom_tag_scale? number
+---Defaults to `1.0`.
+---@field custom_tag_max_scale? number
+---@field custom_tag_selected_overlay_tint? Color
+---Must be larger than 0. This number is multiplied by the crafting machine's radius to get the final recipe icon scale for the chart.
+---@field recipe_icon_scale number
+
+---Root style: `"checkbox"`
+---@class CheckBoxStyleSpecification : StyleWithClickableGraphicalSetSpecification
+---@field type "checkbox_style"
+---Name of a FontPrototype.
+---
+---Required on the root style.
+---@field font? string
+---Required on the root style.
+---@field font_color? Color
+---Required on the root style.
+---@field disabled_font_color? Color
+---Required on the root style.
+---@field checkmark? Sprite
+---Required on the root style.
+---@field disabled_checkmark? Sprite
+---Required on the root style.
+---@field intermediate_mark? Sprite
+---Required on the root style.
+---@field text_padding? integer
+
+---@class CircuitConditionConnector
+---@field first? SignalIDConnector
+---@field comparator? ComparatorString
+---@field second? SignalIDConnector|integer
+
+---Definition of a circuit connector.
+---@class CircuitConnectorDefinition
+---The pictures displayed for circuit connector.
+---@field sprites? CircuitConnectorSprites
+---Defines how wires visually connect to this circuit connector.
+---@field points? WireConnectionPoint
+
+---@class CircuitConnectorSprites
+---@field led_red Sprite
+---@field led_green Sprite
+---@field led_blue Sprite
+---@field led_light LightDefinition
+---Drawn when the entity is connected to a circuit network or a logistic network.
+---@field connector_main? Sprite
+---Drawn when the entity is connected to a circuit network or a logistic network.
+---@field connector_shadow? Sprite
+---Drawn when the entity is connected to a circuit network.
+---@field wire_pins? Sprite
+---Drawn when the entity is connected to a circuit network.
+---@field wire_pins_shadow? Sprite
+---@field led_blue_off? Sprite
+---@field blue_led_light_offset? Vector
+---@field red_green_led_light_offset? Vector
+---@field render_layer? RenderLayer
+---@field secondary_draw_order? integer
+
+---@class CircuitNetworkModifier : BoolModifier
+---@field type "unlock-circuit-network"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---@class CircularParticleCreationSpecification
+---@field name ParticleID
+---@field starting_frame_speed number
+---@field direction? number
+---@field direction_deviation? number
+---@field speed? number
+---@field speed_deviation? number
+---@field starting_frame_speed_deviation? number
+---@field height? number
+---@field height_deviation? number
+---@field vertical_speed? number
+---@field vertical_speed_deviation? number
+---@field center? Vector
+---@field creation_distance? number
+---@field creation_distance_orientation? number
+---@field use_source_position? boolean
+
+---@class CircularProjectileCreationSpecification
+
+---@class ClearCursorTipTrigger : CountBasedTipTrigger
+---@field type "clear-cursor"
+
+---@class CliffDeconstructionEnabledModifier : BoolModifier
+---@field type "cliff-deconstruction-enabled"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---@class CliffPlacementSettings
+---Name of the CliffPrototype.
+---@field name? EntityID
+---Name of the AutoplaceControl.
+---@field control? AutoplaceControlID
+---Elevation at which the first row of cliffs is placed. Can not be set from the map generation GUI.
+---@field cliff_elevation_0? number
+---Elevation difference between successive rows of cliffs. This is inversely proportional to 'frequency' in the map generation GUI. Specifically, when set from the GUI the value is `40 / frequency`.
+---@field cliff_elevation_interval? number
+---Smoothing makes cliffs straighter on rough elevation but makes placement inaccurate. 0 is no smoothing, 1 is full smoothing. Values outside of 0-1 are possible for specific effects but not recommended.
+---@field cliff_smoothing? number
+---Corresponds to 'continuity' in the GUI. This value is not used directly, but is used by the 'cliffiness' noise expression, which in combination with elevation and the two cliff elevation properties drives cliff placement (cliffs are placed when elevation crosses the elevation contours defined by `cliff_elevation_0` and `cliff_elevation_interval` when 'cliffiness' is greater than `0.5`). The default 'cliffiness' expression interprets this value such that larger values result in longer unbroken walls of cliffs, and smaller values (between `0` and `1`) result in larger gaps in cliff walls.
+---@field richness? number
+
+---A cliff.
+---@class CliffPrototype : EntityPrototype
+---@field type "cliff"
+---@field orientations OrientedCliffPrototypeSet
+---@field grid_size Vector
+---@field grid_offset Vector
+---Name of a capsule that has a robot_action to explode cliffs.
+---@field cliff_explosive? ItemID
+---@field place_as_crater? CraterPlacementDefinition
+
+---Additional mask which dictates where in the world certain ProcessionLayers are drawn. Origin determined by EffectRelativeTo.
+---@class CloudEffectStyle
+
+---@class CloudsEffectProperties
+---@field shape_noise_texture EffectTexture
+---@field detail_noise_texture EffectTexture
+---@field warp_sample_1 CloudsTextureCoordinateTransformation
+---@field warp_sample_2 CloudsTextureCoordinateTransformation
+---@field warped_shape_sample CloudsTextureCoordinateTransformation
+---@field additional_density_sample CloudsTextureCoordinateTransformation
+---@field detail_sample_1 CloudsTextureCoordinateTransformation
+---@field detail_sample_2 CloudsTextureCoordinateTransformation
+---@field scale? number
+---@field movement_speed_multiplier? number
+---@field shape_warp_strength? number
+---@field shape_warp_weight? number
+---@field opacity? number
+---@field opacity_at_night? number
+---@field density? number
+---@field density_at_night? number
+---@field detail_factor? number
+---@field detail_factor_at_night? number
+---@field shape_factor? number
+---@field detail_exponent? number
+---When set to 0, detail textures are not being "morphed" to each other, but lerped with ratio 0.5 instead.
+---@field detail_sample_morph_duration? integer
+
+---@class CloudsTextureCoordinateTransformation
+---@field scale number
+---@field wind_speed_factor? number
+
+---@class ClusterTriggerItem : TriggerItem
+---@field type "cluster"
+---Must be at least `2`.
+---@field cluster_count integer
+---@field distance number
+---@field distance_deviation? number
+
+---The name of a CollisionLayerPrototype.
+---@class CollisionLayerID
+
+---A collision layer. Used for collision masks.
+---
+---It's recommend to use underscores instead of dashes in `name` so that the name can easily be used as a table key when defining collision masks.
+---@class CollisionLayerPrototype : Prototype
+---@field type "collision-layer"
+
+---The base game provides common collision mask functions in a Lua file in the core lualib.
+---@class CollisionMaskConnector
+---Every key in the dictionary is the name of one layer the object collides with. The value is meaningless and always `true`. An empty table means that no layers are set.
+---@field layers table<CollisionLayerID, true>
+---Any two entities that both have this option enabled on their prototype and have an identical collision mask layers list will not collide. Other collision mask options are not included in the identical layer list check. This does mean that two different prototypes with the same collision mask layers and this option enabled will not collide.
+---@field not_colliding_with_itself? boolean
+---Uses the prototypes position rather than its collision box when doing collision checks with tile prototypes. Allows the prototype to overlap colliding tiles up until its center point. This is only respected for character movement and cars driven by players.
+---@field consider_tile_transitions? boolean
+---Any prototype with this collision option will only be checked for collision with other prototype's collision masks if they are a tile.
+---@field colliding_with_tiles_only? boolean
+
+---Table of red, green, blue, and alpha float values between 0 and 1. Alternatively, values can be from 0-255, they are interpreted as such if at least one value is `> 1`.
+---
+---Color allows the short-hand notation of passing an array of exactly 3 or 4 numbers. The array items are r, g, b and optionally a, in that order.
+---
+---The game usually expects colors to be in pre-multiplied form (color channels are pre-multiplied by alpha).
+---@class Color
+---red value
+---@field r? number
+---green value
+---@field g? number
+---blue value
+---@field b? number
+---alpha value (opacity)
+---@field a? number
+
+---@class ColorFilterData
+---@field name string
+---@field localised_name string|number|boolean|nil|table
+---4 arrays of 4-length float arrays, essentially a 4x4 matrix.
+---@field matrix number[][]
+
+---@class ColorHintSpecification
+---@field text? string
+---@field text_color? Color
+
+---A lookup table (LUT) for the color which maps the original color to a position in the sprite where the replacement color is found. The file pointed to by the filename must be a sprite of size 256×16.
+---@class ColorLookupTable
+
+---@class ColumnAlignment
+---Column index.
+---@field column integer
+---@field alignment Alignment
+
+---@class ColumnWidth : ColumnWidthItem
+---Column index.
+---@field column integer
+
+---@class ColumnWidthItem
+---@field minimal_width? integer
+---@field maximal_width? integer
+---Sets `minimal_width` and `maximal_width` to the same value.
+---@field width? integer
+
+---This prototype is used for receiving an achievement when the player has a certain robot follower count.
+---@class CombatRobotCountAchievementPrototype : AchievementPrototype
+---@field type "combat-robot-count-achievement"
+---This will trigger the achievement, if player's current robot count is over this amount.
+---@field count? integer
+
+---A combat robot. Can attack enemies.
+---@class CombatRobotPrototype : FlyingRobotPrototype
+---@field type "combat-robot"
+---@field time_to_live integer
+---@field attack_parameters AttackParameters
+---@field idle? RotatedAnimation
+---@field shadow_idle? RotatedAnimation
+---@field in_motion? RotatedAnimation
+---@field shadow_in_motion? RotatedAnimation
+---@field range_from_player? number
+---@field friction? number
+---Applied when the combat robot expires (runs out of `time_to_live`).
+---@field destroy_action? Trigger
+---@field follows_player? boolean
+---@field light? LightDefinition
+---The range within which the robot will try to separate itself from other friendly combat robots.
+---@field separation_range? number
+---The maximum force that can be applied to separate from other friendly combat robots.
+---@field max_separation_force? number
+---A factor determining how strongly the robot will try to separate from other friendly combat robots.
+---
+---Higher values result in stronger separation forces.
+---@field separation_force_factor? number
+
+---Abstract base type for decider and arithmetic combinators.
+---@class CombinatorPrototype : EntityWithOwnerPrototype
+---Defines how this combinator gets energy. The emissions set on the energy source are ignored so combinators cannot produce pollution.
+---@field energy_source ElectricEnergySource|VoidEnergySource
+---@field active_energy_usage Energy
+---@field sprites? Sprite4Way
+---@field frozen_patch? Sprite4Way
+---@field activity_led_sprites? Sprite4Way
+---@field input_connection_bounding_box BoundingBox
+---@field output_connection_bounding_box BoundingBox
+---@field activity_led_light_offsets [Vector, Vector, Vector, Vector]
+---@field screen_light_offsets [Vector, Vector, Vector, Vector]
+---@field input_connection_points [WireConnectionPoint, WireConnectionPoint, WireConnectionPoint, WireConnectionPoint]
+---@field output_connection_points [WireConnectionPoint, WireConnectionPoint, WireConnectionPoint, WireConnectionPoint]
+---@field activity_led_light? LightDefinition
+---@field screen_light? LightDefinition
+---@field activity_led_hold_time? integer
+---The maximum circuit wire distance for this entity.
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---Emissions cannot be larger than zero, combinators cannot produce pollution.
+---@field emissions_per_second? table<AirbornePollutantID, number>
+
+---A string that specifies how the inputs should be compared.
+---@class ComparatorString
+
+---@class CompleteObjectiveAchievementPrototype : AchievementPrototypeWithCondition
+---@field type "complete-objective-achievement"
+---The achievement must be completed within this time limit.
+---@field within? MapTick
+
+---Graphics for the heat pipe.
+---@class ConnectableEntityGraphics
+---@field single SpriteVariations
+---@field straight_vertical SpriteVariations
+---@field straight_horizontal SpriteVariations
+---@field corner_right_down SpriteVariations
+---@field corner_left_down SpriteVariations
+---@field corner_right_up SpriteVariations
+---@field corner_left_up SpriteVariations
+---@field t_up SpriteVariations
+---@field t_right SpriteVariations
+---@field t_down SpriteVariations
+---@field t_left SpriteVariations
+---@field ending_up SpriteVariations
+---@field ending_right SpriteVariations
+---@field ending_down SpriteVariations
+---@field ending_left SpriteVariations
+---@field cross SpriteVariations
+
+---A constant combinator.
+---@class ConstantCombinatorPrototype : EntityWithOwnerPrototype
+---@field type "constant-combinator"
+---@field sprites? Sprite4Way
+---@field activity_led_sprites? Sprite4Way
+---@field activity_led_light_offsets [Vector, Vector, Vector, Vector]
+---@field circuit_wire_connection_points [WireConnectionPoint, WireConnectionPoint, WireConnectionPoint, WireConnectionPoint]
+---@field activity_led_light? LightDefinition
+---The maximum circuit wire distance for this entity.
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---When not zero, toggle entity will enable constant combinator for that amount of ticks and then turn it off.
+---@field pulse_duration? integer
+
+---This prototype is used for receiving an achievement when the player constructs enough entities with construction robots.
+---@class ConstructWithRobotsAchievementPrototype : AchievementPrototype
+---@field type "construct-with-robots-achievement"
+---If this is false, the player carries over their statistics from this achievement through all their saves.
+---@field limited_to_one_game boolean
+---This will trigger the achievement, if enough entities were placed using construction robots.
+---@field amount? integer
+---@field more_than_manually? boolean
+
+---A construction robot.
+---@class ConstructionRobotPrototype : RobotWithLogisticInterfacePrototype
+---@field type "construction-robot"
+---@field construction_vector Vector
+---@field working? RotatedAnimation
+---@field shadow_working? RotatedAnimation
+---@field smoke? Animation
+---@field sparks? AnimationVariations
+---@field repairing_sound? Sound
+---@field mined_sound_volume_modifier? number
+---@field working_light? LightDefinition
+---Must have a collision box size of zero.
+---@field collision_box? BoundingBox
+
+---Defines which other inputs a CustomInputPrototype consumes.
+---@class ConsumingType
+
+---A generic container, such as a chest.
+---@class ContainerPrototype : EntityWithOwnerPrototype
+---@field type "container"
+---The number of slots in this container.
+---@field inventory_size ItemStackIndex
+---@field quality_affects_inventory_size? boolean
+---Amount of directions this container should have. Allowed values are 1, 2 and 4.
+---@field direction_count? integer
+---The picture displayed for this entity.
+---@field picture? Sprite4Way
+---Determines the type of inventory that this container has. Whether the inventory has a limiter bar, can be filtered (like cargo wagons), uses a custom stack size for contained item stacks (like artillery wagon), or uses a weight limit (like space age rocket silo).
+---@field inventory_type? "normal"|"with_bar"|"with_filters_and_bar"|"with_custom_stack_size"|"with_weight_limit"
+---Only used when `inventory_type` is `"with_custom_stack_size"`.
+---@field inventory_properties? InventoryWithCustomStackSizeSpecification
+---Only used when `inventory_type` is `"with_weight_limit"`.
+---@field inventory_weight_limit? Weight
+---The maximum circuit wire distance for this container.
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---If given, there must be exactly `direction_count` elements in the table.
+---@field circuit_connector? CircuitConnectorDefinition[]
+---@field default_status? EntityStatus
+
+---@class ControlPoint
+---@field control number
+---Has to be in range (0.0, 100.0).
+---@field volume_percentage number
+
+---A copy-paste or cut-paste tool.
+---@class CopyPasteToolPrototype : SelectionToolPrototype
+---@field type "copy-paste-tool"
+---@field cuts? boolean
+---Count of items of the same name that can be stored in one inventory slot. Must be 1 when the `"not-stackable"` flag is set.
+---@field stack_size 1
+---This property is hardcoded to `false`.
+---@field always_include_tiles? boolean
+---The filters are parsed, but then ignored and forced to be empty.
+---@field select SelectionModeData
+---The filters are parsed, but then ignored and forced to be empty.
+---@field alt_select SelectionModeData
+
+---Used for corpses, for example the remnants when destroying buildings.
+---@class CorpsePrototype : EntityPrototype
+---@field type "corpse"
+---Multiplier for `time_before_shading_off` and `time_before_removed`. Must be positive.
+---
+---Controls the speed of the animation: `1 ÷ dying_speed = duration of the animation`
+---@field dying_speed? number
+---Controls the speed of the splash animation: `1 ÷ splash_speed = duration of the splash animation`
+---@field splash_speed? number
+---Controls how long the corpse takes to fade, as in how long it takes to get from no transparency to full transparency/removed. This time is *not* added to `time_before_removed`, it is instead subtracted from it. So by default, the corpse starts fading about 15 seconds before it gets removed.
+---@field time_before_shading_off? integer
+---Time in ticks this corpse lasts. May not be 0.
+---@field time_before_removed? integer
+---@field expires? boolean
+---@field protected_from_tile_building? boolean
+---@field remove_on_entity_placement? boolean
+---@field remove_on_tile_placement? boolean
+---If true, and the collision box is unset, this will take the collision box of the first entity that uses this corpse.
+---@field auto_setup_collision_box? boolean
+---@field final_render_layer? RenderLayer
+---@field ground_patch_render_layer? RenderLayer
+---@field animation_render_layer? RenderLayer
+---@field splash_render_layer? RenderLayer
+---@field animation_overlay_render_layer? RenderLayer
+---@field animation_overlay_final_render_layer? RenderLayer
+---Defines after which frame in the `animation` the `direction_shuffle` should be applied. Can be set to `0`, frames are 1-indexed.
+---@field shuffle_directions_at_frame? integer
+---@field use_tile_color_for_ground_patch_tint? boolean
+---@field use_decay_layer? boolean
+---@field underwater_layer_offset? integer
+---@field ground_patch_fade_in_delay? number
+---@field ground_patch_fade_in_speed? number
+---@field ground_patch_fade_out_start? number
+---@field decay_frame_transition_duration? number
+---The dying animation.
+---@field animation? RotatedAnimationVariations
+---Variation count must be the same as `animation` variation count. Direction count must be the same as `animation` direction count. Frame count must be the same as `animation` frame count.
+---@field animation_overlay? RotatedAnimationVariations
+---@field decay_animation? RotatedAnimationVariations
+---@field splash? AnimationVariations
+---@field ground_patch? AnimationVariations
+---@field ground_patch_higher? AnimationVariations
+---@field ground_patch_decay? AnimationVariations
+---@field underwater_patch? RotatedSprite
+---@field ground_patch_fade_out_duration? number
+---May not be an empty array. May not be used if there is no `animation` defined.
+---
+---The inner arrays are called "groups" and must all have the same size.
+---
+---The indices map to the directions of `animation` and they are 1-indexed. After the `shuffle_directions_at_frame` frame of the `animation`, these indices are used as the direction when choosing which frame to render. The chosen shuffled direction can be any direction in the same group as the non-shuffled direction. Which direction is chosen from the group depends on the shuffle variation which is `dying_graphics_variation % group_size`.
+---@field direction_shuffle? integer[][]
+---The entity with the higher number is selectable before the entity with the lower number.
+---
+---The value `0` will be treated the same as `nil`.
+---@field selection_priority? integer
+
+---@class CountBasedTipTrigger
+---@field count? integer
+
+---Clips the CoverGraphicProcessionLayer.
+---@class CoverGraphicEffectData
+---@field style? CloudEffectStyle
+---Where the effect mask is centered.
+---@field relative_to? EffectRelativeTo
+---How much the pod's distance traveled moves the effect
+---@field distance_traveled_strength? Vector
+---How much the pod's position moves the effect
+---@field pod_movement_strength? Vector
+
+---Draws a layer of cloud texture covering the screen. It can fade in an out based on opacity and using the picture mask as gradient of areas which fade in soon or later.
+---
+---There are two important concepts to understand:
+---
+---- `mask` refers to something like a depth texture. It is applied across the whole screen and determines how the entire graphic fades in and out.
+---
+---- `effect` in this context refers to clipping out portion of the cover graphic. It can use an effect_graphic. `is_cloud_effect_advanced` makes the `effect` modify opacity threshold of the `mask` rather than multiplying alpha.
+---
+---Additionally an area can be masked out by range or effect mask.
+---@class CoverGraphicProcessionLayer
+---@field type "cover-graphic"
+---The group this layer belongs to, for inheritance.
+---@field reference_group? ProcessionLayerInheritanceGroupID
+---Adds the final position value from given layer to this one.
+---@field inherit_from? ProcessionLayerInheritanceGroupID
+---Main texture of the layer.
+---@field graphic? ProcessionGraphic
+---Opacity gradient of the layer.
+---@field mask_graphic? ProcessionGraphic
+---Used by certain effects.
+---@field effect_graphic? ProcessionGraphic
+---@field render_layer? RenderLayer
+---@field secondary_draw_order? integer
+---Advanced cloud effect mask modifies the regular mask thresholds instead of being a flat multiplication of the resulting opacity.
+---@field is_cloud_effect_advanced? boolean
+---The texture and mask are interpreted as four smaller textures that are randomly tiled.
+---@field is_quad_texture? boolean
+---Add rotation of the pod to the cloud rotation.
+---@field rotate_with_pod? boolean
+---Where the tiled texture is centered and rotated.
+---@field texture_relative_to? EffectRelativeTo
+---How much the pod's distance traveled moves the cloud coordinates
+---@field distance_traveled_strength? Vector
+---How much the pod's position moves the cloud coordinates
+---@field pod_movement_strength? Vector
+---Size the textures are scaled to in the world.
+---@field world_size? Vector
+---Clips the graphic.
+---@field effect? CoverGraphicEffectData
+---Clips the graphic.
+---@field alt_effect? CoverGraphicEffectData
+---Default values if unspecified:
+---
+---- opacity : 1.0
+---
+---- rotation : 0.0
+---
+---- effect_scale_min : 0.0
+---
+---- effect_scale_max : 1.0
+---
+---- effect_shift : {0, 0}
+---
+---- alt_effect_scale_min : 0.0
+---
+---- alt_effect_scale_max : 1.0
+---
+---- alt_effect_shift : {0, 0}
+---
+---- offset : {0, 0}
+---@field frames CoverGraphicProcessionLayerBezierControlPoint[]
+
+---One frame in time for a Bezier interpolation.
+---@class CoverGraphicProcessionLayerBezierControlPoint
+---Mandatory if `opacity` or `rotation` or `effect_scale_min` or `effect_scale_max` is defined.
+---@field timestamp? MapTick
+---`opacity` and `opacity_t` interpolate a double smoothly over time.
+---@field opacity? number
+---Bidirectional tangent at the given timestamp.
+---@field opacity_t? number
+---`rotation` and `rotation_t` interpolate a double smoothly over time.
+---@field rotation? number
+---Bidirectional tangent at the given timestamp.
+---@field rotation_t? number
+---`effect_scale_min` and `effect_scale_min_t` interpolate a double smoothly over time.
+---@field effect_scale_min? number
+---Bidirectional tangent at the given timestamp.
+---@field effect_scale_min_t? number
+---`effect_scale_max` and `effect_scale_max_t` interpolate a double smoothly over time.
+---@field effect_scale_max? number
+---Bidirectional tangent at the given timestamp.
+---@field effect_scale_max_t? number
+---`alt_effect_scale_min` and `alt_effect_scale_min_t` interpolate a double smoothly over time.
+---@field alt_effect_scale_min? number
+---Bidirectional tangent at the given timestamp.
+---@field alt_effect_scale_min_t? number
+---`alt_effect_scale_max` and `alt_effect_scale_max_t` interpolate a double smoothly over time.
+---@field alt_effect_scale_max? number
+---Bidirectional tangent at the given timestamp.
+---@field alt_effect_scale_max_t? number
+---`effect_shift` and `effect_shift_t` interpolate a vector smoothly over time using `effect_shift_rate` and `effect_shift_rate_t` for a 0-1 rate curve.
+---
+---Vector value.
+---@field effect_shift? Vector
+---Vector tangent.
+---@field effect_shift_t? Vector
+---Rate 0-1 value.
+---@field effect_shift_rate? number
+---Rate tangent.
+---@field effect_shift_rate_t? number
+---`alt_effect_shift` and `alt_effect_shift_t` interpolate a vector smoothly over time using `alt_effect_shift_rate` and `alt_effect_shift_rate_t` for a 0-1 rate curve.
+---
+---Vector value.
+---@field alt_effect_shift? Vector
+---Vector tangent.
+---@field alt_effect_shift_t? Vector
+---Rate 0-1 value.
+---@field alt_effect_shift_rate? number
+---Rate tangent.
+---@field alt_effect_shift_rate_t? number
+---`offset` and `offset_t` interpolate a vector smoothly over time using `offset_rate` and `offset_rate_t` for a 0-1 rate curve.
+---
+---Vector value.
+---@field offset? Vector
+---Vector tangent.
+---@field offset_t? Vector
+---Rate 0-1 value.
+---@field offset_rate? number
+---Rate tangent.
+---@field offset_rate_t? number
+
+---@class CraftFluidTechnologyTrigger
+---@field type "craft-fluid"
+---@field fluid FluidID
+---@field amount? number
+
+---@class CraftItemTechnologyTrigger
+---@field type "craft-item"
+---@field item ItemIDFilter
+---@field count? ItemCountType
+
+---@class CraftItemTipTrigger : CountBasedTipTrigger
+---@field type "craft-item"
+---@field item? ItemID
+---@field event_type "crafting-of-single-item-ordered"|"crafting-of-multiple-items-ordered"|"crafting-finished"
+---Can only be used when `event_type` is `"crafting-finished"`.
+---@field consecutive? boolean
+
+---@class CraftingMachineGraphicsSet : WorkingVisualisations
+---@field frozen_patch? Sprite4Way
+---@field animation_progress? number
+---@field reset_animation_when_frozen? boolean
+---Only loaded if this graphics set is used in a property called `graphics_set`, refer to EntityPrototype::water_reflection.
+---@field water_reflection? WaterReflectionDefinition
+
+---The abstract basis of the assembling machines and furnaces. Contains the properties that both of them have.
+---
+---Note that a crafting machine cannot be rotated unless it has at least one of the following: a fluid box, a heat energy source, a fluid energy source, or a non-square collision box. Crafting machines with non-square collision boxes can only be rotated before placement, not after.
+---@class CraftingMachinePrototype : EntityWithOwnerPrototype
+---When set, QualityPrototype::crafting_machine_energy_usage_multiplier will be applied to energy_usage.
+---@field quality_affects_energy_usage? boolean
+---Sets how much energy this machine uses while crafting. Energy usage has to be positive.
+---@field energy_usage Energy
+---How fast this crafting machine can craft. 1 means that for example a 1 second long recipe take 1 second to craft. 0.5 means it takes 2 seconds, and 2 means it takes 0.5 seconds.
+---
+---Crafting speed has to be positive.
+---@field crafting_speed number
+---A list of recipe categories this crafting machine can use.
+---@field crafting_categories RecipeCategoryID[]
+---Defines how the crafting machine is powered.
+---
+---When using an electric energy source and `drain` is not specified, it will be set to `energy_usage ÷ 30` automatically.
+---@field energy_source EnergySource
+---The crafting machine's fluid boxes. If an assembling machine has fluid boxes *and* AssemblingMachinePrototype::fluid_boxes_off_when_no_fluid_recipe is true, the assembling machine can only be rotated when a recipe consuming or producing fluid is set, or if it has one of the other properties listed at the top of this page.
+---
+---For assembling machines, any filters set on the fluidboxes are ignored.
+---@field fluid_boxes? FluidBox[]
+---@field effect_receiver? EffectReceiver
+---The number of module slots in this machine.
+---@field module_slots? ItemStackIndex
+---If set, QualityPrototype::crafting_machine_module_slots_bonus will be added to module slots count.
+---@field quality_affects_module_slots? boolean
+---Sets the modules and beacon effects that are allowed to be used on this machine.
+---@field allowed_effects? EffectTypeLimitation
+---Sets the module categories that are allowed to be inserted into this machine.
+---@field allowed_module_categories? ModuleCategoryID[]
+---Whether the "alt-mode icon" should be drawn at all.
+---@field show_recipe_icon? boolean
+---Controls whether the ingredients of an in-progress recipe are destroyed when mining the machine/changing the recipe. If set to true, the ingredients do not get destroyed. This affects only the ingredients of the recipe that is currently in progress, so those that visually have already been consumed while their resulting product has not yet been produced.
+---@field return_ingredients_on_change? boolean
+---Whether the "alt-mode icon" should have a black background.
+---@field draw_entity_info_icon_background? boolean
+---Whether the speed of the animation and working visualization should be based on the machine's speed (boosted or slowed by modules).
+---@field match_animation_speed_to_activity? boolean
+---Whether the recipe icon should be shown on the map.
+---@field show_recipe_icon_on_map? boolean
+---@field fast_transfer_modules_into_module_slots_only? boolean
+---@field ignore_output_full? boolean
+---@field graphics_set? CraftingMachineGraphicsSet
+---@field graphics_set_flipped? CraftingMachineGraphicsSet
+---Affects animation speed.
+---@field perceived_performance? PerceivedPerformance
+---@field production_health_effect? ProductionHealthEffect
+---@field trash_inventory_size? ItemStackIndex
+---@field vector_to_place_result? Vector
+---Defaults to true if `vector_to_place_result` is given.
+---@field use_mirroring? boolean
+---Each value must be >= 0.01.
+---
+---If value is not provided for a quality, then QualityPrototype::crafting_machine_speed_multiplier will be used as a speed multiplier instead.
+---@field crafting_speed_quality_multiplier? table<QualityID, number>
+---If value is not provided for a quality, then QualityPrototype::crafting_machine_module_slots_bonus will be used as a module slots bonus instead.
+---
+---Does nothing if CraftingMachinePrototype::quality_affects_module_slots is not set.
+---@field module_slots_quality_bonus? table<QualityID, ItemStackIndex>
+---Each value must be >= 0.01.
+---
+---If value is not provided for a quality, then QualityPrototype::crafting_machine_energy_usage_multiplier will be used as an energy usage multiplier instead.
+---
+---Does nothing if CraftingMachinePrototype::quality_affects_energy_usage is not set.
+---@field energy_usage_quality_multiplier? table<QualityID, number>
+
+---@class CranePart
+---Angle in radian, which is internally converted to a RealOrientation.
+---@field orientation_shift? number
+---@field is_contractible_by_cropping? boolean
+---@field should_scale_for_perspective? boolean
+---@field scale_to_fit_model? boolean
+---@field allow_sprite_rotation? boolean
+---@field snap_start? number
+---@field snap_end? number
+---@field snap_end_arm_extent_multiplier? number
+---@field name? string
+---@field dying_effect? CranePartDyingEffect
+---@field relative_position? Vector3D
+---@field relative_position_grappler? Vector3D
+---@field static_length? Vector3D
+---@field extendable_length? Vector3D
+---@field static_length_grappler? Vector3D
+---@field extendable_length_grappler? Vector3D
+---@field sprite? Sprite
+---Only loaded if `sprite` is not defined.
+---@field rotated_sprite? RotatedSprite
+---@field sprite_shadow? Sprite
+---Only loaded if `sprite_shadow` is not defined.
+---@field rotated_sprite_shadow? RotatedSprite
+---@field sprite_reflection? Sprite
+---Only loaded if `sprite_reflection` is not defined.
+---@field rotated_sprite_reflection? RotatedSprite
+---@field layer? integer
+
+---@class CranePartDyingEffect
+---@field particle_effect_linear_distance_step? number
+---@field explosion_linear_distance_step? number
+---@field particle_effects? CreateParticleTriggerEffectItem|CreateParticleTriggerEffectItem[]
+---@field explosion? ExplosionDefinition
+
+---@class CraterPlacementDefinition
+---@field minimum_segments_to_place? integer
+---@field segment_probability? number
+---@field segments CraterSegment[]
+
+---@class CraterSegment
+---@field orientation number
+---@field offset Vector
+
+---@class CreateAsteroidChunkEffectItem : TriggerEffectItem
+---@field type "create-asteroid-chunk"
+---@field asteroid_name AsteroidChunkID
+---@field offset_deviation? BoundingBox
+---@field offsets? Vector[]
+
+---@class CreateDecorativesTriggerEffectItem : TriggerEffectItem
+---@field type "create-decorative"
+---@field decorative DecorativeID
+---@field spawn_max integer
+---@field spawn_min_radius number
+---Must be less than 24.
+---@field spawn_max_radius number
+---@field spawn_min? integer
+---@field radius_curve? number
+---@field apply_projection? boolean
+---@field spread_evenly? boolean
+
+---@class CreateEntityTriggerEffectItem : TriggerEffectItem
+---@field type "create-entity"
+---The name of the entity that should be created.
+---@field entity_name EntityID
+---@field offset_deviation? BoundingBox
+---If `true`, the on_trigger_created_entity event will be raised.
+---@field trigger_created_entity? boolean
+---@field check_buildability? boolean
+---If `true`, colliding ghosts and corpses will not be removed by the creation of some entity types.
+---@field preserve_ghosts_and_corpses? boolean
+---@field show_in_tooltip? boolean
+---@field show_details_in_tooltip? boolean
+---Create the entity only when they are within a 200 tile range of any connected player.
+---@field only_when_visible? boolean
+---Entity creation will not occur if any tile matches the collision condition. Defaults to no collisions.
+---@field tile_collision_mask? TileCollisionMaskConnector
+---If multiple offsets are specified, multiple entities are created. The projectile of the Distractor capsule uses this property to spawn three Distractors.
+---@field offsets? Vector[]
+---If true, creates the entity as a member of the enemy force. If the surface.no_enemies_mode is true, the entity will not be created.
+---@field as_enemy? boolean
+---If true and `as_enemy` is true, allows the entity to be created even if the current surface.no_enemies_mode is true.
+---@field ignore_no_enemies_mode? boolean
+---@field find_non_colliding_position? boolean
+---@field abort_if_over_space? boolean
+---@field non_colliding_search_radius? number
+---@field non_colliding_search_precision? number
+---Only loaded if `find_non_colliding_position` is defined.
+---@field non_colliding_fail_result? Trigger
+---The result entity will be protected from automated attacks of enemies.
+---@field protected? boolean
+
+---@class CreateExplosionTriggerEffectItem : CreateEntityTriggerEffectItem
+---@field type "create-explosion"
+---@field max_movement_distance? number
+---@field max_movement_distance_deviation? number
+---@field inherit_movement_distance_from_projectile? boolean
+---@field cycle_while_moving? boolean
+
+---@class CreateFireTriggerEffectItem : CreateEntityTriggerEffectItem
+---@field type "create-fire"
+---@field initial_ground_flame_count? integer
+
+---@class CreateGhostOnEntityDeathModifier : BoolModifier
+---@field type "create-ghost-on-entity-death"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---@class CreateParticleTriggerEffectItem : TriggerEffectItem
+---@field type "create-particle"
+---@field particle_name ParticleID
+---@field initial_height number
+---@field offset_deviation? SimpleBoundingBox
+---@field show_in_tooltip? boolean
+---@field tile_collision_mask? CollisionMaskConnector
+---@field offsets? Vector[]
+---@field initial_height_deviation? number
+---@field initial_vertical_speed? number
+---@field initial_vertical_speed_deviation? number
+---@field speed_from_center? number
+---@field speed_from_center_deviation? number
+---@field frame_speed? number
+---@field frame_speed_deviation? number
+---@field movement_multiplier? number
+---Silently capped to a maximum of 100.
+---@field tail_length? integer
+---Silently capped to a maximum of 100.
+---@field tail_length_deviation? integer
+---@field tail_width? number
+---@field rotate_offsets? boolean
+---Create the particle only when they are within a 200 tile range of any connected player.
+---@field only_when_visible? boolean
+---@field apply_tile_tint? ApplyTileTint
+---Only loaded if `apply_tile_tint` is not defined.
+---@field tint? Color
+
+---This prototype is used for receiving an achievement when the player creates a space platform.
+---@class CreatePlatformAchievementPrototype : AchievementPrototype
+---@field type "create-platform-achievement"
+---How many space platforms need to be created.
+---@field amount? integer
+
+---@class CreatePollutionTriggerEffectItem : TriggerEffectItem
+---@field type "create-pollution"
+---This may be negative which will reduce pollution when run.
+---@field amount number
+---If not defined, and use_entity_from_trigger is false, the pollution does not show in statistics.
+---@field entity? EntityID
+---If not set, and entity is not set, the pollution does not show in statistics.
+---@field use_entity_from_trigger? boolean
+
+---@class CreateSmokeTriggerEffectItem : CreateEntityTriggerEffectItem
+---@field type "create-smoke"
+---@field initial_height? number
+---@field speed? Vector
+---@field speed_multiplier? number
+---@field speed_multiplier_deviation? number
+---@field starting_frame? number
+---@field starting_frame_deviation? number
+---@field speed_from_center? number
+---@field speed_from_center_deviation? number
+
+---@class CreateSpacePlatformTechnologyTrigger
+---@field type "create-space-platform"
+
+---@class CreateStickerTriggerEffectItem : TriggerEffectItem
+---@field type "create-sticker"
+---Name of a StickerPrototype that should be created.
+---@field sticker EntityID
+---@field show_in_tooltip? boolean
+---If `true`, on_trigger_created_entity will be triggered when the sticker is created.
+---@field trigger_created_entity? boolean
+
+---@class CreateTrivialSmokeEffectItem : TriggerEffectItem
+---@field type "create-trivial-smoke"
+---@field smoke_name TrivialSmokeID
+---@field offset_deviation? BoundingBox
+---@field offsets? Vector[]
+---@field initial_height? number
+---@field max_radius? number
+---@field speed? Vector
+---@field speed_multiplier? number
+---@field speed_multiplier_deviation? number
+---@field starting_frame? number
+---@field starting_frame_deviation? number
+---@field speed_from_center? number
+---@field speed_from_center_deviation? number
+---@field only_when_visible? boolean
+
+---@class CursorBoxSpecification
+---@field regular BoxSpecification[]
+---@field multiplayer_selection BoxSpecification[]
+---@field not_allowed BoxSpecification[]
+---@field copy BoxSpecification[]
+---@field electricity BoxSpecification[]
+---@field logistics BoxSpecification[]
+---@field pair BoxSpecification[]
+---@field train_visualization BoxSpecification[]
+---@field blueprint_snap_rectangle BoxSpecification[]
+---@field spidertron_remote_selected BoxSpecification[]
+---@field spidertron_remote_to_be_selected BoxSpecification[]
+
+---One of the following values:
+---@class CursorBoxType
+
+---A curved-A rail.
+---@class CurvedRailAPrototype : RailPrototype
+---@field type "curved-rail-a"
+---The collision_box of straight rail is hardcoded to `{{-0.7, -2.516}, {0.7, 2.516}}`.
+---@field collision_box? BoundingBox
+
+---A curved-B rail.
+---@class CurvedRailBPrototype : RailPrototype
+---@field type "curved-rail-b"
+---The collision_box of straight rail is hardcoded to `{{-0.7, -2.441}, {0.7, 2.441}}`.
+---@field collision_box? BoundingBox
+
+---The name of an CustomEventPrototype.
+---@class CustomEventID
+
+---Custom events share the same namespace as custom inputs and built-in events for subscribing to and raising them.
+---@class CustomEventPrototype : Prototype
+---@field type "custom-event"
+
+---Used for custom keyboard shortcuts/key bindings in mods. The key associated with the custom input can be changed in the options. This means that `key_sequence` is simply the default key binding.
+---@class CustomInputPrototype : Prototype
+---@field type "custom-input"
+---Unique textual identification of the prototype. May only contain alphanumeric characters, dashes and underscores. May not exceed a length of 200 characters.
+---
+---For a list of all names used in vanilla, see data.raw.
+---
+---It is also the name for the event that is raised when they key (combination) is pressed and action is `"lua"`, see Tutorial:Script interfaces.
+---@field name string
+---The default key sequence for this custom input. Use `""` (empty string) for unassigned.
+---
+---As modifier keys, these names are used: `"CONTROL"`, `"SHIFT"`, `"COMMAND"`, `"ALT"`. Note that `"COMMAND"` is loaded as `"CONTROL"` on Windows and Linux.
+---
+---`" + "` is used to separate modifier keys from normal keys, like so: `"ALT + G"`. A key binding can contain any amount of individual modifier keys, but only a single normal mouse button or keyboard key (listed below).
+---@field key_sequence string
+---The alternative key binding for this control. See `key_sequence` for the format.
+---@field alternative_key_sequence? string
+---The controller (game pad) keybinding for this control. Use `""` (empty string) for unassigned.
+---
+---As modifier buttons, these names are used: `"controller-righttrigger"`, `"controller-lefttrigger"`.
+---
+---`" + "` is used to separate modifier buttons from normal buttons, like so: `"controller-righttrigger + controller-a"`. A key binding can contain any amount of individual modifier buttons, but only a single normal button (listed below).
+---@field controller_key_sequence? string
+---The alternative controller (game pad) keybinding for this control. See `controller_key_sequence` for the format.
+---@field controller_alternative_key_sequence? string
+---When a custom-input is linked to a game control it won't show up in the control-settings GUI and will fire when the linked control is pressed.
+---@field linked_game_control? LinkedGameControl
+---Sets whether internal game events associated with the same key sequence should be fired or blocked. If they are fired ("none"), then the custom input event will happen before the internal game event.
+---@field consuming? ConsumingType
+---If this custom input is enabled. Disabled custom inputs exist but are not used by the game. If disabled, no event is raised when the input is used.
+---@field enabled? boolean
+---@field enabled_while_spectating? boolean
+---@field enabled_while_in_cutscene? boolean
+---If true, the type and name of the currently selected prototype will be provided as "selected_prototype" in the raised Lua event. This also works in GUIs, not just the game world.
+---
+---This will also return an item in the cursor such as copper-wire or rail-planner, if nothing is beneath the cursor.
+---@field include_selected_prototype? boolean
+---The item will be created when this input is pressed and action is set to "spawn-item". The item must have the spawnable flag set.
+---@field item_to_spawn? ItemID
+---A Lua event is only raised if the action is "lua".
+---@field action? "lua"|"spawn-item"|"toggle-personal-roboport"|"toggle-personal-logistic-requests"|"toggle-equipment-movement-bonus"
+---If `true`, when the shortcut is activated, the modifiers used for this shortcut can't be re-used to press something else until unpressed. The example where this is useful is ALT+A to activate spidertron remote, where ALT is consumed, so pressing right mouse button before the ALT is unpressed will not trigger pin creation (ALT + right mouse button), but send the selected unit instead.
+---@field block_modifiers? boolean
+
+---Allows to add extra description items to the tooltip.
+---@class CustomTooltipField
+---@field name string|number|boolean|nil|table
+---@field value string|number|boolean|nil|table
+---@field quality_header? string
+---Custom values per quality level. If a value is not provided for a specific quality, CustomTooltipField::value will be used instead.
+---@field quality_values? table<QualityID, string|number|boolean|nil|table>
+---Ordering within all description items (modded and un-modded). Items with smaller order values are shown above items with larger values.
+---@field order? integer
+---@field show_in_factoriopedia? boolean
+---@field show_in_tooltip? boolean
+
+---Used by BaseAttackParameters to play a sound during the attack.
+---@class CyclicSound
+---Played once at the beginning of the overall cyclic sound.
+---@field begin_sound? Sound
+---Played repeatedly after the begin_sound was played.
+---@field middle_sound? Sound
+---Played once when the overall cyclic sound is requested to end.
+---@field end_sound? Sound
+
+---@class DamageEntityTriggerEffectItem : TriggerEffectItem
+---@field type "damage"
+---@field damage DamageParameters
+---@field apply_damage_to_trees? boolean
+---If `true`, no corpse for killed entities will be created.
+---@field vaporize? boolean
+---@field use_substitute? boolean
+---@field lower_distance_threshold? integer
+---@field upper_distance_threshold? integer
+---@field lower_damage_modifier? number
+---@field upper_damage_modifier? number
+
+---Used to specify what type of damage and how much damage something deals.
+---@class DamageParameters
+---@field amount number
+---The type of damage. See here for a list of built-in types, and DamageType for creating custom types.
+---@field type DamageTypeID
+
+---@class DamageTileTriggerEffectItem : TriggerEffectItem
+---@field type "damage-tile"
+---@field damage DamageParameters
+---@field radius? number
+
+---A damage type. This is used in the damage system. A list of built-in damage types can be found here.
+---@class DamageType : Prototype
+---@field type "damage-type"
+
+---@class DamageTypeFilters
+---The damage types to filter for.
+---@field types DamageTypeID|DamageTypeID[]
+---Whether this is a whitelist or a blacklist of damage types. Defaults to being a blacklist.
+---@field whitelist? boolean
+
+---The name of a DamageType.
+---@class DamageTypeID
+
+---The data table is read by the game to load all prototypes.
+---
+---At the end of the prototype stage, the data table is loaded by the game engine and the format of the prototypes is validated. Any extra properties are ignored. See Data Lifecycle for more information.
+---
+---The data table and its properties are defined in Lua, so their source code can be viewed in dataloader.lua.
+---@class Data
+---A dictionary of prototype types to values that themselves are dictionaries of prototype names to specific prototypes.
+---
+---This means that individual prototypes can be accessed with `local prototype = data.raw["prototype-type"]["internal-name"]`.
+---@field raw table<string, table<string, AnyPrototype>>
+---The primary way to add prototypes to the data table.
+---@field extend DataExtendMethod
+---Set by the game based on whether the demo or retail version is running. Should not be used by mods.
+---@field is_demo boolean
+
+---The data.extend method. It's the primary way to add prototypes to the data table.
+---
+---The method has two positional function parameters:
+---
+---- `self` :: Data?: Usually provided by calling `data:extend(otherdata)`, which is syntax sugar for `data.extend(data, otherdata)`.
+---
+---- `otherdata` :: array[AnyPrototype]: A continuous array of non-abstract prototypes.
+---
+---The data.extend method can also be called with only the `otherdata` argument by calling it directly on data: `data.extend(otherdata)`.
+---@class DataExtendMethod
+
+---The first member of the tuple states at which time of the day the LUT should be used. If the current game time is between two values defined in the color lookup that have different LUTs, the color is interpolated to create a smooth transition. (Sharp transition can be achieved by having the two values differing only by a small fraction.)
+---
+---If there is only one tuple, it means that the LUT will be used all the time, regardless of the value of the first member of the tuple.
+---
+---The second member of the tuple is a lookup table (LUT) for the color which maps the original color to a position in the sprite where the replacement color is found.
+---@class DaytimeColorLookupTable
+
+---A decider combinator.
+---@class DeciderCombinatorPrototype : CombinatorPrototype
+---@field type "decider-combinator"
+---@field equal_symbol_sprites? Sprite4Way
+---@field greater_symbol_sprites? Sprite4Way
+---@field less_symbol_sprites? Sprite4Way
+---@field not_equal_symbol_sprites? Sprite4Way
+---@field greater_or_equal_symbol_sprites? Sprite4Way
+---@field less_or_equal_symbol_sprites? Sprite4Way
+
+---This prototype is used for receiving an achievement when the player deconstructs enough entities with construction robots.
+---@class DeconstructWithRobotsAchievementPrototype : AchievementPrototype
+---@field type "deconstruct-with-robots-achievement"
+---This will trigger the achievement, if enough entities were deconstructed using construction robots.
+---@field amount integer
+
+---Entity used to signify that the tile below it should be deconstructed.
+---@class DeconstructibleTileProxyPrototype : EntityPrototype
+---@field type "deconstructible-tile-proxy"
+
+---A deconstruction planner.
+---@class DeconstructionItemPrototype : SelectionToolPrototype
+---@field type "deconstruction-item"
+---Count of items of the same name that can be stored in one inventory slot. Must be 1 when the `"not-stackable"` flag is set.
+---@field stack_size 1
+---The SelectionModeData::mode is hardcoded to `"deconstruct"`.
+---
+---The filters are parsed, but then ignored and forced to be empty.
+---@field select SelectionModeData
+---The SelectionModeData::mode is hardcoded to `"cancel-deconstruct"`.
+---
+---The filters are parsed, but then ignored and forced to be empty.
+---@field alt_select SelectionModeData
+---This property is hardcoded to `false`.
+---@field always_include_tiles? boolean
+
+---@class DeconstructionTimeToLiveModifier : SimpleModifier
+---@field type "deconstruction-time-to-live"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---The name of a DecorativePrototype.
+---@class DecorativeID
+
+---Simple decorative purpose objects on the map, they have no health and some of them are removed when the player builds over. Usually used for grass patches, roots, small plants etc.
+---@class DecorativePrototype : Prototype
+---@field type "optimized-decorative"
+---Must contain at least 1 picture.
+---@field pictures SpriteVariations
+---Can be defined only when decorative is not "decal" (see `render_layer`).
+---@field stateless_visualisation? StatelessVisualisation|StatelessVisualisation[]
+---Only loaded if `stateless_visualisation` is not defined. Can be defined only when decorative is not "decal" (see `render_layer`).
+---@field stateless_visualisation_variations? StatelessVisualisation|StatelessVisualisation[][]
+---Must contain the [0,0] point. Max radius of the collision box is 8.
+---@field collision_box? BoundingBox
+---When "decals" render layer is used, the decorative is treated as decal. That means it will be rendered within tile layers instead of normal sprite layers.
+---@field render_layer? RenderLayer
+---@field grows_through_rail_path? boolean
+---Loaded only if `render_layer` = "decals". Value lower than 1 enables masking by water for decals with `tile_layer` greater or equal to UtilityConstants::capture_water_mask_at_layer. Water tiles must use water `tile-effect` with WaterTileEffectParameters::lightmap_alpha set to 0 or value less than 1. Graphics option `Occlude light sprites` must be enabled, as water mask is captured into terrain lightmap alpha channel. Tiles rendered in layer between UtilityConstants::capture_water_mask_at_layer and decal's `tile_layer` will likely also mask decals in some way, as water mask will likely be 0 at their position, but this is considered undefined behavior.
+---@field opacity_over_water? number
+---Mandatory if `render_layer` = "decals". This int16 is converted to a TileRenderLayer internally. It is offset from `ground-natural`.
+---@field tile_layer? integer
+---Loaded only if `render_layer` = "decals". When decoratives are being spawned by EnemySpawnerPrototype::spawn_decoration or TurretPrototype::spawn_decoration, decals with `decal_overdraw_priority` greater than 0 will be filtered such that they don't overlap too much. If two or more decals would overlap, only the one with the largest value of `decal_overdraw_priority` is placed.
+---@field decal_overdraw_priority? integer
+---Defaults to the mask from UtilityConstants::default_collision_masks when indexed by `"decorative"`.
+---@field collision_mask? CollisionMaskConnector
+---@field walking_sound? Sound
+---Called by DestroyDecorativesTriggerEffectItem.
+---@field trigger_effect? TriggerEffect
+---@field minimal_separation? number
+---@field target_count? integer
+---@field placed_effect? TriggerEffect
+---@field autoplace? AutoplaceSpecification
+
+---Delays the delivery of triggered effect by some number of ticks.
+---@class DelayedActiveTriggerPrototype : ActiveTriggerPrototype
+---@field type "delayed-active-trigger"
+---The trigger to apply after `delay` has elapsed.
+---@field action Trigger
+---The number of ticks to delay the delivery of the triggered effect. Must be greater than 0.
+---@field delay integer
+---The number of times to repeat the delayed trigger.
+---@field repeat_count? integer
+---The number of ticks between repeat deliveries of the triggered effect. Must be greater than 0.
+---@field repeat_delay? integer
+---If true, the delayed trigger is cancelled if the source entity is destroyed.
+---@field cancel_when_source_is_destroyed? boolean
+
+---@class DelayedTriggerDelivery : TriggerDeliveryItem
+---@field type "delayed"
+---@field delayed_trigger ActiveTriggerID
+
+---This prototype is used for receiving an achievement, when the player requests and receives enough items using logistic robots.
+---@class DeliverByRobotsAchievementPrototype : AchievementPrototype
+---@field type "deliver-by-robots-achievement"
+---This will trigger the achievement, when the player receives enough items through logistic robots.
+---@field amount integer
+
+---@class DeliverCategory
+---@field type "deliver-category"
+---@field type "deliver-category"
+---Name of the deliver category.
+---@field name string
+
+---@class DeliverImpactCombination
+---@field type "deliver-impact-combination"
+---@field type "deliver-impact-combination"
+---Name of the deliver impact combination.
+---@field name string
+---@field impact_category string
+---@field deliver_category string
+---@field trigger_effect_item TriggerEffect
+
+---This trigger is considered fulfilled when the TipsAndTricksItem::dependencies are fulfilled.
+---@class DependenciesMetTipTrigger
+---@field type "dependencies-met"
+
+---This prototype is used for receiving an achievement when a resource entity is depleted.
+---@class DepleteResourceAchievementPrototype : AchievementPrototype
+---@field type "deplete-resource-achievement"
+---How many resource entities need to be depleted.
+---@field amount? integer
+---If this is false, the player carries over their statistics from this achievement through all their saves.
+---@field limited_to_one_game? boolean
+
+---@class DestroyCliffAchievementPrototype : AchievementPrototype
+---@field type "destroy-cliff-achievement"
+---@field amount? integer
+---If this is false, the player carries over their statistics from this achievement through all their saves.
+---@field limited_to_one_game? boolean
+
+---@class DestroyCliffsCapsuleAction
+---@field type "destroy-cliffs"
+---@field attack_parameters AttackParameters
+---@field radius number
+---@field timeout? integer
+---@field play_sound_on_failure? boolean
+---Whether using the capsule consumes an item from the stack.
+---@field uses_stack? boolean
+
+---@class DestroyCliffsTriggerEffectItem : TriggerEffectItem
+---@field type "destroy-cliffs"
+---@field radius number
+---Entity created at trigger location every time trigger executes.
+---@field explosion_at_trigger? EntityID
+---Entity created at cliff location when a cliff is destroyed.
+---@field explosion_at_cliff? EntityID
+
+---@class DestroyDecorativesTriggerEffectItem : TriggerEffectItem
+---@field type "destroy-decoratives"
+---@field radius number
+---@field from_render_layer? RenderLayer
+---@field to_render_layer? RenderLayer
+---Soft decoratives are those where DecorativePrototype::grows_through_rail_path is `true`.
+---@field include_soft_decoratives? boolean
+---@field include_decals? boolean
+---@field invoke_decorative_trigger? boolean
+---If `true`, only decoratives with a DecorativePrototype::trigger_effect will be destroyed.
+---@field decoratives_with_trigger_only? boolean
+
+---@class DifficultySettings
+---Must be >= 0.001 and <= 100000.
+---@field technology_price_multiplier? number
+---Must be >= 0.01 and <= 100.
+---@field spoil_time_modifier? number
+
+---@class DirectTriggerItem : TriggerItem
+---@field type "direct"
+---@field filter_enabled? boolean
+
+---@class DirectionShift
+---@field north? Vector
+---@field east? Vector
+---@field south? Vector
+---@field west? Vector
+
+---One of the 16 directions, specified with a string.
+---@class DirectionString
+
+---Entity that display a signal icon and some text, either configured directly in the entity or through the circuit network.
+---@class DisplayPanelPrototype : EntityWithOwnerPrototype
+---@field type "display-panel"
+---The display panel's graphics.
+---@field sprites? Sprite4Way
+---The maximum display width of the text on the display panel. If the text exceeds this width it will be wrapped so that it continues on the next line.
+---@field max_text_width? integer
+---Maximum length of the text. If the text exceeds this length all characters beyond the limit will be discarded.
+---@field max_text_length? integer
+---Maximum amount of message records that can be configured in this display panel when it is connected to circuit network. Must be >= 1.
+---@field max_records_count? integer
+---The shift of the text on the display panel.
+---@field text_shift? Vector
+---The color of the text on the display panel.
+---@field text_color? Color
+---The background color of the display panel text.
+---@field background_color? Color
+---The maximum circuit wire distance for this entity.
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---@field circuit_connector? [CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition]
+
+---This prototype is used for receiving an achievement when the player finishes the game without building a specific entity.
+---@class DontBuildEntityAchievementPrototype : AchievementPrototypeWithCondition
+---@field type "dont-build-entity-achievement"
+---This will disable the achievement, if this entity is placed. If you finish the game without building this entity, you receive the achievement.
+---@field dont_build EntityID|EntityID[]
+---@field amount? integer
+---If you research technology using one of specified items before building entity, you receive the achievement.
+---@field research_with? ItemID|ItemID[]
+
+---This prototype is used for receiving an achievement when the player finishes the game without crafting more than a set amount.
+---@class DontCraftManuallyAchievementPrototype : AchievementPrototypeWithCondition
+---@field type "dont-craft-manually-achievement"
+---This will disable the achievement, if the player crafts more than this.
+---@field amount integer
+
+---This prototype is used for receiving an achievement when the player kill first entity using artillery.
+---@class DontKillManuallyAchievementPrototype : AchievementPrototypeWithCondition
+---@field type "dont-kill-manually-achievement"
+---This will disable the achievement, if this entity is killed manually. If you kill this entity with artillery first, you receive the achievement.
+---@field to_kill? EntityID
+---This will disable the achievement, if this entity type is killed manually. If you kill this entity type with artillery first, you receive the achievement.
+---@field type_not_to_kill? string
+
+---This prototype is used for receiving an achievement when the player researches with a specific science pack before unlocking another.
+---@class DontResearchBeforeResearchingAchievementPrototype : AchievementPrototypeWithCondition
+---@field type "dont-research-before-researching-achievement"
+---This will disable the achievement, if technology unlocking this item is researched before meeting requirements.
+---@field dont_research ItemID|ItemID[]
+---If you research technology using one of specified items, you receive the achievement.
+---@field research_with ItemID|ItemID[]
+
+---This prototype is used for receiving an achievement when the player finishes the game without receiving energy from a specific energy source.
+---@class DontUseEntityInEnergyProductionAchievementPrototype : AchievementPrototypeWithCondition
+---@field type "dont-use-entity-in-energy-production-achievement"
+---This will **not** disable the achievement, if this entity is placed, and you have received any amount of power from it.
+---@field excluded EntityID|EntityID[]
+---This will disable the achievement, if this entity is placed, and you have received any amount of power from it. If you finish the game without receiving power from this entity, you receive the achievement.
+---@field included? EntityID|EntityID[]
+---If `true`, the achievements will only be checked for the last hour of the game, independently of finishing the game.
+---@field last_hour_only? boolean
+---The minimum amount of energy that needs to be produced by the allowed entities to trigger the achievement.
+---@field minimum_energy_produced? Energy
+
+---Root style: `"double_slider"`
+---@class DoubleSliderStyleSpecification : SliderStyleSpecification
+---@field type "double_slider_style"
+
+---Root style: `"dropdown"`
+---@class DropDownStyleSpecification : BaseStyleSpecification
+---@field type "dropdown_style"
+---Required on the root style.
+---@field button_style? ButtonStyleSpecification
+---Required on the root style.
+---@field icon? Sprite
+---Required on the root style.
+---@field list_box_style? ListBoxStyleSpecification
+---Required on the root style.
+---@field selector_and_title_spacing? integer
+---Required on the root style.
+---@field opened_sound? Sound
+
+---@class DropItemTipTrigger : CountBasedTipTrigger
+---@field type "drop-item"
+---@field drop_into_entity? boolean
+
+---Properties of the editor controller.
+---@class EditorControllerPrototype
+---@field type "editor-controller"
+---@field type "editor-controller"
+---Name of the editor controller. Base game uses "default".
+---@field name string
+---@field inventory_size ItemStackIndex
+---@field gun_inventory_size ItemStackIndex
+---Must be >= 0.34375.
+---@field movement_speed number
+---@field item_pickup_distance number
+---@field loot_pickup_distance number
+---@field mining_speed number
+---@field enable_flash_light boolean
+---@field adjust_speed_based_off_zoom boolean
+---@field render_as_day boolean
+---@field instant_blueprint_building boolean
+---@field instant_deconstruction boolean
+---@field instant_upgrading boolean
+---@field instant_rail_planner boolean
+---@field show_status_icons boolean
+---@field show_hidden_entities boolean
+---@field show_entity_tags boolean
+---@field show_entity_health_bars boolean
+---@field show_additional_entity_info_gui boolean
+---@field generate_neighbor_chunks boolean
+---@field fill_built_entity_energy_buffers boolean
+---@field show_character_tab_in_controller_gui boolean
+---@field show_infinity_filters_in_controller_gui boolean
+---@field placed_corpses_never_expire boolean
+---@field ignore_tile_conditions boolean
+
+---@class EditorUtilityConstants
+---@field clone_editor_copy_source_color Color
+---@field clone_editor_copy_destination_allowed_color Color
+---@field clone_editor_copy_destination_not_allowed_color Color
+---@field clone_editor_brush_source_color Color
+---@field clone_editor_brush_destination_color Color
+---@field clone_editor_brush_cursor_preview_tint Color
+---@field clone_editor_brush_world_preview_tint Color
+---@field script_editor_select_area_color Color
+---@field script_editor_drag_area_color Color
+---@field force_editor_select_area_color Color
+---@field cliff_editor_remove_cliffs_color Color
+---@field tile_editor_selection_preview_tint Color
+---@field tile_editor_area_selection_color Color
+---@field decorative_editor_selection_preview_tint Color
+---@field tile_editor_selection_preview_radius integer
+---@field decorative_editor_selection_preview_radius integer
+
+---When applied to modules, the resulting effect is a sum of all module effects, multiplied through calculations: `(1 + sum module effects)`, or `(0 + sum)` for productivity.
+---@class Effect
+---Multiplier to energy used during operation (not idle/drain use). The minimum possible sum is -80%.
+---@field consumption? EffectValue
+---Modifier to crafting speed, research speed, etc. The minimum possible sum is -80%.
+---@field speed? EffectValue
+---Multiplied against work completed, adds to the bonus results of operating. E.g. an extra crafted recipe or immediate research bonus. The minimum possible sum is 0%.
+---@field productivity? EffectValue
+---Multiplier to the pollution factor of an entity's pollution during use. The minimum possible sum is -80%.
+---@field pollution? EffectValue
+---Adds a bonus chance to increase a product's quality. The minimum possible sum is 0%.
+---@field quality? EffectValue
+
+---@class EffectReceiver
+---@field base_effect? Effect
+---@field uses_module_effects? boolean
+---@field uses_beacon_effects? boolean
+---Controls whether LuaSurface::global_effect affects this receiver.
+---@field uses_surface_effects? boolean
+---Controls whether LuaEntity::local_effect affects this receiver.
+---@field uses_local_effects? boolean
+---Limits total consumption effect value.
+---
+---Low limit cannot be less than `-0.9999`. High limit cannot be greater than `1000`.
+---@field consumption_limits? EffectValueRange
+---Limits total speed effect value.
+---
+---Low limit cannot be less than `-0.9999`. High limit cannot be greater than `1000`.
+---@field speed_limits? EffectValueRange
+---Limits total productivity effect value. This limit is applied before any productivity gained from research is added. Afterwards, productivity is clamped again to be non-negative. For crafting machines, it is also clamped to RecipePrototype::maximum_productivity.
+---
+---Low limit cannot be less than `-0.9999`. High limit cannot be greater than `1000`.
+---@field productivity_limits? EffectValueRange
+---Limits total pollution effect value.
+---
+---Low limit cannot be less than `-0.9999`. High limit cannot be greater than `1000`.
+---@field pollution_limits? EffectValueRange
+---Limits total quality effect value.
+---
+---Low limit cannot be less than `-1000`. High limit cannot be greater than `1000`.
+---@field quality_limits? EffectValueRange
+
+---Identifies what CloudEffectStyle refers to.
+---@class EffectRelativeTo
+
+---@class EffectTexture : SpriteSource
+
+---A list of module effects, or just a single effect. Modules with other effects cannot be used on the machine. This means that both effects from modules and from surrounding beacons are restricted to the listed effects. If `allowed_effects` is an empty array, the machine cannot be affected by modules or beacons.
+---@class EffectTypeLimitation
+
+---Precision is ignored beyond four decimals - `0.56789` results in `0.5678` and means 56.78% etc. Values can range from `-1000.0000` to `1000.0000`.
+---@class EffectValue
+
+---@class EffectValueRange
+---@field low? EffectValue
+---@field high? EffectValue
+
+---@class EffectVariation
+
+---Provides or consumes power in equipment grids.
+---@class ElectricEnergyInterfaceEquipmentPrototype : EquipmentPrototype
+---@field type "electric-energy-interface-equipment"
+---@field energy_production? Energy
+---@field energy_usage? Energy
+---@field gui_mode? "all"|"none"|"admins"
+---@field show_power_production_in_tooltip? boolean
+---@field show_power_usage_in_tooltip? boolean
+---@field show_stored_energy_in_tooltip? boolean
+
+---Entity with electric energy source with that can have some of its values changed runtime. Useful for modding in energy consumers/producers.
+---@class ElectricEnergyInterfacePrototype : EntityWithOwnerPrototype
+---@field type "electric-energy-interface"
+---@field energy_source ElectricEnergySource
+---@field energy_production? Energy
+---@field energy_usage? Energy
+---@field gui_mode? "all"|"none"|"admins"
+---Whether the electric energy interface animation always runs instead of being scaled to activity.
+---@field continuous_animation? boolean
+---@field render_layer? RenderLayer
+---The light that this electric energy interface emits.
+---@field light? LightDefinition
+---@field picture? Sprite
+---Only loaded if `picture` is not defined.
+---@field pictures? Sprite4Way
+---Only loaded if both `picture` and `pictures` are not defined.
+---@field animation? Animation
+---Only loaded if `picture`, `pictures`, and `animation` are not defined.
+---@field animations? Animation4Way
+---@field allow_copy_paste? boolean
+
+---@class ElectricEnergySource : BaseEnergySource
+---@field type "electric"
+---How much energy this entity can hold.
+---@field buffer_capacity? Energy
+---@field usage_priority ElectricUsagePriority
+---The rate at which energy can be taken, from the network, to refill the energy buffer. `0` means no transfer.
+---@field input_flow_limit? Energy
+---The rate at which energy can be provided, to the network, from the energy buffer. `0` means no transfer.
+---@field output_flow_limit? Energy
+---How much energy (per second) will be continuously removed from the energy buffer. In-game, this is shown in the tooltip as "Min. [Minimum] Consumption". Applied as a constant consumption-per-tick, even when the entity is not active.
+---@field drain? Energy
+
+---An electric pole - part of the electric system.
+---@class ElectricPolePrototype : EntityWithOwnerPrototype
+---@field type "electric-pole"
+---@field pictures? RotatedSprite
+---The "radius" of this pole's supply area. Corresponds to *half* of the "supply area" in the item tooltip. If this is 3.5, the pole will have a 7x7 supply area.
+---
+---Max value is 64.
+---@field supply_area_distance number
+---@field connection_points WireConnectionPoint[]
+---@field radius_visualisation_picture? Sprite
+---Drawn above the `pictures` when the electric pole is connected to an electric network.
+---@field active_picture? Sprite
+---The maximum distance between this pole and any other connected pole - if two poles are farther apart than this, they cannot be connected together directly. Corresponds to "wire reach" in the item tooltip.
+---
+---Max value is 64.
+---@field maximum_wire_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---Drawn when the electric pole is connected to an electric network.
+---@field light? LightDefinition
+---@field track_coverage_during_drag_building? boolean
+---`0` means disable auto-connect.
+---@field auto_connect_up_to_n_wires? integer
+---@field rewire_neighbours_when_destroying? boolean
+
+---A turret that uses electricity as ammunition.
+---@class ElectricTurretPrototype : TurretPrototype
+---@field type "electric-turret"
+---@field energy_source ElectricEnergySource|VoidEnergySource
+
+---Used to specify priority of energy usage in the electric system.
+---@class ElectricUsagePriority
+
+---If this is loaded as a single ElementImageSetLayer, it gets used as `base`.
+---@class ElementImageSet
+---@field base? ElementImageSetLayer
+---@field shadow? ElementImageSetLayer
+---@field glow? ElementImageSetLayer
+
+---If this is loaded as a Sprite, it gets used as `center`.
+---@class ElementImageSetLayer
+---Defines whether the border should be drawn inside the widget, which affects the padding and content size of the widget, or outside of the widget which doesn't affect size. The outer draw type is most commonly used for shadows, glows and insets.
+---@field draw_type? "inner"|"outer"
+---@field type? "none"|"composition"
+---Only loaded if `type` is `"composition"`.
+---@field tint? Color
+---Only loaded if `type` is `"composition"`.
+---@field center? Sprite
+---Only loaded if `type` is `"composition"`.
+---@field left? Sprite
+---Only loaded if `type` is `"composition"`.
+---@field left_top? Sprite
+---Only loaded if `type` is `"composition"`.
+---@field left_bottom? Sprite
+---Only loaded if `type` is `"composition"`.
+---@field right? Sprite
+---Only loaded if `type` is `"composition"`.
+---@field right_top? Sprite
+---Only loaded if `type` is `"composition"`.
+---@field right_bottom? Sprite
+---Only loaded if `type` is `"composition"`.
+---@field top? Sprite
+---Only loaded if `type` is `"composition"`.
+---@field bottom? Sprite
+---If this is a tuple, the first member of the tuple is width and the second is height. Otherwise the size is both width and height.
+---
+---Only loaded if `type` is `"composition"`.
+---@field corner_size? integer|[integer, integer]
+---Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
+---@field filename? FileName
+---Mandatory if `corner_size` is defined. Only loaded if `type` is `"composition"`.
+---@field position? MapPosition
+---Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
+---@field load_in_minimal_mode? boolean
+---Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
+---@field top_width? SpriteSizeType
+---Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
+---@field bottom_width? SpriteSizeType
+---Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
+---@field left_height? SpriteSizeType
+---Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
+---@field right_height? SpriteSizeType
+---Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
+---@field center_width? SpriteSizeType
+---Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
+---@field center_height? SpriteSizeType
+---Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
+---@field scale? number
+---Only loaded if `type` is `"composition"`.
+---@field top_border? integer
+---Only loaded if `type` is `"composition"`.
+---@field right_border? integer
+---Only loaded if `type` is `"composition"`.
+---@field bottom_border? integer
+---Only loaded if `type` is `"composition"`.
+---@field left_border? integer
+---Sets `top_border`, `right_border`, `bottom_border` and `left_border`.
+---
+---Only loaded if `corner_size` is not defined. Only loaded if `type` is `"composition"`.
+---@field border? integer
+---Only loaded if `type` is `"composition"`.
+---@field stretch_monolith_image_to_size? boolean
+---Tiling is used to make a side (not corner) texture repeat instead of being stretched.
+---@field left_tiling? boolean
+---@field right_tiling? boolean
+---@field top_tiling? boolean
+---@field bottom_tiling? boolean
+---@field center_tiling_vertical? boolean
+---@field center_tiling_horizontal? boolean
+---Overall tiling is used to make the overall texture repeat instead of being stretched.
+---@field overall_tiling_horizontal_size? integer
+---@field overall_tiling_horizontal_spacing? integer
+---@field overall_tiling_horizontal_padding? integer
+---@field overall_tiling_vertical_size? integer
+---@field overall_tiling_vertical_spacing? integer
+---@field overall_tiling_vertical_padding? integer
+---@field custom_horizontal_tiling_sizes? integer[]
+---@field opacity? number
+---@field background_blur? boolean
+---@field background_blur_sigma? number
+---@field top_outer_border_shift? integer
+---@field bottom_outer_border_shift? integer
+---@field right_outer_border_shift? integer
+---@field left_outer_border_shift? integer
+
+---An elevated curved-A rail.
+---@class ElevatedCurvedRailAPrototype : CurvedRailAPrototype
+---@field type "elevated-curved-rail-a"
+---Unique textual identification of the prototype. May only contain alphanumeric characters, dashes and underscores. May not exceed a length of 200 characters.
+---
+---Requires Space Age to create prototypes with name not starting with `dummy-`. Dummy prototypes cannot be built.
+---@field name string
+---When this is true, this entity prototype will be translucent and unselectable when "Hide tall entities" mode is active.
+---@field tall? boolean
+---The entity with the higher number is selectable before the entity with the lower number.
+---
+---The value `0` will be treated the same as `nil`.
+---@field selection_priority? integer
+
+---An elevated curved-B rail.
+---@class ElevatedCurvedRailBPrototype : CurvedRailBPrototype
+---@field type "elevated-curved-rail-b"
+---Unique textual identification of the prototype. May only contain alphanumeric characters, dashes and underscores. May not exceed a length of 200 characters.
+---
+---Requires Space Age to create prototypes with name not starting with `dummy-`. Dummy prototypes cannot be built.
+---@field name string
+---When this is true, this entity prototype will be translucent and unselectable when "Hide tall entities" mode is active.
+---@field tall? boolean
+---The entity with the higher number is selectable before the entity with the lower number.
+---
+---The value `0` will be treated the same as `nil`.
+---@field selection_priority? integer
+
+---An elevated half diagonal rail.
+---@class ElevatedHalfDiagonalRailPrototype : HalfDiagonalRailPrototype
+---@field type "elevated-half-diagonal-rail"
+---Unique textual identification of the prototype. May only contain alphanumeric characters, dashes and underscores. May not exceed a length of 200 characters.
+---
+---Requires Space Age to create prototypes with name not starting with `dummy-`. Dummy prototypes cannot be built.
+---@field name string
+---When this is true, this entity prototype will be translucent and unselectable when "Hide tall entities" mode is active.
+---@field tall? boolean
+---The entity with the higher number is selectable before the entity with the lower number.
+---
+---The value `0` will be treated the same as `nil`.
+---@field selection_priority? integer
+
+---An elevated straight rail.
+---@class ElevatedStraightRailPrototype : StraightRailPrototype
+---@field type "elevated-straight-rail"
+---Unique textual identification of the prototype. May only contain alphanumeric characters, dashes and underscores. May not exceed a length of 200 characters.
+---
+---Requires Space Age to create prototypes with name not starting with `dummy-`. Dummy prototypes cannot be built.
+---@field name string
+---When this is true, this entity prototype will be translucent and unselectable when "Hide tall entities" mode is active.
+---@field tall? boolean
+---The entity with the higher number is selectable before the entity with the lower number.
+---
+---The value `0` will be treated the same as `nil`.
+---@field selection_priority? integer
+
+---Root style: `"empty_widget"`
+---@class EmptyWidgetStyleSpecification : BaseStyleSpecification
+---@field type "empty_widget_style"
+---Required on the root style.
+---@field graphical_set? ElementImageSet
+
+---@class EnemyEvolutionSettings
+---@field enabled boolean
+---Percentual increase in the evolution factor for every second (60 ticks)
+---@field time_factor number
+---Percentual increase in the evolution factor for every destroyed spawner
+---@field destroy_factor number
+---Percentual increase in the evolution factor for 1 pollution unit
+---@field pollution_factor number
+
+---@class EnemyExpansionSettings
+---@field enabled boolean
+---Distance in chunks from the furthest base around. This prevents expansions from reaching too far into the player's territory.
+---@field max_expansion_distance integer
+---Distance in chunks from the furthest base around to prevent expansions from being too close to existing bases.
+---@field min_expansion_distance integer
+---@field friendly_base_influence_radius integer
+---@field enemy_building_influence_radius integer
+---@field building_coefficient number
+---@field other_base_coefficient number
+---@field neighbouring_chunk_coefficient number
+---@field neighbouring_base_chunk_coefficient number
+---A chunk has to have at most this much percent unbuildable tiles for it to be considered a candidate. This is to avoid chunks full of water to be marked as candidates.
+---@field max_colliding_tiles_coefficient number
+---Size of the group that goes to build new base.
+---@field settler_group_min_size integer
+---@field settler_group_max_size integer
+---Exponential factor used to determine the size of the settler group based on the evolution factor. The size is calculated as: `size = random(min_size, max_size) * (evolution_group_size_factor ^ evolution_factor)`
+---@field evolution_group_size_factor number
+---Ticks to expand to a single position for a base is used. Cooldown is calculated as follows: `cooldown = lerp(max_expansion_cooldown, min_expansion_cooldown, -e^2 + 2 * e)` where `lerp` is the linear interpolation function, and e is the current evolution factor.
+---@field min_expansion_cooldown integer
+---In ticks.
+---@field max_expansion_cooldown integer
+---Cooldown in ticks for dispatching units when building bases.
+---@field build_base_unit_dispatch_cooldown integer
+
+---@class EnemySpawnerAbsorption
+---@field absolute number
+---@field proportional number
+
+---@class EnemySpawnerGraphicsSet
+---@field animations? AnimationVariations
+---@field underwater_animations? AnimationVariations
+---@field underwater_layer_offset? integer
+---@field water_effect_map_animations? AnimationVariations
+---@field integration? SpriteVariations
+---@field random_animation_offset? boolean
+---Refer to EntityPrototype::water_reflection.
+---@field water_reflection? WaterReflectionDefinition
+
+---Can spawn entities. Used for biter/spitter nests.
+---@class EnemySpawnerPrototype : EntityWithOwnerPrototype
+---@field type "unit-spawner"
+---@field graphics_set EnemySpawnerGraphicsSet
+---Count of enemies this spawner can sustain.
+---@field max_count_of_owned_units integer
+---Count of defensive enemies this spawner can sustain. Defensive units are units with UnitAISettings::join_attacks set to false. If set below EnemySpawnerPrototype::max_count_of_owned_units, the difference will be the space reserved for non-defensive units.
+---@field max_count_of_owned_defensive_units? integer
+---How many friendly units are required within the EnemySpawnerPrototype::spawning_radius of this spawner for it to stop producing more units.
+---@field max_friends_around_to_spawn integer
+---How many friendly defensive units are required within the EnemySpawnerPrototype::spawning_radius of this spawner for it to stop producing more units. Defensive units are units with UnitAISettings::join_attacks set to false. If set below EnemySpawnerPrototype::max_friends_around_to_spawn, the difference will be the space reserved for non-defensive units.
+---@field max_defensive_friends_around_to_spawn? integer
+---Ticks for cooldown after unit is spawned. The first member of the tuple is min, the second member of the tuple is max.
+---
+---The resulting spawning cooldown is a linear interpolation between min and max based on the current evolution factor.
+---@field spawning_cooldown [number, number]
+---How far from the spawner can the units be spawned.
+---@field spawning_radius number
+---What spaces should be between the spawned units.
+---@field spawning_spacing number
+---Max richness to determine spawn shift. Spawn shift is a linear interpolation between 0 and max_spawn_shift.
+---@field max_richness_for_spawn_shift number
+---Caps how much richness can be added on top of evolution when spawning units. See also
+---@field max_spawn_shift number
+---@field call_for_help_radius number
+---@field time_to_capture? integer
+---Trigger that is activated when the spawner cannot find a valid spawn location.
+---@field spawn_blocked_trigger? Trigger
+---Array of the entities that this spawner can spawn and their spawn probabilities. The sum of probabilities is expected to be 1.0. The array must not be empty.
+---@field result_units UnitSpawnDefinition[]
+---@field dying_sound? Sound
+---@field absorptions_per_second? table<AirbornePollutantID, EnemySpawnerAbsorption>
+---@field min_darkness_to_spawn? number
+---@field max_darkness_to_spawn? number
+---Whether `spawn_decoration` should be spawned when enemies expand.
+---@field spawn_decorations_on_expansion? boolean
+---Decoratives to be created when the spawner is created by the map generator. Placed when enemies expand if `spawn_decorations_on_expansion` is set to true.
+---@field spawn_decoration? CreateDecorativesTriggerEffectItem[]
+---@field captured_spawner_entity? EntityID
+---Whether this prototype should be a high priority target for enemy forces. See Military units and structures.
+---@field is_military_target? true
+---If this is true, this entities `is_military_target property` can be changed runtime (on the entity, not on the prototype itself).
+---@field allow_run_time_change_of_is_military_target? false
+
+---Specifies an amount of electric energy in joules, or electric energy per time in watts.
+---
+---Internally, the input in `Watt` or `Joule/second` is always converted into `Joule/tick`, where 1 second is equal to 60 ticks. This means it uses the following formula: `Power in Joule/tick = Power in Watt / 60`. See Power.
+---
+---Supported Multipliers:
+---
+---- `k`: 10^3, or 1 000
+---
+---- `M`: 10^6
+---
+---- `G`: 10^9
+---
+---- `T`: 10^12
+---
+---- `P`: 10^15
+---
+---- `E`: 10^18
+---
+---- `Z`: 10^21
+---
+---- `Y`: 10^24
+---
+---- `R`: 10^27
+---
+---- `Q`: 10^30
+---@class Energy
+
+---Used by energy shield.
+---@class EnergyShieldEquipmentPrototype : EquipmentPrototype
+---@field type "energy-shield-equipment"
+---@field max_shield_value number
+---@field energy_per_shield Energy
+
+---Loaded as one of the BaseEnergySource extensions, based on the value of the `type` key.
+---@class EnergySource
+
+---@class EnterVehicleTipTrigger : CountBasedTipTrigger
+---@field type "enter-vehicle"
+---@field vehicle? EntityID
+---@field match_type_only? boolean
+
+---A single tiles worth of animations used when building entities.
+---@class EntityBuildAnimationPiece
+---The animation must have a total of 32 frames.
+---@field top Animation
+---The animation must have a total of 32 frames.
+---@field body Animation
+
+---A set of animations used when building entities on space platforms. All EntityBuildAnimationPieces must have the same animation speed.
+---@class EntityBuildAnimations
+---@field back_left EntityBuildAnimationPiece
+---@field back_right EntityBuildAnimationPiece
+---@field front_left EntityBuildAnimationPiece
+---@field front_right EntityBuildAnimationPiece
+
+---The entity used for ghosts of entities. In-game, the inner entity (the entity this is a ghost of) is rendered with a UtilityConstants::ghost_tint.
+---@class EntityGhostPrototype : EntityPrototype
+---@field type "entity-ghost"
+---@field medium_build_sound? Sound
+---@field large_build_sound? Sound
+---@field huge_build_sound? Sound
+---@field small_build_animated_sound? Sound
+---@field medium_build_animated_sound? Sound
+---@field large_build_animated_sound? Sound
+---@field huge_build_animated_sound? Sound
+
+---The name of an EntityPrototype.
+---@class EntityID
+
+---@class EntityIDFilter
+---@field name EntityID
+---@field quality? QualityID
+---Only loaded if `quality` is defined.
+---@field comparator? ComparatorString
+
+---Abstract base of all entities in the game. Entity is nearly everything that can be on the map (except tiles).
+---
+---For in game script access to entity, take a look at LuaEntity.
+---@class EntityPrototype : Prototype
+---This will be used in the electric network statistics, editor building selection, and the bonus gui. Can't be an empty array.
+---
+---Either this or `icon` is mandatory for entities that have at least one of these flags active: `"placeable-neutral"`, `"placeable-player`", `"placeable-enemy"`.
+---@field icons? IconData[]
+---Path to the icon file.
+---
+---Either this or `icons` is mandatory for entities that have at least one of these flags active: `"placeable-neutral"`, `"placeable-player`", `"placeable-enemy"`.
+---
+---Only loaded if `icons` is not defined.
+---@field icon? FileName
+---The size of the square icon, in pixels. E.g. `32` for a 32px by 32px icon. Must be larger than `0`.
+---
+---Only loaded if `icons` is not defined.
+---@field icon_size? SpriteSizeType
+---Specification of the entity collision boundaries. Empty collision box means no collision and is used for smoke, projectiles, particles, explosions etc.
+---
+---The `{0,0}` coordinate in the collision box will match the entity position. It should be near the center of the collision box, to keep correct entity drawing order. The bounding box must include the `{0,0}` coordinate.
+---
+---Note, that for buildings, it is customary to leave 0.1 wide border between the edge of the tile and the edge of the building, this lets the player move between the building and electric poles/inserters etc.
+---@field collision_box? BoundingBox
+---Defaults to the mask from UtilityConstants::default_collision_masks when indexed by the entity type.
+---@field collision_mask? CollisionMaskConnector
+---Used instead of the collision box during map generation. Allows space entities differently during map generation, for example if the box is bigger, the entities will be placed farther apart.
+---@field map_generator_bounding_box? BoundingBox
+---Specification of the entity selection area. When empty the entity will have no selection area (and thus is not selectable).
+---
+---The selection box is usually a little bit bigger than the collision box. For tileable entities (like buildings) it should match the tile size of the building.
+---@field selection_box? BoundingBox
+---Specification of extra vertical space needed to see the whole entity in GUIs. This is used to calculate the correct zoom and positioning in the entity info gui, for example in the entity tooltip.
+---@field drawing_box_vertical_extension? number
+---Used to specify the area where the sticker animation can appear for entities that can have stickers on them.
+---@field sticker_box? BoundingBox
+---Where beams should hit the entity. Useful if the bounding box only covers part of the entity (e.g. feet of the character) and beams only hitting there would look weird.
+---@field hit_visualization_box? BoundingBox
+---Defaults to the mask from UtilityConstants::default_trigger_target_mask_by_type.
+---@field trigger_target_mask? TriggerTargetMask
+---@field flags? EntityPrototypeFlags
+---@field tile_buildability_rules? TileBuildabilityRule[]
+---The item given to the player when they mine the entity and other properties relevant to mining this entity.
+---@field minable? MinableProperties
+---@field surface_conditions? SurfaceCondition[]
+---Used to merge multiple entities into one entry in the deconstruction planner.
+---@field deconstruction_alternative? EntityID
+---The entity with the higher number is selectable before the entity with the lower number.
+---
+---The value `0` will be treated the same as `nil`.
+---@field selection_priority? integer
+---Supported values are 1 (for 1x1 grid) and 2 (for 2x2 grid, like rails).
+---
+---Internally forced to be `2` for RailPrototype, RailRemnantsPrototype, TrainStopPrototype, RailSupportPrototype and CargoBayPrototype.
+---
+---Internally forced to be `256` for SpacePlatformHubPrototype.
+---@field build_grid_size? integer
+---Whether this entity should remove decoratives that collide with it when this entity is built. When set to "automatic", if the entity type is considered a building (e.g. an assembling machine or a wall) it will remove decoratives.
+---@field remove_decoratives? "automatic"|"true"|"false"
+---Amount of emissions created (positive number) or cleaned (negative number) every second by the entity. This is passive and currently used just for trees and fires. This is independent of the emissions of energy sources used by machines, which are created actively depending on the power consumption.
+---@field emissions_per_second? table<AirbornePollutantID, number>
+---The cursor size used when shooting at this entity.
+---@field shooting_cursor_size? number
+---The smoke that is shown when the entity is placed.
+---@field created_smoke? CreateTrivialSmokeEffectItem
+---Will also work on entities that don't actually do work.
+---@field working_sound? WorkingSound
+---The effect/trigger that happens when the entity is placed.
+---@field created_effect? Trigger
+---@field build_sound? Sound
+---@field mined_sound? Sound
+---@field mining_sound? Sound
+---@field rotated_sound? Sound
+---@field ghost_build_sound? Sound
+---Name of a ImpactCategory.
+---@field impact_category? string
+---@field open_sound? Sound
+---@field close_sound? Sound
+---@field placeable_position_visualization? Sprite
+---@field radius_visualisation_specification? RadiusVisualisationSpecification
+---@field stateless_visualisation? StatelessVisualisation|StatelessVisualisation[]
+---@field draw_stateless_visualisations_in_ghost? boolean
+---@field alert_icon_shift? Vector
+---@field alert_icon_scale? number
+---This allows you to replace an entity that's already placed, with a different one in your inventory. For example, replacing a burner inserter with a fast inserter. The replacement entity can be a different rotation to the replaced entity and you can replace an entity with the same type.
+---
+---This is simply a string, so any string can be used here. The entity that should be replaced simply has to use the same string here.
+---
+---Entities with the same fast replaceable group can be configured as upgrades for each other in the upgrade planner. Refer to the upgrade planner prototype's page the full requirements for entities to be shown in the upgrade planner.
+---@field fast_replaceable_group? string
+---Name of the entity that will be automatically selected as the upgrade of this entity when using the upgrade planner without configuration.
+---
+---This entity may not have "not-upgradable" flag set and must be minable. This entity mining result must not contain item product with hidden set to `true`. Mining results with no item products are allowed. This entity may not be a RollingStockPrototype.
+---
+---The upgrade target entity needs to have the same bounding box, collision mask, and fast replaceable group as this entity. The upgrade target entity must have least 1 item that builds it that isn't hidden.
+---@field next_upgrade? EntityID
+---When this is true, this entity prototype should be included during tile collision checks with tiles that have TilePrototype::check_collision_with_entities set to true.
+---@field protected_from_tile_building? boolean
+---When this is true, this entity prototype will be translucent and unselectable when "Hide tall entities" mode is active.
+---
+---Rail signals are always treated as 'tall' when built attached to elevated rails.
+---@field tall? boolean
+---When this is true, fluid pipelines will be visualized when this entity is held in the cursor.
+---@field show_fluid_visualization_when_in_cursor? boolean
+---This entity can freeze if heating_energy is larger than zero.
+---@field heating_energy? Energy
+---@field allow_copy_paste? boolean
+---@field selectable_in_game? boolean
+---Item that when placed creates this entity. Determines which item is picked when "Q" (smart pipette) is used on this entity. Determines which item and item amount is needed in a blueprint of this entity and to revive a ghost of this entity.
+---
+---The item count specified here can't be larger than the stack size of that item.
+---@field placeable_by? ItemToPlace|ItemToPlace[]
+---The entity that remains when this one is mined, deconstructed or fast-replaced. The entity wont actually be spawned if it would collide with the entity that is in the process of being mined.
+---@field remains_when_mined? EntityID|EntityID[]
+---Names of the entity prototypes this entity prototype can be pasted on to in addition to the standard supported types.
+---
+---This is used to allow copying between types that aren't compatible on the C++ code side, by allowing mods to receive the on_entity_settings_pasted event for the given entity and do the setting pasting via script.
+---@field additional_pastable_entities? EntityID[]
+---Used to determine how the center of the entity should be positioned when building (unless the off-grid flag is specified).
+---
+---When the tile width is odd, the center will be in the center of the tile, when it is even, the center is on the tile transition.
+---@field tile_width? integer
+---@field tile_height? integer
+---@field diagonal_tile_grid_size? TilePosition
+---Used to specify the rules for placing this entity during map generation.
+---@field autoplace? AutoplaceSpecification
+---@field map_color? Color
+---@field friendly_map_color? Color
+---@field enemy_map_color? Color
+---May also be defined inside `graphics_set` instead of directly in the entity prototype. This is useful for entities that use a `graphics_set` property to define their graphics, because then all graphics can be defined in one place.
+---
+---Currently only renders for EntityWithHealthPrototype and CorpsePrototype.
+---@field water_reflection? WaterReflectionDefinition
+---@field ambient_sounds_group? EntityID
+---@field ambient_sounds? WorldAmbientSoundDefinition|WorldAmbientSoundDefinition[]
+---Used to specify where and how the alt-mode icons should be drawn.
+---@field icon_draw_specification? IconDrawSpecification
+---@field icons_positioning? IconSequencePositioning[]
+---Used to order prototypes in inventory, recipes and GUIs. May not exceed a length of 200 characters.
+---
+---The order string is taken from the items in `placeable_by` if they exist, or from an item that has its place_result set to this entity.
+---@field order? Order
+
+---An array containing the following values.
+---
+---If an entity is a building and has the `"player-creation"` flag set, it is considered for multiple enemy/unit behaviors:
+---
+---- Autonomous enemy attacks (usually triggered by pollution) can only attack within chunks that contain at least one entity that is both a building and a player-creation.
+---
+---- Enemy expansion considers entities that are both buildings and player-creations as "enemy" entities that may block expansion.
+---@class EntityPrototypeFlags
+
+---How far (in tiles) entities should be rendered outside the visible area of the screen.
+---@class EntityRendererSearchBoxLimits
+---Min value 6, max value 15. Min value 6 to compensate for shadows.
+---@field left integer
+---Min value 3, max value 15.
+---@field top integer
+---Min value 3, max value 15.
+---@field right integer
+---Min value 4, max value 15. Min value 4 to compensate for tall entities like electric poles.
+---@field bottom integer
+
+---@class EntityStatus
+
+---Triggered when a player fast-transfers something to or from an entity, similar to the on_player_fast_transferred event.
+---@class EntityTransferTipTrigger : CountBasedTipTrigger
+---@field type "entity-transfer"
+---Whether the transfer should be into or out of the player.
+---@field transfer? "in"|"out"
+
+---Abstract base of all entities with health in the game.
+---@class EntityWithHealthPrototype : EntityPrototype
+---The unit health can never go over the maximum. Default health of units on creation is set to max. Must be greater than 0.
+---@field max_health? number
+---The amount of health automatically regenerated per tick. If the value is in range [-0.0166, 0.0166], then healing is considered slow and will apply 60 * healing_per_tick once every second.
+---@field healing_per_tick? number
+---Multiplier of RepairToolPrototype::speed for this entity prototype.
+---@field repair_speed_modifier? number
+---The entities that are spawned in place of this one when it dies.
+---@field dying_explosion? ExplosionDefinition|ExplosionDefinition[]
+---@field dying_trigger_effect? TriggerEffect
+---@field damaged_trigger_effect? TriggerEffect
+---The loot is dropped on the ground when the entity is killed.
+---@field loot? ItemProductPrototype[]
+---See damage.
+---@field resistances? Resistance[]
+---@field attack_reaction? AttackReactionItem|AttackReactionItem[]
+---Played when this entity is repaired with a RepairToolPrototype.
+---@field repair_sound? Sound
+---@field alert_when_damaged? boolean
+---Whether the resistances of this entity should be hidden in the entity tooltip.
+---@field hide_resistances? boolean
+---@field create_ghost_on_death? boolean
+---@field random_corpse_variation? boolean
+---May also be defined inside `graphics_set` instead of directly in the entity prototype. This is useful for entities that use a `graphics_set` property to define their graphics, because then all graphics can be defined in one place.
+---@field integration_patch_render_layer? RenderLayer
+---Specifies the names of the CorpsePrototype to be used when this entity dies.
+---@field corpse? EntityID|EntityID[]
+---May also be defined inside `graphics_set` instead of directly in the entity prototype. This is useful for entities that use a `graphics_set` property to define their graphics, because then all graphics can be defined in one place.
+---
+---Sprite drawn on ground under the entity to make it feel more integrated into the ground.
+---@field integration_patch? Sprite4Way
+---Fraction of health by which predicted damage must be exceeded before entity is considered as "predicted to die" causing turrets (and others) to stop shooting more projectiles. If entity is healing it is better to keep larger margin to avoid cases where not enough projectiles goes towards a target and it heals causing it to survive all the incoming projectiles. If entity does not heal, margin may be reduced. Must be >= 0.
+---@field overkill_fraction? number
+
+---Abstract base of all entities with a force in the game. These entities have a LuaEntity::unit_number during runtime. Can be high priority military targets.
+---@class EntityWithOwnerPrototype : EntityWithHealthPrototype
+---Whether this prototype should be a high priority target for enemy forces. See Military units and structures.
+---@field is_military_target? boolean
+---If this is true, this entity's `is_military_target` property can be changed during runtime (on the entity, not on the prototype itself).
+---@field allow_run_time_change_of_is_military_target? boolean
+---The shift from the bottom left corner of the selection box.
+---@field quality_indicator_shift? Vector
+---The default scale is based on the tile distance of the shorter dimension. Where size 3 results into scale 1. The default minimum is 0.5 and maximum 1.0.
+---@field quality_indicator_scale? number
+
+---This prototype is used for receiving an achievement when the player equips armor.
+---@class EquipArmorAchievementPrototype : AchievementPrototype
+---@field type "equip-armor-achievement"
+---The achievement will trigger if this armor or the alternative armor is equipped.
+---@field armor ItemID
+---The achievement will trigger if this armor or the other armor is equipped.
+---@field alternative_armor ItemID
+---@field limit_quality QualityID
+---How many armors need to be equipped.
+---@field amount? integer
+---If this is false, the player carries over their statistics from this achievement through all their saves.
+---@field limited_to_one_game? boolean
+
+---Defines a category to be available to equipment and equipment grids.
+---@class EquipmentCategory : Prototype
+---@field type "equipment-category"
+
+---The name of an EquipmentCategory.
+---@class EquipmentCategoryID
+
+---The equipment used for ghosts of equipment.
+---@class EquipmentGhostPrototype : EquipmentPrototype
+---@field type "equipment-ghost"
+---Not loaded for equipment ghosts.
+---@field energy_source? ElectricEnergySource
+---Not loaded for equipment ghosts.
+---@field shape? EquipmentShape
+---Not loaded for equipment ghosts.
+---@field categories? EquipmentCategoryID[]
+---Not loaded for equipment ghosts.
+---@field take_result? ItemID
+
+---The name of an EquipmentGridPrototype.
+---@class EquipmentGridID
+
+---The prototype of an equipment grid, for example the one used in a power armor.
+---@class EquipmentGridPrototype : Prototype
+---@field type "equipment-grid"
+---Only equipment with at least one of these categories can be inserted into the grid.
+---@field equipment_categories EquipmentCategoryID[]
+---@field width integer
+---@field height integer
+---Whether this locked from user interaction which means that the user cannot put equipment into or take equipment from this equipment grid.
+---@field locked? boolean
+
+---The name of an EquipmentPrototype.
+---@class EquipmentID
+
+---Abstract base of all equipment modules. Equipment modules can be inserted into equipment grids.
+---@class EquipmentPrototype : Prototype
+---The graphics to use when this equipment is shown inside an equipment grid.
+---@field sprite Sprite
+---How big this equipment should be in the grid and whether it should be one solid rectangle or of a custom shape.
+---@field shape EquipmentShape
+---Sets the categories of the equipment. It can only be inserted into grids with at least one matching category.
+---@field categories EquipmentCategoryID[]
+---@field energy_source ElectricEnergySource
+---Name of the item prototype that should be returned to the player when they remove this equipment from an equipment grid.
+---@field take_result? ItemID
+---The color that the background of this equipment should have when shown inside an equipment grid.
+---@field background_color? Color
+---The color that the border of the background of this equipment should have when shown inside an equipment grid.
+---@field background_border_color? Color
+---The color that the background of this equipment should have when held in the players hand and hovering over an equipment grid.
+---@field grabbed_background_color? Color
+
+---The shape and dimensions of an equipment module.
+---@class EquipmentShape
+---@field width integer
+---@field height integer
+---The shape. When using "manual", `points` must be defined.
+---@field type "full"|"manual"
+---Only used when when `type` is `"manual"`. Each inner array is a "position" inside width×height of the equipment. Each positions that is defined is a filled squares of the equipment shape. `{0, 0}` is the upper left corner of the equipment.
+---@field points? integer[][]
+
+---@class ExplosionDefinition
+---@field name EntityID
+---@field offset? Vector
+
+---Used to play an animation and a sound.
+---@class ExplosionPrototype : EntityPrototype
+---@field type "explosion"
+---@field animations AnimationVariations
+---@field sound? Sound
+---Mandatory if `smoke_count` > 0.
+---@field smoke? TrivialSmokeID
+---@field height? number
+---@field smoke_slow_down_factor? number
+---@field smoke_count? integer
+---@field rotate? boolean
+---@field beam? boolean
+---@field correct_rotation? boolean
+---@field scale_animation_speed? boolean
+---@field fade_in_duration? integer
+---@field fade_out_duration? integer
+---@field render_layer? RenderLayer
+---@field scale_in_duration? integer
+---@field scale_out_duration? integer
+---@field scale_end? number
+---@field scale_increment_per_tick? number
+---Silently clamped to be between 0 and 1.
+---@field light_intensity_factor_initial? number
+---Silently clamped to be between 0 and 1.
+---@field light_intensity_factor_final? number
+---Silently clamped to be between 0 and 1.
+---@field light_size_factor_initial? number
+---Silently clamped to be between 0 and 1.
+---@field light_size_factor_final? number
+---@field light? LightDefinition
+---@field light_intensity_peak_start_progress? number
+---@field light_intensity_peak_end_progress? number
+---@field light_size_peak_start_progress? number
+---@field light_size_peak_end_progress? number
+---@field scale_initial? number
+---@field scale_initial_deviation? number
+---@field scale? number
+---@field scale_deviation? number
+---Number of ticks to delay the explosion effects by.
+---@field delay? MapTick
+---The maximum number of ticks to randomly delay the explosion effects by. In addition to the number of ticks defined by `delay`, the explosion will be delayed by a random number of ticks between 0 and `delay_deviation` (inclusive).
+---@field delay_deviation? MapTick
+---The effect/trigger that happens when the explosion effect triggers after the initial delay as defined by `delay` and `delay_deviation`.
+---@field explosion_effect? Trigger
+---The entity with the higher number is selectable before the entity with the lower number.
+---
+---The value `0` will be treated the same as `nil`.
+---@field selection_priority? integer
+
+---@class Fade : Attenuation
+---@field from? ControlPoint
+---@field to? ControlPoint
+
+---@class Fades
+---At least one of `fade_in`and `fade_out` needs to be defined.
+---@field fade_in? Fade
+---At least one of `fade_in`and `fade_out` needs to be defined.
+---@field fade_out? Fade
+
+---@class FastBeltBendTipTrigger : CountBasedTipTrigger
+---@field type "fast-belt-bend"
+
+---@class FastReplaceTipTrigger : CountBasedTipTrigger
+---@field type "fast-replace"
+---@field source? EntityID
+---@field target? EntityID
+---@field match_type_only? boolean
+
+---A dictionary of feature flags and their status. It can be used to adjust prototypes based on whether the feature flags are enabled. It is accessible through the global object named `feature_flags`.
+---
+---See the mod structure documentation for more information on what each feature flag affects.
+---@class FeatureFlags
+---@field expansion boolean
+---@field quality boolean
+---@field rail_bridges boolean
+---@field space_travel boolean
+---@field spoiling boolean
+---@field freezing boolean
+---@field segmented_units boolean
+---@field expansion_shaders boolean
+
+---A slash `"/"` is always used as the directory delimiter. A path always begins with the specification of a root, which can be one of three formats:
+---
+---- **core**: A path starting with `__core__` will access the resources in the data/core directory, these resources are always accessible regardless of mod specifications.
+---
+---- **base**: A path starting with `__base__` will access the resources in the base mod in data/base directory. These resources are usually available, as long as the base mod isn't removed/deactivated.
+---
+---- **mod path**: The format `__<mod-name>__` is placeholder for root of any other mod (mods/<mod-name>), and is accessible as long as the mod is active.
+---
+---Relative paths using `..` are not supported.
+---@class FileName
+
+---A fire.
+---@class FireFlamePrototype : EntityPrototype
+---@field type "fire"
+---@field damage_per_tick DamageParameters
+---@field spread_delay integer
+---@field spread_delay_deviation integer
+---@field render_layer? RenderLayer
+---@field initial_render_layer? RenderLayer
+---@field secondary_render_layer? RenderLayer
+---@field small_tree_fire_pictures? AnimationVariations
+---@field pictures? AnimationVariations
+---@field smoke_source_pictures? AnimationVariations
+---@field secondary_pictures? AnimationVariations
+---@field burnt_patch_pictures? SpriteVariations
+---@field secondary_picture_fade_out_start? integer
+---@field secondary_picture_fade_out_duration? integer
+---@field spawn_entity? EntityID
+---@field smoke? SmokeSource[]
+---@field maximum_spread_count? integer
+---Spawns this many `secondary_pictures` around the entity when it first spawns. It waits `delay_between_initial_flames` between each spawned `secondary_pictures`. This can be used to make fires look less repetitive.
+---
+---For example, spitters use this to make several smaller splashes around the main one.
+---@field initial_flame_count? integer
+---If `false`, then all animations loop. If `true`, they run once and stay on the final frame. Also changes the behavior of several other fire properties as mentioned in their descriptions.
+---
+---For example, spitters use alternate behavior, flamethrower flames don't.
+---@field uses_alternative_behavior? boolean
+---@field limit_overlapping_particles? boolean
+---@field tree_dying_factor? number
+---@field fade_in_duration? integer
+---@field fade_out_duration? integer
+---@field initial_lifetime? integer
+---@field damage_multiplier_decrease_per_tick? number
+---@field damage_multiplier_increase_per_added_fuel? number
+---@field maximum_damage_multiplier? number
+---@field lifetime_increase_by? integer
+---@field lifetime_increase_cooldown? integer
+---@field maximum_lifetime? integer
+---@field add_fuel_cooldown? integer
+---@field delay_between_initial_flames? integer
+---@field smoke_fade_in_duration? integer
+---@field smoke_fade_out_duration? integer
+---@field on_fuel_added_action? Trigger
+---@field on_damage_tick_effect? Trigger
+---@field light? LightDefinition
+---@field light_size_modifier_per_flame? number
+---@field light_size_modifier_maximum? number
+---@field particle_alpha_blend_duration? integer
+---@field burnt_patch_lifetime? integer
+---@field burnt_patch_alpha_default? number
+---Only loaded if `uses_alternative_behavior` is true.
+---@field particle_alpha? number
+---Only loaded if `uses_alternative_behavior` is true.
+---@field particle_alpha_deviation? number
+---Only loaded if `uses_alternative_behavior` is false.
+---@field flame_alpha? number
+---Only loaded if `uses_alternative_behavior` is false.
+---@field flame_alpha_deviation? number
+---@field burnt_patch_alpha_variations? TileAndAlpha[]
+---The entity with the higher number is selectable before the entity with the lower number.
+---
+---The value `0` will be treated the same as `nil`.
+---@field selection_priority? integer
+
+---Entity that spawns in water tiles, which can be mined. Moves around unless it is LuaEntity::disabled_by_script or marked for deconstruction.
+---@class FishPrototype : EntityWithHealthPrototype
+---@field type "fish"
+---@field pictures? SpriteVariations
+
+---@class FlipEntityTipTrigger : CountBasedTipTrigger
+---@field type "flip-entity"
+
+---Root style: `"flow"`
+---@class FlowStyleSpecification : BaseStyleSpecification
+---@field type "flow_style"
+---Required on the root style.
+---@field max_on_row? integer
+---Required on the root style.
+---@field horizontal_spacing? integer
+---Required on the root style.
+---@field vertical_spacing? integer
+
+---A fluid amount. The amount is stored as a fixed-size signed 64 bit integer, with 24 bits reserved for decimal precision, meaning the smallest value step is `1/2^24`.
+---@class FluidAmount
+
+---Used to set the fluid amount an entity can hold, as well as the connection points for pipes leading into and out of the entity.
+---
+---Entities can have multiple fluidboxes. These can be part of a FluidEnergySource, or be specified directly in the entity prototype.
+---@class FluidBox
+---Must be greater than 0.
+---@field volume FluidAmount
+---Connection points to connect to other fluidboxes. This is also marked as blue arrows in alt mode. Fluid may flow in or out depending on the `type` field of each connection.
+---
+---Connection points may depend on the direction the entity is facing. These connection points cannot share positions with one another or the connection points of another fluid box belonging to the same entity.
+---
+---Can't have more than 255 connections.
+---@field pipe_connections PipeConnectionDefinition[]
+---Can be used to specify which fluid is allowed to enter this fluid box. See here.
+---@field filter? FluidID
+---@field render_layer? RenderLayer
+---@field draw_only_when_connected? boolean
+---A fraction of the volume that will be "reserved" and cannot be removed by flow operations. This does nothing if the fluidbox is part of a fluid segment.
+---@field volume_reservation_fraction? number
+---The pictures to show when no fluid box is connected to this one.
+---@field pipe_covers? Sprite4Way
+---@field pipe_covers_frozen? Sprite4Way
+---@field pipe_picture? Sprite4Way
+---@field pipe_picture_frozen? Sprite4Way
+---Pipe picture variation used when owner machine is flipped. If no picture is loaded, pipe_picture is used instead.
+---@field mirrored_pipe_picture? Sprite4Way
+---Frozen pipe picture variation used when owner machine is flipped. If no picture is loaded, pipe_picture_frozen is used instead.
+---@field mirrored_pipe_picture_frozen? Sprite4Way
+---The minimum temperature allowed into the fluidbox. Only applied if a `filter` is specified.
+---@field minimum_temperature? number
+---The maximum temperature allowed into the fluidbox. Only applied if a `filter` is specified.
+---@field maximum_temperature? number
+---The max extent that a pipeline with this fluidbox can span. A given pipeline's extent is calculated as the min extent of all the fluidboxes that comprise it.
+---@field max_pipeline_extent? integer
+---@field production_type? ProductionType
+---Set the secondary draw order for all orientations. Used to determine render order for sprites with the same `render_layer` in the same position. Sprites with a higher `secondary_draw_order` are drawn on top.
+---@field secondary_draw_order? integer
+---Set the secondary draw order for each orientation. Used to determine render order for sprites with the same `render_layer` in the same position. Sprites with a higher `secondary_draw_order` are drawn on top.
+---
+---The individual directions default to the value of `secondary_draw_order`.
+---@field secondary_draw_orders? FluidBoxSecondaryDrawOrders
+---Defaults to true if `pipe_picture` is not defined, otherwise defaults to false.
+---@field always_draw_covers? boolean
+---Array of the WorkingVisualisation::name of working visualisations to enable when this fluidbox is present.
+---
+---If `draw_only_when_connected` is `true`, then the working visualisation are only enabled when this is *connected*.
+---@field enable_working_visualisations? string[]
+
+---@class FluidBoxLinkedConnectionID
+
+---@class FluidBoxSecondaryDrawOrders
+---@field north? integer
+---@field east? integer
+---@field south? integer
+---@field west? integer
+
+---@class FluidEnergySource : BaseEnergySource
+---@field type "fluid"
+---All standard fluid box configurations are acceptable, but the type must be `"input"` or `"input-output"` to function correctly. `scale_fluid_usage = true`, `fluid_usage_per_tick`, or a filter on the fluidbox must be set to be able to calculate the fluid usage of the energy source.
+---@field fluid_box FluidBox
+---@field output_fluid_box? FluidBox
+---@field smoke? SmokeSource[]
+---@field light_flicker? LightFlickeringDefinition
+---`1` means 100% effectivity. Must be greater than `0`. Multiplier of the energy output.
+---@field effectivity? number
+---If set to `true`, the available power output is based on the FluidPrototype::fuel_value. Otherwise, the available power output will be based on the fluid temperature and FluidPrototype::heat_capacity: `energy = fluid_amount * (fluid_temperature - fluid_default_temperature) * fluid_heat_capacity * effectivity`
+---@field burns_fluid? boolean
+---If set to `true`, the energy source will consume as much fluid as required to produce the desired power, otherwise it will consume as much as it is allowed to, wasting any excess.
+---@field scale_fluid_usage? boolean
+---Property is only used when `burns_fluid` is `true` and the fluid has a fuel_value of `0`, or when `burns_fluid` is `false` and the fluid is at its `default_temperature`.
+---
+---In those cases, this property determines whether the fluid should be destroyed, meaning that the fluid is consumed at the rate of `fluid_usage_per_tick`, without producing any power.
+---@field destroy_non_fuel_fluid? boolean
+---When set, fluids consumed and produced by this energy source will not appear in fluid production statistics.
+---@field hide_from_stats? boolean
+---The number of fluid units the energy source uses per tick. If used with `scale_fluid_usage`, this specifies the maximum. If this value is not set, `scale_energy_usage` is `false` and a fluid box filter is set, the game will attempt to calculate this value from the fluid box filter's fluid's `fuel_value` or `heat_capacity` and the entity's `energy_usage`. If `burns_fluid` is `false`, `maximum_temperature` will also be used. If the attempt of the game to calculate this value fails (`scale_energy_usage` is `false` and a fluid box filter is set), then `scale_energy_usage` will be forced to `true`, to prevent the energy source from being an infinite fluid sink. More context on the forums.
+---@field fluid_usage_per_tick? FluidAmount
+---`0` means unlimited maximum temperature. If this is non-zero while `scale_fluid_usage` is `false` and `fluid_usage_per_tick` is not specified, the game will use this value to calculate `fluid_usage_per_tick`. To do that, the filter on the `fluid_box` must be set.
+---
+---Only loaded if `burns_fluid` is `false`.
+---@field maximum_temperature? number
+---Fluid and amount produced per 1 unit of fluid consumed. Only used when `output_fluid_box` is defined. If this value is not provided, FluidPrototype::spent_fluid will be used based on the input fluid being consumed.
+---@field spent_fluid? SpentFluidSpecification
+
+---@class FluidFlowDirection
+
+---The name of a FluidPrototype.
+---@class FluidID
+
+---A fluid ingredient definition.
+---@class FluidIngredientPrototype
+---@field type "fluid"
+---The name of a FluidPrototype.
+---@field name FluidID
+---Can not be `<= 0`.
+---@field amount FluidAmount
+---Sets the expected temperature of the fluid ingredient.
+---@field temperature? number
+---If `temperature` is not set, this sets the expected minimum temperature of the fluid ingredient.
+---@field minimum_temperature? number
+---If `temperature` is not set, this sets the expected maximum temperature of the fluid ingredient.
+---@field maximum_temperature? number
+---Amount that should not be included in the consumption statistics, typically with a matching product having the same amount set as ignored_by_stats.
+---@field ignored_by_stats? FluidAmount
+---Used to specify which CraftingMachinePrototype::fluid_boxes this ingredient should use. It will use this one fluidbox. The index is 1-based and separate for input and output fluidboxes.
+---@field fluidbox_index? integer
+---Additional fluid boxes that will be also used by this fluid ingredient. If a machine does not have a fluid box with that index, then this index will be silently skipped without making recipe uncraftable.
+---
+---Only loaded if `fluidbox_index` is defined.
+---@field optional_fluidbox_indexes? integer[]
+---Used to set crafting machine fluidbox volumes. Must be at least 1.
+---@field fluidbox_multiplier? integer
+
+---A fluid product definition.
+---@class FluidProductPrototype : ProductPrototypeBase
+---@field type "fluid"
+---The name of a FluidPrototype.
+---@field name FluidID
+---Can not be `< 0`.
+---@field amount? FluidAmount
+---Only loaded, and mandatory if `amount` is not defined.
+---
+---Can not be `< 0`.
+---@field amount_min? FluidAmount
+---Only loaded, and mandatory if `amount` is not defined.
+---
+---If set to a number that is less than `amount_min`, the game will use `amount_min` instead.
+---@field amount_max? FluidAmount
+---Amount that should not be included in the fluid production statistics, typically with a matching ingredient having the same amount set as ignored_by_stats.
+---
+---If `ignored_by_stats` is larger than the amount crafted (for instance due to probability) it will instead show as consumed.
+---
+---Products with `ignored_by_stats` defined will not be set as recipe through the circuit network when using the product's fluid-signal.
+---@field ignored_by_stats? FluidAmount
+---Amount that should be deducted from any productivity induced bonus crafts.
+---
+---This value can safely be set larger than the maximum expected craft amount, any excess is ignored.
+---
+---This value is ignored when allow_productivity is `false`.
+---@field ignored_by_productivity? FluidAmount
+---The temperature of the fluid product.
+---@field temperature? number
+---Used to specify which CraftingMachinePrototype::fluid_boxes this product should use. It will use this one fluidbox. The index is 1-based and separate for input and output fluidboxes.
+---@field fluidbox_index? integer
+---Used to set crafting machine fluidbox volumes. Must be at least 1.
+---@field fluidbox_multiplier? integer
+---Additional fluid boxes that will be also used by this fluid product. If a machine does not have a fluid box with that index, then this index will be silently skipped without making recipe uncraftable.
+---
+---Only loaded if `fluidbox_index` is defined.
+---@field optional_fluidbox_indexes? integer[]
+
+---A fluid.
+---@class FluidPrototype : Prototype
+---@field type "fluid"
+---Can't be an empty array.
+---@field icons? IconData[]
+---Path to the icon file.
+---
+---Only loaded, and mandatory if `icons` is not defined.
+---@field icon? FileName
+---The size of the square icon, in pixels. E.g. `32` for a 32px by 32px icon. Must be larger than `0`.
+---
+---Only loaded if `icons` is not defined.
+---@field icon_size? SpriteSizeType
+---Also the minimum temperature of the fluid. Has to be lower than `max_temperature`.
+---@field default_temperature number
+---Used by bars that show the fluid color, like the flamethrower turret fill bar in the tooltip, or the fill bar for the fluid wagon tooltip; and for the pipe windows and storage tank fill gauges.
+---@field base_color Color
+---Used only for pipe windows or storage tank fill gauges.
+---@field flow_color Color
+---Color to use for visualization. This color should be vibrant and easily distinguished.
+---
+---If not specified, this will be auto-generated from `base_color` by converting to HSV, decreasing saturation by 10% and setting value to 80%.
+---@field visualization_color? Color
+---@field max_temperature? number
+---Joule needed to heat 1 Unit by 1 °C.
+---@field heat_capacity? Energy
+---@field fuel_value? Energy
+---Scales pollution generated when the fluid is consumed.
+---@field emissions_multiplier? number
+---Above this temperature the `gas_flow` animation is used to display the fluid inside storage tanks and pipes.
+---@field gas_temperature? number
+---Whether the fluid should glow in pipe and storage tank windows.
+---@field draw_as_glow? boolean
+---Whether the fluid should be included in the barrel recipes automatically generated by the base mod.
+---
+---This property is not read by the game engine itself, but the base mod's data-updates.lua file. This means it is discarded by the game engine after loading finishes.
+---@field auto_barrel? boolean
+---Hides the fluid from the signal selection screen.
+---@field hidden? boolean
+---Fluid and amount produced per 1 unit of fluid consumed. Used by Generator only if GeneratorPrototype::spent_fluid is not set and it has GeneratorPrototype::output_fluid_box. Used by FluidEnergySource only if FluidEnergySource::spent_fluid is not set and it has FluidEnergySource::output_fluid_box.
+---@field spent_fluid? SpentFluidSpecification
+
+---Used for example for the handheld flamethrower.
+---@class FluidStreamPrototype : EntityPrototype
+---@field type "stream"
+---The stream will spawn one particle every `particle_spawn_interval` ticks until the `particle_spawn_timeout` is reached. The first particle will trigger an `initial_action` upon landing. Each particle triggers an `action` upon landing. Particles spawned within a single `particle_spawn_timeout` interval will be connected by a stretched `spine_animation`.
+---@field particle_spawn_interval integer
+---Must be larger than 0. `particle_horizontal_speed` has to be greater than `particle_horizontal_speed_deviation`.
+---@field particle_horizontal_speed number
+---@field particle_horizontal_speed_deviation number
+---@field particle_vertical_acceleration number
+---Action that is triggered when the first particle lands.
+---@field initial_action? Trigger
+---Action that is triggered every time a particle lands. Not triggered for the first particle if `initial_action` is non-empty.
+---@field action? Trigger
+---@field special_neutral_target_damage? DamageParameters
+---@field width? number
+---Number of spawned child particles of the stream. Must be greater than 0 and less than 256.
+---@field particle_buffer_size? integer
+---@field particle_spawn_timeout? integer
+---@field particle_start_alpha? number
+---@field particle_end_alpha? number
+---@field particle_start_scale? number
+---@field particle_alpha_per_part? number
+---@field particle_scale_per_part? number
+---Value between 0 and 1.
+---@field particle_fade_out_threshold? number
+---Value between 0 and 1.
+---@field particle_loop_exit_threshold? number
+---Will be set to 1 by the game if less than 1.
+---@field particle_loop_frame_count? integer
+---Will be set to 1 by the game if less than 1.
+---@field particle_fade_out_duration? integer
+---@field spine_animation? Animation
+---@field particle? Animation
+---@field shadow? Animation
+---Smoke spawning is controlled by `progress_to_create_smoke`.
+---@field smoke_sources? SmokeSource[]
+---The point in the particles projectile arc to start spawning smoke. 0.5 (the default) starts spawning smoke at the halfway point between the source and target.
+---@field progress_to_create_smoke? number
+---@field stream_light? LightDefinition
+---@field ground_light? LightDefinition
+---@field target_position_deviation? number
+---@field oriented_particle? boolean
+---@field shadow_scale_enabled? boolean
+---@field target_initial_position_only? boolean
+---The entity with the higher number is selectable before the entity with the lower number.
+---
+---The value `0` will be treated the same as `nil`.
+---@field selection_priority? integer
+
+---A turret that uses fluid as ammunition.
+---@class FluidTurretPrototype : TurretPrototype
+---@field type "fluid-turret"
+---@field fluid_buffer_size FluidAmount
+---@field fluid_buffer_input_flow FluidAmount
+---Before an turret that was out of fluid ammunition is able to fire again, the `fluid_buffer_size` must fill to this proportion.
+---@field activation_buffer_ratio FluidAmount
+---@field fluid_box FluidBox
+---@field muzzle_light? LightDefinition
+---@field enough_fuel_indicator_light? LightDefinition
+---@field not_enough_fuel_indicator_light? LightDefinition
+---@field muzzle_animation? Animation
+---@field folded_muzzle_animation_shift? AnimatedVector
+---@field preparing_muzzle_animation_shift? AnimatedVector
+---@field prepared_muzzle_animation_shift? AnimatedVector
+---@field starting_attack_muzzle_animation_shift? AnimatedVector
+---@field attacking_muzzle_animation_shift? AnimatedVector
+---@field ending_attack_muzzle_animation_shift? AnimatedVector
+---@field folding_muzzle_animation_shift? AnimatedVector
+---@field enough_fuel_indicator_picture? Sprite8Way
+---@field not_enough_fuel_indicator_picture? Sprite8Way
+---The sprite will be drawn on top of fluid turrets that are out of fluid ammunition. If the `out_of_ammo_alert_icon` is not set, UtilitySprites::fluid_icon will be used instead.
+---@field out_of_ammo_alert_icon? Sprite
+---Always `true`, forcing the turret's collision box to be affected by its rotation.
+---@field turret_base_has_direction true
+---Requires ammo_type in attack_parameters.
+---@field attack_parameters StreamAttackParameters
+
+---A fluid wagon.
+---@class FluidWagonPrototype : RollingStockPrototype
+---@field type "fluid-wagon"
+---@field capacity FluidAmount
+---@field quality_affects_capacity? boolean
+---Must be positive.
+---@field tank_count? integer
+---Must be > 0.1.
+---@field tank_spacing? number
+---Projected height of valves when the wagon is oriented east/west.
+---@field base_valve_z_offset_projected_when_horizontal? number
+---Projected height of valves when the wagon is oriented north/south.
+---@field base_valve_z_offset_projected_when_vertical? number
+---Pumps are only allowed to connect to this fluid wagon if the pump's fluid box connection and this fluid wagon share a connection category. Pump may have different connection categories on the input and output side, connection categories will be taken from the connection that is facing towards fluid wagon.
+---@field connection_category? string|string[]
+---Projected offset between valves when the wagon is oriented east/west.
+---@field valve_to_valve_offset_when_horizontal? Vector
+---Projected offset between valves when the wagon is oriented north/south.
+---@field valve_to_valve_offset_when_vertical? Vector
+---Horizontal (xy) offset of the central valve from the wagon position when it is oriented east/west.
+---@field base_valve_xy_offset_when_horizontal? Vector
+---Horizontal (xy) offset of the central valve from the wagon position when it is oriented north/south.
+---@field base_valve_xy_offset_when_vertical? Vector
+
+---Abstract base for construction/logistics and combat robots.
+---@class FlyingRobotPrototype : EntityWithOwnerPrototype
+---The flying speed of the robot, in tiles/tick.
+---@field speed number
+---The maximum flying speed of the robot, including bonuses, in tiles/tick. Useful to limit the impact of worker robot speed research.
+---
+---Must be >= speed.
+---@field max_speed? number
+---How much energy can be stored in the batteries.
+---
+---Used only by robots with logistic interface.
+---@field max_energy? Energy
+---How much energy does it cost to move 1 tile.
+---
+---Used only by robots with logistic interface.
+---@field energy_per_move? Energy
+---How much energy does it cost to fly for 1 tick.
+---
+---Used only by robots with logistic interface.
+---@field energy_per_tick? Energy
+---The robot will go to charge when its battery fill ratio is less than this.
+---
+---Used only by robots with logistic interface.
+---@field min_to_charge? number
+---If the robot's battery fill ratio is more than this, it does not need to charge before stationing.
+---
+---Used only by robots with logistic interface.
+---@field max_to_charge? number
+---Some robots simply crash, some slowdown but keep going. 0 means crash.
+---
+---Used only by robots with logistic interface.
+---@field speed_multiplier_when_out_of_energy? number
+---Whether this prototype should be a high priority target for enemy forces. See Military units and structures.
+---@field is_military_target? boolean
+---The entity with the higher number is selectable before the entity with the lower number.
+---
+---The value `0` will be treated the same as `nil`.
+---@field selection_priority? integer
+
+---@class FogEffectProperties
+---`gleba` type is rendered per chunk and opacity of fog depends on count of tiles with lowland_fog set to `true` on the chunk.
+---@field fog_type? "vulcanus"|"gleba"
+---@field shape_noise_texture EffectTexture
+---@field detail_noise_texture EffectTexture
+---@field color1? Color
+---@field color2? Color
+---@field tick_factor? number
+
+---@class FogMaskShapeDefinition
+---@field rect SimpleBoundingBox
+---@field falloff? number
+
+---@class FollowerRobotLifetimeModifier : SimpleModifier
+---@field type "follower-robot-lifetime"
+---If set to `false`, use the icon from UtilitySprites for this technology effect icon.
+---@field infer_icon? boolean
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---Fonts are used in all GUIs in the game.
+---@class FontPrototype
+---@field type "font"
+---@field type "font"
+---Name of the font.
+---@field name string
+---Size of the font.
+---@field size integer
+---The name of the fonts .ttf descriptor. This descriptor must be defined in the locale info.json. Refer to `data/core/locale/_language_/info.json` for examples.
+---@field from string
+---@field spacing? number
+---Whether the font has a border.
+---@field border? boolean
+---@field filtered? boolean
+---The color of the border, if enabled.
+---@field border_color? Color
+
+---@class FootprintParticle
+---The tiles this footprint particle is shown on when the player walks over them.
+---@field tiles TileID[]
+---The name of the particle that should be created when the character walks on the defined tiles.
+---@field particle_name? ParticleID
+---Whether this footprint particle should be the default particle that is used for `tiles` that don't have an associated footprint particle.
+---@field use_as_default? boolean
+
+---@class FootstepTriggerEffectItem : CreateParticleTriggerEffectItem
+---@field tiles TileID[]
+---Can be used to specify multiple CreateParticleTriggerEffectItems. If this property is defined, all properties inherited from CreateParticleTriggerEffectItem are ignored.
+---@field actions? CreateParticleTriggerEffectItem[]
+---When `true`, the trigger(s) defined in `actions` are the default triggers for tiles that don't have an associated footstep particle trigger. (ie. don't show up in one of the "tiles" lists).
+---@field use_as_default? boolean
+
+---@class FootstepTriggerEffectList
+
+---@class ForceCondition
+
+---Root style: `"frame"`
+---@class FrameStyleSpecification : BaseStyleSpecification
+---@field type "frame_style"
+---Required on the root style.
+---@field graphical_set? ElementImageSet
+---Required on the root style.
+---@field horizontal_flow_style? HorizontalFlowStyleSpecification
+---Required on the root style.
+---@field vertical_flow_style? VerticalFlowStyleSpecification
+---Required on the root style.
+---@field header_flow_style? HorizontalFlowStyleSpecification
+---Required on the root style.
+---@field header_filler_style? EmptyWidgetStyleSpecification
+---Required on the root style.
+---@field title_style? LabelStyleSpecification
+---Required on the root style.
+---@field use_header_filler? boolean
+---Required on the root style.
+---@field drag_by_title? boolean
+---@field header_background? ElementImageSet
+---@field background_graphical_set? ElementImageSet
+---Required on the root style.
+---@field border? BorderImageSet
+
+---@class FrequencySizeRichness
+---@field frequency? MapGenSize
+---@field size? MapGenSize
+---@field richness? MapGenSize
+
+---Each item which has a fuel_value must have a fuel category. The fuel categories are used to allow only certain fuels to be used in EnergySource.
+---@class FuelCategory : Prototype
+---@field type "fuel-category"
+---@field fuel_value_type? string|number|boolean|nil|table
+
+---The name of a FuelCategory.
+---@class FuelCategoryID
+
+---A furnace. Normal furnaces only process "smelting" category recipes, but you can make furnaces that process other recipe categories.
+---
+---The difference to assembling machines is that furnaces automatically choose their recipe based on input. See Furnace Recipe Selection for how the recipe is chosen.
+---@class FurnacePrototype : CraftingMachinePrototype
+---@field type "furnace"
+---The number of output slots.
+---@field result_inventory_size ItemStackIndex
+---The number of input slots, but not more than 1.
+---@field source_inventory_size ItemStackIndex
+---The locale key of the message shown when the player attempts to insert an item into the furnace that cannot be processed by that furnace. In-game, the locale is provided the `__1__` parameter, which is the localised name of the item.
+---
+---The locale key is also used with an `_until` suffix for items that cannot be processed until they recipe is unlocked by a technology.
+---@field cant_insert_at_source_message_key? string
+---The locale key of the tooltip to be shown in the input slot instead of the automatically generated list of items that fit there
+---@field custom_input_slot_tooltip_key? string
+---@field circuit_connector? [CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition]
+---@field circuit_connector_flipped? [CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition]
+---The maximum circuit wire distance for this entity.
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---@field default_recipe_finished_signal? SignalIDConnector
+---@field default_working_signal? SignalIDConnector
+
+---@class FusionGeneratorDirectionGraphicsSet
+---@field animation? Animation
+---@field working_light? Animation
+---@field fusion_effect_uv_map? Sprite
+---The amount of items in this array has to match the amount of input fluid connections. Empty tables can be used as items to fulfill this requirement without defining graphics.
+---@field fluid_input_graphics? FusionGeneratorFluidInputGraphics[]
+
+---@class FusionGeneratorFluidInputGraphics
+---@field sprite? Sprite
+---@field working_light? Sprite
+---@field fusion_effect_uv_map? Sprite
+
+---@class FusionGeneratorGraphicsSet
+---@field north_graphics_set FusionGeneratorDirectionGraphicsSet
+---@field east_graphics_set FusionGeneratorDirectionGraphicsSet
+---@field south_graphics_set FusionGeneratorDirectionGraphicsSet
+---@field west_graphics_set FusionGeneratorDirectionGraphicsSet
+---@field render_layer? RenderLayer
+---@field light? LightDefinition
+---@field glow_color? Color
+---Refer to EntityPrototype::water_reflection.
+---@field water_reflection? WaterReflectionDefinition
+
+---Consumes a fluid to generate electricity and create another fluid.
+---@class FusionGeneratorPrototype : EntityWithOwnerPrototype
+---@field type "fusion-generator"
+---`output_flow_limit` is mandatory and must be positive. `output_flow_limit` is the maximum power output of the generator.
+---@field energy_source ElectricEnergySource
+---@field graphics_set? FusionGeneratorGraphicsSet
+---filter is mandatory. The temperature (or fuel value if `burns_fluid` is true) of this fluid is used to calculate the available power output.
+---@field input_fluid_box FluidBox
+---filter is mandatory.
+---@field output_fluid_box FluidBox
+---Must be positive.
+---@field max_fluid_usage FluidAmount
+---Affects animation speed and working sound.
+---@field perceived_performance? PerceivedPerformance
+---If set to `true`, the available power output is based on the FluidPrototype::fuel_value. Otherwise, the available power output will be based on the fluid temperature and FluidPrototype::heat_capacity: `energy = fluid_amount * fluid_temperature * fluid_heat_capacity * effectivity`
+---@field burns_fluid? boolean
+---`1` means 100% effectivity. Must be greater than `0`. Multiplier of the energy output.
+---@field effectivity? number
+
+---@class FusionReactorConnectionGraphics
+---@field pictures? Animation
+---@field working_light_pictures? Animation
+---@field fusion_effect_uv_map? Sprite
+
+---@class FusionReactorGraphicsSet
+---@field structure? Sprite4Way
+---@field render_layer? RenderLayer
+---@field default_fuel_glow_color? Color
+---@field light? LightDefinition
+---@field working_light_pictures? Sprite4Way
+---@field use_fuel_glow_color? boolean
+---@field fusion_effect_uv_map? Sprite
+---@field connections_graphics? FusionReactorConnectionGraphics[]
+---@field direction_to_connections_graphics? table<DirectionString, integer[]>
+---Cannot be an empty string.
+---@field plasma_category NeighbourConnectableConnectionCategory
+---Refer to EntityPrototype::water_reflection.
+---@field water_reflection? WaterReflectionDefinition
+
+---Fusion reactor. Consumes fluid, fuel and additional energy to produce other fluid. Kind of advanced boiler. Can also have neighbour bonus.
+---@class FusionReactorPrototype : EntityWithOwnerPrototype
+---@field type "fusion-reactor"
+---First energy source for the process: provides energy
+---@field energy_source ElectricEnergySource
+---Second energy source for the process: provides fuel
+---@field burner BurnerEnergySource
+---@field graphics_set FusionReactorGraphicsSet
+---The input fluid box.
+---
+---filter is mandatory.
+---@field input_fluid_box FluidBox
+---The output fluid box.
+---
+---filter is mandatory.
+---@field output_fluid_box FluidBox
+---Defines connection points to neighbours used to compute neighbour bonus.
+---@field neighbour_connectable? NeighbourConnectable
+---If set to true, only North and East direction will be buildable.
+---@field two_direction_only? boolean
+---@field neighbour_bonus? number
+---Power input consumed from first energy source at full performance.
+---
+---Cannot be negative.
+---@field power_input Energy
+---Maximum amount of fluid converted from `input_fluid_box` to `output_fluid_box` within a single tick.
+---
+---Must be positive.
+---@field max_fluid_usage FluidAmount
+---The temperature of the fluid to output. If not defined, the default temperature of the output fluid will be used.
+---@field target_temperature? number
+---Affects working sound.
+---@field perceived_performance? PerceivedPerformance
+
+---@class GameControllerVibrationData
+---Vibration intensity must be between 0 and 1.
+---@field low_frequency_vibration_intensity? number
+---Vibration intensity must be between 0 and 1.
+---@field high_frequency_vibration_intensity? number
+---Duration in milliseconds.
+---@field duration? integer
+---@field play_for? PlayFor
+
+---@class GameViewSettings
+---If this is defined then it sets the default value for all other properties.
+---@field default_show_value? boolean
+---@field show_controller_gui? boolean
+---@field show_minimap? boolean
+---@field show_research_info? boolean
+---@field show_entity_info? boolean
+---@field show_alert_gui? boolean
+---@field update_entity_selection? boolean
+---@field show_rail_block_visualisation? boolean
+---@field show_side_menu? boolean
+---@field show_pins_gui? boolean
+---@field show_map_view_options? boolean
+---@field show_entity_tooltip? boolean
+---@field show_quickbar? boolean
+---@field show_shortcut_bar? boolean
+---@field show_crafting_queue? boolean
+---@field show_tool_bar? boolean
+---@field show_hotkey_suggestions? boolean
+---@field show_surface_list? boolean
+---@field hide_tall_entities? boolean
+
+---@class GateOverRailBuildTipTrigger : CountBasedTipTrigger
+---@field type "gate-over-rail-build"
+
+---A gate.
+---@class GatePrototype : EntityWithOwnerPrototype
+---@field type "gate"
+---@field vertical_animation? Animation
+---@field horizontal_animation? Animation
+---@field vertical_rail_animation_left? Animation
+---@field vertical_rail_animation_right? Animation
+---@field horizontal_rail_animation_left? Animation
+---@field horizontal_rail_animation_right? Animation
+---@field vertical_rail_base? Animation
+---@field horizontal_rail_base? Animation
+---@field wall_patch? Animation
+---@field opening_speed number
+---@field activation_distance number
+---@field timeout_to_close integer
+---Played when the gate opens.
+---@field opening_sound? Sound
+---Played when the gate closes.
+---@field closing_sound? Sound
+---@field fadeout_interval? integer
+---This collision mask is used when the gate is open.
+---
+---Defaults to the mask from UtilityConstants::default_collision_masks when indexed by `"gate/opened"`.
+---@field opened_collision_mask? CollisionMaskConnector
+
+---@class GeneratingPowerTipTrigger : CountBasedTipTrigger
+---@field type "generating-power"
+
+---Used by portable fusion reactor. Provides power in equipment grids. Can produce power for free or use a burner energy source.
+---@class GeneratorEquipmentPrototype : EquipmentPrototype
+---@field type "generator-equipment"
+---The power output of this equipment.
+---@field power Energy
+---If not defined, this equipment produces power for free.
+---@field burner? BurnerEnergySource
+
+---@class GeneratorPictureSet
+---@field north? GeneratorPictures
+---@field east? GeneratorPictures
+---@field south? GeneratorPictures
+---@field west? GeneratorPictures
+
+---@class GeneratorPictures
+---@field animation? Animation
+---@field frozen_patch? Sprite
+
+---An entity that produces power from fluids, for example a steam engine.
+---@class GeneratorPrototype : EntityWithOwnerPrototype
+---@field type "generator"
+---@field energy_source ElectricEnergySource
+---This must have a filter if `max_power_output` is not defined.
+---@field fluid_box FluidBox
+---@field output_fluid_box? FluidBox
+---@field pictures? GeneratorPictureSet
+---How much energy the generator produces compared to how much energy it consumes. For example, an effectivity of 0.5 means that half of the consumed energy is output as power.
+---@field effectivity? number
+---The number of fluid units the generator uses per tick.
+---@field fluid_usage_per_tick FluidAmount
+---The maximum temperature to which the efficiency can increase. At this temperature the generator will run at 100% efficiency. Note: Higher temperature fluid can still be consumed.
+---
+---Used to calculate the `max_power_output` if it is not defined and `burns_fluid` is false. Then, the max power output is `(min(fluid_max_temp, maximum_temperature) - fluid_default_temp) × fluid_usage_per_tick × fluid_heat_capacity × effectivity`, the fluid is the filter specified on the `fluid_box`.
+---@field maximum_temperature number
+---@field smoke? SmokeSource[]
+---If set to `true`, the available power output is based on the FluidPrototype::fuel_value. Otherwise, the available power output will be based on the fluid temperature and FluidPrototype::heat_capacity: `energy = fluid_amount * (fluid_temperature - fluid_default_temperature) * fluid_heat_capacity * effectivity`
+---@field burns_fluid? boolean
+---Scales the generator's fluid usage to its maximum power output.
+---
+---Setting this to true prevents the generator from overconsuming fluid, for example when higher than`maximum_temperature` fluid is fed to the generator.
+---
+---If scale_fluid_usage is false, the generator consumes the full `fluid_usage_per_tick` and any of the extra energy in the fluid (in the form of higher temperature) is wasted. The steam engine exhibits this behavior when fed steam from heat exchangers.
+---@field scale_fluid_usage? boolean
+---This property is used when `burns_fluid` is true and the fluid has a fuel_value of 0.
+---
+---This property is also used when `burns_fluid` is false and the fluid is at default temperature.
+---
+---In these cases, this property determines whether the fluid should be destroyed, meaning that the fluid is consumed at the rate of `fluid_usage_per_tick`, without producing any power.
+---@field destroy_non_fuel_fluid? boolean
+---@field two_direction_only? boolean
+---Affects animation speed and working sound.
+---@field perceived_performance? PerceivedPerformance
+---The power production of the generator is capped to this value. This is also the value that is shown as the maximum power output in the tooltip of the generator.
+---
+---`fluid_box` must have a filter if this is not defined.
+---@field max_power_output? Energy
+---Fluid and amount produced per 1 unit of fluid consumed. Only used when `output_fluid_box` is defined. If this value is not provided, FluidPrototype::spent_fluid will be used based on the input fluid being consumed.
+---@field spent_fluid? SpentFluidSpecification
+
+---@class GhostShimmerConfig
+---@field tint Color
+---@field distortion number
+---@field blend_mode integer
+---@field visualize_borders boolean
+---@field proportional_distortion boolean
+---@field world_uv_modulo integer
+---The array must have at least 6 elements.
+---@field overlay_layers GhostShimmerOverlayData[]
+---The array must have at least 6 elements.
+---@field distortion_layers GhostShimmerDistortionData[]
+
+---@class GhostShimmerDistortionData
+---@field shape integer
+---@field intensity number
+---@field x number
+---@field y number
+
+---@class GhostShimmerOverlayData
+---@field blend_mode integer
+---@field shape integer
+---@field x number
+---@field y number
+---@field tint Color
+---@field cutoff number
+
+---@class GhostTintSet
+---@field ghost_tint Color
+---@field ghost_delivery_tint Color
+---@field tile_ghost_tint Color
+---@field tile_ghost_delivery_tint Color
+---Wires are hard to read when the ghost_tint is very saturated, so they use a separate tint color for better fine tuning.
+---@field wire_tint Color
+
+---@class GigaCargoHatchDefinition
+---@field hatch_graphics_back? Animation
+---@field hatch_graphics_front? Animation
+---@field hatch_render_layer_back? RenderLayer
+---@field hatch_render_layer_front? RenderLayer
+---@field covered_hatches integer[]
+---Cannot use `fade_ticks`.
+---@field opening_sound? InterruptibleSound
+---Cannot use `fade_ticks`.
+---@field closing_sound? InterruptibleSound
+
+---Note that when any technology prototype changes (regardless of which mod it belongs to), the game re-applies all researched technology effects, including `"give-item"` modifiers. This means that players will receive the item again, even if they already received it previously. This can be undesirable.
+---@class GiveItemModifier : BaseModifier
+---@field type "give-item"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+---@field item ItemID
+---@field quality? QualityID
+---Must be >= `1`.
+---@field count? ItemCountType
+
+---@class GlobalRecipeTints
+---@field primary? Color
+---@field secondary? Color
+---@field tertiary? Color
+---@field quaternary? Color
+
+---@class GlobalTintEffectProperties
+---@field noise_texture EffectTexture
+---@field offset Vector4f
+---@field intensity Vector4f
+---@field scale_u Vector4f
+---@field scale_v Vector4f
+---@field global_intensity number
+---@field global_scale number
+---@field zoom_factor number
+---@field zoom_intensity number
+
+---Root style: `"glow"`
+---@class GlowStyleSpecification : BaseStyleSpecification
+---@field type "glow_style"
+---Required on the root style.
+---@field image_set? ElementImageSet
+
+---Properties of the god controller.
+---@class GodControllerPrototype
+---@field type "god-controller"
+---@field type "god-controller"
+---Name of the god-controller. Base game uses "default".
+---@field name string
+---@field inventory_size ItemStackIndex
+---Must be >= 0.34375.
+---@field movement_speed number
+---@field item_pickup_distance number
+---@field loot_pickup_distance number
+---@field mining_speed number
+---Names of the crafting categories the player can craft recipes from.
+---@field crafting_categories? RecipeCategoryID[]
+---Names of the resource categories the player can mine resources from.
+---@field mining_categories? ResourceCategoryID[]
+
+---Root style: `"graph"`
+---@class GraphStyleSpecification : BaseStyleSpecification
+---@field type "graph_style"
+---Required on the root style.
+---@field background_color? Color
+---Required on the root style.
+---@field line_colors? Color[]
+---Required on the root style.
+---@field horizontal_label_style? LabelStyleSpecification
+---Required on the root style.
+---@field vertical_label_style? LabelStyleSpecification
+---Required on the root style.
+---@field minimal_horizontal_label_spacing? integer
+---Required on the root style.
+---@field minimal_vertical_label_spacing? integer
+---Required on the root style.
+---@field horizontal_labels_margin? integer
+---Required on the root style.
+---@field vertical_labels_margin? integer
+---Required on the root style.
+---@field graph_top_margin? integer
+---Required on the root style.
+---@field graph_right_margin? integer
+---Required on the root style.
+---@field data_line_highlight_distance? integer
+---Required on the root style.
+---@field selection_dot_radius? integer
+---Required on the root style.
+---@field grid_lines_color? Color
+---Required on the root style.
+---@field guide_lines_color? Color
+---Name of a FontPrototype.
+---
+---Required on the root style.
+---@field font? string
+
+---This prototype is used for receiving an achievement when the player gets attacked due to pollution.
+---@class GroupAttackAchievementPrototype : AchievementPrototype
+---@field type "group-attack-achievement"
+---This will trigger the achievement, if the player receives this amount of attacks. **Note**: The default achievement "it stinks and they don't like it" uses the amount of 1. (As in getting attacked once.)
+---@field amount? integer
+---The achievement is only triggered if the attacking group of enemies contains at least one of the entities listed here.
+---@field entities? EntityID[]
+---The type of attack that triggers this achievement. "autonomous" attacks are triggered in response to pollution or a territory disturbance. "distraction" attacks are in response to taking damage or seeing a nearby enemy. "scripted" attacks are triggered from mods.
+---@field attack_type? "autonomous"|"distraction"|"scripted"
+
+---@class GroupAttackTipTrigger : CountBasedTipTrigger
+---@field type "group-attack"
+
+---The available GUI styles.
+---@class GuiStyle : PrototypeBase
+---@field type "gui-style"
+---@field default_tileset? FileName
+---@field default_sprite_scale? number
+---@field default_sprite_priority? SpritePriority
+
+---A gun. A weapon to deal damage to entities.
+---@class GunPrototype : ItemPrototype
+---@field type "gun"
+---The information the item needs to know in order to know what ammo it requires, the sounds, and range.
+---@field attack_parameters AttackParameters
+
+---@class GunShift4Way
+---@field north Vector
+---@field east? Vector
+---@field south? Vector
+---@field west? Vector
+
+---@class GunSpeedModifier : BaseModifier
+---@field type "gun-speed"
+---If set to `false`, use the icon from UtilitySprites for this technology effect icon.
+---@field infer_icon? boolean
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+---Name of the AmmoCategory that is affected.
+---@field ammo_category AmmoCategoryID
+---Modification value, which will be added to the current gun speed modifier upon researching.
+---@field modifier number
+
+---A half diagonal rail.
+---@class HalfDiagonalRailPrototype : RailPrototype
+---@field type "half-diagonal-rail"
+---The collision_box of straight rail is hardcoded to `{{-0.75, -1.9}, {0.75, 1.9}}`.
+---@field collision_box? BoundingBox
+
+---Used to specify heat capacity properties without a heat energy source.
+---@class HeatBuffer
+---Must be >= `default_temperature`.
+---@field max_temperature number
+---@field specific_heat Energy
+---@field max_transfer Energy
+---@field default_temperature? number
+---@field min_temperature_gradient? number
+---Must be >= `default_temperature` and <= `max_temperature`.
+---@field min_working_temperature? number
+---@field minimum_glow_temperature? number
+---@field pipe_covers? Sprite4Way
+---@field heat_pipe_covers? Sprite4Way
+---@field heat_picture? Sprite4Way
+---@field heat_glow? Sprite4Way
+---May contain up to 32 connections.
+---@field connections? HeatConnectionDefinition[]
+
+---Defines the connections for HeatEnergySource and HeatBuffer.
+---@class HeatConnectionDefinition
+---The location of the heat pipe connection, relative to the center of the entity in the north-facing direction.
+---@field position MapPosition
+---The "outward" direction of this heat connection. For a connection to succeed, the other heat connection must face the opposite direction (a south-facing connection needs a north-facing connection to succeed). A connection rotates with the entity.
+---@field direction defines.direction
+
+---@class HeatEnergySource : BaseEnergySource
+---@field type "heat"
+---Must be >= `default_temperature`.
+---@field max_temperature number
+---@field specific_heat Energy
+---@field max_transfer Energy
+---@field default_temperature? number
+---@field min_temperature_gradient? number
+---Must be >= `default_temperature` and <= `max_temperature`.
+---@field min_working_temperature? number
+---@field minimum_glow_temperature? number
+---@field pipe_covers? Sprite4Way
+---@field heat_pipe_covers? Sprite4Way
+---@field heat_picture? Sprite4Way
+---@field heat_glow? Sprite4Way
+---May contain up to 32 connections.
+---@field connections? HeatConnectionDefinition[]
+---@field emissions_per_minute? table<AirbornePollutantID, number>
+
+---This entity produces or consumes heat. Its heat settings can be changed runtime.
+---@class HeatInterfacePrototype : EntityWithOwnerPrototype
+---@field type "heat-interface"
+---@field heat_buffer HeatBuffer
+---@field picture? Sprite
+---@field gui_mode? "all"|"none"|"admins"
+---@field heating_radius? number
+
+---A heat pipe.
+---@class HeatPipePrototype : EntityWithOwnerPrototype
+---@field type "heat-pipe"
+---@field connection_sprites? ConnectableEntityGraphics
+---@field heat_glow_sprites? ConnectableEntityGraphics
+---@field heat_buffer HeatBuffer
+---Must be >= 0.
+---@field heating_radius? number
+---The entity with the higher number is selectable before the entity with the lower number.
+---
+---The value `0` will be treated the same as `nil`.
+---@field selection_priority? integer
+---The maximum circuit wire distance for this entity.
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---Set of 16 circuit connector definitions. They correspond to the following sprites in this exact order: single, ending_up, ending_right, corner_right_up, ending_down, straight_vertical, corner_right_down, t_right, ending_left, corner_left_up, straight_horizontal, t_up, corner_left_down, t_left, t_down, cross.
+---@field circuit_connector? CircuitConnectorDefinition[]
+---@field default_temperature_signal? SignalIDConnector
+
+---Used to attach graphics for cursor boxes to entities during runtime. HighlightBoxEntity can also be independent from entities so it is simply drawn somewhere in the world. See LuaSurface::create_entity for the available options for type "highlight-box".
+---
+---The collision_box of the highlight box prototype is ignored during runtime, instead the "bounding_box" given in create_entity() or the selection box of the target entity is used.
+---@class HighlightBoxEntityPrototype : EntityPrototype
+---@field type "highlight-box"
+---The entity with the higher number is selectable before the entity with the lower number.
+---
+---The value `0` will be treated the same as `nil`.
+---@field selection_priority? integer
+
+---@class HorizontalAlign
+
+---Root style: `"horizontal_flow"`
+---@class HorizontalFlowStyleSpecification : BaseStyleSpecification
+---@field type "horizontal_flow_style"
+---Required on the root style.
+---@field horizontal_spacing? integer
+
+---Root style: `"horizontal_scrollbar"`
+---@class HorizontalScrollBarStyleSpecification : ScrollBarStyleSpecification
+---@field type "horizontal_scrollbar_style"
+
+---One layer of an icon. Icon layering follows the following rules:
+---
+---- The rendering order of the individual icon layers follows the array order: Later added icon layers (higher index) are drawn on top of previously added icon layers (lower index).
+---
+---- By default the first icon layer will draw an outline (or shadow in GUI), other layers will draw it only if they have `draw_background` explicitly set to `true`. There are caveats to this though. See the doc.
+---
+---- When the final icon is displayed with transparency (e.g. a faded out alert), the icon layer overlap may look undesirable.
+---
+---- When the final icon is displayed with a shadow (e.g. an item on the ground or on a belt when item shadows are turned on), each icon layer will cast a shadow and the shadow is cast on the layer below it.
+---
+---- The final icon will always be resized and centered in GUI so that all its layers (except the `floating` ones) fit the target slot, but won't be resized when displayed on machines in alt-mode. For example: recipe first icon layer is size 128, scale 1, the icon group will be displayed at resolution /4 to fit the 32px GUI boxes, but will be displayed 4 times as large on buildings.
+---
+---- Shift values are based on `expected_icon_size / 2`.
+---
+---The game automatically generates icon mipmaps for all icons. However, icons can have custom mipmaps defined. Custom mipmaps may help to achieve clearer icons at reduced size (e.g. when zooming out) than auto-generated mipmaps. If an icon file contains mipmaps then the game will automatically infer the icon's mipmap count. Icon files for custom mipmaps must contain half-size images with a geometric-ratio, for each mipmap level. Each next level is aligned to the upper-left corner, with no extra padding. Example sequence: `128x128@(0,0)`, `64x64@(128,0)`, `32x32@(192,0)` is three mipmaps.
+---@class IconData
+---Path to the icon file.
+---@field icon FileName
+---The size of the square icon, in pixels. E.g. `32` for a 32px by 32px icon. Must be larger than `0`.
+---@field icon_size? SpriteSizeType
+---The tint to apply to the icon.
+---@field tint? Color
+---Used to offset the icon "layer" from the overall icon. The shift is applied from the center (so negative shifts are left and up, respectively). Shift values are "in pixels" where the overall icon is assumed to be `expected_icon_size / 2` pixels in width and height, meaning shift `{0, expected_icon_size/2}` will shift it by entire icon height down.
+---@field shift? Vector
+---Defaults to `(expected_icon_size / 2) / icon_size`.
+---
+---Specifies the scale of the icon on the GUI scale. A scale of `2` means that the icon will be two times bigger on screen (and thus more pixelated).
+---
+---Expected icon sizes:
+---
+---- `512` for SpaceLocationPrototype::starmap_icon.
+---
+---- `256` for TechnologyPrototype.
+---
+---- `128` for AchievementPrototype and ItemGroup.
+---
+---- `32` for ShortcutPrototype::icons and `24` for ShortcutPrototype::small_icons.
+---
+---- `64` for the rest of the prototypes that use icons.
+---@field scale? number
+---Outline is drawn using signed distance field generated on load. One icon image will have only one SDF generated. That means if the image is used in multiple icons with different scales, the outline width won't match the desired width in all the scales except the largest one.
+---@field draw_background? boolean
+---When `true` the layer is not considered for calculating bounds of the icon, so it can go out of bounds of rectangle into which the icon is drawn in GUI.
+---@field floating? boolean
+
+---Specification of where and how the alt-mode icons of entities should be drawn.
+---@class IconDrawSpecification
+---@field shift? Vector
+---@field scale? number
+---Scale of the icon when there are many items.
+---@field scale_for_many? number
+---Render layer of the icon.
+---@field render_layer? "entity-info-icon"|"entity-info-icon-above"|"air-entity-info-icon"
+
+---Specification of where and how should be the icons of individual inventories be drawn.
+---@class IconSequencePositioning
+---@field inventory_index defines.inventory
+---@field max_icons_per_row? integer
+---@field max_icon_rows? integer
+---@field shift? Vector
+---@field scale? number
+---@field separation_multiplier? number
+---@field multi_row_initial_height_modifier? number
+
+---Root style: `"image"`
+---@class ImageStyleSpecification : BaseStyleSpecification
+---@field type "image_style"
+---Required on the root style.
+---@field graphical_set? ElementImageSet
+---Required on the root style.
+---@field stretch_image_to_widget_size? boolean
+---@field invert_colors_of_picture_when_hovered_or_toggled? boolean
+
+---@class ImpactCategory
+---@field type "impact-category"
+---@field type "impact-category"
+---Name of the impact category.
+---@field name string
+
+---A cargo wagon that can spawn or void items at will.
+---@class InfinityCargoWagonPrototype : CargoWagonPrototype
+---@field type "infinity-cargo-wagon"
+---@field erase_contents_when_mined? boolean
+---When true, items created inside the infinity cargo wagon will not start to spoil until they have been removed from the wagon.
+---@field preserve_contents_when_created? boolean
+---Controls which players can control what the chest spawns.
+---@field gui_mode? "all"|"none"|"admins"
+
+---A generic container, such as a chest, that can spawn or void items and interact with the logistics network.
+---@class InfinityContainerPrototype : LogisticContainerPrototype
+---@field type "infinity-container"
+---@field erase_contents_when_mined boolean
+---When true, items created inside the infinity chest will not start to spoil until they have been removed from the chest.
+---@field preserve_contents_when_created? boolean
+---Controls which players can control what the chest spawns.
+---@field gui_mode? "all"|"none"|"admins"
+---The way this chest interacts with the logistic network.
+---@field logistic_mode? LogisticMode
+---Whether the "no network" icon should be rendered on this entity if the entity is not within a logistics network.
+---@field render_not_in_network_icon? boolean
+---The number of slots in this container. May not be zero.
+---@field inventory_size ItemStackIndex
+
+---This entity produces or consumes fluids. Its fluid settings can be changed runtime.
+---@class InfinityPipePrototype : PipePrototype
+---@field type "infinity-pipe"
+---@field gui_mode? "all"|"none"|"admins"
+
+---Item or fluid ingredient.
+---@class IngredientPrototype
+
+---@class InsertItemTriggerEffectItem : TriggerEffectItem
+---@field type "insert-item"
+---Name of the ItemPrototype that should be created.
+---@field item ItemID
+---@field quality? QualityID
+---@field count? ItemCountType
+
+---An inserter.
+---@class InserterPrototype : EntityWithOwnerPrototype
+---@field type "inserter"
+---@field extension_speed number
+---@field rotation_speed number
+---@field starting_distance? number
+---@field insert_position Vector
+---@field pickup_position Vector
+---@field platform_picture? Sprite4Way
+---@field platform_frozen? Sprite4Way
+---@field platform_picture_flipped? Sprite4Way
+---@field platform_frozen_flipped? Sprite4Way
+---@field hand_base_picture? Sprite
+---@field hand_open_picture? Sprite
+---@field hand_closed_picture? Sprite
+---@field hand_base_frozen? Sprite
+---@field hand_open_frozen? Sprite
+---@field hand_closed_frozen? Sprite
+---@field hand_base_shadow? Sprite
+---@field hand_open_shadow? Sprite
+---@field hand_closed_shadow? Sprite
+---Defines how this inserter gets energy. The emissions set on the energy source are ignored so inserters cannot produce pollution.
+---@field energy_source EnergySource
+---@field energy_per_movement? Energy
+---@field energy_per_rotation? Energy
+---Whether this inserter is considered a bulk inserter. Relevant for determining how inserter capacity bonus (research)) applies to the inserter.
+---@field bulk? boolean
+---When set to false, then relevant value of inserter stack size bonus (LuaForce::inserter_stack_size_bonus or LuaForce::bulk_inserter_capacity_bonus) will not affect inserter stack size.
+---@field uses_inserter_stack_size_bonus? boolean
+---Whether pickup and insert position can be set run-time.
+---@field allow_custom_vectors? boolean
+---Whether this burner inserter can fuel itself from the fuel inventory of the entity it is picking up items from.
+---@field allow_burner_leech? boolean
+---Whether the item that the inserter is holding should be drawn.
+---@field draw_held_item? boolean
+---Whether the inserter should be able to fish fish.
+---@field use_easter_egg? boolean
+---If drop target is belt, inserter may grab less so that it does not drop partial stacks unless it is forced to drop partial.
+---@field grab_less_to_match_belt_stack? boolean
+---Inserter will wait until its hand is full.
+---@field wait_for_full_hand? boolean
+---If inserter waits for full hand it could become stuck when item in hand changed because of spoiling. If this flag is set then inserter will start dropping held stack even if it was waiting for full hand.
+---@field enter_drop_mode_if_held_stack_spoiled? boolean
+---@field use_mirroring? boolean
+---This inserter will not create stacks on belt with more than this amount of items. Must be >= 1.
+---@field max_belt_stack_size? integer
+---How many filters this inserter has. Maximum count of filtered items in inserter is 5.
+---@field filter_count? integer
+---Used to determine how long the arm of the inserter is when drawing it. Does not affect gameplay. The lower the value, the straighter the arm. Increasing the value will give the inserter a bigger bend due to its longer parts.
+---@field hand_size? number
+---The maximum circuit wire distance for this entity.
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---@field default_stack_control_input_signal? SignalIDConnector
+---Whether the yellow arrow that indicates the drop point of the inserter and the line that indicates the pickup position should be drawn.
+---@field draw_inserter_arrow? boolean
+---Whether the inserter hand should move to the items it picks up from belts, leading to item chasing behaviour. If this is off, the inserter hand will stay in the center of the belt and any items picked up from the edges of the belt "teleport" to the inserter hand.
+---@field chases_belt_items? boolean
+---Stack size bonus that is inherent to the prototype without having to be researched.
+---@field stack_size_bonus? integer
+---@field circuit_connector? [CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition]
+---@field circuit_connector_flipped? [CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition]
+
+---@class InserterStackSizeBonusModifier : SimpleModifier
+---@field type "inserter-stack-size-bonus"
+---If set to `false`, use the icon from UtilitySprites for this technology effect icon.
+---@field infer_icon? boolean
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---@class InstantTriggerDelivery : TriggerDeliveryItem
+---@field type "instant"
+
+---@class InterruptibleSound
+---At least one of sound and stopped_sound has to be defined.
+---@field sound? Sound
+---@field minimal_change_per_tick? number
+---At least one of sound and stopped_sound has to be defined.
+---@field stopped_sound? Sound
+---Has to be greater or equal to `1`.
+---@field minimal_sound_duration_for_stopped_sound? integer
+---@field fade_ticks? integer
+
+---@class InventoryBonusEquipmentPrototype : EquipmentPrototype
+---@field type "inventory-bonus-equipment"
+---@field inventory_size_bonus ItemStackIndex
+---@field energy_source? ElectricEnergySource
+
+---@class InventoryWithCustomStackSizeSpecification
+---Must be >= 0.
+---@field stack_size_multiplier? number
+---Must be >= 1.
+---@field stack_size_min? ItemCountType
+---Must be >= stack_size_min and <= 1000000000.
+---@field stack_size_max? ItemCountType
+---Each record value must be >= 1. For non-stackable items this value will be ignored.
+---@field stack_size_override? table<ItemID, ItemCountType>
+---@field with_bar? boolean
+
+---@class InvokeTileEffectTriggerEffectItem : TriggerEffectItem
+---@field type "invoke-tile-trigger"
+---@field tile_collision_mask? TileCollisionMaskConnector
+
+---@class ItemCountType
+
+---The entity used for items on the ground.
+---@class ItemEntityPrototype : EntityPrototype
+---@field type "item-entity"
+---Item entity collision box has to have same width as height.
+---
+---Specification of the entity collision boundaries. Empty collision box means no collision and is used for smoke, projectiles, particles, explosions etc.
+---
+---The `{0,0}` coordinate in the collision box will match the entity position. It should be near the center of the collision box, to keep correct entity drawing order. The bounding box must include the `{0,0}` coordinate.
+---
+---Note, that for buildings, it is customary to leave 0.1 wide border between the edge of the tile and the edge of the building, this lets the player move between the building and electric poles/inserters etc.
+---@field collision_box? BoundingBox
+
+---An item group. Item groups are the tabs shown above the list of craftable items in the player's inventory GUI. The built-in groups are "logistics", "production", "intermediate-products" and "combat" but mods can define their own.
+---
+---Items are sorted into item groups by sorting them into a subgroup which then belongs to an item group.
+---@class ItemGroup : Prototype
+---@field type "item-group"
+---The icon that is shown to represent this item group. Can't be an empty array.
+---@field icons? IconData[]
+---Path to the icon that is shown to represent this item group.
+---
+---Only loaded, and mandatory if `icons` is not defined.
+---@field icon? FileName
+---The size of the square icon, in pixels. E.g. `32` for a 32px by 32px icon. Must be larger than `0`.
+---
+---The base game uses 128px icons for item groups.
+---
+---Only loaded if `icons` is not defined.
+---@field icon_size? SpriteSizeType
+---Item ingredients in recipes are ordered by item group if RecipePrototype::sort_item_ingredients is set to `true`. The `order_in_recipe` property can be used to specify the ordering in recipes with sorted ingredients without affecting the item group's inventory order.
+---@field order_in_recipe? Order
+
+---The name of an ItemGroup.
+---@class ItemGroupID
+
+---@class ItemHealthColorData
+---Cannot be negative.
+---@field threshold number
+---@field color Color
+
+---The name of an ItemPrototype.
+---@class ItemID
+
+---@class ItemIDFilter
+---@field name ItemID
+---@field quality? QualityID
+---Only loaded if `quality` is defined.
+---@field comparator? ComparatorString
+
+---An item ingredient definition.
+---@class ItemIngredientPrototype
+---@field type "item"
+---@field name ItemID
+---Cannot be `0`.
+---@field amount integer
+---Amount that should not be included in the consumption statistics, typically with a matching product having the same amount set as ignored_by_stats.
+---@field ignored_by_stats? integer
+---Lowest possible quality of ingredient that will be accepted. If not provided but `quality_max` is given, it will be set to the lowest quality from a quality chain to which `quality_max` belongs. When set, if the recipe would require ingredient from a different quality chain (due to quality of the recipe or quality roll), `quality_min` will be used for the quality instead.
+---@field quality_min? QualityID
+---Highest possible quality of ingredient that will be accepted. If not provided but `quality_min` is given, it will be set to the highest quality from a quality chain to which `quality_min` belongs. Must belong to the same quality chain as `quality_min` and be equal or better, meaning later in the chain when following QualityPrototype::next.
+---@field quality_max? QualityID
+---Amount of quality levels up or down this ingredient will be adjusted.
+---
+---This is the difference between the quality of the recipe and the quality of the ingredient. For a vanilla example, when legendary is selected for recipe quality, an ingredient with quality change `-1` would need to be epic quality, not legendary.
+---
+---If `quality_min` is equal to `quality_max`, this is silently set to `0` as it does not make sense to define a quality jump when ingredient quality is fixed to one value for all qualities of recipe.
+---@field quality_change? integer
+---Controls how much spoil percent of this ingredient should influence spoil percent of spoilable products.
+---
+---Must be in range `[0, 1]`.
+---@field spoil_weight? number
+
+---An item product definition.
+---@class ItemProductPrototype : ProductPrototypeBase
+---@field type "item"
+---The name of an ItemPrototype.
+---@field name ItemID
+---@field amount? integer
+---Only loaded, and mandatory if `amount` is not defined.
+---@field amount_min? integer
+---Only loaded, and mandatory if `amount` is not defined.
+---
+---If set to a number that is less than `amount_min`, the game will use `amount_min` instead.
+---@field amount_max? integer
+---Amount that should not be included in the item production statistics, typically with a matching ingredient having the same amount set as ignored_by_stats.
+---
+---If `ignored_by_stats` is larger than the amount crafted (for instance due to probability) it will instead show as consumed.
+---
+---Products with `ignored_by_stats` defined will not be set as recipe through the circuit network when using the product's item-signal.
+---@field ignored_by_stats? integer
+---Amount that should be deducted from any productivity induced bonus crafts.
+---
+---This value can safely be set larger than the maximum expected craft amount, any excess is ignored.
+---
+---This value is ignored when allow_productivity is `false`.
+---@field ignored_by_productivity? integer
+---Probability that a craft will yield one additional product. Also applies to bonus crafts caused by productivity.
+---@field extra_count_fraction? number
+---Must be >= `0` and < `1`.
+---@field percent_spoiled? number
+---When set to true, the item produced will be produced fresh (using percent_spoiled) even when ingredients were spoiled.
+---
+---Note: This may not work as expected outside of recipes (e.g. in mining drills).
+---@field always_fresh? boolean
+---When set to true, if the recipe successfully finishes crafting without spoiling, the result is produced fresh (non-spoiled).
+---
+---Note: This may not work as expected outside of recipes (e.g. in mining drills).
+---@field reset_freshness_on_craft? boolean
+---Lowest possible quality of item that will be given. If not provided but `quality_max` is given, it will be set to the lowest quality from a quality chain to which `quality_max` belongs. When set, if the recipe would produce items from a different quality chain (due to quality of the recipe or quality roll), `quality_min` will be used for the quality instead.
+---
+---Note: If this is used outside of recipes (e.g. by mining drills), setting this to a custom quality chain will discard the quality roll.
+---@field quality_min? QualityID
+---Highest possible quality of item that will be given. If not provided but `quality_min` is given, it will be set to the highest quality from a quality chain to which `quality_min` belongs. Must belong to the same quality chain as `quality_min` and be equal or better, meaning later in the chain when following QualityPrototype::next.
+---
+---Note: If this is used outside of recipes (e.g. by mining drills), setting this to a custom quality chain will discard the quality roll.
+---@field quality_max? QualityID
+---Amount of quality levels up or down this product will be adjusted.
+---
+---This is the difference between the quality of the recipe and the quality of the product. For a vanilla example, when epic is selected for recipe quality, a product with quality change `1` would be legendary quality, not epic.
+---
+---Note: This may not work as expected outside of recipes (e.g. in mining drills).
+---@field quality_change? integer
+---Whether quality roll affects quality of products given. If set to `false`, result of a quality roll will be ignored and an item of quality based on quality of selected recipe will be given.
+---
+---Note: This may not work as expected outside of recipes (e.g. in mining drills).
+---@field affected_by_quality? boolean
+
+---Possible configuration for all items.
+---@class ItemPrototype : Prototype
+---@field type "item"
+---Count of items of the same name that can be stored in one inventory slot. Must be 1 when the `"not-stackable"` flag is set.
+---@field stack_size ItemCountType
+---Can't be an empty array.
+---@field icons? IconData[]
+---Path to the icon file.
+---
+---Only loaded, and mandatory if `icons` is not defined.
+---@field icon? FileName
+---The size of the square icon, in pixels. E.g. `32` for a 32px by 32px icon. Must be larger than `0`.
+---
+---Only loaded if `icons` is not defined.
+---@field icon_size? SpriteSizeType
+---Can't be an empty array.
+---@field dark_background_icons? IconData[]
+---If this is set, it is used to show items in alt-mode instead of the normal item icon. This can be useful to increase the contrast of the icon with the dark alt-mode icon outline.
+---
+---Path to the icon file.
+---
+---Only loaded if `dark_background_icons` is not defined.
+---@field dark_background_icon? FileName
+---The size of the square icon, in pixels. E.g. `32` for a 32px by 32px icon. Must be larger than `0`.
+---
+---Only loaded if `dark_background_icons` is not defined.
+---@field dark_background_icon_size? SpriteSizeType
+---Name of the EntityPrototype that can be built using this item. If this item should be the one that construction bots use to build the specified `place_result`, set the `"primary-place-result"` item flag.
+---
+---The localised name of the entity will be used as the in-game item name. This behavior can be overwritten by specifying `localised_name` on this item, it will be used instead.
+---@field place_result? EntityID
+---@field place_as_equipment_result? EquipmentID
+---Must exist when a nonzero fuel_value is defined.
+---@field fuel_category? FuelCategoryID
+---The item that is the result when this item gets burned as fuel.
+---@field burnt_result? ItemID
+---@field spoil_result? ItemID
+---The minimum quality level that can be reached when spoil_quality_change is used.
+---@field spoil_quality_min? QualityID
+---The maximum quality level that can be reached when spoil_quality_change is used.
+---@field spoil_quality_max? QualityID
+---Defines how many levels the item's quality will go up (positive integer) or down (negative integer) when spoiling.
+---@field spoil_quality_change? integer
+---@field plant_result? EntityID
+---@field place_as_tile? PlaceAsTile
+---Used to give the item multiple different icons so that they look less uniform on belts. For inventory icons and similar, `icon/icons` will be used. Maximum number of variations is 16.
+---
+---When using sprites of size `64` (same as base game icons), the `scale` should be set to 0.5.
+---@field pictures? SpriteVariations
+---Specifies some properties of the item.
+---@field flags? ItemPrototypeFlags
+---@field spoil_ticks? integer
+---Amount of energy the item gives when used as fuel.
+---
+---Mandatory if `fuel_acceleration_multiplier`, `fuel_top_speed_multiplier` or `fuel_emissions_multiplier` or `fuel_glow_color` are used.
+---@field fuel_value? Energy
+---Must be 0 or positive.
+---@field fuel_acceleration_multiplier? number
+---Must be 0 or positive.
+---@field fuel_top_speed_multiplier? number
+---@field fuel_emissions_multiplier? number
+---Additional fuel acceleration multiplier per quality level. Defaults to 30% of `fuel_acceleration_multiplier - 1` if `fuel_acceleration_multiplier` is larger than 1. Otherwise defaults to 0.
+---
+---Must be 0 or positive.
+---@field fuel_acceleration_multiplier_quality_bonus? number
+---Additional fuel top speed multiplier per quality level. Defaults to 30% of `fuel_top_speed_multiplier - 1` if `fuel_top_speed_multiplier` is larger than 1. Otherwise defaults to 0.
+---
+---Must be 0 or positive.
+---@field fuel_top_speed_multiplier_quality_bonus? number
+---The default weight is calculated automatically from recipes and falls back to UtilityConstants::default_item_weight.
+---
+---More information on how item weight is determined can be found on its auxiliary page.
+---@field weight? Weight
+---@field ingredient_to_weight_coefficient? number
+---Used by space platforms to prioritize item requests and make sure there is enough space for priority items before requesting the rest.
+---@field space_platform_request_priority? boolean
+---Colors the glow of the burner energy source when this fuel is burned. Can also be used to color the glow of reactors burning the fuel, see ReactorPrototype::use_fuel_glow_color.
+---@field fuel_glow_color? Color
+---@field open_sound? Sound
+---@field close_sound? Sound
+---@field pick_sound? Sound
+---@field drop_sound? Sound
+---@field inventory_move_sound? Sound
+---@field default_import_location? SpaceLocationID
+---Only used by hidden setting, support may be limited.
+---@field color_hint? ColorHintSpecification
+---@field has_random_tint? boolean
+---@field spoil_to_trigger_result? SpoilToTriggerResult
+---The effect/trigger that happens when an item is destroyed by being dropped on a TilePrototype marked as destroying dropped items.
+---
+---This overrides the TilePrototype::default_destroyed_dropped_item_trigger from the tile.
+---@field destroyed_by_dropping_trigger? Trigger
+---@field rocket_launch_products? ItemProductPrototype[]
+---The way this item works when we try to send it to the orbit on its own.
+---
+---When "manual" is set, it can only be launched by pressing the launch button in the rocket silo.
+---
+---When "automated" is set, it will force the existence of "launch to orbit automatically" checkbox in the rocket silo which will then force the silo to automatically send the item to orbit when present.
+---@field send_to_orbit_mode? SendToOrbitMode
+---Whether this item should be moved to the hub when space platform performs building, upgrade or deconstruction and is left with this item. The following items are considered valuable and moved to hub by default: Modules, items that build entities, items that build tiles and items not obtainable from asteroid chunks that have subgroup from a group other than `"intermediate-products"`.
+---@field moved_to_hub_when_building? boolean
+---Randomly tints item instances on belts and in the world. 0 no tinting. 1 full tint.
+---@field random_tint_color? Color
+---Used by Inserters with spoil priority. Item with higher spoil level is considered more spoiled than item with lower spoil level regardless of progress of spoiling.
+---@field spoil_level? integer
+---Whether the item should be included in the self-recycling recipes automatically generated by the quality mod.
+---
+---This property is not read by the game engine itself, but the quality mod's data-updates.lua file. This means it is discarded by the game engine after loading finishes.
+---@field auto_recycle? boolean
+---Item will not appear in lists of all items such as those for logistics requests, filters, etc.
+---@field hidden? boolean
+---@field lab_ignores_spoil_percent? boolean
+
+---An array containing the following values.
+---@class ItemPrototypeFlags
+
+---Entity used to signify that an entity is requesting items, for example modules for an assembling machine after it was blueprinted with modules inside.
+---@class ItemRequestProxyPrototype : EntityPrototype
+---@field type "item-request-proxy"
+---@field use_target_entity_alert_icon_shift? boolean
+
+---@class ItemStackIndex
+
+---An item subgroup. Item subgroups are the rows in the recipe list in the player's inventory GUI. The subgroup of a prototype also determines its item group (tab in the recipe list).
+---
+---The built-in subgroups can be found here. See ItemPrototype::subgroup for setting the subgroup of an item.
+---@class ItemSubGroup : Prototype
+---@field type "item-subgroup"
+---The item group this subgroup is located in.
+---@field group ItemGroupID
+
+---The name of an ItemSubGroup.
+---@class ItemSubGroupID
+
+---Item that when placed creates this entity/tile.
+---@class ItemToPlace
+---The item used to place this entity/tile.
+---@field item ItemID
+---How many items are used to place one of this entity/tile. Can't be larger than the stack size of the item.
+---@field count ItemCountType
+
+---ItemWithEntityData saves data associated with the entity that it represents, for example the content of the equipment grid of a car.
+---@class ItemWithEntityDataPrototype : ItemPrototype
+---@field type "item-with-entity-data"
+---Can't be an empty array.
+---
+---Only loaded if `icon_tintable` is defined.
+---@field icon_tintable_masks? IconData[]
+---Path to the icon file.
+---
+---Only loaded if `icon_tintable_masks` is not defined and `icon_tintable` is defined.
+---@field icon_tintable_mask? FileName
+---The size of the square icon, in pixels. E.g. `32` for a 32px by 32px icon. Must be larger than `0`.
+---
+---Only loaded if `icon_tintable_masks` is not defined and `icon_tintable` is defined.
+---@field icon_tintable_mask_size? SpriteSizeType
+---Can't be an empty array.
+---
+---Only loaded if `icon_tintable` is defined (`icon_tintables` takes precedence over `icon_tintable`).
+---@field icon_tintables? IconData[]
+---Path to the icon file.
+---
+---Only loaded if `icon_tintables` is not defined.
+---@field icon_tintable? FileName
+---The size of the square icon, in pixels. E.g. `32` for a 32px by 32px icon. Must be larger than `0`.
+---
+---Only loaded if `icon_tintables` is not defined and `icon_tintable` is defined.
+---@field icon_tintable_size? SpriteSizeType
+
+---The inventory allows setting player defined filters similar to cargo wagon inventories.
+---@class ItemWithInventoryPrototype : ItemWithLabelPrototype
+---@field type "item-with-inventory"
+---The inventory size of the item.
+---@field inventory_size ItemStackIndex
+---@field quality_affects_inventory_size? boolean
+---A list of explicit item names to be used as filters.
+---@field item_filters? ItemID[]
+---A list of explicit item group names to be used as filters.
+---@field item_group_filters? ItemGroupID[]
+---A list of explicit item subgroup names to be used as filters.
+---@field item_subgroup_filters? ItemSubGroupID[]
+---This determines how filters are applied. If no filters are defined this is automatically set to "none".
+---@field filter_mode? "blacklist"|"whitelist"
+---The locale key used when the player attempts to put an item that doesn't match the filter rules into the item-with-inventory.
+---@field filter_message_key? string
+---Count of items of the same name that can be stored in one inventory slot. Must be 1 when the `"not-stackable"` flag is set.
+---@field stack_size 1
+
+---Like a normal item but with the ability to have a colored label.
+---@class ItemWithLabelPrototype : ItemPrototype
+---@field type "item-with-label"
+---The default label color the item will use.
+---@field default_label_color? Color
+---If the item will draw its label when held in the cursor in place of the item count.
+---@field draw_label_for_cursor_render? boolean
+
+---Item type that can store any basic arbitrary Lua data, see LuaItemStack::tags.
+---@class ItemWithTagsPrototype : ItemWithLabelPrototype
+---@field type "item-with-tags"
+
+---This prototype is used for receiving an achievement when the player destroys a certain amount of an entity, with a specific damage type.
+---@class KillAchievementPrototype : AchievementPrototype
+---@field type "kill-achievement"
+---This defines which entity needs to be destroyed in order to receive the achievement.
+---@field to_kill? EntityID|EntityID[]
+---This defines what entity type needs to be destroyed in order to receive the achievement.
+---@field type_to_kill? string
+---This defines how the player needs to destroy the specific entity.
+---@field damage_type? DamageTypeID
+---The killer of the entity must be one of these entities.
+---@field damage_dealer? EntityID|EntityID[]
+---This is the amount of entity of the specified type the player needs to destroy to receive the achievement.
+---@field amount? integer
+---This defines if the player needs to be in a vehicle.
+---@field in_vehicle? boolean
+---This defines to make sure you are the one driving, for instance, in a tank rather than an automated train.
+---@field personally? boolean
+
+---@class KillTipTrigger : CountBasedTipTrigger
+---@field type "kill"
+---@field entity? EntityID
+---@field match_type_only? boolean
+---If this is not set, any damage type will fulfill the trigger condition.
+---@field damage_type? DamageTypeID
+
+---A lab. It consumes science packs (items) to research technologies.
+---@class LabPrototype : EntityWithOwnerPrototype
+---@field type "lab"
+---The amount of energy this lab uses.
+---@field energy_usage Energy
+---Defines how this lab gets energy.
+---@field energy_source EnergySource
+---The animation that plays when the lab is active.
+---@field on_animation? Animation
+---The animation that plays when the lab is idle.
+---@field off_animation? Animation
+---@field frozen_patch? Sprite
+---A list of the names of science packs that can be used in this lab.
+---
+---If a technology requires other types of science packs, it cannot be researched in this lab.
+---@field inputs ItemID[]
+---@field researching_speed? number
+---@field effect_receiver? EffectReceiver
+---The number of module slots in this lab.
+---@field module_slots? ItemStackIndex
+---If set, QualityPrototype::lab_module_slots_bonus will be added to module slots count.
+---@field quality_affects_module_slots? boolean
+---Whether the QualityPrototype::science_pack_drain_multiplier of the quality of this lab should affect how much science is consumed to research one unit of technology.
+---@field uses_quality_drain_modifier? boolean
+---May not be `0` or larger than `100`.
+---@field science_pack_drain_rate_percent? integer
+---Sets the modules and beacon effects that are allowed to be used on this lab.
+---@field allowed_effects? EffectTypeLimitation
+---Sets the module categories that are allowed to be inserted into this machine.
+---@field allowed_module_categories? ModuleCategoryID[]
+---@field light? LightDefinition
+---@field default_technology_level_signal? SignalIDConnector
+---@field trash_inventory_size? ItemStackIndex
+---The maximum circuit wire distance for this entity.
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---@field circuit_connector? CircuitConnectorDefinition
+
+---Root style: `"label"`
+---@class LabelStyleSpecification : BaseStyleSpecification
+---@field type "label_style"
+---Name of a FontPrototype.
+---
+---Required on the root style.
+---@field font? string
+---Required on the root style.
+---@field font_color? Color
+---@field hovered_font_color? Color
+---@field game_controller_hovered_font_color? Color
+---@field clicked_font_color? Color
+---@field disabled_font_color? Color
+---@field parent_hovered_font_color? Color
+---Required on the root style.
+---@field rich_text_setting? RichTextSetting
+---Required on the root style.
+---@field single_line? boolean
+---@field underlined? boolean
+---Required on the root style.
+---@field rich_text_highlight_error_color? Color
+---Required on the root style.
+---@field rich_text_highlight_warning_color? Color
+---Required on the root style.
+---@field rich_text_highlight_ok_color? Color
+
+---@class LaboratoryProductivityModifier : SimpleModifier
+---@field type "laboratory-productivity"
+---If set to `false`, use the icon from UtilitySprites for this technology effect icon.
+---@field infer_icon? boolean
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---@class LaboratorySpeedModifier : SimpleModifier
+---@field type "laboratory-speed"
+---If set to `false`, use the icon from UtilitySprites for this technology effect icon.
+---@field infer_icon? boolean
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---A lamp to provide light, using energy.
+---@class LampPrototype : EntityWithOwnerPrototype
+---@field type "lamp"
+---The lamps graphics when it's on.
+---@field picture_on? Sprite
+---The lamps graphics when it's off.
+---@field picture_off? Sprite
+---The amount of energy the lamp uses. Must be greater than > 0.
+---@field energy_usage_per_tick Energy
+---The emissions set on the energy source are ignored so lamps cannot produce pollution.
+---@field energy_source ElectricEnergySource|VoidEnergySource
+---What color the lamp will be when it is on, and receiving power.
+---@field light? LightDefinition
+---This refers to when the light is in a circuit network, and is lit a certain color based on a signal value.
+---@field light_when_colored? LightDefinition
+---The maximum circuit wire distance for this entity.
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---@field circuit_connector? CircuitConnectorDefinition
+---@field glow_size? number
+---@field glow_color_intensity? number
+---darkness_for_all_lamps_on must be > darkness_for_all_lamps_off. Values must be between 0 and 1.
+---@field darkness_for_all_lamps_on? number
+---darkness_for_all_lamps_on must be > darkness_for_all_lamps_off. Values must be between 0 and 1.
+---@field darkness_for_all_lamps_off? number
+---Whether the lamp should always be on.
+---@field always_on? boolean
+---@field signal_to_color_mapping? SignalColorMapping[]
+---@field glow_render_mode? "additive"|"multiplicative"
+---@field default_red_signal? SignalIDConnector
+---@field default_green_signal? SignalIDConnector
+---@field default_blue_signal? SignalIDConnector
+---@field default_rgb_signal? SignalIDConnector
+
+---A land mine.
+---@class LandMinePrototype : EntityWithOwnerPrototype
+---@field type "land-mine"
+---The sprite of the landmine before it is armed (just after placing).
+---@field picture_safe? Sprite
+---The sprite of the landmine of a friendly force when it is armed.
+---@field picture_set? Sprite
+---@field trigger_radius number
+---The sprite of the landmine of an enemy force when it is armed.
+---@field picture_set_enemy? Sprite
+---Time between placing and the landmine being armed, in ticks.
+---@field timeout? integer
+---Time between checks to detonate due to nearby enemies, in ticks. A larger time will be more performant.
+---@field trigger_interval? integer
+---@field action? Trigger
+---@field ammo_category? AmmoCategoryID
+---Force the landmine to kill itself when exploding.
+---@field force_die_on_attack? boolean
+---@field trigger_force? ForceCondition
+---Collision mask that another entity must collide with to make this landmine blow up.
+---@field trigger_collision_mask? CollisionMaskConnector
+---Whether this prototype should be a high priority target for enemy forces. See Military units and structures.
+---@field is_military_target? boolean
+---The entity with the higher number is selectable before the entity with the lower number.
+---
+---The value `0` will be treated the same as `nil`.
+---@field selection_priority? integer
+---The maximum circuit wire distance for this entity.
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---@field circuit_connector? CircuitConnectorDefinition
+
+---@class LaneSplitterPrototype : TransportBeltConnectablePrototype
+---@field type "lane-splitter"
+---@field structure_animation_speed_coefficient? number
+---@field structure_animation_movement_cooldown? integer
+---@field structure Animation4Way
+---@field structure_patch? Animation4Way
+
+---@class LayeredSound
+---@field layers Sound[]
+
+---@class LayeredSprite : Sprite
+---@field render_layer RenderLayer
+
+---Sprites for the 4 major directions of the entity. If this is loaded as a single LayeredSprite, it applies to all directions.
+---@class LayeredSprite4Way
+---@field north LayeredSprite
+---@field east LayeredSprite
+---@field south LayeredSprite
+---@field west LayeredSprite
+
+---@class LayeredSpriteVariations
+
+---A legacy curved rail.
+---@class LegacyCurvedRailPrototype : RailPrototype
+---@field type "legacy-curved-rail"
+---The collision_box of legacy curved rail is hardcoded to `{{-0.75, -0.55}, {0.75, 1.6}}`.
+---
+---The secondary collision box of legacy curved rail is hardcoded to `{{-0.68, -2.7}, {0.68, 2.7}}`.
+---@field collision_box? BoundingBox
+
+---A legacy straight rail.
+---@class LegacyStraightRailPrototype : RailPrototype
+---@field type "legacy-straight-rail"
+---The collision_box of legacy straight rail is hardcoded to `{{-0.7, -0.99}, {0.7, 0.99}}`.
+---@field collision_box? BoundingBox
+
+---Specifies a light source. This is loaded either as a single light source or as an array of light sources.
+---@class LightDefinition
+---@field type? "basic"|"oriented"
+---Only loaded, and mandatory if `type` is `"oriented"`.
+---@field picture? Sprite
+---Only loaded if `type` is `"oriented"`.
+---@field rotation_shift? RealOrientation
+---Brightness of the light in the range `[0, 1]`, where `0` is no light and `1` is the maximum light.
+---@field intensity number
+---The radius of the light in tiles. Note that the light gets darker near the edges, so the effective size of the light will appear to be smaller.
+---@field size number
+---@field source_orientation_offset? RealOrientation
+---@field add_perspective? boolean
+---@field flicker_interval? integer
+---@field flicker_min_modifier? number
+---@field flicker_max_modifier? number
+---Offsets tick used to calculate flicker by position hash. Useful to desynchronize flickering of multiple stationary lights.
+---@field offset_flicker? boolean
+---@field shift? Vector
+---Color of the light.
+---@field color? Color
+---@field minimum_darkness? number
+
+---Specifies the light flicker. Note that this defaults to "showing a white light" instead of the usually expected "showing nothing".
+---@class LightFlickeringDefinition
+---Brightness of the light in the range `[0, 1]` where `0` is no light and `1` is the maximum light.
+---@field minimum_intensity? number
+---Brightness of the light in the range `[0, 1]` where `0` is no light and `1` is the maximum light.
+---@field maximum_intensity? number
+---@field derivation_change_frequency? number
+---@field derivation_change_deviation? number
+---@field border_fix_speed? number
+---The radius of the light in tiles. Note, that the light gets darker near the edges, so the effective size of the light seems to be smaller.
+---@field minimum_light_size? number
+---@field light_intensity_to_size_coefficient? number
+---Color of the light.
+---@field color? Color
+
+---@class LightProperties
+---@field color? Color
+---@field direction? Vector3D
+
+---Absorbs lightning and optionally converts it into electricity.
+---@class LightningAttractorPrototype : EntityWithOwnerPrototype
+---@field type "lightning-attractor"
+---@field chargable_graphics? ChargableGraphics
+---@field lightning_strike_offset? MapPosition
+---Cannot be less than 0.
+---@field efficiency? number
+---@field range_elongation? number
+---Mandatory if `efficiency` is larger than 0. May not be defined if `efficiency` is 0.
+---@field energy_source? ElectricEnergySource
+
+---@class LightningGraphicsSet
+---If not empty, enables the lightning shader.
+---@field shader_configuration? LightningShaderConfiguration[]
+---@field bolt_half_width? number
+---@field bolt_midpoint_variance? number
+---@field max_bolt_offset? number
+---@field max_fork_probability? number
+---@field min_relative_fork_length? number
+---@field max_relative_fork_length? number
+---@field fork_orientation_variance? number
+---Cannot be 1.
+---@field fork_intensity_multiplier? number
+---@field relative_cloud_fork_length? number
+---@field cloud_fork_orientation_variance? number
+---@field min_ground_streamer_distance? number
+---@field max_ground_streamer_distance? number
+---@field ground_streamer_variance? number
+---Cannot be 255.
+---@field cloud_forks? integer
+---Must be less than or equal to `bolt_detail_level`.
+---@field cloud_detail_level? integer
+---@field bolt_detail_level? integer
+---@field cloud_background? Animation
+---@field explosion? AnimationVariations
+---@field attractor_hit_animation? Animation
+---@field ground_streamers? Animation[]
+---@field light? LightDefinition
+---Refer to EntityPrototype::water_reflection.
+---@field water_reflection? WaterReflectionDefinition
+
+---@class LightningPriorityRule : LightningRuleBase
+---@field priority_bonus integer
+
+---@class LightningProperties
+---@field lightnings_per_chunk_per_tick number
+---@field search_radius number
+---Cannot be an empty array. Names of lightning entities.
+---@field lightning_types EntityID[]
+---@field priority_rules? LightningPriorityRule[]
+---@field exemption_rules? LightningRuleBase[]
+---Must be in range `[0, 1]`.
+---@field lightning_multiplier_at_day? number
+---Must be in range `[0, 1]`.
+---@field lightning_multiplier_at_night? number
+---When set, value of that surface property will be used as an additional multiplier to the lightning frequency.
+---
+---Value of that surface property is divided by default_value which means a default value must be positive (cannot be 0). When surface property has value at default, then this additional multiplier has value of 1.
+---@field multiplier_surface_property? SurfacePropertyID
+---Icon to render on top of entities that are endangered by lightning. When not provided, a UtilitySprites::lightning_warning_icon will be used instead.
+---@field lightning_warning_icon? Sprite
+
+---Lightning randomly hits entities on planets with lightning_properties.
+---
+---If a lightning attractor is hit by lightning it will absorb the lightning hit for energy.
+---
+---If a something that is not an attractor is hit by lightning it will be damaged by the strike.
+---@class LightningPrototype : EntityPrototype
+---@field type "lightning"
+---@field graphics_set? LightningGraphicsSet
+---@field sound? Sound
+---@field attracted_volume_modifier? number
+---Effect that is triggered when lightning strikes something that is not a lightning attractor. Triggered before `damage` is applied.
+---@field strike_effect? Trigger
+---Effect that is triggered when lightning hits  a lightning attractor. Triggered after the attractor is charged by the lightning hit.
+---@field attractor_hit_effect? Trigger
+---@field source_offset? Vector
+---@field source_variance? Vector
+---When lightning strikes something that is not a lightning attractor, this damage is applied to the target.
+---@field damage? DamageParameters
+---When lightning hits a lightning attractor, this amount of energy is transferred to the lightning attractor.
+---@field energy? Energy
+---Must be less than or equal to `effect_duration`.
+---@field time_to_damage? integer
+---@field effect_duration integer
+
+---@class LightningRuleBase
+---@field type "impact-soundset"|"prototype"|"id"|"countAsRockForFilteredDeconstruction"
+---@field string string
+
+---@class LightningShaderConfiguration
+---@field color Color
+---@field distortion number
+---@field thickness number
+---@field power number
+
+---@class LimitChestTipTrigger : CountBasedTipTrigger
+---@field type "limit-chest"
+
+---Root style: `"line"`
+---@class LineStyleSpecification : BaseStyleSpecification
+---@field type "line_style"
+---Required on the root style.
+---@field border? BorderImageSet
+
+---@class LineTriggerItem : TriggerItem
+---@field type "line"
+---@field range number
+---@field width number
+---@field range_effects? TriggerEffect
+
+---A belt that can be connected to a belt anywhere else, including on a different surface. The linked belts have to be connected with console commands or runtime scripting in mods or scenarios. LuaEntity::connect_linked_belts and other runtime functions.
+---@class LinkedBeltPrototype : TransportBeltConnectablePrototype
+---@field type "linked-belt"
+---@field structure? LinkedBeltStructure
+---@field structure_render_layer? RenderLayer
+---@field allow_clone_connection? boolean
+---@field allow_blueprint_connection? boolean
+---@field allow_side_loading? boolean
+
+---@class LinkedBeltStructure
+---@field direction_in? Sprite4Way
+---@field direction_out? Sprite4Way
+---@field back_patch? Sprite4Way
+---@field front_patch? Sprite4Way
+---@field direction_in_side_loading? Sprite4Way
+---@field direction_out_side_loading? Sprite4Way
+
+---A container that shares its inventory with containers with the same link_id, which can be set via the GUI. The link IDs are per prototype and force, so only containers with the **same ID**, **same prototype name** and **same force** will share inventories.
+---@class LinkedContainerPrototype : EntityWithOwnerPrototype
+---@field type "linked-container"
+---Must be > 0.
+---@field inventory_size ItemStackIndex
+---@field picture? Sprite
+---Determines the type of inventory that this linked container has. Whether the inventory has a limiter bar, can be filtered (like cargo wagons), uses a custom stack size for contained item stacks (like artillery wagon), or uses a weight limit (like space age rocket silo).
+---@field inventory_type? "normal"|"with_bar"|"with_filters_and_bar"|"with_custom_stack_size"|"with_weight_limit"
+---Only used when `inventory_type` is `"with_custom_stack_size"`.
+---@field inventory_properties? InventoryWithCustomStackSizeSpecification
+---Only used when `inventory_type` is `"with_weight_limit"`.
+---@field inventory_weight_limit? Weight
+---Players that can access the GUI to change the link ID.
+---@field gui_mode? "all"|"none"|"admins"
+---The maximum circuit wire distance for this linked container.
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---@field circuit_connector? CircuitConnectorDefinition
+
+---The internal name of a game control (key binding).
+---@class LinkedGameControl
+
+---Root style: `"list_box"`
+---@class ListBoxStyleSpecification : BaseStyleSpecification
+---@field type "list_box_style"
+---Required on the root style.
+---@field item_style? ButtonStyleSpecification
+---Required on the root style.
+---@field scroll_pane_style? ScrollPaneStyleSpecification
+
+---Continuously loads and unloads machines, as an alternative to inserters.
+---
+---This loader type is identical to Loader1x2Prototype with the exception of its hardcoded belt_distance. The belt_distance of the loader determines the distance between the position of this loader and the tile of the loader's belt target.
+---
+---This loader type always has a belt_distance of 0, meaning by default it is 1 tile long in total. For a loader type with a belt_distance of 0.5, see Loader1x2Prototype.
+---@class Loader1x1Prototype : LoaderPrototype
+---@field type "loader-1x1"
+
+---Continuously loads and unloads machines, as an alternative to inserters.
+---
+---This loader type is identical to Loader1x1Prototype with the exception of its hardcoded belt_distance. The belt_distance of the loader determines the distance between the position of this loader and the tile of the loader's belt target.
+---
+---This loader type always has a belt_distance of 0.5, meaning by default it is 2 tiles long in total. For a loader type with a belt_distance of 0, see Loader1x1Prototype.
+---@class Loader1x2Prototype : LoaderPrototype
+---@field type "loader"
+
+---Continuously loads and unloads machines, as an alternative to inserters.
+---@class LoaderPrototype : TransportBeltConnectablePrototype
+---@field structure? LoaderStructure
+---How many item filters this loader has. Maximum count of filtered items in loader is 5.
+---@field filter_count integer
+---@field structure_render_layer? RenderLayer
+---The distance between the position of this loader and the tile of the loader's container target.
+---@field container_distance? number
+---Whether this loader can load and unload RollingStockPrototype.
+---@field allow_rail_interaction? boolean
+---Whether this loader can load and unload stationary inventories such as containers and crafting machines.
+---@field allow_container_interaction? boolean
+---If filters are per lane. Can only be set to true if filter_count is equal to 2.
+---@field per_lane_filters? boolean
+---Loader will not create stacks on belt that are larger than this value. Must be >= 1.
+---@field max_belt_stack_size? integer
+---Loader belt stack size can be adjusted at runtime. Requires LoaderPrototype::max_belt_stack_size to be > 1.
+---@field adjustable_belt_stack_size? boolean
+---When set, this loader will ignore items for which there is not enough to create a full belt stack. Relevant only when loader can create belt stacks.
+---@field wait_for_full_stack? boolean
+---When set, this loader will respect the same automated insertion limits as inserters do, instead of inserting up to the full ingredient stack capacity.
+---@field respect_insert_limits? boolean
+---How long this loader's belt is. Should be the same as belt_distance, which is hardcoded to `0.5` for Loader1x2Prototype and to 0 for Loader1x1Prototype. See the linked prototypes for an explanation of belt_distance.
+---@field belt_length? number
+---@field energy_source? ElectricEnergySource|HeatEnergySource|FluidEnergySource|VoidEnergySource
+---Energy in Joules. Can't be negative.
+---@field energy_per_item? Energy
+---The maximum circuit wire distance for this entity.
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---First the four cardinal directions for `direction_out`, followed by the four directions for `direction_in`.
+---@field circuit_connector? CircuitConnectorDefinition[]
+
+---@class LoaderStructure
+---@field direction_in? Sprite4Way
+---@field direction_out? Sprite4Way
+---@field back_patch? Sprite4Way
+---@field front_patch? Sprite4Way
+---@field frozen_patch_in? Sprite4Way
+---@field frozen_patch_out? Sprite4Way
+
+---Localised strings are a way to support translation of in-game text. They offer a language-independent code representation of the text that should be shown to players.
+---
+---It is an array where the first element is the key and the remaining elements are parameters that will be substituted for placeholders in the template designated by the key.
+---
+---The key identifies the string template. For example, `"gui-alert-tooltip.attack"` (for the template `"__1__ objects are being damaged"`; see the file `data/core/locale/en.cfg`). In the settings and prototype stages, this key cannot be longer than 200 characters.
+---
+---The template can contain placeholders such as `__1__` or `__2__`. These will be replaced by the respective parameter in the LocalisedString. The parameters themselves can be other localised strings, which will be processed recursively in the same fashion. Localised strings can not be recursed deeper than 20 levels and can not have more than 20 parameters.
+---
+---There are two special flags for the localised string, indicated by the key being a particular string. First, if the key is the empty string (`""`), then all parameters will be concatenated (after processing, if any are localised strings themselves). Second, if the key is a question mark (`"?"`), then the first valid parameter will be used. A parameter can be invalid if its name doesn't match any string template. If no parameters are valid, the last one is returned. This is useful to implement a fallback for missing locale templates.
+---
+---Furthermore, when an API function expects a localised string, it will also accept a regular string (i.e. not a table) which will not be translated. In the settings and prototype stages, this string cannot be longer than 200 characters.
+---
+---See Tutorial:Localisation for more information.
+---@alias LocalisedString string|number|boolean|nil|table
+
+---A locomotive.
+---@class LocomotivePrototype : RollingStockPrototype
+---@field type "locomotive"
+---@field max_power Energy
+---@field reversing_power_modifier number
+---@field energy_source BurnerEnergySource|VoidEnergySource
+---@field front_light? LightDefinition
+---@field front_light_pictures? RollingStockRotatedSlopedGraphics
+---@field darkness_to_render_light_animation? number
+---In tiles. A locomotive will snap to a nearby train stop when the player places it within this distance to the stop.
+---@field max_snap_to_train_stop_distance? number
+
+---A generic container, such as a chest, that interacts with the logistics network.
+---@class LogisticContainerPrototype : ContainerPrototype
+---@field type "logistic-container"
+---The way this chest interacts with the logistic network.
+---@field logistic_mode LogisticMode
+---The number of request slots this logistics container has. Requester-type containers must have > 0 slots and can have a maximum of UtilityConstants::max_logistic_filter_count slots. Storage-type containers must have <= 1 slot.
+---@field max_logistic_slots? integer
+---@field trash_inventory_size? ItemStackIndex
+---Whether the "no network" icon should be rendered on this entity if the entity is not within a logistics network.
+---@field render_not_in_network_icon? boolean
+---@field robot_door? RobotDoorSpecification
+---Whether logistic robots have to deliver the exact amount of items requested to this logistic container instead of over-delivering (within their cargo size).
+---@field use_exact_mode? boolean
+
+---@class LogisticFilterIndex
+
+---@class LogisticMode
+
+---A logistic robot.
+---@class LogisticRobotPrototype : RobotWithLogisticInterfacePrototype
+---@field type "logistic-robot"
+---Only the first frame of the animation is drawn. This means that the graphics for the idle state cannot be animated.
+---@field idle_with_cargo? RotatedAnimation
+---Only the first frame of the animation is drawn. This means that the graphics for the in_motion state cannot be animated.
+---@field in_motion_with_cargo? RotatedAnimation
+---Only the first frame of the animation is drawn. This means that the graphics for the idle state cannot be animated.
+---@field shadow_idle_with_cargo? RotatedAnimation
+---Only the first frame of the animation is drawn. This means that the graphics for the in_motion state cannot be animated.
+---@field shadow_in_motion_with_cargo? RotatedAnimation
+---Must have a collision box size of zero.
+---@field collision_box? BoundingBox
+
+---@class LowPowerTipTrigger : CountBasedTipTrigger
+---@field type "low-power"
+
+---@class MainSound
+---Cannot be empty.
+---@field sound? Sound
+---Modifies how often the sound is played.
+---
+---Silently clamped to the [0.0, 1.0] range.
+---
+---Unused when WorkingSound::persistent is `true`.
+---@field probability? number
+---Can't be used when `match_progress_to_activity` is `true`.
+---@field fade_in_ticks? integer
+---Can't be used when `match_progress_to_activity` is `true`.
+---@field fade_out_ticks? integer
+---@field activity_to_volume_modifiers? ActivityMatchingModifiers
+---@field activity_to_speed_modifiers? ActivityMatchingModifiers
+---Unused when WorkingSound::persistent is `true`.
+---@field match_progress_to_activity? boolean
+---@field match_volume_to_activity? boolean
+---@field match_speed_to_activity? boolean
+---Array of WorkingVisualisation::names, individual names cannot be empty.
+---
+---The `sound` is played when at least one of the specified working visualisations is drawn.
+---
+---Unused when WorkingSound::persistent is `true`.
+---@field play_for_working_visualisations? string[]
+---The `sound` is played when the entity has one the specified direction.
+---
+---Unused when WorkingSound::persistent is `true`.
+---@field play_for_directions? defines.direction[]
+---Only used if WorkingSound::persistent is `true`.
+---@field volume_smoothing_window_size? integer
+
+---Triggered when the player manually moves item with the cursor, *without* using shortcuts such as entity transfer or stack split.
+---@class ManualTransferTipTrigger : CountBasedTipTrigger
+---@field type "manual-transfer"
+
+---@class ManualWireDragTipTrigger : CountBasedTipTrigger
+---@field type "manual-wire-drag"
+---@field source? EntityID
+---@field target? EntityID
+---@field match_type_only? boolean
+---@field wire_type? "red"|"green"|"copper"
+
+---@class MapGenPreset
+---Specifies the ordering in the map generator GUI.
+---@field order Order
+---Whether this is the default preset. If `true`, this preset may not have any other properties besides this and order.
+---
+---If no MapGenPreset has `default = true`, the preset selector will have a blank preset label, with default settings. The "blank" preset goes away when another preset is selected.
+---@field default? boolean
+---If any setting is not set, it will use the default values.
+---@field basic_settings? MapGenSettings
+---If any setting is not set, it will use the default values.
+---@field advanced_settings? AdvancedMapGenSettings
+
+---@class MapGenPresetAsteroidSettings
+---@field spawning_rate? number
+---@field max_ray_portals_expanded_per_tick? integer
+
+---@class MapGenPresetDifficultySettings
+---@field technology_price_multiplier? number
+
+---@class MapGenPresetEnemyEvolutionSettings
+---@field enabled? boolean
+---Percentual increase in the evolution factor for every second (60 ticks)
+---@field time_factor? number
+---Percentual increase in the evolution factor for every destroyed spawner
+---@field destroy_factor? number
+---Percentual increase in the evolution factor for 1 pollution unit
+---@field pollution_factor? number
+
+---@class MapGenPresetEnemyExpansionSettings
+---@field enabled? boolean
+---Distance in chunks from the furthest base around to prevent expansions from being too close to existing bases.
+---@field min_expansion_distance? integer
+---Distance in chunks from the furthest base around. This prevents expansions from reaching too far into the player's territory.
+---@field max_expansion_distance? integer
+---Size of the group that goes to build new base (the game interpolates between min size and max size based on evolution factor).
+---@field settler_group_min_size? integer
+---@field settler_group_max_size? integer
+---Factor by which the evolution factor influences the size of the settler group
+---@field evolution_group_size_factor? number
+---Ticks to expand to a single position for a base is used. Cooldown is calculated as follows: `cooldown = lerp(max_expansion_cooldown, min_expansion_cooldown, -e^2 + 2 * e)` where `lerp` is the linear interpolation function, and e is the current evolution factor.
+---@field min_expansion_cooldown? integer
+---In ticks.
+---@field max_expansion_cooldown? integer
+---Cooldown in ticks for dispatching units when building bases.
+---@field build_base_unit_dispatch_cooldown? integer
+
+---The pollution settings, the values are for 60 ticks (1 second).
+---@class MapGenPresetPollutionSettings
+---@field enabled? boolean
+---Must be <= 0.25. Amount that is diffused to neighboring chunks.
+---@field diffusion_ratio? number
+---Must be >= 0.1. Also known as absorption modifier.
+---@field ageing? number
+---@field min_pollution_to_damage_trees? number
+---Must be >= 0.1.
+---@field enemy_attack_pollution_consumption_modifier? number
+---@field pollution_restored_per_tree_damage? number
+
+---The available map gen presets.
+---@class MapGenPresets
+---@field type "map-gen-presets"
+---@field type "map-gen-presets"
+---Name of the map gen presets. Base game uses "default".
+---@field name string
+
+---@class MapGenSettings
+---Whether undefined `autoplace_controls` should fall back to the default controls or not.
+---@field default_enable_all_autoplace_controls? boolean
+---@field autoplace_controls? table<AutoplaceControlID, FrequencySizeRichness>
+---Each setting in this table maps the string type to the settings for that type.
+---@field autoplace_settings? table<"entity"|"tile"|"decorative", AutoplaceSettings>
+---Map of property name (`"elevation"`, etc) to name of noise expression that will provide it. Entries may be omitted. A notable usage is changing autoplace behavior of an entity based on the preset, which cannot be read from a noise expression.
+---@field property_expression_names? table<string, string|boolean|number>
+---Array of the positions of the starting areas.
+---@field starting_points? MapPosition[]
+---Read by the game, but not used or set in the GUI.
+---@field seed? integer
+---Width of the map in tiles. Silently limited to 2 000 000, ie. +/- 1 million tiles from the center in both directions.
+---@field width? integer
+---Height of the map in tiles. Silently limited to 2 000 000, ie. +/- 1 million tiles from the center in both directions.
+---@field height? integer
+---Size of the starting area. The starting area only effects enemy placement, and has no effect on resources.
+---@field starting_area? MapGenSize
+---If true, enemy creatures will not attack unless the player first attacks them.
+---@field peaceful_mode? boolean
+---If true, enemy creatures will not naturally spawn from spawners, map gen, or trigger effects.
+---@field no_enemies_mode? boolean
+---@field cliff_settings? CliffPlacementSettings
+---@field territory_settings? TerritorySettings
+
+---A floating point number specifying an amount.
+---
+---For backwards compatibility, MapGenSizes can also be specified as a string, which will be converted to a number (when queried, a number will always be returned).
+---
+---The map generation algorithm officially supports the range of values the in-game map generation screen shows (specifically `0` and values from `1/6` to `6`). Values outside this range are not guaranteed to work as expected.
+---@class MapGenSize
+
+---@class MapLocation
+---Position relative to entity's position where the connection point will be located at.
+---@field position MapPosition
+---Direction this connection point will be facing to.
+---@field direction defines.direction
+
+---Coordinates of a tile in a map. Positive x goes towards east, positive y goes towards south, and x is the first dimension in the array format.
+---
+---The coordinates are stored as a fixed-size 32 bit integer, with 8 bits reserved for decimal precision, meaning the smallest value step is `1/2^8 = 0.00390625` tiles.
+---@class MapPosition
+---@field x number
+---@field y number
+
+---The default map settings.
+---@class MapSettings
+---@field type "map-settings"
+---@field type "map-settings"
+---Name of the map-settings. Base game uses "map-settings".
+---@field name string
+---@field pollution PollutionSettings
+---@field enemy_evolution EnemyEvolutionSettings
+---@field enemy_expansion EnemyExpansionSettings
+---@field unit_group UnitGroupSettings
+---@field path_finder PathFinderSettings
+---If a behavior fails this many times, the enemy (or enemy group) is destroyed. This solves biters stuck within their own base.
+---@field max_failed_behavior_count integer
+---@field difficulty_settings DifficultySettings
+---@field asteroids AsteroidSettings
+
+---`math.huge` represents the maximum possible tick.
+---@class MapTick
+
+---Offers can be added to a market and they are shown when opening the entity. Offers allow to spend items to get research bonuses or items.
+---@class MarketPrototype : EntityWithOwnerPrototype
+---@field type "market"
+---@field picture? Sprite
+---Whether all forces are allowed to open this market.
+---@field allow_access_to_all_forces? boolean
+
+---@class MaterialAmountType
+
+---Used by TilePrototype.
+---@class MaterialTextureParameters
+---Frame count.
+---@field count integer
+---@field picture FileName
+---@field scale? number
+---Horizontal position of the sprite in the source file in pixels.
+---@field x? SpriteSizeType
+---Vertical position of the sprite in the source file in pixels.
+---@field y? SpriteSizeType
+---Once the specified number of pictures is loaded, other pictures are loaded on other line. This is to allow having longer animations in matrix, to input files with too high width. The game engine limits the width of any input files to 8192px, so it is compatible with most graphics cards. 0 means that all the pictures are in one horizontal line.
+---@field line_length? integer
+
+---A string that represents a math expression. The expression parser recognizes four basic token types (with their regex):
+---
+---- Whitespace: `[ \n\r\t]*`
+---
+---- Number: `(0x[0-9a-f]+|([0-9]+\.?[0-9]*|\.[0-9]+)(e-?[0-9]+)?)` (e.g. `3.2`, `100`, `.6`, `4.2e-5`, `0x2a5f`). Supports hexadecimal input and scientific notation for decimal numbers.
+---
+---- Operator: `+`, `-`, `*`, `/`, `^`, and `()` for brackets, which may be nested.
+---
+---- Identifier: The functions listed below and any variables listed where the expression is used.
+---
+---Identifiers are used to name functions and variables, which result in or represent numbers. The following functions are always available:
+---
+---- `abs(value)`: Returns absolute value of the given argument; i.e. if the argument is negative, it is inverted.
+---
+---- `log2(value)`: Returns a binary logarithm of the given value.
+---
+---- `sign(value)`: Returns `-1` for negative numbers, `0` for zero (regardless of sign), `1` for positive numbers
+---
+---- `max(value1, value2, ...)`: Returns the greater of the given values. Supports between 2 and 255 arguments.
+---
+---- `min(value1, value2, ...)`: Returns the smaller of the given values. Supports between 2 and 255 arguments.
+---
+---The property where the expression is used may provide variables. For example in TechnologyUnit::count_formula `L` and `l` may be used for the technology level.
+---
+---The formula is executed following the BODMAS order (also known as PEMDAS).
+---@class MathExpression
+
+---@class MaxCargoBayUnloadingDistanceModifier : SimpleModifier
+---@field type "max-cargo-bay-unloading-distance"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---@class MaxFailedAttemptsPerTickPerConstructionQueueModifier : SimpleModifier
+---@field type "max-failed-attempts-per-tick-per-construction-queue"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---@class MaxSuccessfulAttemptsPerTickPerConstructionQueueModifier : SimpleModifier
+---@field type "max-successful-attempts-per-tick-per-construction-queue"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---@class MaximumFollowingRobotsCountModifier : SimpleModifier
+---@field type "maximum-following-robots-count"
+---If set to `false`, use the icon from UtilitySprites for this technology effect icon.
+---@field infer_icon? boolean
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---The mining properties of objects. For formulas for the mining time, see mining.
+---@class MinableProperties
+---How many seconds are required to mine this object at 1 mining speed.
+---@field mining_time number
+---@field include_in_show_counts? boolean
+---@field transfer_entity_health_to_products? boolean
+---The items or fluids that are returned when this object is mined.
+---@field results? ProductPrototype[]
+---Only loaded if `results` is not defined.
+---
+---Which item is dropped when this is mined. Cannot be empty. If you want the entity to not be minable, don't specify the minable properties, if you want it to be minable with no result item, don't specify the result at all.
+---@field result? ItemID
+---The amount of fluid that is used up when this object is mined. If this is > 0, this object cannot be mined by hand.
+---@field fluid_amount? FluidAmount
+---Name of a ParticlePrototype. Which set of particles to use.
+---@field mining_particle? ParticleID
+---Name of a FluidPrototype. The fluid that is used up when this object is mined.
+---@field required_fluid? FluidID
+---Only loaded if `results` is not defined.
+---
+---How many of result are dropped.
+---@field count? integer
+---@field mining_trigger? Trigger
+
+---@class MineEntityTechnologyTrigger
+---@field type "mine-entity"
+---Must contain at least 1 element. The trigger is considered fulfilled if at least one of these entities is mined.
+---@field entities EntityID[]
+
+---@class MineItemByRobotTipTrigger : CountBasedTipTrigger
+---@field type "mine-item-by-robot"
+
+---Root style: `"minimap"`
+---@class MinimapStyleSpecification : EmptyWidgetStyleSpecification
+---@field type "minimap_style"
+
+---Used by MiningDrillPrototype.
+---@class MiningDrillGraphicsSet : WorkingVisualisations
+---@field frozen_patch? Sprite4Way
+---@field reset_animation_when_frozen? boolean
+---@field drilling_vertical_movement_duration? integer
+---@field animation_progress? number
+---Only loaded if this graphics set is used in a property called `graphics_set`, refer to EntityPrototype::water_reflection.
+---@field water_reflection? WaterReflectionDefinition
+
+---@class MiningDrillProductivityBonusModifier : SimpleModifier
+---@field type "mining-drill-productivity-bonus"
+---If set to `false`, use the icon from UtilitySprites for this technology effect icon.
+---@field infer_icon? boolean
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---A mining drill for automatically extracting resources from resource entities. This prototype type is used by burner mining drill, electric mining drill and pumpjack in vanilla.
+---@class MiningDrillPrototype : EntityWithOwnerPrototype
+---@field type "mining-drill"
+---The position where any item results are placed, when the mining drill is facing north (default direction). If the drill does not produce any solid items but uses a fluidbox output instead (e.g. pumpjacks), a vector of `{0,0}` disables the yellow arrow alt-mode indicator for the placed item location.
+---@field vector_to_place_result Vector
+---@field use_mirroring? boolean
+---@field require_resources_to_place? boolean
+---The distance from the center of the mining drill to search for resources in.
+---
+---This is 2.49 for electric mining drills (a 5x5 area) and 0.99 for burner mining drills (a 2x2 area). The drill searches resource outside its natural boundary box, which is 0.01 (the middle of the entity); making it 2.5 and 1.0 gives it another block radius.
+---@field resource_searching_radius number
+---Offset of the `resource_searching_radius` from the entity center when the mining drill is facing north.
+---@field resource_searching_offset? Vector
+---The amount of energy used by the drill while mining. Can't be less than or equal to 0.
+---@field energy_usage Energy
+---The speed of this drill.
+---@field mining_speed number
+---The energy source of this mining drill.
+---@field energy_source EnergySource
+---The names of the ResourceCategory that can be mined by this drill. For a list of built-in categories, see here.
+---
+---Note: Categories containing resources which produce items, fluids, or items+fluids may be combined on the same entity, but may not work as expected. Examples: Miner does not rotate fluid-resulting resources until depletion. Fluid isn't output (fluid resource change and fluidbox matches previous fluid). Miner with no `vector_to_place_result` can't output an item result and halts.
+---@field resource_categories ResourceCategoryID[]
+---@field output_fluid_box? FluidBox
+---@field input_fluid_box? FluidBox
+---@field graphics_set? MiningDrillGraphicsSet
+---@field graphics_set_flipped? MiningDrillGraphicsSet
+---@field wet_mining_graphics_set? MiningDrillGraphicsSet
+---@field wet_mining_graphics_set_flipped? MiningDrillGraphicsSet
+---Affects animation speed.
+---@field perceived_performance? PerceivedPerformance
+---@field effect_receiver? EffectReceiver
+---The number of module slots in this machine.
+---@field module_slots? ItemStackIndex
+---If set, QualityPrototype::mining_drill_module_slots_bonus will be added to module slots count.
+---@field quality_affects_module_slots? boolean
+---Sets the modules and beacon effects that are allowed to be used on this mining drill.
+---@field allowed_effects? EffectTypeLimitation
+---Sets the module categories that are allowed to be inserted into this machine.
+---@field allowed_module_categories? ModuleCategoryID[]
+---The sprite used to show the range of the mining drill.
+---@field radius_visualisation_picture? Sprite
+---The maximum circuit wire distance for this entity.
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---May not be `0` or larger than `100`.
+---@field resource_drain_rate_percent? integer
+---@field shuffle_resources_to_mine? boolean
+---@field drops_full_belt_stacks? boolean
+---@field uses_force_mining_productivity_bonus? boolean
+---If set, QualityPrototype::mining_drill_mining_radius_bonus will be added to resource_searching_radius.
+---@field quality_affects_mining_radius? boolean
+---@field moving_sound? InterruptibleSound
+---@field drilling_sound? InterruptibleSound
+---@field drilling_sound_animation_start_frame? integer
+---@field drilling_sound_animation_end_frame? integer
+---When this mining drill is connected to the circuit network, the resource that it is reading (either the entire resource patch, or the resource in the mining area of the drill, depending on circuit network setting), is tinted in this color when mousing over the mining drill.
+---@field monitor_visualization_tint? Color
+---@field circuit_connector? [CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition]
+---@field circuit_connector_flipped? [CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition]
+---How many filters this mining drill has. Maximum count of filtered resources in a mining drill is 5.
+---@field filter_count? integer
+---When a save file from version 2.0.x or older is loaded and this property is `true`, entities facing east or west direction are migrated to flipped state.
+---@field migrate_horizontal_mirroring? boolean
+
+---@class MiningWithFluidModifier : BoolModifier
+---@field type "mining-with-fluid"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---Block of arbitrary data set by mods in prototype stage.
+---
+---During runtime stage, this arbitrary data can be accessed through LuaPrototypes::mod_data.
+---@class ModData : Prototype
+---@field type "mod-data"
+---Arbitrary string that mods can use to declare type of data. Can be used for mod compatibility when one mod declares block of data that is expected to be discovered by another mod.
+---@field data_type? string
+---@field data table<string, AnyBasic>
+
+---The user-set value of a startup mod setting.
+---@class ModSetting
+---The value of the mod setting. The type depends on the kind of setting.
+---@field value integer|number|boolean|string|Color
+
+---The effect that is applied when a TechnologyPrototype is researched.
+---
+---Loaded as one of the BaseModifier extensions, based on the value of the `type` key.
+---@class Modifier
+
+---A dictionary of mod names to mod versions of all active mods. It can be used to adjust mod functionality based on the presence of other mods.
+---@class Mods
+
+---A module category. The built-in categories can be found here. See ModulePrototype::category.
+---@class ModuleCategory : Prototype
+---@field type "module-category"
+
+---The name of a ModuleCategory.
+---@class ModuleCategoryID
+
+---A module. They are used to affect the capabilities of existing machines, for example by increasing the crafting speed of a crafting machine.
+---@class ModulePrototype : ItemPrototype
+---@field type "module"
+---Used when upgrading modules: Ctrl + click modules into an entity and it will replace lower tier modules of the same category with higher tier modules.
+---@field category ModuleCategoryID
+---Tier of the module inside its category. Used when upgrading modules: Ctrl + click modules into an entity and it will replace lower tier modules with higher tier modules if they have the same category.
+---@field tier integer
+---The effect of the module on the machine it's inserted in, such as increased pollution.
+---@field effect Effect
+---@field requires_beacon_alt_mode? boolean
+---Chooses with what art style the module is shown inside beacons. See BeaconModuleVisualizations::art_style. Vanilla uses `"vanilla"` here.
+---@field art_style? string
+---@field beacon_tint? BeaconVisualizationTints
+---0.0 means that no quality scaling is applied (common for penalties). 1.0 means that the full scaling of the quality prototype applies.
+---
+---Defaults to 1.0 if the module consumption effect is < 0, otherwise 0.0.
+---@field consumption_quality_multiplier? number
+---0.0 means that no quality scaling is applied (common for penalties). 1.0 means that the full scaling of the quality prototype applies.
+---
+---Defaults to 1.0 if the module speed effect is > 0, otherwise 0.0.
+---@field speed_quality_multiplier? number
+---0.0 means that no quality scaling is applied (common for penalties). 1.0 means that the full scaling of the quality prototype applies.
+---
+---Defaults to 1.0 if the module productivity effect is > 0, otherwise 0.0.
+---@field productivity_quality_multiplier? number
+---0.0 means that no quality scaling is applied (common for penalties). 1.0 means that the full scaling of the quality prototype applies.
+---
+---Defaults to 1.0 if the module pollution effect is < 0, otherwise 0.0.
+---@field pollution_quality_multiplier? number
+---0.0 means that no quality scaling is applied (common for penalties). 1.0 means that the full scaling of the quality prototype applies.
+---
+---Defaults to 1.0 if the module quality effect is > 0, otherwise 0.0.
+---@field quality_quality_multiplier? number
+
+---@class ModuleTint
+
+---This prototype is used for receiving an achievement when the player moves a module with the cursor.
+---@class ModuleTransferAchievementPrototype : AchievementPrototype
+---@field type "module-transfer-achievement"
+---This will trigger the achievement, if this module is transferred.
+---@field module ItemID|ItemID[]
+---How many modules need to be transferred.
+---@field amount? integer
+---If this is false, the player carries over their statistics from this achievement through all their saves.
+---@field limited_to_one_game? boolean
+
+---@class ModuleTransferTipTrigger : CountBasedTipTrigger
+---@field type "module-transfer"
+---@field module ItemID
+
+---Used by SelectionToolPrototype::mouse_cursor.
+---@class MouseCursor
+---@field type "mouse-cursor"
+---@field type "mouse-cursor"
+---Name of the prototype.
+---@field name string
+---Either this or the other three properties have to be present.
+---@field system_cursor? "arrow"|"i-beam"|"crosshair"|"wait-arrow"|"size-all"|"no"|"hand"
+---Mandatory if `system_cursor` is not defined.
+---@field filename? FileName
+---Mandatory if `system_cursor` is not defined.
+---@field hot_pixel_x? integer
+---Mandatory if `system_cursor` is not defined.
+---@field hot_pixel_y? integer
+
+---The name of a MouseCursor.
+---@class MouseCursorID
+
+---Used by exoskeleton. Increases max speed of characters or acceleration of vehicles if they have this equipment in their grid.
+---@class MovementBonusEquipmentPrototype : EquipmentPrototype
+---@field type "movement-bonus-equipment"
+---@field energy_consumption Energy
+---Multiplier of the character speed/vehicle acceleration.
+---@field movement_bonus number
+
+---A NoiseExpression with a name. The base game uses named noise expressions to specify functions for many map properties to be used in map generation; e.g. the "elevation" expression is used to calculate elevation for every point on a map. For a list of the built-in named noise expressions, see data.raw.
+---
+---Named noise expressions can be used by MapGenSettings and MapGenPreset to override which named expression is used to calculate a given property by having an entry in `property_expression_names`, e.g. `elevation = "elevation_island"`.
+---
+---Alternate expressions can be made available in the map generator GUI by setting their `intended_property` to the name of the property they should override.
+---
+---Named noise expressions can also be used as noise variables e.g. `var("my-noise-expression")`.
+---@class NamedNoiseExpression : Prototype
+---@field type "noise-expression"
+---The noise expression itself. This is where most of the noise magic happens.
+---@field expression NoiseExpression
+---A map of expression name to expression.
+---
+---Local expressions are meant to store data locally similar to local variables in Lua. Their purpose is to hold noise expressions used multiple times in the named noise expression, or just to tell the reader that the local expression has a specific purpose. Local expressions can access other local definitions, but recursive definitions aren't supported.
+---@field local_expressions? table<string, NoiseExpression>
+---A map of function name to function.
+---
+---Local functions serve the same purpose as local expressions - they aren't visible outside of the specific prototype and they have access to other local definitions.
+---@field local_functions? table<string, NoiseFunction>
+---Names the property that this expression is intended to provide a value for, if any. This will make the expression show up as an option in the map generator GUI, unless it is the only expression with that intended property, in which case it will be hidden and selected by default.
+---
+---For example if a noise expression is intended to be used as an alternative temperature generator, `intended_property` should be "temperature".
+---@field intended_property? string
+---Used to order alternative expressions in the map generator GUI. For a given property (e.g. 'temperature'), the NamedNoiseExpression with that property's name as its `intended_property` with the lowest order will be chosen as the default in the GUI.
+---
+---If no order is specified, it defaults to "2000" if the property name matches the expression name (making it the 'technical default' generator for the property if none is specified in MapGenSettings), or "3000" otherwise. A generator defined with an order less than "2000" but with a unique name can thereby override the default generator used when creating a new map through the GUI without automatically overriding the 'technical default' generator, which is probably used by existing maps.
+---@field order? Order
+
+---Named noise functions are defined in the same way as NamedNoiseExpression except that they also have parameters.
+---
+---Named noise functions are available to be used in NoiseExpressions.
+---@class NamedNoiseFunction : Prototype
+---@field type "noise-function"
+---The order of the parameters matters because functions can also be called with positional arguments.
+---
+---A function can't have more than 255 parameters.
+---@field parameters string[]
+---@field expression NoiseExpression
+---A map of expression name to expression.
+---
+---Local expressions are meant to store data locally similar to local variables in Lua. Their purpose is to hold noise expressions used multiple times in the named noise expression, or just to tell the reader that the local expression has a specific purpose. Local expressions can access other local definitions and also function parameters, but recursive definitions aren't supported.
+---@field local_expressions? table<string, NoiseExpression>
+---A map of function name to function.
+---
+---Local functions serve the same purpose as local expressions - they aren't visible outside of the specific prototype and they have access to other local definitions.
+---@field local_functions? table<string, NoiseFunction>
+
+---Defines how this entity connects to its neighbours
+---@class NeighbourConnectable
+---If the connection positions and directions will be affected by entity's direction.
+---@field affected_by_direction? boolean
+---Distance by which connection point is shifted along its direction to select a position where neighbor will be searched.
+---@field neighbour_search_distance? number
+---Definitions of the connection points.
+---@field connections NeighbourConnectableConnectionDefinition[]
+
+---@class NeighbourConnectableConnectionCategory
+
+---In order for 2 NeighbourConnectable to connect they need to share a connection point at the same position with opposite direction and both accept neighbor's category.
+---@class NeighbourConnectableConnectionDefinition
+---@field location MapLocation
+---Name of a category this connection should belong to. Used when deciding which connections are allowed to connect to this.
+---
+---Cannot be an empty string.
+---@field category NeighbourConnectableConnectionCategory
+---Table of neighbor categories this connection will connect to.
+---@field neighbour_category? NeighbourConnectableConnectionCategory[]
+
+---@class NestedTriggerEffectItem : TriggerEffectItem
+---@field type "nested-result"
+---@field action Trigger
+
+---Used by nightvision.
+---@class NightVisionEquipmentPrototype : EquipmentPrototype
+---@field type "night-vision-equipment"
+---@field energy_input Energy
+---@field color_lookup DaytimeColorLookupTable
+---Must be >= 0 and <= 1.
+---@field darkness_to_turn_on? number
+---@field activate_sound? Sound
+---@field deactivate_sound? Sound
+
+---A boolean or double as simple values or a string that represents a math expression. The expression parser recognizes five basic token types (with their regex):
+---
+---- **Whitespace:** `[ \n\r\t]*`
+---
+---- **Identifier:** `[a-zA-Z_][a-zA-Z0-9_:]*` (e.g. cat_bar123)
+---
+---- **Number:** `(0x[0-9a-f]+|([0-9]+\.?[0-9]*|\.[0-9]+)(e-?[0-9]+)?)` (e.g. `3.2`, `100`, `.6`, `4.2e-5`, `0x2a5f`). Supports hexadecimal input and scientific notation for decimal numbers.
+---
+---- **String:** `("[^"]*"|'[^']*')` (e.g. `"cat bar 123"`, `'control-setting:copper-ore'`)
+---
+---- **Operator:** See the list below
+---
+---Identifiers are used to name functions and variables. The built-in functions and variables are documented in the auxiliary docs. Mods can define their own noise expressions which can be used as variables and functions. The entry points for this are NamedNoiseFunction and NamedNoiseExpression as well as local functions and expressions.
+---
+---All functions accept both named and positional arguments. To differentiate between these function calls, positional arguments start/end with `(`/`)` and named arguments with `{`/`}`, e.g. `clamp(x, -1, 1)` and `clamp{min = -1, max = 1, value = x}` are the same function call. Because of this, positional arguments can't be mixed with named arguments. A function can't have more than 255 parameters.
+---
+---Recursion is not supported.
+---
+---The following operators are available, ordered by precedence:
+---
+---- `x^y`: Exponentiation (fast, inaccurate), equivalent to the built-in `pow(x, y)` noise function
+---
+---- `+x`, `-x`, `~x`: Unary plus and minus and unary bitwise not
+---
+---- `x*y`, `x/y`, `x%y`, `x%%y`: Multiplication and division, modulo and remainder
+---
+---- `x+y`, `x-y`: Addition and subtraction
+---
+---- `x<y`, `x<=y`, `x>y`, `x>=y`: Less than, less than or equal, greater than, greater than or equal
+---
+---- `x==y`, `x~=y`, `x!=y`: Equal to and not equal to (Lua and C++ syntax)
+---
+---- `x&y`: Bitwise and
+---
+---- `x~y`: Bitwise xor
+---
+---- `x|y`: Bitwise or
+---
+---Modulo is implemented as `x - floor(x / y) * y` and remainder uses C++ `fmod(x, y)` function.
+---
+---The boolean operators (less than, less than or equal, equal, not equal, greater than, greater than or equal) take two numbers and return 0 for false or 1 for true.
+---
+---The bitwise operators convert single-precision floating-point numbers to signed 32-bit integers before computing the result.
+---
+---Exponentiation and the unary operators are right-to-left associative. The rest of the operators are left-to-right associative.
+---@class NoiseExpression
+
+---The advantage of noise functions over noise expressions is that they have parameters.
+---@class NoiseFunction
+---The order of the parameters matters because functions can also be called with positional arguments.
+---
+---A function can't have more than 255 parameters.
+---@field parameters string[]
+---@field expression NoiseExpression
+---A map of expression name to expression.
+---
+---Local expressions are meant to store data locally similar to local variables in Lua. Their purpose is to hold noise expressions used multiple times in the named noise expression, or just to tell the reader that the local expression has a specific purpose. Local expressions can access other local definitions and also function parameters, but recursive definitions aren't supported.
+---@field local_expressions? table<string, NoiseExpression>
+---A map of function name to function.
+---
+---Local functions serve the same purpose as local expressions - they aren't visible outside of the specific prototype and they have access to other local definitions.
+---@field local_functions? table<string, NoiseFunction>
+
+---Modifier that does nothing. Can be used to show custom scripted effects in the technology GUI.
+---@class NothingModifier : BaseModifier
+---@field type "nothing"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+---@field effect_description? string|number|boolean|nil|table
+
+---@class OffshorePumpGraphicsSet
+---Rendered in "object" layer, with secondary draw order 0.
+---@field animation? Animation4Way
+---@field base_render_layer? RenderLayer
+---@field underwater_layer_offset? integer
+---Rendered in "object" layer, with secondary draw order 20.
+---@field fluid_animation? Animation4Way
+---Rendered in "object" layer, with secondary draw order 40.
+---@field glass_pictures? Sprite4Way
+---Rendered in layer specified by `base_render_layer`, with secondary draw order 0.
+---@field base_pictures? Sprite4Way
+---Drawn by tile renderer when water animation is enabled.
+---@field underwater_pictures? Sprite4Way
+---Refer to EntityPrototype::water_reflection.
+---@field water_reflection? WaterReflectionDefinition
+
+---An offshore pump.
+---@class OffshorePumpPrototype : EntityWithOwnerPrototype
+---@field type "offshore-pump"
+---@field fluid_box FluidBox
+---How many units of fluid are produced per tick. Must be > 0.
+---@field pumping_speed FluidAmount
+---@field fluid_source_offset Vector
+---Affects animation speed.
+---@field perceived_performance? PerceivedPerformance
+---@field graphics_set? OffshorePumpGraphicsSet
+---Defines how the offshore pump is powered.
+---
+---When using an electric energy source and `drain` is not specified, it will be set to `energy_usage ÷ 30` automatically.
+---@field energy_source EnergySource
+---Sets how much energy this offshore pump consumes. Energy usage has to be positive.
+---@field energy_usage Energy
+---@field remove_on_tile_collision? boolean
+---If false, the offshore pump will not show fluid present (visually) before there is an output connected. The pump will also animate yet not show fluid when the fluid is 100% extracted (e.g. such as with a pump).
+---@field always_draw_fluid? boolean
+---The maximum circuit wire distance for this entity.
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---@field circuit_connector? [CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition]
+---When this is true, fluid pipelines will be visualized when this entity is held in the cursor.
+---@field show_fluid_visualization_when_in_cursor? boolean
+
+---@class OrTipTrigger
+---@field type "or"
+---If at least one of the triggers is fulfilled, this trigger is considered fulfilled.
+---@field triggers TipTrigger[]
+
+---The order property is a simple `string`. When the game needs to sort prototypes (of the same type), it looks at their order properties and sorts those alphabetically. A prototype with an order string of `"a"` will be listed before other prototypes with order string `"b"` or `"c"`. The `"-"` or `"[]"` structures that can be found in vanilla order strings do *not* have any special meaning.
+---
+---The alphabetical sorting uses lexicographical comparison to determine if a given prototype is shown before or after another. If the order strings are equal then the game falls back to comparing the prototype names to determine order.
+---
+---The order of special characters can be identified by looking at a UTF-8 character list. This is the order some common characters are sorted in:
+---
+---- "-"
+---
+---- "0"
+---
+---- "9"
+---
+---- "A"
+---
+---- "Z"
+---
+---- "["
+---
+---- "]"
+---
+---- "a"
+---
+---- "z"
+---
+---The following order strings would be ordered thusly then:
+---
+---- "-"
+---
+---- "a"
+---
+---- "ab"
+---
+---- "azaaa" (`b` is sorted before `z`, so "ab" comes before "az", regardless of the letters following it)
+---
+---- "b"
+---
+---- "b-zzz"
+---
+---- "b[aaa]" (`[` is sorted after `-` in UTF-8)
+---
+---- "bb" (`b` is sorted after `[` in UTF-8)
+---@class Order
+
+---@class OrientedCliffPrototype
+---@field render_layer? RenderLayer
+---@field collision_bounding_box BoundingBox
+---@field pictures? SpriteVariations
+---@field pictures_lower? SpriteVariations
+
+---@class OrientedCliffPrototypeSet
+---@field west_to_east OrientedCliffPrototype
+---@field north_to_south OrientedCliffPrototype
+---@field east_to_west OrientedCliffPrototype
+---@field south_to_north OrientedCliffPrototype
+---@field west_to_north OrientedCliffPrototype
+---@field north_to_east OrientedCliffPrototype
+---@field east_to_south OrientedCliffPrototype
+---@field south_to_west OrientedCliffPrototype
+---@field west_to_south OrientedCliffPrototype
+---@field north_to_west OrientedCliffPrototype
+---@field east_to_north OrientedCliffPrototype
+---@field south_to_east OrientedCliffPrototype
+---@field west_to_none OrientedCliffPrototype
+---@field none_to_east OrientedCliffPrototype
+---@field north_to_none OrientedCliffPrototype
+---@field none_to_south OrientedCliffPrototype
+---@field east_to_none OrientedCliffPrototype
+---@field none_to_west OrientedCliffPrototype
+---@field south_to_none OrientedCliffPrototype
+---@field none_to_north OrientedCliffPrototype
+
+---@class OtherColors
+---@field less_than number
+---@field color? Color
+---@field bar? ElementImageSet
+
+---The name of a ParticlePrototype.
+---@class ParticleID
+
+---An entity with a limited lifetime that can use trigger effects.
+---@class ParticlePrototype : Prototype
+---@field type "optimized-particle"
+---Picture variation count and individual frame count must be equal to shadow variation count.
+---@field pictures? AnimationVariations
+---Can't be 1.
+---@field life_time integer
+---Shadow variation variation count and individual frame count must be equal to picture variation count.
+---@field shadows? AnimationVariations
+---@field draw_shadow_when_on_ground? boolean
+---@field regular_trigger_effect? TriggerEffect
+---@field ended_in_water_trigger_effect? TriggerEffect
+---@field ended_on_ground_trigger_effect? TriggerEffect
+---@field render_layer? RenderLayer
+---@field render_layer_when_on_ground? RenderLayer
+---Can't be 1.
+---@field regular_trigger_effect_frequency? integer
+---@field movement_modifier_when_on_ground? number
+---@field movement_modifier? number
+---Has to be >= -0.01 and <= 0.01.
+---@field vertical_acceleration? number
+---@field mining_particle_frame_speed? number
+---Defaults to `life_time` / 5, but at most 60. If this is 0, it is silently changed to 1.
+---@field fade_away_duration? integer
+
+---Creates particles.
+---@class ParticleSourcePrototype : EntityPrototype
+---@field type "particle-source"
+---@field time_to_live number
+---@field time_before_start number
+---@field height number
+---@field vertical_speed number
+---@field horizontal_speed number
+---Mandatory if `smoke` is not defined.
+---@field particle? ParticleID
+---Mandatory if `particle` is not defined.
+---@field smoke? SmokeSource[]
+---@field time_to_live_deviation? number
+---@field time_before_start_deviation? number
+---@field height_deviation? number
+---@field vertical_speed_deviation? number
+---@field horizontal_speed_deviation? number
+---The entity with the higher number is selectable before the entity with the lower number.
+---
+---The value `0` will be treated the same as `nil`.
+---@field selection_priority? integer
+
+---@class PasteEntitySettingsTipTrigger : CountBasedTipTrigger
+---@field type "paste-entity-settings"
+---@field source? EntityID
+---@field target? EntityID
+---@field match_type_only? boolean
+
+---@class PathFinderSettings
+---The pathfinder performs a step of the backward search every `fwd2bwd_ratio`'th step. The minimum allowed value is 2, which means symmetric search.
+---@field fwd2bwd_ratio integer
+---When comparing nodes in open which one to check next, heuristic value is multiplied by this ratio. The higher the number the more is the search directed directly towards the goal.
+---@field goal_pressure_ratio number
+---@field use_path_cache boolean
+---When this is exhausted no more requests are allowed, at the moment the first path to exhaust this will be finished (even if it is hundreds of steps).
+---@field max_steps_worked_per_tick number
+---@field max_work_done_per_tick integer
+---Number of elements in the cache.
+---@field short_cache_size integer
+---@field long_cache_size integer
+---Minimal distance to goal for path to be searched in short path cache.
+---@field short_cache_min_cacheable_distance number
+---Minimal number of algorithm steps for path to be inserted into the short path cache.
+---@field short_cache_min_algo_steps_to_cache integer
+---Minimal distance to goal for path to be searched in long path cache.
+---@field long_cache_min_cacheable_distance number
+---When searching for connection to path cache path, search at most for this number of steps times the initial estimate.
+---@field cache_max_connect_to_cache_steps_multiplier integer
+---When looking for path from cache make sure it doesn't start too far from requested start in relative distance terms.
+---@field cache_accept_path_start_distance_ratio number
+---When looking for path from cache make sure it doesn't end too far from requested end. This is typically higher than accept value for the start because the end target can be moving.
+---@field cache_accept_path_end_distance_ratio number
+---Same as cache_accept_path_start_distance_ratio, but used for negative cache queries.
+---@field negative_cache_accept_path_start_distance_ratio number
+---Same as cache_accept_path_end_distance_ratio, but used for negative cache queries.
+---@field negative_cache_accept_path_end_distance_ratio number
+---When assigning rating to the best path this * start distances is considered.
+---@field cache_path_start_distance_rating_multiplier number
+---When assigning rating to the best path this * end distances is considered. This is typically higher than value for the start to achieve better path end quality.
+---@field cache_path_end_distance_rating_multiplier number
+---Somewhere along the path is stuck enemy we need to avoid. This is mainly to handle situations when units have arrived and are attacking the target then units further in the back will use this and run around the target.
+---@field stale_enemy_with_same_destination_collision_penalty number
+---If there is a moving unit further than this we don't really care.
+---@field ignore_moving_enemy_collision_distance number
+---Enemy is not moving/or is too close and has different destination.
+---@field enemy_with_different_destination_collision_penalty number
+---Simplification for now; collision with everything else is this.
+---@field general_entity_collision_penalty number
+---Collision penalty for successors of positions that require destroy to reach.
+---@field general_entity_subsequent_collision_penalty number
+---Collision penalty for collisions in the extended bounding box but outside the entity's actual bounding box.
+---@field extended_collision_penalty number
+---Up until this amount any client will be served by the path finder (no estimate on the path length).
+---@field max_clients_to_accept_any_new_request integer
+---From max_clients_to_accept_any_new_request till this one only those that have a short estimate will be served.
+---@field max_clients_to_accept_short_new_request integer
+---This is the "threshold" to decide what is short and what is not.
+---@field direct_distance_to_consider_short_request integer
+---If a short request takes more than this many steps, it will be rescheduled as a long request.
+---@field short_request_max_steps integer
+---How many steps will be allocated to short requests each tick, as a ratio of all available steps per tick.
+---@field short_request_ratio number
+---Absolute minimum of steps that will be performed for every path find request no matter what.
+---@field min_steps_to_check_path_find_termination integer
+---If the current actual cost from start is higher than this times estimate of start to goal then path finding is terminated.
+---@field start_to_goal_cost_multiplier_to_terminate_path_find number
+---@field overload_levels integer[]
+---@field overload_multipliers number[]
+---@field negative_path_cache_delay_interval integer
+
+---Not all prototypes that use this type are affected by all properties.
+---@class PerceivedPerformance
+---Affects animation speed.
+---
+---Must be less than or equal to `maximum`.
+---@field minimum? number
+---Affects animation speed.
+---@field maximum? number
+---Affects MainSound if MainSound::match_progress_to_activity, MainSound::match_volume_to_activity or MainSound::match_speed_to_activity is `true`.
+---@field performance_to_activity_rate? number
+
+---@class PersistentWorldAmbientSoundDefinition
+---@field sound Sound
+
+---@class PersistentWorldAmbientSoundsDefinition
+---Mandatory if `crossfade` is defined.
+---@field base_ambience? PersistentWorldAmbientSoundDefinition|PersistentWorldAmbientSoundDefinition[]
+---Mandatory if `crossfade` is defined.
+---@field wind? PersistentWorldAmbientSoundDefinition|PersistentWorldAmbientSoundDefinition[]
+---@field crossfade? PersistentWorldAmbientSoundsDefinitionCrossfade
+---@field semi_persistent? SemiPersistentWorldAmbientSoundDefinition|SemiPersistentWorldAmbientSoundDefinition[]
+
+---@class PersistentWorldAmbientSoundsDefinitionCrossfade : Fade
+---@field order ["wind"|"base_ambience", "wind"|"base_ambience"]
+
+---@class PipeConnectionDefinition
+---Allowed direction of fluid flow at this connection. Pipeline entities (`pipe`, `pipe-to-ground`, and `storage-tank`) do not support this property.
+---@field flow_direction? FluidFlowDirection
+---Selects set of rules to follow when looking for other FluidBox this connection should connect to.
+---@field connection_type? PipeConnectionType
+---Array of the WorkingVisualisation::name of working visualisations to enable when this pipe connection is present.
+---
+---If the owning fluidbox has draw_only_when_connected set to `true`, then the working visualisation is only enabled if this pipe connection is *connected*.
+---@field enable_working_visualisations? string[]
+---If true, connection arrows and fluid icons will not be drawn for this connection when the entity is selected or in alt-mode.
+---@field hide_connection_info? boolean
+---Primary direction this connection points to when entity direction is north and the entity is not mirrored. When entity is rotated or mirrored, effective direction will be computed based on this value.
+---
+---Only loaded, and mandatory if `connection_type` is `"normal"` or `"underground"`.
+---@field direction? defines.direction
+---Position relative to entity's center where pipes can connect to this fluidbox regardless the directions of entity.
+---
+---Only loaded if `connection_type` is `"normal"` or `"underground"`.
+---@field position? MapPosition
+---The 4 separate positions corresponding to the 4 main directions of entity. Positions must correspond to directions going one after another.
+---
+---This is used for example by "pumpjack" where connections are consistently near bottom-left corner (2 directions) or near top-right corner (2 directions).
+---
+---Only loaded, and mandatory if `position` is not defined and if `connection_type` is `"normal"` or `"underground"`.
+---@field positions? [MapPosition, MapPosition, MapPosition, MapPosition]
+---Relative position of the pipe connection when entity direction is north-east.
+---
+---Only loaded if `connection_type` is `"normal"` or `"underground"`.
+---@field alt_position? MapPosition
+---Direction this connection should be facing when entity direction is north-east. When entity is rotated, effective direction will be computed based on this value.
+---
+---Only loaded if `connection_type` is `"normal"` or `"underground"`.
+---@field alt_direction? defines.direction
+---Fluidboxes' pipe connections are only allowed to connect with each other if they share a connection category. For example a mod could have a "steam pipes" and "cryogenic pipes" category that should not connect with each other.
+---
+---In case of a normal connection, a pipe connection can be in multiple connection categories. This allows to create a mod where pipes of different categories would not connect to each other while still making it possible for crafting machines and other entities to connect to any of the specified pipes.
+---
+---By default, all pipe connections have the `"default"` category. So a pipe that should connect to a new category and standard pipes can have the `connection_category = {"my-new-pipe", "default"}`.
+---
+---May have at most one category when `connection_type` is `"underground"`.
+---
+---Only loaded if `connection_type` is `"normal"` or `"underground"`.
+---@field connection_category? string|string[]
+---Only loaded if `connection_type` is `"underground"`.
+---@field max_underground_distance? integer
+---Only loaded if `connection_type` is `"underground"`.
+---@field max_distance_tint? Color
+---An underground connection may be defined as colliding with tiles in which case if any tile is placed between underground ends the connection will not be established.
+---
+---In order to connect, both ends must have the same collision mask specified.
+---
+---Only loaded if `connection_type` is `"underground"`.
+---@field underground_collision_mask? CollisionMaskConnector
+---Expected to be unique inside of a single entity. Used to uniquely identify where a linked connection should connect to.
+---
+---Only loaded, and mandatory if `connection_type` is `"linked"`.
+---@field linked_connection_id? FluidBoxLinkedConnectionID
+
+---@class PipeConnectionType
+
+---@class PipePictures
+---@field straight_vertical_single? Sprite
+---@field straight_vertical? Sprite
+---@field straight_vertical_window? Sprite
+---@field straight_horizontal? Sprite
+---@field straight_horizontal_window? Sprite
+---@field corner_up_right? Sprite
+---@field corner_up_left? Sprite
+---@field corner_down_right? Sprite
+---@field corner_down_left? Sprite
+---@field t_up? Sprite
+---@field t_down? Sprite
+---@field t_right? Sprite
+---@field t_left? Sprite
+---@field cross? Sprite
+---@field ending_up? Sprite
+---@field ending_down? Sprite
+---@field ending_right? Sprite
+---@field ending_left? Sprite
+---@field straight_vertical_single_frozen? Sprite
+---@field straight_vertical_frozen? Sprite
+---@field straight_vertical_window_frozen? Sprite
+---@field straight_horizontal_frozen? Sprite
+---@field straight_horizontal_window_frozen? Sprite
+---@field corner_up_right_frozen? Sprite
+---@field corner_up_left_frozen? Sprite
+---@field corner_down_right_frozen? Sprite
+---@field corner_down_left_frozen? Sprite
+---@field t_up_frozen? Sprite
+---@field t_down_frozen? Sprite
+---@field t_right_frozen? Sprite
+---@field t_left_frozen? Sprite
+---@field cross_frozen? Sprite
+---@field ending_up_frozen? Sprite
+---@field ending_down_frozen? Sprite
+---@field ending_right_frozen? Sprite
+---@field ending_left_frozen? Sprite
+---@field straight_vertical_single_visualization? Sprite
+---@field straight_vertical_visualization? Sprite
+---@field straight_vertical_window_visualization? Sprite
+---@field straight_horizontal_visualization? Sprite
+---@field straight_horizontal_window_visualization? Sprite
+---@field corner_up_right_visualization? Sprite
+---@field corner_up_left_visualization? Sprite
+---@field corner_down_right_visualization? Sprite
+---@field corner_down_left_visualization? Sprite
+---@field t_up_visualization? Sprite
+---@field t_down_visualization? Sprite
+---@field t_right_visualization? Sprite
+---@field t_left_visualization? Sprite
+---@field cross_visualization? Sprite
+---@field ending_up_visualization? Sprite
+---@field ending_down_visualization? Sprite
+---@field ending_right_visualization? Sprite
+---@field ending_left_visualization? Sprite
+---@field straight_vertical_single_disabled_visualization? Sprite
+---@field straight_vertical_disabled_visualization? Sprite
+---@field straight_vertical_window_disabled_visualization? Sprite
+---@field straight_horizontal_disabled_visualization? Sprite
+---@field straight_horizontal_window_disabled_visualization? Sprite
+---@field corner_up_right_disabled_visualization? Sprite
+---@field corner_up_left_disabled_visualization? Sprite
+---@field corner_down_right_disabled_visualization? Sprite
+---@field corner_down_left_disabled_visualization? Sprite
+---@field t_up_disabled_visualization? Sprite
+---@field t_down_disabled_visualization? Sprite
+---@field t_right_disabled_visualization? Sprite
+---@field t_left_disabled_visualization? Sprite
+---@field cross_disabled_visualization? Sprite
+---@field ending_up_disabled_visualization? Sprite
+---@field ending_down_disabled_visualization? Sprite
+---@field ending_right_disabled_visualization? Sprite
+---@field ending_left_disabled_visualization? Sprite
+---@field horizontal_window_background? Sprite
+---@field vertical_window_background? Sprite
+---@field fluid_background? Sprite
+---Visualizes the flow of the fluid in the pipe. Drawn when `(fluid_temp - fluid_min_temp) / (fluid_max_temp - fluid_min_temp)` is less than or equal to `1/3` and the fluid's temperature is below FluidPrototype::gas_temperature.
+---@field low_temperature_flow? Sprite
+---Visualizes the flow of the fluid in the pipe. Drawn when `(fluid_temp - fluid_min_temp) / (fluid_max_temp - fluid_min_temp)` is larger than `1/3` and less than or equal to `2/3` and the fluid's temperature is below FluidPrototype::gas_temperature.
+---@field middle_temperature_flow? Sprite
+---Visualizes the flow of the fluid in the pipe. Drawn when `(fluid_temp - fluid_min_temp) / (fluid_max_temp - fluid_min_temp)` is larger than `2/3` and the fluid's temperature is below FluidPrototype::gas_temperature.
+---@field high_temperature_flow? Sprite
+---Visualizes the flow of the fluid in the pipe. Drawn when the fluid's temperature is above FluidPrototype::gas_temperature.
+---@field gas_flow? Animation
+
+---An entity to transport fluids over a distance and between machines.
+---@class PipePrototype : EntityWithOwnerPrototype
+---@field type "pipe"
+---The area of the entity where fluid/gas inputs, and outputs.
+---@field fluid_box FluidBox
+---@field horizontal_window_bounding_box BoundingBox
+---@field vertical_window_bounding_box BoundingBox
+---All graphics for this pipe.
+---@field pictures? PipePictures
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---@field circuit_connector? [CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition]
+---@field default_fluid_temperature_signal? SignalIDConnector
+---When this is true, fluid pipelines will be visualized when this entity is held in the cursor.
+---@field show_fluid_visualization_when_in_cursor? boolean
+
+---A pipe to ground.
+---@class PipeToGroundPrototype : EntityWithOwnerPrototype
+---@field type "pipe-to-ground"
+---@field fluid_box FluidBox
+---@field pictures? Sprite4Way
+---@field frozen_patch? Sprite4Way
+---@field visualization? Sprite4Way
+---@field disabled_visualization? Sprite4Way
+---@field circuit_connector? [CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition]
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---@field default_fluid_temperature_signal? SignalIDConnector
+---Causes fluid icon to always be drawn, ignoring the usual pair requirement.
+---@field draw_fluid_icon_override? boolean
+---When this is true, fluid pipelines will be visualized when this entity is held in the cursor.
+---@field show_fluid_visualization_when_in_cursor? boolean
+
+---@class PlaceAsTile
+---@field result TileID
+---@field condition CollisionMaskConnector
+---@field invert? boolean
+---@field condition_size integer
+---@field tile_condition? TileID[]
+
+---@class PlaceEquipmentAchievementPrototype : AchievementPrototype
+---@field type "place-equipment-achievement"
+---@field armor ItemID
+---@field limit_quality QualityID
+---@field limit_equip_quality QualityID
+---@field amount? integer
+---If this is false, the player carries over their statistics from this achievement through all their saves.
+---@field limited_to_one_game? boolean
+
+---@class PlaceEquipmentTipTrigger : CountBasedTipTrigger
+---@field type "place-equipment"
+---@field equipment? EquipmentID
+
+---@class PlanTrainPathTipTrigger
+---@field type "plan-train-path"
+---@field distance number
+
+---@class PlanetPrototype : SpaceLocationPrototype
+---@field type "planet"
+---@field map_seed_offset? integer
+---@field entities_require_heating? boolean
+---@field pollutant_type? AirbornePollutantID
+---@field persistent_ambient_sounds? PersistentWorldAmbientSoundsDefinition
+---@field surface_render_parameters? SurfaceRenderParameters
+---@field player_effects? Trigger
+---@field ticks_between_player_effects? MapTick
+---@field map_gen_settings? PlanetPrototypeMapGenSettings
+---@field surface_properties? table<SurfacePropertyID, number>
+---@field lightning_properties? LightningProperties
+
+---@class PlanetPrototypeMapGenSettings
+---@field cliff_settings? CliffPlacementSettings
+---@field territory_settings? TerritorySettings
+---@field autoplace_controls? table<AutoplaceControlID, FrequencySizeRichness>
+---Each setting in this table maps the string type to the settings for that type.
+---@field autoplace_settings? table<"entity"|"tile"|"decorative", AutoplaceSettings>
+---Map of property name (e.g. "elevation") to name of noise expression that will provide it. Entries may be omitted. A notable usage is changing autoplace behavior of an entity based on the preset, which cannot be read from a noise expression.
+---@field property_expression_names? table<string, string|boolean|number>
+---Used for showing the planet icon in map generator GUI next to moisture climate control.
+---@field moisture_climate_control? boolean
+---Used for showing the planet icon in map generator GUI next to aux climate control.
+---@field aux_climate_control? boolean
+
+---@class PlantPrototype : TreePrototype
+---@field type "plant"
+---Must be positive.
+---@field growth_ticks MapTick
+---The burst of pollution to emit when the plant is harvested.
+---@field harvest_emissions? table<AirbornePollutantID, number>
+---@field agricultural_tower_tint? RecipeTints
+---If defined, it can't be empty.
+---@field growth_variations? TreeGrowth[]
+---Mound sprite drawn under growing trees which fades close to full growth. If defined, it can't be empty.
+---@field growth_mounds? Sprite[]
+
+---@class PlatformBackdrop
+---@field position? Vector
+---@field radius? number
+---Wrapped around the surface of the sphere using equirectangular projection.
+---@field planet_surface? EffectTexture
+---Normal map of the surface deforming local sphere normal.
+---@field planet_normal? EffectTexture
+---Glossiness of the surface in red channel.
+---@field planet_reflectivity? EffectTexture
+---Emissive light added to the surface. Can be disabled on lit side using the `emission_scales_with_shadow` property.
+---@field planet_emission? EffectTexture
+---Cloud mapped over the planet as the surface texture.
+---@field global_cloud? EffectTexture
+---@field global_cloud_normal? EffectTexture
+---Flow map distorting the global cloud.
+---@field global_cloud_flow? EffectTexture
+---Individual Hero Cloud decals over the planet surface. The maximum number is four.
+---@field hero_clouds? PlatformBackdropHeroCloud[]
+---Sprite or Animation to be referenced by `hero_clouds` definitions with `sprite_index` 1.
+---@field hero_cloud_texture_1? Animation
+---Sprite or Animation to be referenced by `hero_clouds` definitions with `sprite_index` 2.
+---@field hero_cloud_texture_2? Animation
+---Sprite or Animation to be referenced by `hero_clouds` definitions with `sprite_index` 3.
+---@field hero_cloud_texture_3? Animation
+---How many seconds it takes for the planet to do one revolution.
+---@field rotation_seconds? number
+---Tilt and pitch of the planet axis.
+---@field planet_axis? Vector
+---How much tilt and pitch vary over time.
+---@field planet_axis_deviation_amplitude? Vector
+---Number of seconds it takes for tilt and pitch to complete one cycle of deviation.
+---@field planet_axis_deviation_seconds? Vector
+---How strongly the planet moves with camera. `{1.0, 1.0}` means it tracks the starfield. `{0.0, 0.0}` means it tracks the foreground tiles.
+---@field parallax_strength? Vector
+---Scales the speed at which the planet appears in view when flown towards.
+---@field flight_approach_speed? number
+---When true only the dark side will receive emission.
+---@field emission_scales_with_shadow? boolean
+---When true the hero clouds will add their color to emission as well.
+---@field hero_clouds_are_emissive? boolean
+---Width of the atmosphere layer as portion of the total radius.
+---@field atmosphere_thickness? number
+---Color of atmospheric light. Multiplied by 10 in shader.
+---@field atmosphere_color? Color
+---Color of specular light. Multiplied by 10 in shader.
+---@field specular_color? Color
+---Color of light. Multiplied by 10 in shader.
+---@field light_color? Color
+---@field light_direction? Vector3D
+---Color of dawn side of terminator light. Multiplied by 10 in shader.
+---@field atmosphere_ray_light_color_1? Color
+---Color of dusk side of terminator light. Multiplied by 10 in shader.
+---@field atmosphere_ray_light_color_2? Color
+---@field surface_normal_intensity? number
+---@field cloud_normal_intensity? number
+---@field specular_intensity? number
+---Amount of cloud texture to be used based off of the alpha channel of the cloud texture.
+---@field cloudiness? number
+---@field emission_scalar? number
+---Perceived size of the light. Also affects size of the specular spot.
+---@field light_radius? number
+---Harshness of the terminator. Functions like atmosphere thickness.
+---@field light_intensity_contrast? number
+---How far below the atmosphere layer should the surface be.
+---@field surface_vertical_offset? number
+---How far below the atmosphere layer should the clouds be.
+---@field cloud_vertical_offset? number
+---Intensity of the flow map effect. Begins to degenerate at high values.
+---@field cloud_flow_intensity? number
+---How many seconds it takes the flow effect to loop.
+---@field cloud_flow_seconds? number
+---Rotational speed of the clouds laterally across the planet relative to `rotation_seconds` of the planet. `-1.0` means it counteracts the rotation rate and makes clouds remain in place. `0.0` means it drifts along with planet surface.
+---@field cloud_panning_rate? number
+
+---@class PlatformBackdropHeroCloud
+---1, 2, 3 use cloud sprites 1, 2, 3 respectively. 0 will disable this cloud. Anything else is invalid.
+---@field sprite_index? integer
+---Cloud size as a proportion of the total planet size, meaning `1` spans whole planet.
+---@field size? Vector
+---@field rotation_speed? number
+---@field rotate_with_planet? boolean
+---Random frame offset of the cloud animation if the graphic is an animation.
+---@field starting_frame_offset? integer
+---Random position offset of the cloud animation. Refreshed every loop.
+---@field position_deviation? Vector
+---@field rotation_deviation? number
+---@field projection_style? "none"|"front-only"|"front-and-back"|"front-and-back-inverted"
+---With each planet revolution, the cloud smoothly travels along this path by approximating the provided points. If only single position is provided, it remains stationary at that point.
+---@field positions? Vector[]
+
+---Defines when controller vibrations should be played.
+---@class PlayFor
+
+---@class PlaySoundTriggerEffectItem : TriggerEffectItem
+---@field type "play-sound"
+---@field sound Sound
+---Negative values are silently clamped to 0.
+---@field min_distance? number
+---Negative values are silently clamped to 0.
+---@field max_distance? number
+---@field play_on_target_position? boolean
+
+---@class PlayerColorData
+---@field name string
+---@field player_color Color
+---@field chat_color Color
+
+---This prototype is used for receiving an achievement when the player receives damage.
+---@class PlayerDamagedAchievementPrototype : AchievementPrototype
+---@field type "player-damaged-achievement"
+---This will trigger the achievement, if the amount of damage taken by the dealer, is more than this.
+---@field minimum_damage number
+---This sets the achievement to only trigger, if you survive the minimum amount of damage. If you don't need to survive, false.
+---@field should_survive boolean
+---This will trigger the achievement, if the player takes damage from this specific entity type.
+---@field type_of_dealer? string
+
+---@class PlayerInputMethodFilter
+
+---Deprecated in 2.0.
+---@class PlayerPortPrototype : EntityWithOwnerPrototype
+---@field type "player-port"
+---The entity with the higher number is selectable before the entity with the lower number.
+---
+---The value `0` will be treated the same as `nil`.
+---@field selection_priority? integer
+
+---@class PlumeEffect : StatelessVisualisation
+---@field age_discrimination? integer
+
+---@class PlumesSpecification
+---If given, the plumes will only render if this area is on screen (relative to the thruster)
+---@field render_box? BoundingBox
+---@field min_probability? number
+---@field max_probability? number
+---@field min_y_offset? number
+---@field max_y_offset? number
+---Array may not be empty and may at most have 255 elements.
+---
+---Non-zero `period` needs to be provided. May not have `positions` or `particle_tick_offset`.
+---@field stateless_visualisations? PlumeEffect|PlumeEffect[]
+
+---One frame in time for a Bezier interpolation.
+---@class PodAnimationProcessionBezierControlPoint
+---@field timestamp MapTick
+---the frame of the pod animation played.
+---@field frame number
+
+---@class PodAnimationProcessionLayer
+---@field type "pod-animation"
+---@field graphic? ProcessionGraphic
+---@field frames PodAnimationProcessionBezierControlPoint[]
+
+---One frame in time for a Bezier interpolation.
+---@class PodDistanceTraveledProcessionBezierControlPoint
+---Mandatory if `distance` is defined.
+---@field timestamp? MapTick
+---`distance` and `distance_t` interpolate a double smoothly over time.
+---@field distance? number
+---Bidirectional tangent at the given timestamp.
+---@field distance_t? number
+
+---@class PodDistanceTraveledProcessionLayer
+---@field type "pod-distance-traveled"
+---The group this layer belongs to, for inheritance.
+---@field reference_group? ProcessionLayerInheritanceGroupID
+---@field contribute_to_distance_traveled? boolean
+---@field distance_traveled_contribution? number
+---@field frames PodDistanceTraveledProcessionBezierControlPoint[]
+
+---One frame in time for a Bezier interpolation.
+---@class PodMovementProcessionBezierControlPoint
+---Mandatory if `tilt` is defined.
+---@field timestamp? MapTick
+---`tilt` and `tilt_t` interpolate a double smoothly over time.
+---@field tilt? number
+---Bidirectional tangent at the given timestamp.
+---@field tilt_t? number
+---`offset` and `offset_t` interpolate a vector smoothly over time using `offset_rate` and `offset_rate_t` for a 0-1 rate curve.
+---
+---Vector value.
+---@field offset? Vector
+---Vector tangent.
+---@field offset_t? Vector
+---Rate 0-1 value.
+---@field offset_rate? number
+---Rate tangent.
+---@field offset_rate_t? number
+
+---@class PodMovementProcessionLayer
+---@field type "pod-movement"
+---The group this layer belongs to, for inheritance.
+---@field reference_group? ProcessionLayerInheritanceGroupID
+---Adds the final position value from given layer to this one.
+---@field inherit_from? ProcessionLayerInheritanceGroupID
+---@field contribute_to_distance_traveled? boolean
+---@field distance_traveled_contribution? number
+---@field frames PodMovementProcessionBezierControlPoint[]
+
+---One frame in time for a Bezier interpolation.
+---@class PodOpacityProcessionBezierControlPoint
+---Mandatory if `cutscene_opacity` or `outside_opacity` is defined.
+---@field timestamp? MapTick
+---`cutscene_opacity` and `cutscene_opacity_t` interpolate a double smoothly over time.
+---@field cutscene_opacity? number
+---Bidirectional tangent at the given timestamp.
+---@field cutscene_opacity_t? number
+---`outside_opacity` and `outside_opacity_t` interpolate a double smoothly over time.
+---@field outside_opacity? number
+---Bidirectional tangent at the given timestamp.
+---@field outside_opacity_t? number
+---`lut_blend` and `lut_blend_t` interpolate a double smoothly over time.
+---
+---LUT won't be overridden however, until the pod is drawn above the game via `draw_switch_tick`.
+---@field lut_blend? number
+---Bidirectional tangent at the given timestamp.
+---@field lut_blend_t? number
+
+---@class PodOpacityProcessionLayer
+---@field type "pod-opacity"
+---@field lut ColorLookupTable
+---Default values if unspecified:
+---
+---- cutscene_opacity : 1.0
+---
+---- outside_opacity : 1.0
+---
+---- lut_blend : 0.0
+---
+---- environment_volume : 1.0
+---
+---- environment_muffle_intensity : 0.0
+---@field frames PodOpacityProcessionBezierControlPoint[]
+
+---The pollution settings, the values are for 60 ticks (1 second).
+---@class PollutionSettings
+---@field enabled boolean
+---Amount that is diffused to neighboring chunks.
+---@field diffusion_ratio number
+---This much pollution units must be on the chunk to start diffusing.
+---@field min_to_diffuse number
+---Constant modifier a percentage of 1; the pollution eaten by a chunks tiles. Also known as absorption modifier.
+---@field ageing number
+---Anything bigger than this is visualized as this value.
+---@field expected_max_per_chunk number
+---Anything lower than this (but > 0) is visualized as this value.
+---@field min_to_show_per_chunk number
+---@field min_pollution_to_damage_trees number
+---@field pollution_with_max_forest_damage number
+---@field pollution_restored_per_tree_damage number
+---@field pollution_per_tree_damage number
+---@field max_pollution_to_restore_trees number
+---@field enemy_attack_pollution_consumption_modifier number
+
+---A power switch.
+---@class PowerSwitchPrototype : EntityWithOwnerPrototype
+---@field type "power-switch"
+---@field power_on_animation? Animation
+---@field overlay_start? Animation
+---@field overlay_loop? Animation
+---@field led_on? Sprite
+---@field led_off? Sprite
+---@field frozen_patch? Sprite
+---@field overlay_start_delay integer
+---@field circuit_wire_connection_point WireConnectionPoint
+---@field left_wire_connection_point WireConnectionPoint
+---@field right_wire_connection_point WireConnectionPoint
+---@field wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+
+---Probabilities of all items must add up to 100.
+---@class ProbabilityTable
+
+---The first number is the value.
+---
+---The second number is the probability in percents. It must be in the `(0, 100]` interval.
+---@class ProbabilityTableItem
+
+---@class ProcessionAudio
+---@field type ProcessionAudioType
+---Mandatory if `type` is `"sound"`.
+---@field sound? Sound
+---Mandatory if `type` is `"looped-sound"`.
+---@field looped_sound? InterruptibleSound
+---Mandatory if `type` is `"pod_catalogue"` or `type` is `"location_catalogue"`.
+---@field catalogue_id? integer
+
+---Allows a prototype to load variable amount of sounds which may be referenced by index.
+---@class ProcessionAudioCatalogue
+
+---@class ProcessionAudioCatalogueItem
+---@field index integer
+---One or the other.
+---@field sound? Sound
+---One or the other.
+---@field looped_sound? InterruptibleSound
+
+---Controls sounds during procession.
+---@class ProcessionAudioEvent
+---@field type ProcessionAudioEventType
+---Has to be defined unless the type is "stop-looped-sound".
+---@field usage? ProcessionAudioUsage
+---Has to be defined unless the type is "stop-looped-sound".
+---@field audio? ProcessionAudio
+---Has to be defined unless the type is "play-sound".
+---@field loop_id? integer
+
+---Type of ProcessionAudioEvent.
+---@class ProcessionAudioEventType
+
+---Types of ProcessionAudio.
+---@class ProcessionAudioType
+
+---Who will hear ProcessionAudioEvent.
+---@class ProcessionAudioUsage
+
+---@class ProcessionGraphic
+---@field type ProcessionGraphicType
+---Mandatory if `type` is `"sprite"`.
+---@field sprite? Sprite
+---Mandatory if `type` is `"animation"`.
+---@field animation? Animation
+---Mandatory if `type` is `"pod-catalogue"` or `type` is `"location-catalogue"`.
+---@field catalogue_id? integer
+
+---Allows a prototype to load variable amount of sprites which may be referenced by index.
+---@class ProcessionGraphicCatalogue
+
+---Either animation or sprite must be provided.
+---@class ProcessionGraphicCatalogueItem
+---@field index integer
+---@field animation? Animation
+---@field sprite? Sprite
+
+---Types of ProcessionGraphic.
+---@class ProcessionGraphicType
+
+---The name of a ProcessionPrototype.
+---@class ProcessionID
+
+---Describes one aspect of a procession. Animation and picture are interchangeable for types that require it.
+---
+---Loaded as one of the procession layers, based on the value of the `type` key.
+---@class ProcessionLayer
+
+---Helps ProcessionLayers pass properties between subsequent transitions if they belong to the same group.
+---@class ProcessionLayerInheritanceGroup : Prototype
+---@field type "procession-layer-inheritance-group"
+---@field intermezzo_application? TransitionApplication
+---@field arrival_application? TransitionApplication
+
+---The name of an ProcessionLayerInheritanceGroup.
+---@class ProcessionLayerInheritanceGroupID
+
+---Describes the duration and visuals of a departure, arrival or an intermezzo while traveling between surfaces. Usually provided inside of a ProcessionSet.
+---@class ProcessionPrototype : Prototype
+---@field type "procession"
+---Used when leaving or arriving to a station.
+---@field timeline ProcessionTimeline
+---Used alternatively when landing to ground.
+---@field ground_timeline? ProcessionTimeline
+---Arrival and Departure are to be referenced by name. All intermezzos are collected during loading and filled in by `procession_style`.
+---@field usage "departure"|"arrival"|"intermezzo"
+---Indexes used to match transitions from different surfaces together. Only a single intermezzo of a given procession_style may exist.
+---@field procession_style integer|integer[]
+
+---Lists arrivals and departures available for travel to a given surface.
+---@class ProcessionSet
+---@field arrival ProcessionID[]
+---@field departure ProcessionID[]
+
+---A wrapper for a collection of ProcessionLayers.
+---@class ProcessionTimeline
+---The time to play this cutscene regardless of individual layer durations.
+---@field duration MapTick
+---Time to initiate usage specific actions:
+---
+---- Ascending animation will detach from rocket on this tick.
+---
+---- Descending animation will request hatch to be opened.
+---@field special_action_tick? MapTick
+---During procession, the pod will at some point start being drawn above the rest of the game:
+---
+---- When ascending this tick will go from world to above.
+---
+---- When descending this tick will go from above to world.
+---
+---Notably, LUT override won't be applied until the pod is drawn above the game.
+---@field draw_switch_tick? MapTick
+---The real duration of the intermezzo playing will be above this value.
+---@field intermezzo_min_duration? MapTick
+---The real duration of the intermezzo playing will be below this value.
+---@field intermezzo_max_duration? MapTick
+---@field layers ProcessionLayer[]
+---@field audio_events? ProcessionAudioEvent[]
+
+---This prototype is used for receiving an achievement when the player produces more than the specified amount of items.
+---@class ProduceAchievementPrototype : AchievementPrototype
+---@field type "produce-achievement"
+---This will set the amount of items or fluids needed to craft, for the player to complete the achievement.
+---@field amount MaterialAmountType
+---If this is false, the player carries over their statistics from this achievement through all their saves.
+---@field limited_to_one_game boolean
+---Mandatory if `fluid_product` is not defined.
+---
+---This will tell the achievement what item the player needs to craft, to get the achievement.
+---@field item_product? ItemIDFilter
+---Mandatory if `item_product` is not defined.
+---
+---This will tell the achievement what fluid the player needs to craft, to get the achievement.
+---@field fluid_product? FluidID
+
+---This prototype is used for receiving an achievement when the player crafts a specified item a certain amount, in an hour.
+---@class ProducePerHourAchievementPrototype : AchievementPrototype
+---@field type "produce-per-hour-achievement"
+---This is how much the player has to craft in an hour, to receive the achievement.
+---@field amount MaterialAmountType
+---Mandatory if `fluid_product` is not defined.
+---
+---This will tell the achievement what item the player needs to craft, to get the achievement.
+---@field item_product? ItemIDFilter
+---Mandatory if `item_product` is not defined.
+---
+---This will tell the achievement what fluid the player needs to craft, to get the achievement.
+---@field fluid_product? FluidID
+
+---@class ProductPrototype
+
+---@class ProductPrototypeBase
+---Value between 0 and 1. When a product has probability set, a probability roll is performed when trying to give product: if probability roll fails then product is not given. This value controls threshold of the independent probability roll, which means if there are multiple products to be given, they may use different roll value causing products to all be given, some of them given or none of them given at all.
+---@field independent_probability? number
+---A range of values where lower end is at at least at value of 0 and upper end is at most at value of 1. This range is used as part of shared probability test: When a set of products is attempted to be given, there is a single random generator roll performed that gives a value from range `[0, 1)`. This rolled value is compared to ranges of all products that are given at the same time. In order for the product to be given, the roll must test to be within this range, meaning `roll >= min && roll < max` must be true. If the test fails, then the product is not given.
+---
+---Note: for a product to be given, both independent_probability test and shared_probability tests must pass. That means probability values seen in gui are equal to `independent_probability * (shared_probability.max - shared_probability.min)`
+---
+---Note: ranges between different products are independent, that means they are allowed to overlap. This may be used to create set of products that are always given in pairs if ranges are equal or to make products that are given exclusively (one or the other) if the ranges do not overlap.
+---@field shared_probability? SharedProbabilityDefinition
+---When hovering over a recipe in the crafting menu the recipe tooltip will be shown. An additional item tooltip will be shown for every product, as a separate tooltip, if the item tooltip has a description and/or properties to show and if `show_details_in_recipe_tooltip` is `true`.
+---@field show_details_in_recipe_tooltip? boolean
+
+---@class ProductionHealthEffect
+---@field producing? number
+---@field not_producing? number
+---Defaults to "physical" damage.
+---@field damage_type? DamageTypeID
+
+---Specifies how the entity will utilize this fluidbox. `input-output` should only be used for boilers in fluid heating mode.
+---@class ProductionType
+
+---@class ProgrammableSpeakerInstrument
+---@field name string
+---Cannot be an empty array.
+---@field notes ProgrammableSpeakerNote[]
+
+---@class ProgrammableSpeakerNote
+---@field name string
+---Cannot contain aggregation.
+---
+---One of `sound` or `cyclic_sound` must be defined. Both cannot be defined together.
+---@field sound? Sound
+---Cannot contain aggregations.
+---
+---One of `sound` or `cyclic_sound` must be defined. Both cannot be defined together.
+---@field cyclic_sound? CyclicSound
+
+---A programmable speaker.
+---@class ProgrammableSpeakerPrototype : EntityWithOwnerPrototype
+---@field type "programmable-speaker"
+---@field energy_source ElectricEnergySource|VoidEnergySource
+---@field energy_usage_per_tick Energy
+---@field sprite? Sprite
+---@field maximum_polyphony integer
+---@field instruments ProgrammableSpeakerInstrument[]
+---@field audible_distance_modifier? number
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---@field circuit_connector? CircuitConnectorDefinition
+
+---Root style: `"progressbar"`
+---@class ProgressBarStyleSpecification : BaseStyleSpecification
+---@field type "progressbar_style"
+---The thickness of the bar, not the horizontal size.
+---
+---Required on the root style.
+---@field bar_width? integer
+---Required on the root style.
+---@field color? Color
+---Required on the root style.
+---@field other_colors? OtherColors[]
+---Required on the root style.
+---@field bar? ElementImageSet
+---Required on the root style.
+---@field bar_background? ElementImageSet
+---Name of a FontPrototype.
+---
+---Required on the root style.
+---@field font? string
+---Required on the root style.
+---@field font_color? Color
+---@field filled_font_color? Color
+---Required on the root style.
+---@field embed_text_in_bar? boolean
+---Required on the root style.
+---@field side_text_padding? integer
+
+---@class ProjectileAttackParameters : BaseAttackParameters
+---@field type "projectile"
+---@field apply_projection_to_projectile_creation_position? boolean
+---When used with `projectile_creation_parameters`, this offsets what the turret's sprite looks at. Setting to `{0,1}` will cause the turret to aim one tile up from the target but the projectile will still aim for the entity. Can be used to give the illusion of height but can also confuse aim logic when set too high.
+---
+---When used without `projectile_creation_parameters`, this sets the turret's rotation axis.
+---@field projectile_center? Vector
+---@field projectile_creation_distance? number
+---Used to show bullet shells/casings being ejected from the gun, see artillery shell casings.
+---@field shell_particle? CircularParticleCreationSpecification
+---Used to shoot projectiles from arbitrary points. Used by worms. If not set then the launch positions are calculated using `projectile_center` and `projectile_creation_distance`.
+---@field projectile_creation_parameters? CircularProjectileCreationSpecification
+---Used to shoot from different sides of the turret. Setting to `0.25` shoots from the right side, `0.5` shoots from the back, and `0.75` shoots from the left. The turret will look at the enemy as normal but the bullet will spawn from the offset position. Can be used to create right-handed weapons.
+---@field projectile_orientation_offset? RealOrientation
+---Used to shoot from multiple points. The turret will look at the enemy as normal but the bullet will spawn from a random offset position. Can be used to create multi-barreled weapons.
+---@field projectile_creation_offsets? Vector[]
+
+---Entity with limited lifetime that can hit other entities and has triggers when this happens.
+---@class ProjectilePrototype : EntityPrototype
+---@field type "projectile"
+---Must be != 0 if `turning_speed_increases_exponentially_with_projectile_speed` is true.
+---@field acceleration number
+---@field animation? RotatedAnimationVariations
+---Whether the animation of the projectile is rotated to match the direction of travel.
+---@field rotatable? boolean
+---@field enable_drawing_with_mask? boolean
+---Setting this to true can be used to disable projectile homing behaviour.
+---@field direction_only? boolean
+---When true the entity is hit at the position on its collision box the projectile first collides with. When false the entity is hit at its own position.
+---@field hit_at_collision_position? boolean
+---@field force_condition? ForceCondition
+---Whenever an entity is hit by the projectile, this number gets reduced by the health of the entity. If the number is then below 0, the `final_action` is applied and the projectile destroyed. Otherwise, the projectile simply continues to its destination.
+---@field piercing_damage? number
+---Must be greater than or equal to 0.
+---@field max_speed? number
+---Must be greater than or equal to 0.
+---@field turn_speed? number
+---@field speed_modifier? Vector
+---@field height? number
+---Executed when the projectile hits something.
+---@field action? Trigger
+---Executed when the projectile hits something, after `action` and only if the entity that was hit was destroyed. The projectile is destroyed right after the final_action.
+---@field final_action? Trigger
+---@field light? LightDefinition
+---@field smoke? SmokeSource[]
+---Defaults to the mask from UtilityConstants::default_collision_masks when indexed by `"projectile/hit"`.
+---@field hit_collision_mask? CollisionMaskConnector
+---@field turning_speed_increases_exponentially_with_projectile_speed? boolean
+---@field shadow? RotatedAnimationVariations
+---The entity with the higher number is selectable before the entity with the lower number.
+---
+---The value `0` will be treated the same as `nil`.
+---@field selection_priority? integer
+
+---@class ProjectileTriggerDelivery : TriggerDeliveryItem
+---@field type "projectile"
+---Name of a ProjectilePrototype.
+---@field projectile EntityID
+---Starting speed in tiles per tick.
+---@field starting_speed number
+---@field starting_speed_deviation? number
+---Maximum deviation of the projectile from source orientation, in +/- (`x radians / 2`). Example: `3.14 radians -> +/- (180° / 2)`, meaning up to 90° deviation in either direction of rotation.
+---@field direction_deviation? number
+---The maximum deviation of the projectile maximum range from `max_range` is `max_range × range_deviation ÷ 2`. This means a deviation of `0.5` will appear as a maximum of `0.25` (25%) deviation of an initial range goal. Post-deviation range may exceed `max_range` or be less than `min_range`.
+---@field range_deviation? number
+---@field max_range? number
+---@field min_range? number
+---If `true`, the projectile will inherit any positive speed component from the source entity's movement toward the target.
+---@field inherit_speed? boolean
+
+---@class Prototype : PrototypeBase
+---The ID type corresponding to the prototype that inherits from this.
+---
+---For example, if this is an EntityPrototype, this property's type is EntityID.
+---@field factoriopedia_alternative? string
+---Allows to add extra description items to the tooltip and Factoriopedia.
+---@field custom_tooltip_fields? CustomTooltipField[]
+
+---The abstract base for prototypes. PrototypeBase defines the common features of prototypes, such as localization and order.
+---@class PrototypeBase
+---Specifies the kind of prototype this is.
+---
+---For a list of all possible types, see the prototype overview.
+---@field type string
+---Unique textual identification of the prototype. May only contain alphanumeric characters, dashes and underscores. May not exceed a length of 200 characters.
+---
+---For a list of all names used in vanilla, see data.raw.
+---@field name string
+---Used to order prototypes in inventory, recipes and GUIs. May not exceed a length of 200 characters.
+---@field order? Order
+---Overwrites the name set in the locale file. Can be used to easily set a procedurally-generated name because the LocalisedString format allows to insert parameters into the name directly from the Lua script.
+---@field localised_name? string|number|boolean|nil|table
+---Overwrites the description set in the locale file. The description is usually shown in the tooltip of the prototype.
+---@field localised_description? string|number|boolean|nil|table
+---Provides additional description used in factoriopedia.
+---@field factoriopedia_description? string|number|boolean|nil|table
+---The name of an ItemSubGroup.
+---@field subgroup? ItemSubGroupID
+---@field hidden? boolean
+---@field hidden_in_factoriopedia? boolean
+---Whether the prototype is a special type which can be used to parametrize blueprints and doesn't have other function.
+---@field parameter? boolean
+---The simulation shown when looking at this prototype in the Factoriopedia GUI.
+---@field factoriopedia_simulation? SimulationDefinition
+
+---Used by UnitPrototype.
+---@class PrototypeStrafeSettings
+---Must be >= `0`.
+---@field max_distance? number
+---Must be between 0 and max_distance inclusive.
+---@field ideal_distance? number
+---Must be >= `0`.
+---@field ideal_distance_tolerance? number
+---Must be >= `0`.
+---@field ideal_distance_variance? number
+---Must be between between 0 and 1 inclusive.
+---@field ideal_distance_importance? number
+---Must be between 0 and ideal_distance_importance inclusive.
+---@field ideal_distance_importance_variance? number
+---Must be between 0 and 1 inclusive.
+---@field clockwise_chance? number
+---@field face_target? boolean
+
+---A container that must be set to point at other entity and inventory index so it can forward all inventory interactions to the other entity.
+---@class ProxyContainerPrototype : EntityWithOwnerPrototype
+---@field type "proxy-container"
+---@field picture? Sprite
+---If the content of the inventory should be rendered in alt mode.
+---@field draw_inventory_content? boolean
+---The maximum circuit wire distance for this entity.
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---@field circuit_connector? CircuitConnectorDefinition
+
+---@class PuddleTileEffectParameters
+---@field puddle_noise_texture EffectTexture
+---@field water_effect_parameters? WaterTileEffectParameters
+---Only loaded, and mandatory if `water_effect_parameters` is not defined. Must be name of a TileEffectDefinition which has `shader` set to `"water"`.
+---@field water_effect? TileEffectDefinitionID
+
+---The pump is used to transfer fluids between tanks, fluid wagons and pipes.
+---@class PumpPrototype : EntityWithOwnerPrototype
+---@field type "pump"
+---The area of the entity where fluid travels.
+---@field fluid_box FluidBox
+---The type of energy the pump uses.
+---@field energy_source EnergySource
+---The amount of energy the pump uses.
+---@field energy_usage Energy
+---The amount of fluid this pump transfers per tick.
+---@field pumping_speed FluidAmount
+---The animation for the pump.
+---@field animations? Animation4Way
+---@field fluid_wagon_connector_speed? number
+---counts from the "start of the arm", which is `pump's position + wagon_connection_graphics.part1_to_2_shift + wagon_connection_graphics.top_pivot_shift (depending on direction)`
+---@field fluid_wagon_tank_valve_max_distance? number
+---@field fluid_wagon_connector_frame_count? integer
+---When true, pump will reduce pumping speed based on fullness of the input fluid segment.
+---@field flow_scaling? boolean
+---@field fluid_animation? Animation4Way
+---@field glass_pictures? Sprite4Way
+---@field frozen_patch? Sprite4Way
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---@field circuit_connector? [CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition]
+---@field wagon_connection_graphics? PumpWagonConnectionGraphics
+---@field base_lifting_sound? InterruptibleSound
+---@field arm_orienting_sound? InterruptibleSound
+---@field clamp_sound? Sound
+---When this is true, fluid pipelines will be visualized when this entity is held in the cursor.
+---@field show_fluid_visualization_when_in_cursor? boolean
+
+---@class PumpWagonConnectionGraphics
+---Value between 0 and 1 (both exclusive). The base animation will play up until the connecting progress reaches the value. Needs to be less than `clamp_animation_starts_at_progress`. The arm (`part_1` and `part_2`) will rotate and extend in the time in between.
+---@field base_animation_finished_at_progress? number
+---Value between 0 and 1 (both exclusive). The clamp animation will play up starting when the connecting progress reaches the value. Needs to be larger than `base_animation_finished_at_progress`. The arm (`part_1` and `part_2`) will rotate and extend in the time in between.
+---@field clamp_animation_starts_at_progress? number
+---@field height_diff_to_wagon? number
+---Adjusts where the sprites will be cropped
+---@field part2_crop_adjustment? number
+---Adjusts where the sprites will be cropped
+---@field part2_shadow_crop_adjustment? number
+---@field clamp_y_shift? number
+---@field base? BasePumpWagonConnectionAnimations
+---Rotating top part.
+---@field part_1? RotatedSprite
+---@field part_1_shadow? RotatedSprite
+---Rotating arm.
+---@field part_2? RotatedSprite
+---@field part_2_shadow? RotatedSprite
+---@field suction_clamp? Animation
+---@field suction_clamp_shadow? Animation
+---@field part1_to_2_shift? Vector
+---Relative projected render position of `part_1` to the parent pump position.
+---@field top_pivot_shift? PumpWagonConnectionShift4Way
+---Projected render rest position of `suction_clamp` relative to the parent pump position.
+---@field resting_position_shift? PumpWagonConnectionShift4Way
+---@field shadow_shift? Vector
+
+---@class PumpWagonConnectionShift4Way
+---@field north Vector
+---@field west Vector
+---@field south Vector
+---@field east Vector
+
+---The push back effect used by the discharge defense.
+---
+---Aims to push the target entity away from the source entity by the `distance` from the target entity's current position. Searches within double the `distance` from the pushed to position for the nearest non-colliding position for the target entity to be teleported too. If no valid non-colliding position is found or the target is not teleportable, then no push back occurs.
+---@class PushBackTriggerEffectItem : TriggerEffectItem
+---@field type "push-back"
+---@field distance number
+
+---The name of a QualityPrototype.
+---@class QualityID
+
+---One quality step. Its effects are specified by the level and the various multiplier and bonus properties. Properties ending in `_multiplier` are applied multiplicatively to their base property, properties ending in `_bonus` are applied additively.
+---@class QualityPrototype : Prototype
+---@field type "quality"
+---@field draw_sprite_by_default? boolean
+---@field color Color
+---Requires Space Age to use level greater than `0`.
+---@field level integer
+---@field next? QualityID
+---Probability that a crafting machine affected by a 100% quality effect from modules will cause quality to be increased.
+---
+---Probability is scaled linearly with quality effect. E.g. for `next_probability = 1`, 100% quality effect means quality is always increased, at 50% quality effect the quality is increased 50% of the time and so on.
+---
+---Must be >= 0.
+---@field next_probability? number
+---Probability of additional quality increase happening after quality was increased to reach this quality in the same crafting/mining operation.
+---
+---Must be in range `[0, 1]`.
+---@field chain_probability? number
+---Probability that a crafting machine affected by a -100% quality effect from modules will cause quality to be decreased.
+---
+---Probability is scaled linearly with quality effect. E.g. for `previous_probability = 1`, -100% quality effect means quality is always decreased, at -50% quality effect the quality is decreased 50% of the time and so on.
+---
+---Must be >= 0.
+---
+---Note: for a machine to have a negative quality effect, EffectReceiver::quality_limits needs to be set.
+---@field previous_probability? number
+---Probability of additional quality decrease happening after quality was decreased to reach this quality in the same crafting/mining operation.
+---
+---Must be in range `[0, 1]`.
+---@field previous_chain_probability? number
+---Can't be an empty array.
+---@field icons? IconData[]
+---Path to the icon file.
+---
+---Only loaded, and mandatory if `icons` is not defined.
+---@field icon? FileName
+---The size of the square icon, in pixels. E.g. `32` for a 32px by 32px icon. Must be larger than `0`.
+---
+---Only loaded if `icons` is not defined.
+---@field icon_size? SpriteSizeType
+---Must be >= 0.01.
+---@field beacon_power_usage_multiplier? number
+---Must be in range `[0, 1]`.
+---@field mining_drill_resource_drain_multiplier? number
+---Must be in range `[0, 1]`.
+---
+---Only affects labs with LabPrototype::uses_quality_drain_modifier set.
+---@field science_pack_drain_multiplier? number
+---Unique textual identification of the prototype. May only contain alphanumeric characters, dashes and underscores. May not exceed a length of 200 characters.
+---
+---Requires Space Age to create prototypes with name other than `normal` or `quality-unknown`.
+---@field name string
+---Must be >= 0.01.
+---@field default_multiplier? number
+---Must be >= 0.01.
+---@field inserter_speed_multiplier? number
+---Must be >= 0.01.
+---
+---Only affects fluid wagons with FluidWagonPrototype::quality_affects_capacity set.
+---@field fluid_wagon_capacity_multiplier? number
+---Must be >= 0.01.
+---@field inventory_size_multiplier? number
+---Must be >= 0.01.
+---@field cargo_wagon_inventory_size_multiplier? number
+---Must be >= 0.01.
+---@field locomotive_power_multiplier? number
+---Must be >= 0.01.
+---@field rolling_stock_max_speed_multiplier? number
+---Must be >= 0.01.
+---@field lab_research_speed_multiplier? number
+---Must be >= 0.01.
+---
+---Will be ignored by crafting machines with CraftingMachinePrototype::crafting_speed_quality_multiplier set.
+---@field crafting_machine_speed_multiplier? number
+---Must be >= 0.01.
+---
+---Only affects crafting machines with CraftingMachinePrototype::quality_affects_energy_usage set.
+---
+---Will be ignored by crafting machines with CraftingMachinePrototype::energy_usage_quality_multiplier set.
+---@field crafting_machine_energy_usage_multiplier? number
+---Must be >= 0.01.
+---@field logistic_cell_charging_energy_multiplier? number
+---Must be >= 0.01.
+---
+---Affects the durability of tool items like science packs, repair tools and armor.
+---@field tool_durability_multiplier? number
+---Must be >= 0.01.
+---@field accumulator_capacity_multiplier? number
+---Must be >= 0.01.
+---@field flying_robot_max_energy_multiplier? number
+---Must be within `[1, 3]`.
+---
+---Affects the range of attack parameters, e.g. those used by combat robots, units, guns and turrets.
+---@field range_multiplier? number
+---Must be >= 0.
+---
+---Performance warning: the navigation has to pre-calculate ranges for the highest tier collector possible, so you should keep this collection radius within reasonable values.
+---@field asteroid_collector_collection_radius_bonus? number
+---@field equipment_grid_width_bonus? integer
+---@field equipment_grid_height_bonus? integer
+---Must be >= 0.
+---@field electric_pole_wire_reach_bonus? number
+---Must be >= 0.
+---@field electric_pole_supply_area_distance_bonus? number
+---Only affects beacons with BeaconPrototype::quality_affects_supply_area_distance set.
+---
+---Must be >= 0 and <= 64.
+---@field beacon_supply_area_distance_bonus? number
+---Only affects mining drills with MiningDrillPrototype::quality_affects_mining_radius set.
+---
+---Must be >= 0.
+---@field mining_drill_mining_radius_bonus? number
+---Must be >= 0.01.
+---@field module_consumption_multiplier? number
+---Must be >= 0.01.
+---@field module_speed_multiplier? number
+---Must be >= 0.01.
+---@field module_productivity_multiplier? number
+---Must be >= 0.01.
+---@field module_pollution_multiplier? number
+---Must be >= 0.01.
+---@field module_quality_multiplier? number
+---Must be >= 0.01.
+---@field spoil_ticks_multiplier? number
+---Only affects roboports with RoboportPrototype::charging_station_count_affected_by_quality set.
+---
+---Only affects roboport equipment with RoboportEquipmentPrototype::charging_station_count_affected_by_quality set.
+---@field logistic_cell_charging_station_count_bonus? integer
+---Only affects beacons with BeaconPrototype::quality_affects_module_slots set.
+---@field beacon_module_slots_bonus? ItemStackIndex
+---Only affects crafting machines with CraftingMachinePrototype::quality_affects_module_slots set.
+---
+---Will be ignored by crafting machines with CraftingMachinePrototype::module_slots_quality_bonus set.
+---@field crafting_machine_module_slots_bonus? ItemStackIndex
+---Only affects mining drills with MiningDrillPrototype::quality_affects_module_slots set.
+---@field mining_drill_module_slots_bonus? ItemStackIndex
+---Only affects labs with LabPrototype::quality_affects_module_slots set.
+---@field lab_module_slots_bonus? ItemStackIndex
+
+---A radar.
+---@class RadarPrototype : EntityWithOwnerPrototype
+---@field type "radar"
+---The amount of energy this radar uses.
+---@field energy_usage Energy
+---The amount of energy it takes to scan a sector. This value doesn't have any effect on nearby scanning.
+---@field energy_per_sector Energy
+---The amount of energy the radar has to consume for nearby scan to be performed. This value doesn't have any effect on sector scanning.
+---
+---Performance warning: nearby scan causes re-charting of many chunks, which is expensive operation. If you want to make a radar that updates map more in real time, you should keep its range low. If you are making radar with high range, you should set this value such that nearby scan is performed once a second or so. For example if you set `energy_usage` to 100kW, setting `energy_per_nearby_scan` to 100kJ will cause nearby scan to happen once per second.
+---@field energy_per_nearby_scan Energy
+---The energy source for this radar.
+---@field energy_source EnergySource
+---@field pictures? RotatedSprite
+---@field frozen_patch? Sprite
+---The radius of the area this radar can chart, in chunks.
+---@field max_distance_of_sector_revealed integer
+---The radius of the area constantly revealed by this radar, in chunks.
+---@field max_distance_of_nearby_sector_revealed integer
+---The maximum circuit wire distance for this entity.
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---@field circuit_connector? CircuitConnectorDefinition
+---@field radius_minimap_visualisation_color? Color
+---@field rotation_speed? number
+---If set to true, radars on the same surface will connect to other radars on the same surface using hidden wires with radar origin.
+---@field connects_to_other_radars? boolean
+---@field reset_orientation_when_frozen? boolean
+---Must be between 0 and 1. Must be larger than or equal to `energy_fraction_to_disconnect`.
+---@field energy_fraction_to_connect? number
+---Must be between 0 and 1. Must be less than or equal to `energy_fraction_to_connect`.
+---@field energy_fraction_to_disconnect? number
+---The default channel for the circuit network connection in universe mode.
+---@field default_universe_channel? SignalIDConnector
+---Whether this prototype should be a high priority target for enemy forces. See Military units and structures.
+---@field is_military_target? boolean
+
+---Root style: `"radiobutton"`
+---@class RadioButtonStyleSpecification : StyleWithClickableGraphicalSetSpecification
+---@field type "radiobutton_style"
+---Name of a FontPrototype.
+---
+---Required on the root style.
+---@field font? string
+---Required on the root style.
+---@field font_color? Color
+---Required on the root style.
+---@field disabled_font_color? Color
+---Required on the root style.
+---@field text_padding? integer
+
+---Sprite to be shown around the entity when it is selected/held in the cursor.
+---@class RadiusVisualisationSpecification
+---The sprite to show.
+---
+---This sprite is silently overwritten by prototypes with a custom radius picture: AgriculturalTowerPrototype::radius_visualisation_picture, AsteroidCollectorPrototype::radius_visualisation_picture, BeaconPrototype::radius_visualisation_picture, CargoLandingPadPrototype::radius_visualisation_picture, ElectricPolePrototype::radius_visualisation_picture, MiningDrillPrototype::radius_visualisation_picture.
+---@field sprite? Sprite
+---Must be greater than or equal to 0.
+---
+---This distance is silently overwritten by prototypes with a custom distance: AgriculturalTowerPrototype::radius, AsteroidCollectorPrototype::collection_radius, BeaconPrototype::supply_area_distance, ElectricPolePrototype::supply_area_distance, MiningDrillPrototype::resource_searching_radius.
+---@field distance? number
+---Offset of the sprite from the position of the entity. The offset is rotated by the entity's current direction.
+---
+---This offset is silently overwritten by prototypes with a custom offset: MiningDrillPrototype::resource_searching_offset.
+---@field offset? Vector
+---@field draw_in_cursor? boolean
+---@field draw_on_selection? boolean
+---Each value must be >= 0.01.
+---
+---If value is not provided for a quality, then `1` will be used as a multiplier instead.
+---
+---This does not affect the visualisation of prototypes with a custom distance specification because their distance automatically scales based on quality: agricultural tower (no quality scaling), asteroid collector, beacon, cargo landing pad (no quality scaling), electric pole, and mining drill.
+---@field distance_quality_multiplier? table<QualityID, number>
+
+---A rail chain signal.
+---@class RailChainSignalPrototype : RailSignalBasePrototype
+---@field type "rail-chain-signal"
+
+---@class RailFenceDirectionSet
+---@field north? SpriteVariations
+---@field northeast? SpriteVariations
+---@field east? SpriteVariations
+---@field southeast? SpriteVariations
+---@field south? SpriteVariations
+---@field southwest? SpriteVariations
+---@field west? SpriteVariations
+---@field northwest? SpriteVariations
+
+---Used for graphics by RailPrototype.
+---@class RailFenceGraphicsSet
+---Must be 2 or 4.
+---@field segment_count integer
+---@field back_fence_render_layer? RenderLayer
+---@field front_fence_render_layer? RenderLayer
+---@field back_fence_render_layer_secondary? RenderLayer
+---@field front_fence_render_layer_secondary? RenderLayer
+---@field side_A RailFencePictureSet
+---@field side_B RailFencePictureSet
+
+---@class RailFencePictureSet
+---@field ends [RailFenceDirectionSet, RailFenceDirectionSet, RailFenceDirectionSet, RailFenceDirectionSet]
+---@field fence RailFenceDirectionSet
+---@field ends_upper? [RailFenceDirectionSet, RailFenceDirectionSet, RailFenceDirectionSet, RailFenceDirectionSet]
+---@field fence_upper? RailFenceDirectionSet
+
+---@class RailPictureSet
+---@field north RailPieceLayers
+---@field northeast RailPieceLayers
+---@field east RailPieceLayers
+---@field southeast RailPieceLayers
+---@field south RailPieceLayers
+---@field southwest RailPieceLayers
+---@field west RailPieceLayers
+---@field northwest RailPieceLayers
+---@field front_rail_endings? Sprite16Way
+---@field back_rail_endings? Sprite16Way
+---Can be used to load rail endings instead of the front and back variants.
+---
+---Only loaded if `front_rail_endings` or `back_rail_endings` are not defined.
+---@field rail_endings? Sprite16Way
+---Must contain exactly 16 directions and 6 frames.
+---@field segment_visualisation_endings? RotatedAnimation
+---@field render_layers RailRenderLayers
+---@field secondary_render_layers? RailRenderLayers
+---@field slice_origin? RailsSliceOffsets
+---@field fog_mask? RailsFogMaskDefinitions
+
+---Used for graphics by RailPrototype and RailRemnantsPrototype.
+---@class RailPieceLayers
+---May not have more than 16 variations.
+---@field metals? SpriteVariations
+---Must have same number of variations as `metals` or be empty.
+---@field backplates? SpriteVariations
+---May not have more than 16 variations.
+---@field ties? SpriteVariations
+---May not have more than 16 variations.
+---@field stone_path? SpriteVariations
+---May not have more than 16 variations.
+---@field stone_path_background? SpriteVariations
+---@field segment_visualisation_middle? Sprite
+---@field water_reflection? Sprite
+---@field underwater_structure? Sprite
+---@field shadow_subtract_mask? Sprite
+---@field shadow_mask? Sprite
+
+---@class RailPlannerAllowElevatedRailsModifier : BoolModifier
+---@field type "rail-planner-allow-elevated-rails"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---A rail planner.
+---@class RailPlannerPrototype : ItemPrototype
+---@field type "rail-planner"
+---May not be an empty array. Entities must be rails.
+---@field rails EntityID[]
+---Name of a rail support.
+---@field support? EntityID
+---@field manual_length_limit? number
+
+---The abstract base of all rail prototypes.
+---@class RailPrototype : EntityWithOwnerPrototype
+---Sound played when a character walks over this rail.
+---@field walking_sound? Sound
+---@field pictures? RailPictureSet
+---@field fence_pictures? RailFenceGraphicsSet
+---@field extra_planner_penalty? number
+---@field extra_planner_goal_penalty? number
+---Must be 0, 2 or 4. Can't be non-zero if `fence_pictures` is defined.
+---@field forced_fence_segment_count? integer
+---@field ending_shifts? Vector[]
+---@field deconstruction_marker_positions? Vector[]
+---@field removes_soft_decoratives? boolean
+---Has to be 2 for 2x2 grid.
+---@field build_grid_size? 2
+---The rail selection_boxes are automatically calculated from the collision boxes, which are hardcoded. So effectively the selection boxes also hardcoded.
+---@field selection_box? BoundingBox
+---The entity with the higher number is selectable before the entity with the lower number.
+---
+---The value `0` will be treated the same as `nil`.
+---@field selection_priority? integer
+
+---A rail ramp.
+---@class RailRampPrototype : RailPrototype
+---@field type "rail-ramp"
+---Must be lower than 500 and at least 1.
+---@field support_range? number
+---Defaults to the mask from UtilityConstants::default_collision_masks when indexed by `"rail-ramp/allow_on_deep_oil_ocean"`.
+---@field collision_mask_allow_on_deep_oil_ocean? CollisionMaskConnector
+---The collision_box of straight rail is hardcoded to `{{-1.6, -7.6}, {1.6, 7.6}}`.
+---@field collision_box? BoundingBox
+---Unique textual identification of the prototype. May only contain alphanumeric characters, dashes and underscores. May not exceed a length of 200 characters.
+---
+---Requires Space Age to create prototypes with name not starting with `dummy-`. Dummy prototypes cannot be built.
+---@field name string
+---When this is true, this entity prototype will be translucent and unselectable when "Hide tall entities" mode is active.
+---@field tall? boolean
+
+---Used for rail corpses.
+---@class RailRemnantsPrototype : CorpsePrototype
+---@field type "rail-remnants"
+---@field pictures? RailPictureSet
+---@field related_rail EntityID
+---@field secondary_collision_box? BoundingBox
+---Has to be 2 for 2x2 grid.
+---@field build_grid_size? 2
+---"Rail remnant entities must have a non-zero collision_box defined.
+---@field collision_box? BoundingBox
+
+---@class RailRenderLayers
+---@field stone_path_lower? RenderLayer
+---@field stone_path? RenderLayer
+---@field tie? RenderLayer
+---@field screw? RenderLayer
+---@field metal? RenderLayer
+---@field front_end? RenderLayer
+---@field back_end? RenderLayer
+---@field underwater_layer_offset? integer
+
+---The abstract base entity for both rail signals.
+---@class RailSignalBasePrototype : EntityWithOwnerPrototype
+---@field ground_picture_set RailSignalPictureSet
+---@field elevated_picture_set RailSignalPictureSet
+---The maximum circuit wire distance for this entity.
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---@field default_red_output_signal? SignalIDConnector
+---@field default_orange_output_signal? SignalIDConnector
+---@field default_green_output_signal? SignalIDConnector
+---@field default_blue_output_signal? SignalIDConnector
+---Defaults to the mask from UtilityConstants::default_collision_masks when indexed by  `type .. "/elevated"`.
+---@field elevated_collision_mask? CollisionMaskConnector
+---@field elevated_selection_priority? integer
+---The collision_box of rail signals is hardcoded to `{{-0.2, -0.2}, {0.2, 0.2}}`.
+---@field collision_box? BoundingBox
+---The "placeable-off-grid" flag will be ignored for rail signals.
+---@field flags? EntityPrototypeFlags
+---The entity with the higher number is selectable before the entity with the lower number.
+---
+---The value `0` will be treated the same as `nil`.
+---@field selection_priority? integer
+
+---@class RailSignalColorToFrameIndex
+---@field none? integer
+---@field red? integer
+---@field green? integer
+---@field blue? integer
+---@field yellow? integer
+
+---@class RailSignalLightDefinition
+---@field light LightDefinition
+---@field shift? Vector
+
+---@class RailSignalLights
+---@field red? RailSignalLightDefinition
+---@field green? RailSignalLightDefinition
+---@field blue? RailSignalLightDefinition
+---@field yellow? RailSignalLightDefinition
+
+---@class RailSignalPictureSet
+---@field structure RotatedAnimation
+---@field structure_render_layer? RenderLayer
+---@field signal_color_to_structure_frame_index RailSignalColorToFrameIndex
+---@field rail_piece? RailSignalStaticSpriteLayer
+---@field upper_rail_piece? RailSignalStaticSpriteLayer
+---@field lights RailSignalLights
+---@field circuit_connector? CircuitConnectorDefinition[]
+---@field structure_align_to_animation_index? integer[]
+---@field selection_box_shift? Vector[]
+
+---A rail signal.
+---@class RailSignalPrototype : RailSignalBasePrototype
+---@field type "rail-signal"
+
+---@class RailSignalStaticSpriteLayer
+---@field sprites Animation
+---@field render_layer? RenderLayer
+---@field hide_if_simulation? boolean
+---@field hide_if_not_connected_to_rails? boolean
+---Must be an empty array or contain exactly 16 values.
+---@field shifts? MapPosition[]
+---@field align_to_frame_index? integer[]
+
+---@class RailSupportGraphicsSet
+---@field underwater_structure? RotatedSprite
+---@field structure RotatedSprite
+---@field render_layer? RenderLayer
+---@field underwater_layer_offset? integer
+---Refer to EntityPrototype::water_reflection.
+---@field water_reflection? WaterReflectionDefinition
+
+---@class RailSupportOnDeepOilOceanModifier : BoolModifier
+---@field type "rail-support-on-deep-oil-ocean"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---@class RailSupportPrototype : EntityWithOwnerPrototype
+---@field type "rail-support"
+---@field graphics_set RailSupportGraphicsSet
+---Must be lower than 500 and at least 1.
+---@field support_range? number
+---@field not_buildable_if_no_rails? boolean
+---@field snap_to_spots_distance? number
+---Defaults to the mask from UtilityConstants::default_collision_masks when indexed by `"rail-support/allow_on_deep_oil_ocean"`.
+---@field collision_mask_allow_on_deep_oil_ocean? CollisionMaskConnector
+---Array must contain 8 items.
+---@field elevated_selection_boxes? BoundingBox[]
+---Has to be 2 for 2x2 grid.
+---@field build_grid_size? 2
+---Unique textual identification of the prototype. May only contain alphanumeric characters, dashes and underscores. May not exceed a length of 200 characters.
+---
+---Requires Space Age to create prototypes with name not starting with `dummy-`. Dummy prototypes cannot be built.
+---@field name string
+
+---@class RailsFogMaskDefinitions
+---@field north? FogMaskShapeDefinition
+---@field east? FogMaskShapeDefinition
+---@field south? FogMaskShapeDefinition
+---@field west? FogMaskShapeDefinition
+
+---@class RailsSliceOffsets
+---@field north? Vector
+---@field east? Vector
+---@field south? Vector
+---@field west? Vector
+
+---Define a numerical property in terms of minimum and maximum to be used as a randomly chosen value in that range (inclusively).
+---
+---The maximum cannot be less than the minimum.
+---@class RandomRange
+
+---@class RangeMode
+
+---@class RangedValue
+
+---A reactor.
+---@class ReactorPrototype : EntityWithOwnerPrototype
+---@field type "reactor"
+---@field working_light_picture? Animation
+---The energy output as heat.
+---@field heat_buffer HeatBuffer
+---Must be >= 0.
+---@field heating_radius? number
+---May not be a heat energy source.
+---
+---The input energy source, in vanilla it is a burner energy source.
+---@field energy_source EnergySource
+---How much energy this reactor can consume (from the input energy source) and then output as heat.
+---@field consumption Energy
+---If defined, number of variations must be at least equal to count of connections defined in `heat_buffer`. Each variation represents connected heat buffer connection of corresponding index.
+---@field connection_patches_connected? SpriteVariations
+---If defined, number of variations must be at least equal to count of connections defined in `heat_buffer`. Each variation represents unconnected heat buffer connection of corresponding index.
+---@field connection_patches_disconnected? SpriteVariations
+---If defined, number of variations must be at least equal to count of connections defined in `heat_buffer`. When reactor is heated, corresponding variations are drawn over `connection_patches_connected`.
+---@field heat_connection_patches_connected? SpriteVariations
+---If defined, number of variations must be at least equal to count of connections defined in `heat_buffer`. When reactor is heated, corresponding variations are drawn over `connection_patches_disconnected`.
+---@field heat_connection_patches_disconnected? SpriteVariations
+---@field lower_layer_picture? Sprite
+---@field heat_lower_layer_picture? Sprite
+---@field picture? Sprite
+---@field light? LightDefinition
+---The action is triggered when the reactor dies (is destroyed) at over 90% of max temperature.
+---@field meltdown_action? Trigger
+---@field neighbour_bonus? number
+---When this is true, the reactor will stop consuming fuel/energy when the temperature has reached the maximum.
+---@field scale_energy_usage? boolean
+---Whether the reactor should use fuel_glow_color from the fuel item prototype as light color and tint for `working_light_picture`. Forum post.
+---@field use_fuel_glow_color? boolean
+---When `use_fuel_glow_color` is true, this is the color used as `working_light_picture` tint for fuels that don't have glow color defined.
+---@field default_fuel_glow_color? Color
+---The temperature above which energy icons are suppressed. Defaults to maximum double value.
+---@field temperature_to_suppress_energy_icons? number
+---Defines connection points to neighbours used to compute neighbour bonus.
+---@field neighbour_connectable? NeighbourConnectable
+---The maximum circuit wire distance for this entity.
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---@field circuit_connector? CircuitConnectorDefinition
+---@field default_temperature_signal? SignalIDConnector
+
+---The smooth orientation. It is a `float` in the range `[0, 1)` that covers a full circle, starting at the top and going clockwise.
+---
+---This means a value of `0` indicates "north", a value of `0.5` indicates "south". For example then, a value of `0.625` would indicate "south-west", and a value of `0.875` would indicate "north-west".
+---@class RealOrientation
+
+---A recipe category. The built-in categories can be found here. See RecipePrototype::category. Recipe categories can be used to specify which machine can craft which recipes.
+---
+---The recipe category with the name "crafting" cannot contain recipes with fluid ingredients or products.
+---@class RecipeCategory : Prototype
+---@field type "recipe-category"
+
+---The name of a RecipeCategory.
+---@class RecipeCategoryID
+
+---The name of a RecipePrototype.
+---@class RecipeID
+
+---A recipe. It can be a crafting recipe, a smelting recipe, or a custom type of recipe, see RecipeCategory.
+---@class RecipePrototype : Prototype
+---@field type "recipe"
+---The categories of this recipe. Controls which machines can craft this recipe.
+---
+---The built-in categories can be found here. The base `"crafting"` category can not contain recipes with fluid ingredients or products.
+---
+---The array must contain at least one category, it cannot be empty.
+---@field categories? RecipeCategoryID[]
+---Used by WorkingVisualisations::working_visualisations to tint certain layers with the recipe color. WorkingVisualisation::apply_recipe_tint determines which of the four colors is used for that layer, if any.
+---@field crafting_machine_tint? RecipeTints
+---Can't be an empty array.
+---@field icons? IconData[]
+---If given, this determines the recipe's icon. Otherwise, the icon of `main_product` or the singular product is used.
+---
+---Only loaded if `icons` is not defined.
+---
+---Mandatory if `icons` is not defined for a recipe with more than one product and no `main_product`, or no product.
+---@field icon? FileName
+---The size of the square icon, in pixels. E.g. `32` for a 32px by 32px icon. Must be larger than `0`.
+---
+---Only loaded if `icons` is not defined.
+---@field icon_size? SpriteSizeType
+---A table containing ingredient names and amounts. Can also contain information about fluid temperature and whether some of the amount is ignored by production statistics.
+---
+---Can be set to an empty table to create a recipe that needs no ingredients. Assembling machines do not support recipes with more than 65 535 different item ingredients.
+---
+---Duplicate ingredients, e.g. two entries with the same name, are *not* allowed. In-game, the item ingredients are ordered by ItemGroup::order_in_recipe if RecipePrototype::sort_item_ingredients is set to `true`.
+---@field ingredients? IngredientPrototype[]
+---A table containing result names and amounts. Products also contain information such as fluid temperature, probability of results and whether some of the amount is ignored by productivity.
+---
+---Can be set to an empty table to create a recipe that produces nothing. Assembling machines do not support recipes with more than 65 535 different item products.
+---
+---Duplicate results, e.g. two entries with the same name, are allowed.
+---@field results? ProductPrototype[]
+---For recipes with one or more products: Subgroup, localised_name and icon default to the values of the singular/main product, but can be overwritten by the recipe. Setting the main_product to an empty string (`""`) forces the title in the recipe tooltip to use the recipe's name (not that of the product) and shows the products in the tooltip.
+---
+---If 1) there are multiple products and this property is nil, 2) this property is set to an empty string (`""`), or 3) there are no products, the recipe will use the localised_name, icon, and subgroup of the recipe. icon and subgroup become non-optional.
+---@field main_product? string
+---The amount of time it takes to make this recipe. Must be `> 0.001`. Equals the number of seconds it takes to craft at crafting speed `1`.
+---@field energy_required? number
+---@field emissions_multiplier? number
+---Must be >= 0.
+---@field maximum_productivity? number
+---@field requester_paste_multiplier? integer
+---Used to determine how many extra items are put into an assembling machine before it's considered "full enough". See insertion limits.
+---
+---If set to `0`, it instead uses the following formula: `1.166 / (energy_required / the assembler's crafting_speed)`, rounded up, and clamped to be between`2` and `100`. The numbers used in this formula can be changed by the UtilityConstants properties `dynamic_recipe_overload_factor`, `minimum_recipe_overload_multiplier`, and `maximum_recipe_overload_multiplier`.
+---@field overload_multiplier? integer
+---Whether the recipe is allowed to have the extra inserter overload bonus applied (4 * stack inserter stack size).
+---@field allow_inserter_overload? boolean
+---This can be `false` to disable the recipe at the start of the game, or `true` to leave it enabled.
+---
+---If a recipe is unlocked via technology, this should be set to `false`.
+---@field enabled? boolean
+---Hides the recipe from item/fluid production statistics.
+---@field hide_from_stats? boolean
+---Hides the recipe from the player's crafting screen. The recipe will still show up for selection in machines.
+---@field hide_from_player_crafting? boolean
+---@field hide_from_bonus_gui? boolean
+---Whether this recipe is allowed to be broken down for the recipe tooltip "Total raw" calculations.
+---@field allow_decomposition? boolean
+---Whether the recipe can be used as an intermediate recipe in hand-crafting.
+---@field allow_as_intermediate? boolean
+---Whether the recipe is allowed to use intermediate recipes when hand-crafting.
+---@field allow_intermediates? boolean
+---Whether the "Made in: <Machine>" part of the tool-tip should always be present, and not only when the recipe can't be hand-crafted.
+---@field always_show_made_in? boolean
+---Whether enabling this recipe requires the ingredients be unlocked before the products are marked as unlocked.
+---@field requires_ingredients_to_unlock_results? boolean
+---Whether enabling this recipe unlocks its item products to show in selection lists (item filters, logistic requests, etc.).
+---@field unlock_results? boolean
+---@field preserve_products_in_machine_output? boolean
+---@field allow_consumption_message? string|number|boolean|nil|table
+---@field allow_speed_message? string|number|boolean|nil|table
+---@field allow_productivity_message? string|number|boolean|nil|table
+---@field allow_pollution_message? string|number|boolean|nil|table
+---@field allow_quality_message? string|number|boolean|nil|table
+---@field surface_conditions? SurfaceCondition[]
+---If left unset, this property will be determined automatically: If the recipe is not `hidden`, and no item, fluid, or virtual signal has the same icon as this recipe, this property will be set to `false`. It'll be `true` otherwise.
+---@field hide_from_signal_gui? boolean
+---@field allow_consumption? boolean
+---@field allow_speed? boolean
+---@field allow_productivity? boolean
+---@field allow_pollution? boolean
+---@field allow_quality? boolean
+---Sets the module categories that are allowed to be used with this recipe.
+---@field allowed_module_categories? ModuleCategoryID[]
+---Additional technologies to list under "Unlocked by" on a recipe's Factoriopedia page.
+---@field alternative_unlock_methods? TechnologyID[]
+---Whether the recipe should be included in the recycling recipes automatically generated by the quality mod.
+---
+---This property is not read by the game engine itself, but the quality mod's recycling.lua file. This means it is discarded by the game engine after loading finishes.
+---@field auto_recycle? boolean
+---Hides the recipe from crafting menus and other recipe selection lists.
+---@field hidden? boolean
+---When set to `true`, item ingredients will be sorted based on ItemGroup::order_in_recipe.
+---@field sort_item_ingredients? boolean
+---When set to `true`, player can set quality of this recipe to craft. If set to `false` then this recipe can only be crafted at normal quality.
+---
+---Defaults to `true` if recipe is a parameter, or has at least one item ingredient that does not have any of quality_min, quality_max,  or quality_change set.
+---
+---This property also influences the automatic Furnace Recipe Selection.
+---@field can_set_quality? boolean
+---If set to true, an event with identifier of LuaRecipePrototype::on_crafted_event will be raised when this recipe is crafted. Currently this is only raised when recipe is crafted by a crafting machine.
+---
+---Event raised will be given data as described by OnRecipeCraftedData.
+---@field raise_on_crafted? boolean
+
+---If no tint is specified, the machine falls back to WorkingVisualisations::default_recipe_tint.
+---@class RecipeTints
+---@field primary? Color
+---@field secondary? Color
+---@field tertiary? Color
+---@field quaternary? Color
+
+---Properties of the remote controller.
+---@class RemoteControllerPrototype
+---@field type "remote-controller"
+---@field type "remote-controller"
+---Name of the remote controller. Base game uses "default".
+---@field name string
+---Must be >= 0.34375.
+---@field movement_speed number
+
+---The render layer specifies the order of the sprite when rendering, most of the objects have it hardcoded in the source, but some are configurable. The union contains valid values from lowest to highest.
+---
+---Note: `decals` is used as special marker for DecorativePrototype::render_layer. When used elsewhere, the sprites will draw over the terrain.
+---@class RenderLayer
+
+---A repair pack. Using the tool decreases durability to restore entity health.
+---@class RepairToolPrototype : ToolPrototype
+---@field type "repair-tool"
+---Entity health repaired per used ToolPrototype::durability. E.g. a repair tool with 5 durability and a repair speed of 2 will restore 10 health.
+---
+---This is then multiplied by the EntityWithHealthPrototype::repair_speed_modifier of the entity.
+---@field speed number
+
+---This prototype is used for receiving an achievement when the player completes a specific research.
+---@class ResearchAchievementPrototype : AchievementPrototype
+---@field type "research-achievement"
+---Mandatory if `research_all` is not defined.
+---
+---Researching this technology will trigger the achievement.
+---@field technology? TechnologyID
+---Mandatory if `technology` is not defined.
+---
+---This will only trigger if the player has learned every research in the game.
+---@field research_all? boolean
+
+---Defines the amount of an item required to research one unit of a technology. The first member of the tuple is the name of a ItemPrototype and the second is the amount. Amount must not be 0.
+---@class ResearchIngredient
+
+---@class ResearchTechnologyTipTrigger
+---@field type "research"
+---@field technology TechnologyID
+
+---@class ResearchWithSciencePackAchievementPrototype : AchievementPrototype
+---@field type "research-with-science-pack-achievement"
+---@field science_pack ItemID
+---@field amount? integer
+
+---@class ResearchWithSciencePackTipTrigger
+---@field type "research-with-science-pack"
+---@field science_pack ItemID
+
+---Resistances to certain types of attacks from enemy, and physical damage. See Damage.
+---@class Resistance
+---@field type DamageTypeID
+---The flat resistance to the given damage type. (Higher is better)
+---@field decrease? number
+---The percentage resistance to the given damage type. Expected range is from 0 to 100, e.g. 50 is 50%. (Higher is better.)
+---@field percent? number
+
+---A resource category. The built-in categories can be found here. See ResourceEntityPrototype::category.
+---@class ResourceCategory : Prototype
+---@field type "resource-category"
+
+---The name of a ResourceCategory.
+---@class ResourceCategoryID
+
+---A mineable/gatherable entity.
+---@class ResourceEntityPrototype : EntityPrototype
+---@field type "resource"
+---Entity's graphics, using a graphic sheet, with variation and depletion. At least one stage must be defined.
+---
+---When using AnimationVariations::sheet, `frame_count` is the amount of frames per row in the spritesheet. `variation_count` is the amount of rows in the spritesheet. Each row in the spritesheet is one stage of the animation.
+---@field stages? AnimationVariations
+---Number of stages the animation has.
+---@field stage_counts integer[]
+---If the ore is infinitely minable, or if it will eventually run out of resource.
+---@field infinite? boolean
+---If the resource should be highlighted when holding a mining drill that can mine it (holding a pumpjack highlights crude-oil in the base game).
+---@field highlight? boolean
+---Whether there should be a slight offset to graphics of the resource. Used to make patches a little less uniform in appearance.
+---@field randomize_visual_position? boolean
+---Whether the resource should have a grid pattern on the map instead of a solid map color.
+---@field map_grid? boolean
+---@field draw_stateless_visualisation_under_building? boolean
+---Must be not 0 when `infinite = true`.
+---@field minimum? integer
+---Must be not 0 when `infinite = true`.
+---@field normal? integer
+---Every time an infinite-type resource is decreased by mining, its current resource amount is lowered by this number.
+---@field infinite_depletion_amount? integer
+---When hovering over this resource in the map view: How far to search for other resource patches of this type to display as one (summing amount, white outline).
+---@field resource_patch_search_radius? integer
+---The category for the resource. Available categories in vanilla can be found here.
+---@field category? ResourceCategoryID
+---Sound played when the player walks over this resource.
+---@field walking_sound? Sound
+---Sound played when a CarPrototype drives over this resource.
+---@field driving_sound? InterruptibleSound
+---An effect that can be overlaid above the normal ore graphics. Used in the base game to make uranium ore glow.
+---@field stages_effect? AnimationVariations
+---How long it takes `stages_effect` to go from `min_effect_alpha` to `max_effect_alpha`.
+---@field effect_animation_period? number
+---How much `effect_animation_period` can deviate from its original value. Used to make the stages effect alpha change look less uniform.
+---@field effect_animation_period_deviation? number
+---How much the surface darkness should affect the alpha of `stages_effect`.
+---@field effect_darkness_multiplier? number
+---Minimal alpha value of `stages_effect`.
+---@field min_effect_alpha? number
+---Maximal alpha value of `stages_effect`.
+---@field max_effect_alpha? number
+---Must be greater than or equal to `0`.
+---@field tree_removal_probability? number
+---Must be greater than or equal to `0`.
+---@field cliff_removal_probability? number
+---Must be positive when `tree_removal_probability` is set.
+---@field tree_removal_max_distance? number
+---Defaults to the resources map color if left unset and map color is set, otherwise defaults to white if left unset.
+---@field mining_visualisation_tint? Color
+---The entity with the higher number is selectable before the entity with the lower number.
+---
+---The value `0` will be treated the same as `nil`.
+---@field selection_priority? integer
+
+---@class RichTextSetting
+
+---Used by personal roboport.
+---@class RoboportEquipmentPrototype : EquipmentPrototype
+---@field type "roboport-equipment"
+---The animation played at each charging point when a robot is charging there.
+---@field recharging_animation? Animation
+---Presumably states the height of the charging stations and thus an additive offset for the charging_offsets.
+---@field spawn_and_station_height number
+---Presumably, the distance from the roboport at which robots will wait to charge.
+---@field charge_approach_distance number
+---Can't be negative.
+---@field construction_radius number
+---@field charging_energy Energy
+---@field spawn_and_station_shadow_height_offset? number
+---When robot ascends or descends to this roboport, at which height is should switch between `"air-object"` and `"object"` render layer.
+---@field stationing_render_layer_swap_height? number
+---Unused, as roboport equipment does not have a logistic radius that could be drawn.
+---@field draw_logistic_radius_visualization? boolean
+---@field draw_construction_radius_visualization? boolean
+---The light emitted when charging a robot.
+---@field recharging_light? LightDefinition
+---How many charging points this roboport has. If this is 0, the length of the charging_offsets table is used to calculate the charging station count.
+---@field charging_station_count? integer
+---@field charging_station_count_affected_by_quality? boolean
+---@field charging_distance? number
+---@field charging_station_shift? Vector
+---Distance in tiles. This defines how far away a robot can be from the charging spot and still be charged, however the bot is still required to reach a charging spot in the first place.
+---@field charging_threshold_distance? number
+---@field robot_vertical_acceleration? number
+---The offset from the center of the roboport at which robots will enter and exit.
+---@field stationing_offset? Vector
+---How many robots can exist in the network (cumulative).
+---@field robot_limit? ItemCountType
+---@field robots_shrink_when_entering_and_exiting? boolean
+---The offsets from the center of the roboport at which robots will charge. Only used if `charging_station_count` is equal to 0.
+---@field charging_offsets? Vector[]
+---Minimum amount of energy that needs to available inside the roboport's buffer so that robots can be spawned.
+---@field spawn_minimum? Energy
+---Add this is if the roboport should be fueled directly instead of using power from the equipment grid.
+---@field burner? BurnerEnergySource
+---Mandatory if `burner` is defined.
+---
+---The size of the buffer of the burner energy source, so effectively the amount of power that the energy source can produce per tick.
+---@field power? Energy
+
+---A roboport.
+---@class RoboportPrototype : EntityWithOwnerPrototype
+---@field type "roboport"
+---The roboport's energy source.
+---@field energy_source ElectricEnergySource|VoidEnergySource
+---The amount of energy the roboport uses when idle.
+---@field energy_usage Energy
+---Minimum charge that the roboport has to have after a blackout (0 charge/buffered energy) to begin working again. Additionally, freshly placed roboports will have their energy buffer filled with `0.25 × recharge_minimum` energy.
+---
+---Must be larger than or equal to `energy_usage` otherwise during low power the roboport will toggle on and off every tick.
+---@field recharge_minimum Energy
+---The number of robot slots in the roboport.
+---@field robot_slots_count ItemStackIndex
+---The number of repair pack slots in the roboport.
+---@field material_slots_count ItemStackIndex
+---@field base? Sprite
+---@field base_patch? Sprite
+---@field frozen_patch? Sprite
+---The animation played when the roboport is idle.
+---@field base_animation? Animation
+---@field door_animation_up? Animation
+---@field door_animation_down? Animation
+---@field request_to_open_door_timeout integer
+---In chunks. The radius of how many chunks this roboport charts around itself. Defaults to the max of logistic range or construction range rounded up to chunks.
+---@field radar_range? integer
+---@field radar_visualisation_color? Color
+---The animation played at each charging point when a robot is charging there.
+---@field recharging_animation? Animation
+---Presumably states the height of the charging stations and thus an additive offset for the charging_offsets.
+---@field spawn_and_station_height number
+---The distance (in tiles) from the roboport at which robots will wait to charge. Notably, if the robot is already in range, then it will simply wait at its current position.
+---@field charge_approach_distance number
+---Can't be negative.
+---@field logistics_radius number
+---Can't be negative.
+---@field construction_radius number
+---The maximum power provided to each charging station.
+---@field charging_energy Energy
+---@field open_door_trigger_effect? TriggerEffect
+---@field close_door_trigger_effect? TriggerEffect
+---@field default_available_logistic_output_signal? SignalIDConnector
+---@field default_total_logistic_output_signal? SignalIDConnector
+---@field default_available_construction_output_signal? SignalIDConnector
+---@field default_total_construction_output_signal? SignalIDConnector
+---@field default_roboport_count_output_signal? SignalIDConnector
+---The maximum circuit wire distance for this entity.
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---@field circuit_connector? CircuitConnectorDefinition
+---Whether to render the no charge icon if the roboport has less energy than `recharge_minimum` in its internal buffer and is recovering from a blackout.
+---@field render_recharge_icon? boolean
+---@field max_logistic_slots? LogisticFilterIndex
+---@field spawn_and_station_shadow_height_offset? number
+---When robot ascends or descends to this roboport, at which height is should switch between `"air-object"` and `"object"` render layer.
+---@field stationing_render_layer_swap_height? number
+---@field draw_logistic_radius_visualization? boolean
+---@field draw_construction_radius_visualization? boolean
+---The light emitted when charging a robot.
+---@field recharging_light? LightDefinition
+---How many charging points this roboport has. If this is 0, the length of the charging_offsets table is used to calculate the charging station count.
+---@field charging_station_count? integer
+---@field charging_station_count_affected_by_quality? boolean
+---@field charging_distance? number
+---@field charging_station_shift? Vector
+---Unused.
+---@field charging_threshold_distance? number
+---@field robot_vertical_acceleration? number
+---The offset from the center of the roboport at which robots will enter and exit.
+---@field stationing_offset? Vector
+---Unused.
+---@field robot_limit? ItemCountType
+---@field robots_shrink_when_entering_and_exiting? boolean
+---The offsets from the center of the roboport at which robots will charge. Only used if `charging_station_count` is equal to 0.
+---@field charging_offsets? Vector[]
+---Must be >= `logistics_radius`.
+---@field logistics_connection_distance? number
+
+---@class RobotDoorSpecification
+---Drawn when a robot brings/takes items from this entity.
+---@field animation? Animation
+---The offset from the center of this entity where a robot visually brings/takes items.
+---@field location_offset? Vector
+---@field opened_duration? integer
+---Played when a robot brings/takes items from this entity. Only loaded if `animation` is defined.
+---@field animation_sound? Sound
+
+---The common properties of logistic and construction robots represented by an abstract prototype.
+---@class RobotWithLogisticInterfacePrototype : FlyingRobotPrototype
+---The robot's cargo carrying capacity. Can be increased by worker robot cargo size research.
+---@field max_payload_size ItemCountType
+---The robot's maximum possible cargo carrying capacity, including bonuses. Useful to limit the impact of worker robot cargo size research.
+---
+---Must be >= max_payload_size.
+---@field max_payload_size_after_bonus? ItemCountType
+---Only the first frame of the animation is drawn. This means that the graphics for the idle state cannot be animated.
+---@field idle? RotatedAnimation
+---Only the first frame of the animation is drawn. This means that the graphics for the in_motion state cannot be animated.
+---@field in_motion? RotatedAnimation
+---Only the first frame of the animation is drawn. This means that the graphics for the idle state cannot be animated.
+---@field shadow_idle? RotatedAnimation
+---Only the first frame of the animation is drawn. This means that the graphics for the in_motion state cannot be animated.
+---@field shadow_in_motion? RotatedAnimation
+---Applied when the robot expires (runs out of energy and FlyingRobotPrototype::speed_multiplier_when_out_of_energy is 0).
+---@field destroy_action? Trigger
+---@field draw_cargo? boolean
+---If true, this can't be mined unless it has more than FlyingRobotPrototype::max_to_charge energy, or the players personal roboports have enough energy to charge it.
+---@field require_charge_to_mine? boolean
+---@field charging_sound? InterruptibleSound
+
+---A rocket silo.
+---@class RocketSiloPrototype : AssemblingMachinePrototype
+---@field type "rocket-silo"
+---Additional energy used during the following parts of the launch sequence: doors_opening, rocket_rising, arms_advance, engine_starting, arms_retract, doors_closing.
+---@field active_energy_usage Energy
+---May be 0.
+---
+---Additional energy used during the night, that is when LuaSurface::darkness is larger than 0.3.
+---@field lamp_energy_usage Energy
+---Name of a RocketSiloRocketPrototype.
+---@field rocket_entity EntityID
+---@field arm_02_right_animation? Animation
+---@field arm_01_back_animation? Animation
+---@field arm_03_front_animation? Animation
+---@field shadow_sprite? Sprite
+---@field hole_sprite? Sprite
+---@field hole_light_sprite? Sprite
+---@field rocket_shadow_overlay_sprite? Sprite
+---@field rocket_glow_overlay_sprite? Sprite
+---@field door_back_sprite? Sprite
+---@field door_front_sprite? Sprite
+---@field base_day_sprite? Sprite
+---@field base_front_sprite? Sprite
+---Drawn from the start of the lights_blinking_open state until the end of the lights_blinking_close state.
+---@field red_lights_back_sprites? Sprite
+---Drawn from the start of the lights_blinking_open state until the end of the lights_blinking_close state.
+---@field red_lights_front_sprites? Sprite
+---@field base_frozen? Sprite
+---@field base_front_frozen? Sprite
+---@field hole_frozen? Sprite
+---@field door_back_frozen? Sprite
+---@field door_front_frozen? Sprite
+---@field hole_clipping_box BoundingBox
+---@field door_back_open_offset Vector
+---@field door_front_open_offset Vector
+---@field silo_fade_out_start_distance number
+---@field silo_fade_out_end_distance number
+---How many times the `red_lights_back_sprites` and `red_lights_front_sprites` should blink during lights_blinking_open and lights_blinking_close.
+---
+---Does not affect the duration of the launch sequence.
+---@field times_to_blink integer
+---The inverse of the duration in ticks of lights_blinking_open and lights_blinking_close.
+---@field light_blinking_speed number
+---The inverse of the duration in ticks of doors_opening and closing.
+---@field door_opening_speed number
+---The number of crafts that must complete to produce a rocket. This includes bonus crafts from productivity. Recipe products are ignored.
+---@field rocket_parts_required integer
+---@field rocket_quick_relaunch_start_offset number
+---Must be >= 0.
+---@field rocket_rising_speed_modifier_per_quality_level? number
+---Must be >= 0.
+---@field rocket_engine_starting_speed_modifier_per_quality_level? number
+---Must be >= 0.
+---@field arms_speed_modifier_per_quality_level? number
+---@field satellite_animation? Animation
+---@field satellite_shadow_animation? Animation
+---Drawn instead of `base_day_sprite` during the night, that is when LuaSurface::darkness is larger than 0.3.
+---@field base_night_sprite? Sprite
+---@field base_light? LightDefinition
+---@field base_engine_light? LightDefinition
+---The time to wait in the doors_opened state before switching to rocket_rising.
+---@field rocket_rising_delay? integer
+---The time to wait in the launch_started state before switching to engine_starting.
+---@field launch_wait_time? integer
+---Whether the "no network" icon should be rendered on this entity if the entity is not within a logistics network.
+---@field render_not_in_network_icon? boolean
+---All values down to 0 are allowed, however it is suggested to avoid values from 1 up to `rocket_parts_required - 1` to avoid second progress bar stopping before reaching 100%. When set to 0, second progress bar is hidden.
+---@field rocket_parts_storage_cap? integer
+---Applied when switching into the lights_blinking_open state.
+---@field alarm_trigger? TriggerEffect
+---Applied when switching into the arms_advance state.
+---@field clamps_on_trigger? TriggerEffect
+---Applied when switching into the arms_retract state.
+---@field clamps_off_trigger? TriggerEffect
+---Applied when switching into the doors_opening and doors_closing states.
+---@field doors_trigger? TriggerEffect
+---Applied when switching into the rocket_rising state.
+---@field raise_rocket_trigger? TriggerEffect
+---Played when switching into the lights_blinking_open state.
+---@field alarm_sound? Sound
+---Played when switching from rocket_flying into the doors_opened state when a quick follow-up rocket is ready.
+---@field quick_alarm_sound? Sound
+---Played when switching into the arms_advance state.
+---@field clamps_on_sound? Sound
+---Played when switching into the arms_retract state.
+---@field clamps_off_sound? Sound
+---Played when switching into the doors_opening and doors_closing states.
+---@field doors_sound? Sound
+---Played when switching into the rocket_rising state.
+---@field raise_rocket_sound? Sound
+---When `launch_to_space_platforms` is true, the inventory has dynamic size and is weight-restricted, so this value is ignored.
+---@field to_be_inserted_to_rocket_inventory_size? ItemStackIndex
+---@field logistic_trash_inventory_size? ItemStackIndex
+---When `launch_to_space_platforms` is false, the inventory has no weight restrictions, so this value is ignored.
+---@field lift_weight? Weight
+---Must have exactly one entry in CargoStationParameters::hatch_definitions.
+---@field cargo_station_parameters CargoStationParameters
+---Enables 'Space Age' functionality for this rocket silo, allowing it to supply space platforms.
+---@field launch_to_space_platforms? boolean
+---@field can_launch_without_landing_pads? boolean
+---@field robot_door? RobotDoorSpecification
+
+---The rocket inside the rocket silo.
+---@class RocketSiloRocketPrototype : EntityPrototype
+---@field type "rocket-silo-rocket"
+---@field shadow_slave_entity? EntityID
+---Name of a CargoPodPrototype.
+---@field cargo_pod_entity EntityID
+---@field dying_explosion? EntityID
+---@field glow_light? LightDefinition
+---@field rocket_sprite? Sprite
+---@field rocket_shadow_sprite? Sprite
+---@field rocket_glare_overlay_sprite? Sprite
+---@field rocket_smoke_bottom1_animation? Animation
+---@field rocket_smoke_bottom2_animation? Animation
+---@field rocket_smoke_top1_animation? Animation
+---@field rocket_smoke_top2_animation? Animation
+---@field rocket_smoke_top3_animation? Animation
+---@field rocket_flame_animation? Animation
+---@field rocket_flame_left_animation? Animation
+---@field rocket_flame_right_animation? Animation
+---@field rocket_initial_offset? Vector
+---@field rocket_rise_offset Vector
+---@field cargo_attachment_offset? Vector
+---@field rocket_flame_left_rotation number
+---@field rocket_flame_right_rotation number
+---@field rocket_render_layer_switch_distance number
+---@field full_render_layer_switch_distance number
+---@field rocket_launch_offset Vector
+---@field effects_fade_in_start_distance number
+---@field effects_fade_in_end_distance number
+---@field shadow_fade_out_start_ratio number
+---@field shadow_fade_out_end_ratio number
+---@field rocket_visible_distance_from_center number
+---@field rocket_above_wires_slice_offset_from_center? number
+---@field rocket_air_object_slice_offset_from_center? number
+---@field rocket_fog_mask? FogMaskShapeDefinition
+---@field rising_speed number
+---@field engine_starting_speed number
+---@field flying_speed number
+---@field flying_acceleration number
+---@field flying_trigger? TriggerEffect
+---@field flying_sound? Sound
+---@field inventory_size ItemStackIndex
+---The entity with the higher number is selectable before the entity with the lower number.
+---
+---The value `0` will be treated the same as `nil`.
+---@field selection_priority? integer
+
+---The shadow of the rocket inside the rocket silo.
+---@class RocketSiloRocketShadowPrototype : EntityPrototype
+---@field type "rocket-silo-rocket-shadow"
+---The entity with the higher number is selectable before the entity with the lower number.
+---
+---The value `0` will be treated the same as `nil`.
+---@field selection_priority? integer
+
+---The abstract base of all rolling stock.
+---@class RollingStockPrototype : VehiclePrototype
+---Maximum speed of the rolling stock in tiles/tick.
+---
+---In-game, the max speed of a train is `average(all_rolling_stock_max_speeds) × average(all_fuel_modifiers_in_all_locomotives)`. If this value is not provided it is ignored for the average(all_rolling_stock_max_speed) calculation. This calculated train speed is then silently capped to 7386.3km/h.
+---@field max_speed? number
+---@field air_resistance number
+---The length between this rolling stocks front and rear joints. Joints are the point where connection_distance is measured from when rolling stock are connected to one another. Wheels sprite are placed based on the joint position.
+---
+---Maximum joint distance is 15.
+---
+---Note: There needs to be border at least 0.2 between the bounding box edge and joint. This means that the collision_box must be at least `{{-0,-0.2},{0,0.2}}`.
+---@field joint_distance number
+---The distance between the joint of this rolling stock and its connected rolling stocks joint.
+---
+---Maximum connection distance is 15.
+---@field connection_distance number
+---@field pictures? RollingStockRotatedSlopedGraphics
+---@field wheels? RollingStockRotatedSlopedGraphics
+---@field vertical_selection_shift number
+---Usually a sound to play when the rolling stock drives over a tie. The rolling stock is considered to be driving over a tie every `tie_distance` tiles.
+---@field drive_over_tie_trigger? TriggerEffect
+---@field drive_over_tie_trigger_minimal_speed? number
+---In tiles. Used to determine how often `drive_over_tie_trigger` is triggered.
+---@field tie_distance? number
+---@field back_light? LightDefinition
+---@field stand_by_light? LightDefinition
+---@field horizontal_doors? Animation
+---@field vertical_doors? Animation
+---@field color? Color
+---@field allow_manual_color? boolean
+---@field allow_robot_dispatch_in_automatic_mode? boolean
+---@field default_copy_color_from_train_stop? boolean
+---@field quality_affects_max_speed? boolean
+---Defaults to the mask from UtilityConstants::default_collision_masks when indexed by  `type .. "/transition"`.
+---@field transition_collision_mask? CollisionMaskConnector
+---Defaults to the mask from UtilityConstants::default_collision_masks when indexed by  `type .. "/elevated"`.
+---@field elevated_collision_mask? CollisionMaskConnector
+---@field elevated_selection_priority? integer
+---@field elevated_rail_sound? MainSound
+---@field drive_over_elevated_tie_trigger? TriggerEffect
+---Cannot use `fade_ticks`.
+---@field door_opening_sound? InterruptibleSound
+---Cannot use `fade_ticks`.
+---@field door_closing_sound? InterruptibleSound
+
+---@class RollingStockRotatedSlopedGraphics
+---@field rotated RotatedSprite
+---@field sloped? RotatedSprite
+---@field slope_back_equals_front? boolean
+---@field slope_angle_between_frames? number
+
+---@class RotateEntityTipTrigger : CountBasedTipTrigger
+---@field type "rotate-entity"
+
+---@class RotatedAnimation : AnimationParameters
+---If this property is present, all RotatedAnimation definitions have to be placed as entries in the array, and they will all be loaded from there. `layers` may not be an empty table. Each definition in the array may also have the `layers` property.
+---
+---If this property is present, all other properties, including those inherited from AnimationParameters, are ignored.
+---@field layers? RotatedAnimation[]
+---Only loaded if `layers` is not defined.
+---
+---The sequential animation instance is loaded equal to the entities direction within the `direction_count` setting.
+---
+---Direction count to defines.direction (animation sequence number):
+---
+---- `1`: North (1)
+---
+---- `2`: North (1), South (2)
+---
+---- `4`: North (1), East (2), South (3), West (4)
+---
+---- `8`: North (1), Northeast (2), East (3), Southeast (4), South (5), Southwest (6), West (7), Northwest (8)
+---@field direction_count? integer
+---Only loaded, and mandatory if `layers`, `stripes`, and `filenames` are not defined.
+---
+---The path to the sprite file to use.
+---@field filename? FileName
+---Only loaded if both `layers` and `stripes` are not defined.
+---@field filenames? FileName[]
+---Only loaded if `layers` is not defined. Mandatory if `filenames` is defined.
+---@field lines_per_file? integer
+---Only loaded if `layers` is not defined. Mandatory if `filenames` is defined.
+---@field slice? integer
+---Only loaded if `layers` is not defined.
+---@field still_frame? integer
+---Only loaded if `layers` is not defined.
+---@field counterclockwise? boolean
+---Only loaded if `layers` is not defined.
+---@field middle_orientation? RealOrientation
+---Only loaded if `layers` is not defined.
+---
+---Automatically clamped to be between `0` and `1`.
+---@field orientation_range? number
+---Used to fix the inconsistency of direction of the entity in 3d when rendered and direction on the screen (where the 45 degree angle for projection is used).
+---
+---Only loaded if `layers` is not defined.
+---@field apply_projection? boolean
+---Only loaded if `layers` is not defined.
+---@field stripes? Stripe[]
+
+---A map of rotated animations for all 8 directions of the entity. If this is loaded as a single RotatedAnimation, it applies to all directions.
+---
+---Any direction that is not defined defaults to the rotated animation of the opposite direction. If that is also not defined, it defaults to the north rotated animation.
+---@class RotatedAnimation8Way
+---@field north RotatedAnimation
+---@field north_east? RotatedAnimation
+---@field east? RotatedAnimation
+---@field south_east? RotatedAnimation
+---@field south? RotatedAnimation
+---@field south_west? RotatedAnimation
+---@field west? RotatedAnimation
+---@field north_west? RotatedAnimation
+
+---@class RotatedAnimationVariations
+
+---Specifies series of sprites used to visualize different rotations of the object.
+---@class RotatedSprite : SpriteParameters
+---If this property is present, all RotatedSprite definitions have to be placed as entries in the array, and they will all be loaded from there. `layers` may not be an empty table. Each definition in the array may also have the `layers` property.
+---
+---If this property is present, all other properties, including those inherited from SpriteParameters, are ignored.
+---@field layers? RotatedSprite[]
+---Only loaded, and mandatory if `layers` is not defined.
+---
+---Count of direction (frames) specified.
+---@field direction_count? integer
+---Only loaded if `layers` is not defined.
+---
+---The path to the sprite file to use.
+---@field filename? FileName
+---Only loaded, and mandatory if both `layers` and `filename` are not defined.
+---@field filenames? FileName[]
+---Only loaded if `layers` is not defined. Mandatory if `filenames` is defined.
+---@field lines_per_file? integer
+---Only loaded if `layers` is not defined.
+---
+---Number of slices this is sliced into when using the "optimized atlas packing" option. If you are a modder, you can just ignore this property. Example: If this is 4, the sprite will be sliced into a 4x4 grid.
+---@field dice? SpriteSizeType
+---Only loaded if `layers` is not defined.
+---
+---Same as `dice` above, but this specifies only how many slices there are on the x axis.
+---@field dice_x? SpriteSizeType
+---Only loaded if `layers` is not defined.
+---
+---Same as `dice` above, but this specifies only how many slices there are on the y axis.
+---@field dice_y? SpriteSizeType
+---Only loaded if `layers` is not defined.
+---
+---Unused.
+---@field generate_sdf? boolean
+---Only loaded if `layers` is not defined.
+---@field back_equals_front? boolean
+---Only loaded if `layers` is not defined.
+---
+---Used to fix the inconsistency of direction of the entity in 3d when rendered and direction on the screen (where the 45 degree angle for projection is used).
+---@field apply_projection? boolean
+---Only loaded if `layers` is not defined.
+---
+---Set to `true` to indicate sprites in the spritesheet are in counterclockwise order.
+---@field counterclockwise? boolean
+---Only loaded if `layers` is not defined.
+---
+---Once the specified number of pictures is loaded, other pictures are loaded on other line. This is to allow having more sprites in matrix, to input files with too high width. The game engine limits the width of any input files to 8192px, so it is compatible with most graphics cards. 0 means that all the pictures are in one horizontal line.
+---@field line_length? integer
+---Only loaded if `layers` is not defined.
+---@field allow_low_quality_rotation? boolean
+---A list of overrides and customizations for each specific frame within the rotated sprite. This can be used to adjust each individual frame's width, height, and other properties. If this property is present, then it must contain at least as many `RotatedSpriteFrame` as there are sprites in this RotatedSprite.
+---@field frames? RotatedSpriteFrame[]
+
+---Specifies frame-specific properties of an individual sprite within a RotatedSprite set. Some properties are absolute values, and some are relative and inherited from the parent RotatedSprite prototype definition.
+---@class RotatedSpriteFrame
+---Width of the sprite in pixels, from 0-4096. If not defined, inherits the width of the parent RotatedSprite.
+---@field width? SpriteSizeType
+---Height of the sprite in pixels, from 0-4096. If not defined, inherits the height of the parent RotatedSprite.
+---@field height? SpriteSizeType
+---The horizontal offset of the sprite relative to its specific frame within the parent RotatedSprite.
+---@field x? SpriteSizeType
+---The vertical offset of the sprite relative to its specific frame within the parent RotatedSprite.
+---@field y? SpriteSizeType
+---The shift in tiles of this specific frame, relative to the shift of the parent RotatedSprite. `util.by_pixel()` can be used to divide the shift by 32 which is the usual pixel height/width of 1 tile in normal resolution. Note that 32 pixel tile height/width is not enforced anywhere - any other tile height or width is also possible.
+---@field shift? Vector
+
+---@class ScriptTriggerEffectItem : TriggerEffectItem
+---@field type "script"
+---The effect ID that will be provided in on_script_trigger_effect.
+---@field effect_id string
+---Event to be raised. When set, that event will be raised instead of on_script_trigger_effect.
+---@field custom_event? CustomEventID
+
+---Triggered only by calling LuaForce::script_trigger_research. Can be used to show custom scripted triggers in the technology GUI.
+---@class ScriptedTechnologyTrigger
+---@field type "scripted"
+---@field trigger_description? string|number|boolean|nil|table
+---Can't be an empty array.
+---@field icons? IconData[]
+---Path to the icon file.
+---
+---Only loaded if `icons` is not defined.
+---@field icon? FileName
+---The size of the square icon, in pixels. E.g. `32` for a 32px by 32px icon. Must be larger than `0`.
+---
+---Only loaded if `icons` is not defined.
+---@field icon_size? SpriteSizeType
+
+---@class ScrollBarStyleSpecification : BaseStyleSpecification
+---@field background_graphical_set? ElementImageSet
+---@field thumb_button_style? ButtonStyleSpecification
+
+---Root style: `"scroll_pane"`
+---@class ScrollPaneStyleSpecification : BaseStyleSpecification
+---@field type "scroll_pane_style"
+---Required on the root style.
+---@field vertical_flow_style? VerticalFlowStyleSpecification
+---Required on the root style.
+---@field horizontal_scrollbar_style? HorizontalScrollBarStyleSpecification
+---Required on the root style.
+---@field vertical_scrollbar_style? VerticalScrollBarStyleSpecification
+---Required on the root style.
+---@field graphical_set? ElementImageSet
+---Required on the root style.
+---@field background_graphical_set? ElementImageSet
+---Sets `extra_top_padding_when_activated`, `extra_bottom_padding_when_activated`, `extra_left_padding_when_activated` and `extra_right_padding_when_activated`.
+---@field extra_padding_when_activated? integer
+---@field extra_top_padding_when_activated? integer
+---@field extra_bottom_padding_when_activated? integer
+---@field extra_left_padding_when_activated? integer
+---@field extra_right_padding_when_activated? integer
+---Sets `extra_top_margin_when_activated`, `extra_bottom_margin_when_activated`, `extra_left_margin_when_activated` and `extra_right_margin_when_activated`.
+---@field extra_margin_when_activated? integer
+---@field extra_top_margin_when_activated? integer
+---@field extra_bottom_margin_when_activated? integer
+---@field extra_left_margin_when_activated? integer
+---@field extra_right_margin_when_activated? integer
+---@field dont_force_clipping_rect_for_contents? boolean
+---@field always_draw_borders? boolean
+---@field scrollbars_go_outside? boolean
+
+---Used by SegmentedUnitPrototype to define and manage the segments that make up the body of the entity.
+---@class SegmentEngineSpecification
+---The segments that compose the entity's body. Must contain no more than 63 entries.
+---@field segments SegmentSpecification[]
+
+---Entity representing an individual segment in a SegmentedUnitPrototype
+---@class SegmentPrototype : EntityWithOwnerPrototype
+---@field type "segment"
+---The sound to play when the entity dies.
+---
+---If not specified, UtilitySounds::segment_dying_sound is used.
+---@field dying_sound? Sound
+---@field dying_sound_volume_modifier? number
+---The animation to use of the entity.
+---@field animation RotatedAnimation
+---The layer to render the entity in.
+---@field render_layer? RenderLayer
+---The number of segments ahead of this one that should always be rendered atop this one, giving the illusion that at all orientations, those preceding segments overlap this current segment.
+---
+---Must be 0 or greater, and the sum of `forward_overlap` and `backward_overlap` must be less than or equal to 4.
+---@field forward_overlap? integer
+---The number of segments behind this one that should always be rendered atop this one, giving the illusion that at all orientations, those following segments overlap this current segment.
+---
+---Must be 0 or greater, and the sum of `forward_overlap` and `backward_overlap` must be less than or equal to 4.
+---@field backward_overlap? integer
+---The number of tiles of spacing to add in front of this segment. Can be negative. Scales with the segment scale when used in a SegmentEngineSpecification.
+---@field forward_padding? number
+---The number of tiles of spacing to add behind this segment. Can be negative. Scales with the segment scale when used in a SegmentEngineSpecification.
+---@field backward_padding? number
+---The effects to trigger every tick.
+---@field update_effects? TriggerEffectWithCooldown[]
+---The effects to trigger every tick while enraged, in addition to `update_effects`.
+---@field update_effects_while_enraged? TriggerEffectWithCooldown[]
+
+---A container for a single reference to a SegmentPrototype within a SegmentEngineSpecification.
+---@class SegmentSpecification
+---Name of the SegmentPrototype to use in this position.
+---@field segment EntityID
+
+---Entity composed of multiple segment entities that trail behind the head.
+---@class SegmentedUnitPrototype : SegmentPrototype
+---@field type "segmented-unit"
+---Vision distance, affects scanning radius for enemies to attack. Must be non-negative. Max 100.
+---@field vision_distance number
+---Attack parameters for when a segmented unit is attacking something.
+---@field attack_parameters? AttackParameters
+---Attack parameters for when a segmented unit is attacking something in retaliation because the target first attacked it.
+---@field revenge_attack_parameters? AttackParameters
+---The territory radius in chunks. The chunk in which the entity spawned is included.
+---@field territory_radius integer
+---The number of ticks to remain enraged after last taking damage.
+---@field enraged_duration MapTick
+---The movement speed while patrolling, in tiles per tick. Cannot be negative.
+---@field patrolling_speed number
+---The movement speed while investigating, in tiles per tick. Cannot be negative.
+---@field investigating_speed number
+---The movement speed while attacking, in tiles per tick. Cannot be negative.
+---@field attacking_speed number
+---The movement speed while enraged, in tiles per tick. Cannot be negative.
+---@field enraged_speed number
+---The acceleration rate when moving from one state to another. Cannot be negative.
+---@field acceleration_rate number
+---Turn radius, in tiles. Cannot be negative.
+---@field turn_radius number
+---Cannot be negative.
+---@field patrolling_turn_radius? number
+---Attempts to smooth out tight turns by limiting how quickly the unit can change turning directions. 0 means no turn smoothing, 1 means no turning whatsoever. Must be between 0 and 1.
+---@field turn_smoothing? number
+---The number of ticks between territory scans. Greater values means longer time between scans, which means a slower reaction time. Cannot be `0`.
+---@field ticks_per_scan? integer
+---Specification of the segment engine, which should contain a list of the segments that compose the entity's body.
+---@field segment_engine SegmentEngineSpecification
+---@field roar? Sound
+---The default is 1.0f / (6.0f * 60.0f), average pause between roars is 6 seconds.
+---@field roar_probability? number
+---Sound which plays when health ratio drops below any of `hurt_thresholds`.
+---@field hurt_roar? Sound
+---Only loaded, and mandatory if `hurt_roar` is defined.
+---@field hurt_thresholds? number[]
+
+---@class SelectionModeData
+---@field border_color Color
+---@field count_button_color? Color
+---@field chart_color? Color
+---@field cursor_box_type CursorBoxType
+---@field mode SelectionModeFlags
+---@field entity_filters? EntityID[]
+---@field entity_type_filters? string[]
+---@field tile_filters? TileID[]
+---@field started_sound? Sound
+---@field ended_sound? Sound
+---@field play_ended_sound_when_nothing_selected? boolean
+---@field entity_filter_mode? "whitelist"|"blacklist"
+---@field tile_filter_mode? "whitelist"|"blacklist"
+---If this is `false`, using any of the mode flags `"blueprint"`, `"deconstruct"`, `"cancel-deconstruct"`, `"upgrade"`, `"cancel-upgrade"` or `"downgrade"` without also specifying another flag that selects entities will result in an error, because the selection tool cannot select any entities and this is likely undesired behavior.
+---
+---Setting this to `true` disables this error.
+---@field ignore_cannot_select_entities? boolean
+---If this is `false`, using any of the mode flags `"blueprint"` or `"deconstruct"` without also specifying any flag that selects tiles will result in an error, because the selection tool cannot select any tiles and this is likely undesired behavior.
+---
+---Setting this to `true` disables this error.
+---@field ignore_cannot_select_tiles? boolean
+
+---An array containing the following values.
+---
+---Some flags only exclude objects from the selection, meaning they need to be combined with another flag to select anything.
+---@class SelectionModeFlags
+
+---Used in the base game as a base for the blueprint item and the deconstruction item.
+---@class SelectionToolPrototype : ItemWithLabelPrototype
+---@field type "selection-tool"
+---@field select SelectionModeData
+---@field alt_select SelectionModeData
+---@field super_forced_select? SelectionModeData
+---@field reverse_select? SelectionModeData
+---Settings for how the selection tool alt-reverse-selects things in-game (using SHIFT + Right mouse button).
+---@field alt_reverse_select? SelectionModeData
+---If tiles should be included in the selection regardless of entities also being in the selection. This is a visual only setting.
+---@field always_include_tiles? boolean
+---@field mouse_cursor? MouseCursorID
+---@field skip_fog_of_war? boolean
+
+---@class SelectorCombinatorPrototype : CombinatorPrototype
+---@field type "selector-combinator"
+---@field max_symbol_sprites? Sprite4Way
+---@field min_symbol_sprites? Sprite4Way
+---@field count_symbol_sprites? Sprite4Way
+---@field random_symbol_sprites? Sprite4Way
+---@field stack_size_sprites? Sprite4Way
+---@field rocket_capacity_sprites? Sprite4Way
+---@field quality_symbol_sprites? Sprite4Way
+---@field time_symbol_sprites? Sprite4Way
+---@field default_game_tick_output_signal? SignalIDConnector
+---@field default_day_tick_output_signal? SignalIDConnector
+---@field default_day_length_output_signal? SignalIDConnector
+
+---@class SemiPersistentWorldAmbientSoundDefinition
+---@field sound Sound
+---@field delay_mean_seconds? number
+---@field delay_variance_seconds? number
+
+---@class SendItemToOrbitTechnologyTrigger
+---@field type "send-item-to-orbit"
+---@field item ItemIDFilter
+
+---@class SendSpidertronTipTrigger : CountBasedTipTrigger
+---@field type "send-spidertron"
+---@field append? boolean
+
+---@class SendToOrbitMode
+
+---Triggered when the triggers listed in `triggers` are triggered in order.
+---@class SequenceTipTrigger
+---@field type "sequence"
+---List of triggers to fulfill.
+---@field triggers TipTrigger[]
+
+---@class SetFilterTipTrigger : CountBasedTipTrigger
+---@field type "set-filter"
+---@field entity? EntityID
+---@field match_type_only? boolean
+---@field consecutive? boolean
+
+---@class SetLogisticRequestTipTrigger : CountBasedTipTrigger
+---@field type "set-logistic-request"
+---@field logistic_chest_only? boolean
+---@field entity? EntityID
+
+---@class SetRecipeTipTrigger : CountBasedTipTrigger
+---@field type "set-recipe"
+---@field recipe? RecipeID
+---@field machine? EntityID
+---@field consecutive? boolean
+---@field any_quality? boolean
+---@field uses_fluid? boolean
+
+---@class SetTileTriggerEffectItem : TriggerEffectItem
+---@field type "set-tile"
+---@field tile_name TileID
+---@field radius number
+---@field apply_projection? boolean
+---@field apply_on_space_platform? boolean
+---@field tile_collision_mask? TileCollisionMaskConnector
+
+---A struct that provides access to the user-set values of startup mod settings. It is accessible through the global object named `settings`.
+---@class Settings
+---All startup mod settings, indexed by the name of the setting.
+---@field startup table<string, ModSetting>
+
+---@class SharedProbabilityDefinition
+---Lower end of the range of shared roll values that will allow product to be given. Must be >= `0` and <= `max`.
+---@field min number
+---Upper end of the range of shared roll values that will allow product to be given. Must be >= `min` and <= `1`.
+---@field max number
+
+---@class ShiftAnimationWaypoints
+---@field north Vector[]
+---@field east Vector[]
+---@field south Vector[]
+---@field west Vector[]
+
+---This prototype is used for receiving an achievement when the player shoots certain ammo.
+---@class ShootAchievementPrototype : AchievementPrototype
+---@field type "shoot-achievement"
+---This will trigger the achievement, if this ammo is shot.
+---@field ammo_type? ItemID
+---How much of the ammo needs to be shot.
+---@field amount? integer
+
+---@class ShootTipTrigger : CountBasedTipTrigger
+---@field type "shoot"
+---@field target? "enemy"|"entity"
+
+---Definition for a shortcut button in the shortcut bar.
+---
+---This is **not** a custom keybinding (keyboard shortcut), for that see CustomInputPrototype.
+---@class ShortcutPrototype : Prototype
+---@field type "shortcut"
+---If this is `"lua"`, on_lua_shortcut is raised when the shortcut is clicked.
+---@field action "toggle-alt-mode"|"undo"|"redo"|"paste"|"import-string"|"toggle-personal-roboport"|"toggle-personal-logistic-requests"|"toggle-equipment-movement-bonus"|"spawn-item"|"lua"
+---Can't be an empty array.
+---@field icons? IconData[]
+---Path to the icon file.
+---
+---Only loaded, and mandatory if `icons` is not defined.
+---@field icon? FileName
+---The size of the square icon, in pixels. E.g. `32` for a 32px by 32px icon. Must be larger than `0`.
+---
+---The base game uses 32px icons for shortcuts.
+---
+---Only loaded if `icons` is not defined.
+---@field icon_size? SpriteSizeType
+---Can't be an empty array.
+---@field small_icons? IconData[]
+---Path to the icon file. Used in the shortcut selection popup.
+---
+---Only loaded, and mandatory if `small_icons` is not defined.
+---@field small_icon? FileName
+---The size of the small icon, in pixels. E.g. `32` for a 32px by 32px icon. Must be larger than `0`.
+---
+---The base game uses 24px small icons for shortcuts.
+---
+---Only loaded if `small_icons` is not defined.
+---@field small_icon_size? SpriteSizeType
+---The item to create when clicking on a shortcut with the action set to `"spawn-item"`. The item must have the spawnable flag set.
+---@field item_to_spawn? ItemID
+---The technology that must be researched before this shortcut can be used. Once a shortcut is unlocked in one save file, it is unlocked for all future save files.
+---@field technology_to_unlock? TechnologyID
+---If `true`, the shortcut will not be available until its `technology_to_unlock` is researched, even if it was already researched in a different game.
+---@field unavailable_until_unlocked? boolean
+---Must be enabled for the Factorio API to be able to set the toggled state on the shortcut button, see LuaPlayer::set_shortcut_toggled.
+---@field toggleable? boolean
+---Name of a custom input or vanilla control. This is **only** used to show the keybind in the tooltip of the shortcut.
+---@field associated_control_input? string
+---@field style? "default"|"blue"|"red"|"green"
+---Used to order the shortcuts in the quick panel, which replaces the shortcut bar when using a controller (game pad). It is recommended to order modded shortcuts after the vanilla shortcuts.
+---@field order? Order
+
+---@class ShowExplosionOnChartTriggerEffectItem : TriggerEffectItem
+---@field type "show-explosion-on-chart"
+---@field scale number
+
+---@class SignalColorMapping : SignalIDConnector
+---@field color Color
+
+---@class SignalIDConnector
+---@field type "virtual"|"item"|"fluid"|"recipe"|"entity"|"space-location"|"asteroid-chunk"|"quality"
+---Name of the signal.
+---@field name VirtualSignalID|ItemID|FluidID|RecipeID|EntityID|SpaceLocationID|AsteroidChunkID|QualityID
+---Defaults to `normal`.
+---@field quality? QualityID
+
+---An axis aligned bounding box.
+---
+---SimpleBoundingBoxes are usually specified with the short-hand notation of passing an array of exactly 2 numbers. The first position is left_top, the second position is right_bottom.
+---
+---Positive x goes towards east, positive y goes towards south. This means that the upper-left point is the least dimension in x and y, and lower-right is the greatest.
+---@class SimpleBoundingBox
+---@field left_top MapPosition
+---@field right_bottom MapPosition
+
+---An extremely basic entity with no special functionality. Used for minable rocks. Cannot be rotated.
+---@class SimpleEntityPrototype : EntityWithHealthPrototype
+---@field type "simple-entity"
+---Whether this entity should be treated as a rock for the purpose of deconstruction and for CarPrototype::immune_to_rock_impacts.
+---@field count_as_rock_for_filtered_deconstruction? boolean
+---@field render_layer? RenderLayer
+---Used to determine render order for entities with the same `render_layer` in the same position. Entities with a higher `secondary_draw_order` are drawn on top.
+---@field secondary_draw_order? integer
+---@field random_animation_offset? boolean
+---Whether a random graphics variation is chosen when placing the entity/creating it via script/creating it via map generation. If this is `false`, the entity will use the first variation instead of a random one.
+---@field random_variation_on_create? boolean
+---If true, map generator will shuffle graphics variations for each chunk and pick the next one in sequence instead of making it purely position-based. This prevents identical entity variations from being too close to each other. This property overrides random_variation_on_create.
+---@field shuffled_variation_on_chunk_generated? boolean
+---Takes priority over `picture` and `animations`.
+---@field pictures? SpriteVariations
+---Takes priority over `animations`. Only the `north` sprite is used because this entity cannot be rotated.
+---@field picture? Sprite4Way
+---@field animations? AnimationVariations
+---@field lower_render_layer? RenderLayer
+---@field lower_pictures? SpriteVariations
+---Loaded and drawn with all `pictures`, `picture` and `animations`. If graphics variation is larger than number of `lower_pictures` variations this layer is not drawn.
+---@field stateless_visualisation_variations? StatelessVisualisation|StatelessVisualisation[][]
+
+---By default, this entity will be a priority target for units/turrets, who will choose to attack it even if it does not block their path. Setting EntityWithOwnerPrototype::is_military_target to `false` will turn this off, which then makes this type equivalent to SimpleEntityWithOwnerPrototype.
+---@class SimpleEntityWithForcePrototype : SimpleEntityWithOwnerPrototype
+---@field type "simple-entity-with-force"
+---Whether this prototype should be a high priority target for enemy forces. See Military units and structures.
+---@field is_military_target? boolean
+
+---Has a force, but unlike SimpleEntityWithForcePrototype it is only attacked if the biters get stuck on it (or if EntityWithOwnerPrototype::is_military_target set to true to make the two entity types equivalent).
+---
+---Can be rotated in 4 directions. `picture` can be used to specify different graphics per direction.
+---@class SimpleEntityWithOwnerPrototype : EntityWithOwnerPrototype
+---@field type "simple-entity-with-owner"
+---@field render_layer? RenderLayer
+---Used to determine render order for entities with the same `render_layer` in the same position. Entities with a higher `secondary_draw_order` are drawn on top.
+---@field secondary_draw_order? integer
+---@field random_animation_offset? boolean
+---Whether a random graphics variation is chosen when placing the entity/creating it via script/creating it via map generation. If this is false, the entity will use the first variation instead of a random one.
+---@field random_variation_on_create? boolean
+---Takes priority over `picture` and `animations`.
+---@field pictures? SpriteVariations
+---Takes priority over `animations`.
+---@field picture? Sprite4Way
+---@field animations? AnimationVariations
+---@field lower_render_layer? RenderLayer
+---Loaded and drawn with all `pictures`, `picture` and `animations`. If graphics variation is larger than number of `lower_pictures` variations this layer is not drawn.
+---@field lower_pictures? SpriteVariations
+---@field stateless_visualisation_variations? StatelessVisualisation|StatelessVisualisation[][]
+---If the entity is not visible to a player, the player cannot select it.
+---@field force_visibility? ForceCondition
+
+---@class SimpleModifier : BaseModifier
+---Modification value, which will be added to the variable it modifies.
+---@field modifier number
+
+---Used by tips and tricks and main menu simulations. Simulations can be controlled at runtime via LuaSimulation.
+---@class SimulationDefinition
+---@field planet? SpaceLocationID
+---Only applied to the simulation if a test player is created through LuaSimulation::create_test_player.
+---@field game_view_settings? GameViewSettings
+---The save file that is used for this simulation. If not given and `generate_map` is `true`, a map is generated by the game.
+---@field save? FileName
+---This code is run as a (silent) console command inside the simulation when it is first initialized. Since this is run as a console command, the restrictions of console commands apply, e.g. `require` is not available, see here.
+---@field init_file? FileName
+---Only loaded if `init_file` is not defined.
+---
+---This code is run as a (silent) console command inside the simulation when it is first initialized. Since this is run as a console command, the restrictions of console commands apply, e.g. `require` is not available, see here.
+---@field init? string
+---This code is run as a (silent) console command inside the simulation every time the simulation is updated. Since this is run as a console command, the restrictions of console commands apply, e.g. `require` is not available, see here.
+---@field update_file? FileName
+---Only loaded if `update_file` is not defined.
+---
+---This code is run as a (silent) console command inside the simulation every time the simulation is updated. Since this is run as a console command, the restrictions of console commands apply, e.g. `require` is not available, see here.
+---@field update? string
+---An array of mods whose runtime scripts will be loaded for this simulation, if they are present and enabled.
+---@field mods? string[]
+---Amount of ticks that this simulation should run for before the simulation is shown to the player. These updates happen after init/init_file has been run and at the highest possible rate (> 60 UPS).
+---@field init_update_count? integer
+---How long this simulation takes. In the main menu simulations, another simulation will start after this simulation ends.
+---@field length? integer
+---If `save` is not given and this is true, a map gets generated by the game for use in the simulation.
+---@field generate_map? boolean
+---If this is true, the map of the simulation is set to be a lab-tile checkerboard in the area of `{{-20, -15},{20, 15}}` when the scenario is first initialized (before init/init_file run).
+---@field checkboard? boolean
+---@field hide_health_bars? boolean
+---@field mute_technology_finished_sound? boolean
+---@field mute_alert_sounds? boolean
+---Multiplier for the simulation volume set by the player in the sound settings.
+---@field volume_modifier? number
+---If true, overrides the simulation volume set by the player in the sound settings, simply setting the volume modifier to `1`.
+---@field override_volume? boolean
+---Overrides whether a simulation has its wind sounds muted.
+---
+---Tips and Tricks simulations and Factoriopedia simulations have their wind sounds muted by default, other simulations don't.
+---@field mute_wind_sounds? boolean
+---@field hide_factoriopedia_gradient? boolean
+
+---One frame in time for a Bezier interpolation.
+---@class SingleGraphicLayerProcessionBezierControlPoint
+---Mandatory if `opacity` or `tint` is defined.
+---@field timestamp? MapTick
+---`opacity` and `opacity_t` interpolate a double smoothly over time.
+---@field opacity? number
+---Bidirectional tangent at the given timestamp.
+---@field opacity_t? number
+---`tint` and `tint_t` interpolate a color smoothly over time.
+---@field tint? Color
+---Bidirectional tangent at the given timestamp.
+---@field tint_t? Color
+---`rotation` and `rotation_t` interpolate a double smoothly over time.
+---@field rotation? number
+---Bidirectional tangent at the given timestamp.
+---@field rotation_t? number
+---`scale` and `scale_t` interpolate a double smoothly over time.
+---@field scale? number
+---Bidirectional tangent at the given timestamp.
+---@field scale_t? number
+---`shift` and `shift_t` interpolate a vector smoothly over time using `shift_rate` and `shift_rate_t` for a 0-1 rate curve.
+---
+---Vector value.
+---@field shift? Vector
+---Vector tangent.
+---@field shift_t? Vector
+---Rate 0-1 value.
+---@field shift_rate? number
+---Rate tangent.
+---@field shift_rate_t? number
+---the frame of the pod animation played. Used only when 'animation_driven_by_curve' is enabled.
+---@field frame? number
+
+---@class SingleGraphicProcessionLayer
+---@field type "single-graphic"
+---@field graphic ProcessionGraphic
+---@field render_layer? RenderLayer
+---@field secondary_draw_order? integer
+---Where the sprite is centered.
+---@field relative_to? EffectRelativeTo
+---Swaps the order of sprite shift and rotation.
+---@field compensated_pivot? boolean
+---@field rotates_with_pod? boolean
+---Only applied when the `relative_to` is `pod`.
+---@field shift_rotates_with_pod? boolean
+---@field is_passenger_only? boolean
+---@field clip_with_hatches? boolean
+---@field animation_driven_by_curve? boolean
+---@field frames SingleGraphicLayerProcessionBezierControlPoint[]
+
+---Root style: `"slider"`
+---@class SliderStyleSpecification : BaseStyleSpecification
+---@field type "slider_style"
+---Required on the root style.
+---@field full_bar? ElementImageSet
+---Required on the root style.
+---@field full_bar_disabled? ElementImageSet
+---Required on the root style.
+---@field empty_bar? ElementImageSet
+---Required on the root style.
+---@field empty_bar_disabled? ElementImageSet
+---Required on the root style.
+---@field draw_notches? boolean
+---Required on the root style.
+---@field notch? ElementImageSet
+---Required on the root style.
+---@field button? ButtonStyleSpecification
+---Required on the root style.
+---@field high_button? ButtonStyleSpecification
+
+---Abstract entity that has an animation.
+---@class SmokePrototype : EntityPrototype
+---@field animation? Animation
+---If this is false then the smoke expires when the animation has played once.
+---@field cyclic? boolean
+---May not be 0 if `cyclic` is true. If `cyclic` is false then the smoke will be expire when the animation has played once, even if there would still be duration left.
+---@field duration? integer
+---@field spread_duration? integer
+---`fade_in_duration` + `fade_away_duration` must be <= `duration`.
+---@field fade_away_duration? integer
+---`fade_in_duration` + `fade_away_duration` must be <= `duration`.
+---@field fade_in_duration? integer
+---@field start_scale? number
+---@field end_scale? number
+---@field color? Color
+---Smoke always moves randomly unless `movement_slow_down_factor` is 0. If `affected_by_wind` is true, the smoke will also be moved by wind.
+---@field affected_by_wind? boolean
+---@field show_when_smoke_off? boolean
+---@field render_layer? RenderLayer
+---Value between 0 and 1, with 0 being no movement.
+---@field movement_slow_down_factor? number
+---@field glow_fade_away_duration? integer
+---@field glow_animation? Animation
+---Must have a collision box size of zero.
+---@field collision_box? BoundingBox
+---The entity with the higher number is selectable before the entity with the lower number.
+---
+---The value `0` will be treated the same as `nil`.
+---@field selection_priority? integer
+
+---Definition of the smoke of an entity.
+---@class SmokeSource
+---@field name TrivialSmokeID
+---Number of smokes generated per entity animation cycle (or per tick for some entities). Can't be negative or infinite.
+---@field frequency number
+---Offsets animation cycle, to move at which points of the cycle the smoke gets emitted.
+---@field offset? number
+---Positional offset of smoke source relative to owner entity position. The vector is rotated by orientation of the entity.
+---
+---If any of `north_position`, `north_east_position`, `east_position`, `south_east_position`, `south_position`, `south_west_position`, `west_position`, `north_west_position` is defined, `position` is used only as default value for directional positions. Orientation of the owner entity will be rounded to 4 or 8 directions and one of the directional positions will be used as the offset instead of `position`.
+---@field position? Vector
+---@field has_8_directions? boolean
+---@field north_position? Vector
+---Only loaded if `has_8_directions` is `true`.
+---@field north_east_position? Vector
+---@field east_position? Vector
+---Only loaded if `has_8_directions` is `true`.
+---@field south_east_position? Vector
+---@field south_position? Vector
+---Only loaded if `has_8_directions` is `true`.
+---@field south_west_position? Vector
+---@field west_position? Vector
+---Only loaded if `has_8_directions` is `true`.
+---@field north_west_position? Vector
+---@field deviation? Vector
+---@field starting_frame? integer
+---@field starting_frame_deviation? integer
+---@field height? number
+---@field height_deviation? number
+---@field starting_vertical_speed? number
+---@field starting_vertical_speed_deviation? number
+---A value between `0` and `1`.
+---@field vertical_speed_slowdown? number
+
+---An entity with animation and a trigger.
+---@class SmokeWithTriggerPrototype : SmokePrototype
+---@field type "smoke-with-trigger"
+---@field action? Trigger
+---0 means never apply.
+---@field action_cooldown? integer
+---@field particle_count? integer
+---@field particle_distance_scale_factor? number
+---@field spread_duration_variation? integer
+---@field particle_duration_variation? integer
+---@field particle_spread? Vector
+---@field particle_scale_factor? Vector
+---@field wave_distance? Vector
+---@field wave_speed? Vector
+---If true, causes the smoke to move with the target entity if one is specified.
+---@field attach_to_target? boolean
+---If true, the smoke will immediately start fading away when the entity it is attached to is destroyed. If it was never attached to an entity in the first place, then the smoke will fade away immediately after being created.
+---@field fade_when_attachment_is_destroyed? boolean
+
+---A portable solar panel.
+---@class SolarPanelEquipmentPrototype : EquipmentPrototype
+---@field type "solar-panel-equipment"
+---How much power should be provided.
+---@field power Energy
+---@field performance_at_day? number
+---@field performance_at_night? number
+---Surface property must have a positive default value. When SolarPanelEquipmentPrototype::solar_coefficient_property is set to point at a different surface property than "solar-power", then LuaSurface::solar_power_multiplier and SpaceLocationPrototype::solar_power_in_space will be ignored as the solar panel power output will be only affected by value of this surface property set on the surface using PlanetPrototype::surface_properties or LuaSurface::set_property.
+---
+---Due to equipment grid overall description, when solar_coefficient_property is not solar-power, a different locale will be used to show total energy production of solar panels: `description.solar-panel-power-X` where X is the surface property name.
+---@field solar_coefficient_property? SurfacePropertyID
+
+---A solar panel.
+---@class SolarPanelPrototype : EntityWithOwnerPrototype
+---@field type "solar-panel"
+---Sets how this solar panel connects to the energy network. The most relevant property seems to be the output_priority.
+---@field energy_source ElectricEnergySource
+---The picture displayed for this solar panel.
+---@field picture? SpriteVariations
+---The maximum amount of power this solar panel can produce.
+---@field production Energy
+---Overlay has to be empty or have same number of variations as `picture`.
+---@field overlay? SpriteVariations
+---@field performance_at_day? number
+---@field performance_at_night? number
+---Surface property must have a positive default value. When SolarPanelPrototype::solar_coefficient_property is set to point at a different surface property than "solar-power", then LuaSurface::solar_power_multiplier and SpaceLocationPrototype::solar_power_in_space will be ignored as the solar panel power output will be only affected by value of this surface property set on the surface using PlanetPrototype::surface_properties or LuaSurface::set_property.
+---@field solar_coefficient_property? SurfacePropertyID
+
+---@class Sound
+---@field category? SoundType
+---Sounds with higher priority will replace a sound with lower priority if the maximum sounds limit is reached.
+---
+---0 is the highest priority, 255 is the lowest priority.
+---@field priority? integer
+---@field aggregation? AggregationSpecification
+---@field allow_random_repeat? boolean
+---Modifies how far a sound can be heard. Cannot be less than zero.
+---@field audible_distance_modifier? number
+---@field game_controller_vibration_data? GameControllerVibrationData
+---@field advanced_volume_control? AdvancedVolumeControl
+---@field speed_smoothing_window_size? integer
+---@field variations? SoundDefinition|SoundDefinition[]
+---Supported sound file formats are `.ogg` (Vorbis and Opus) and `.wav`.
+---
+---Only loaded, and mandatory if `variations` is not defined.
+---@field filename? FileName
+---Only loaded if `variations` is not defined.
+---
+---This sets both min and max volumes.
+---
+---Must be `>= 0`.
+---@field volume? number
+---Only loaded if `variations` and `volume` are not defined.
+---
+---Must be `>= 0`.
+---@field min_volume? number
+---Only loaded if `variations` is not defined.
+---
+---Only loaded if `min_volume` is defined.
+---
+---Must be `>= min_volume`.
+---@field max_volume? number
+---Only loaded if `variations` is not defined.
+---@field preload? boolean
+---Speed must be `>= 1 / 64`. This sets both min and max speeds.
+---
+---Only loaded if `variations` is not defined.
+---@field speed? number
+---Must be `>= 1 / 64`.
+---
+---Only loaded if both `variations` and `speed` are not defined.
+---@field min_speed? number
+---Must be `>= min_speed`.
+---
+---Only loaded if `variations` is not defined. Only loaded, and mandatory if `min_speed` is defined.
+---@field max_speed? number
+---Only loaded if `variations` is not defined.
+---@field modifiers? SoundModifier|SoundModifier[]
+
+---@class SoundAccent
+---@field sound? Sound
+---@field frame? integer
+---Play the `sound` for a working visualisation of a given WorkingVisualisation::name.
+---
+---The name cannot be empty.
+---@field play_for_working_visualisation? string
+---The `sound` is played when the entity has one the specified direction.
+---@field play_for_directions? defines.direction[]
+
+---@class SoundDefinition
+---Supported sound file formats are `.ogg` (Vorbis and Opus) and `.wav`.
+---@field filename FileName
+---This sets both min and max volumes.
+---
+---Must be `>= 0`.
+---@field volume? number
+---Only loaded if `volume` is not defined.
+---
+---Must be `>= 0`.
+---@field min_volume? number
+---Only loaded if `min_volume` is defined.
+---
+---Must be `>= min_volume`.
+---@field max_volume? number
+---@field preload? boolean
+---Speed must be `>= 1 / 64`. This sets both min and max speeds.
+---@field speed? number
+---Only loaded if `speed` is not defined.
+---
+---Must be `>= 1 / 64`.
+---@field min_speed? number
+---Only loaded, and mandatory, if `min_speed` is defined.
+---
+---Must be `>= min_speed`.
+---@field max_speed? number
+---@field modifiers? SoundModifier|SoundModifier[]
+
+---@class SoundModifier
+---@field type SoundModifierType
+---@field volume_multiplier number
+
+---@class SoundModifierType
+
+---Specifies a sound that can be used with SoundPath at runtime.
+---@class SoundPrototype
+---@field type "sound"
+---@field type "sound"
+---Name of the sound. Can be used as a SoundPath at runtime.
+---@field name string
+---@field category? SoundType
+---Sounds with higher priority will replace a sound with lower priority if the maximum sounds limit is reached.
+---
+---0 is the highest priority, 255 is the lowest priority.
+---@field priority? integer
+---@field aggregation? AggregationSpecification
+---@field allow_random_repeat? boolean
+---Modifies how far a sound can be heard. Must be between `0` and `1` inclusive.
+---@field audible_distance_modifier? number
+---@field game_controller_vibration_data? GameControllerVibrationData
+---@field advanced_volume_control? AdvancedVolumeControl
+---@field speed_smoothing_window_size? integer
+---@field variations? SoundDefinition|SoundDefinition[]
+---Supported sound file formats are `.ogg` (Vorbis and Opus) and `.wav`.
+---
+---Only loaded, and mandatory if `variations` is not defined.
+---@field filename? FileName
+---Only loaded if `variations` is not defined.
+---
+---This sets both min and max volumes.
+---
+---Must be `>= 0`.
+---@field volume? number
+---Only loaded if `variations` and `volume` are not defined.
+---
+---Must be `>= 0`.
+---@field min_volume? number
+---Only loaded if `variations` is not defined.
+---
+---Only loaded if `min_volume` is defined.
+---
+---Must be `>= min_volume`.
+---@field max_volume? number
+---Only loaded if `variations` is not defined.
+---@field preload? boolean
+---Speed must be `>= 1 / 64`. This sets both min and max speeds.
+---
+---Only loaded if `variations` is not defined.
+---@field speed? number
+---Must be `>= 1 / 64`.
+---
+---Only loaded if both `variations` and `speed` are not defined.
+---@field min_speed? number
+---Must be `>= min_speed`.
+---
+---Only loaded if `variations` is not defined. Only loaded, and mandatory if `min_speed` is defined.
+---@field max_speed? number
+---Only loaded if `variations` is not defined.
+---@field modifiers? SoundModifier|SoundModifier[]
+
+---This defines which slider in the sound settings affects the volume of this sound. Furthermore, some sound types are mixed differently than others, e.g. zoom level effects are applied.
+---@class SoundType
+
+---@class SpaceConnectionAsteroidSpawnDefinition
+---@field type? "entity"|"asteroid-chunk"
+---The type this is loaded as depends on `type`.
+---@field asteroid EntityID|AsteroidChunkID
+---@field spawn_points SpaceConnectionAsteroidSpawnPoint[]
+
+---@class SpaceConnectionAsteroidSpawnPoint : AsteroidSpawnPoint
+---@field distance number
+
+---@class SpaceConnectionDistanceTraveledAchievementPrototype : AchievementPrototype
+---@field type "space-connection-distance-traveled-achievement"
+---@field tracked_connection SpaceConnectionID
+---How far a platform must travel to gain this achievement. Repeated trips over a shorter distance do not count.
+---@field distance integer
+---The achievement is unidirectional, this property controls the direction (using space connection definition).
+---
+---When false, a platform must go through from location and travel in to direction. When true, a platform must go through `to` location and travel in `from` direction.
+---@field reversed boolean
+
+---The name of a SpaceConnectionPrototype.
+---@class SpaceConnectionID
+
+---@class SpaceConnectionPrototype : Prototype
+---@field type "space-connection"
+---@field from SpaceLocationID
+---@field to SpaceLocationID
+---Length of the space connection in km.
+---
+---Cannot be 0.
+---@field length? integer
+---@field asteroid_spawn_definitions? SpaceConnectionAsteroidSpawnDefinition[]
+---Can't be an empty array.
+---@field icons? IconData[]
+---Path to the icon file.
+---
+---Only loaded, and mandatory if `icons` is not defined.
+---@field icon? FileName
+---The size of the square icon, in pixels. E.g. `32` for a 32px by 32px icon. Must be larger than `0`.
+---
+---Only loaded if `icons` is not defined.
+---@field icon_size? SpriteSizeType
+
+---@class SpaceDustEffectProperties
+---@field noise_texture EffectTexture
+---@field asteroid_texture EffectTexture
+---@field asteroid_normal_texture EffectTexture
+---@field animation_speed? number
+
+---@class SpaceLocationAsteroidSpawnDefinition : AsteroidSpawnPoint
+---@field type? "entity"|"asteroid-chunk"
+---The type this is loaded as depends on `type`.
+---@field asteroid EntityID|AsteroidChunkID
+
+---The name of a SpaceLocationPrototype.
+---@class SpaceLocationID
+
+---A space location, such as a planet or the solar system edge.
+---@class SpaceLocationPrototype : Prototype
+---@field type "space-location"
+---A value which modifies platform speed; is subtracted when traveling from this location and added when traveling to this location.
+---@field gravity_pull? number
+---Distance from the sun in map coordinates.
+---@field distance number
+---Angle in relation to the sun.
+---@field orientation RealOrientation
+---The apparent size of the space location in map coordinates.
+---@field magnitude? number
+---The orientation where parked space platforms will be drawn.
+---@field parked_platforms_orientation? RealOrientation
+---The orientation where the location's name will be drawn.
+---@field label_orientation? RealOrientation
+---If `false`, the orbital ring around the sun will not be drawn for this location.
+---@field draw_orbit? boolean
+---@field solar_power_in_space? number
+---If greater than 0, `asteroid_spawn_definitions` will be used on space connections of this location, interpolated based on distance. The number specifies the percentage of the route where the location stops spawning its asteroids.
+---@field asteroid_spawn_influence? number
+---When set to true, it means that this connection offers fly condition rather than wait condition at the destination
+---@field fly_condition? boolean
+---@field auto_save_on_first_trip? boolean
+---@field procession_graphic_catalogue? ProcessionGraphicCatalogue
+---@field procession_audio_catalogue? ProcessionAudioCatalogue
+---These transitions are used for any platform stopped at this location.
+---@field platform_procession_set? ProcessionSet
+---These transitions are used for anything traveling from the surface associated with this location.
+---@field planet_procession_set? ProcessionSet
+---Can't be an empty array.
+---@field icons? IconData[]
+---Path to the icon file.
+---
+---Only loaded, and mandatory if `icons` is not defined.
+---@field icon? FileName
+---The size of the square icon, in pixels. E.g. `32` for a 32px by 32px icon. Must be larger than `0`.
+---
+---Only loaded if `icons` is not defined.
+---@field icon_size? SpriteSizeType
+---Can't be an empty array.
+---@field starmap_icons? IconData[]
+---Path to the icon file.
+---
+---Only loaded if `starmap_icons` is not defined.
+---@field starmap_icon? FileName
+---The size of the starmap icon, in pixels. E.g. `32` for a 32px by 32px icon. Must be larger than `0`.
+---
+---Only loaded if `starmap_icons` is not defined.
+---@field starmap_icon_size? SpriteSizeType
+---Orientation of the starmap icon, defaults to pointing towards the sun.
+---@field starmap_icon_orientation? RealOrientation
+---@field asteroid_spawn_definitions? SpaceLocationAsteroidSpawnDefinition[]
+---Hides the space location from the planet selection lists and the space map.
+---@field hidden? boolean
+---Render parameters that influence platforms orbiting this space location.
+---@field platform_surface_render_parameters? SurfaceRenderParameters
+
+---@class SpacePlatformHubPrototype : EntityWithOwnerPrototype
+---@field type "space-platform-hub"
+---@field graphics_set? CargoBayConnectableGraphicsSet
+---@field inventory_size ItemStackIndex
+---@field persistent_ambient_sounds? PersistentWorldAmbientSoundsDefinition
+---The maximum circuit wire distance for this entity.
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---@field circuit_connector? CircuitConnectorDefinition
+---@field default_speed_signal? SignalIDConnector
+---@field default_damage_taken_signal? SignalIDConnector
+---Repair speed of entities is multiplied by this value when they are on a space platform with this hub prototype.
+---@field platform_repair_speed_modifier? number
+---Mass which this entity adds to total space platform mass when placed.
+---@field weight? Weight
+---@field cargo_station_parameters CargoStationParameters
+---Has to be 256 to make blueprints snap to (0, 0) most of the time.
+---@field build_grid_size? 256
+
+---@class SpacePlatformStarterPackPrototype : ItemPrototype
+---@field type "space-platform-starter-pack"
+---@field trigger? Trigger
+---@field surface? SurfaceID
+---@field create_electric_network? boolean
+---@field tiles? SpacePlatformTileDefinition[]
+---The quality of the items will match the quality of the starter pack.
+---@field initial_items? ItemProductPrototype[]
+
+---@class SpacePlatformTileDefinition
+---@field tile TileID
+---@field position TilePosition
+
+---@class SpacePlatformsModifier : BoolModifier
+---@field type "unlock-space-platforms"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---Nebulae are rendered only behind tiles with the effect, but stars are rendered behind entire terrain. For that reason using two or more tile types with different space effect on one surface is not supported. The game will allow this to happen, but rendering will chose one star configuration for entire screen.
+---
+---Zoom is recalculated using formula `max(1/1024, pow(max(0, zoom * base_factor + base_offset), exponent) * factor + offset)`.
+---@class SpaceTileEffectParameters
+---@field scroll_factor? number
+---@field zoom_base_factor? number
+---@field zoom_base_offset? number
+---@field zoom_exponent? number
+---@field zoom_factor? number
+---@field zoom_offset? number
+---@field nebula_scale? number
+---@field nebula_brightness? number
+---@field nebula_saturation? number
+---@field star_density? number
+---@field star_scale? number
+---@field star_parallax? number
+---@field star_shape? number
+---@field star_brightness? number
+---@field star_saturations? number
+
+---@class SpacingItem
+---The index of the row or column after which to insert `spacing`.
+---@field index integer
+---The spacing in scaled pixels between columns `column` and `column + 1`.
+---@field spacing integer
+
+---The definition of a evolution and probability weights for a spawnable unit for a EnemySpawnerPrototype.
+---
+---It can be specified as a table with named or numbered keys, but not a mix of both. If this is specified as a table with numbered keys then the first value is the evolution factor and the second is the spawn weight.
+---@class SpawnPoint
+---@field evolution_factor number
+---Must be `>= 0`.
+---@field spawn_weight number
+
+---Properties of the spectator controller.
+---@class SpectatorControllerPrototype
+---@field type "spectator-controller"
+---@field type "spectator-controller"
+---Name of the spectator controller. Base game uses "default".
+---@field name string
+---Must be >= 0.34375.
+---@field movement_speed number
+
+---A speech bubble. It floats in the world and can display text.
+---@class SpeechBubblePrototype : EntityPrototype
+---@field type "speech-bubble"
+---Needs a style of the type "speech_bubble_style", defined inside the gui styles.
+---@field style string
+---Needs a style of the type "flow_style", defined inside the gui styles.
+---@field wrapper_flow_style? string
+---@field y_offset? number
+---@field fade_in_out_ticks? integer
+---The entity with the higher number is selectable before the entity with the lower number.
+---
+---The value `0` will be treated the same as `nil`.
+---@field selection_priority? integer
+
+---Root style: `"speech_bubble"`
+---@class SpeechBubbleStyleSpecification : BaseStyleSpecification
+---@field type "speech_bubble_style"
+---Required on the root style.
+---@field frame_style? FrameStyleSpecification
+---Required on the root style.
+---@field label_style? LabelStyleSpecification
+---Required on the root style.
+---@field arrow_graphical_set? ElementImageSet
+---Required on the root style.
+---@field close_color? Color
+---Required on the root style.
+---@field arrow_indent? number
+---Required on the root style.
+---@field pass_through_mouse? boolean
+
+---@class SpentFluidSpecification
+---@field name FluidID
+---@field amount? number
+---@field temperature? number
+
+---Used by SpiderVehiclePrototype.
+---@class SpiderEngineSpecification
+---@field legs SpiderLegSpecification|SpiderLegSpecification[]
+---The amount of overlap allowed between spider leg walking groups. Valid values are between 0.0 and 1.0. Default is 0.0 (no overlap); all legs in the current walking group must complete their step before the next walking group is allowed to move. 0.5 means the next walking group is allowed to start when the time remaining in the current walking group's step is about half of the time that the next group's step is predicted to take.
+---@field walking_group_overlap? number
+
+---@class SpiderLegGraphicsSet
+---@field joint_turn_offset? number
+---@field joint_render_layer? RenderLayer
+---@field joint? RotatedSprite
+---@field joint_shadow? RotatedSprite
+---@field upper_part? SpiderLegPart
+---@field lower_part? SpiderLegPart
+---@field upper_part_shadow? SpiderLegPart
+---@field lower_part_shadow? SpiderLegPart
+---@field upper_part_water_reflection? SpiderLegPart
+---@field lower_part_water_reflection? SpiderLegPart
+---@field foot? RotatedSprite
+---@field foot_shadow? RotatedSprite
+---Refer to EntityPrototype::water_reflection.
+---@field water_reflection? WaterReflectionDefinition
+
+---@class SpiderLegPart
+---@field top_end? RotatedSprite
+---@field middle? RotatedSprite
+---@field bottom_end? RotatedSprite
+---@field middle_offset_from_top? number
+---@field middle_offset_from_bottom? number
+---@field top_end_length? number
+---@field bottom_end_length? number
+---The number of tiles in screen space to shift the top end of the leg part AWAY from the top joint.
+---@field top_end_offset? number
+---The number of tiles in screen space to shift the bottom end of the leg part AWAY from the bottom joint.
+---@field bottom_end_offset? number
+---The sprite layer in which to draw this leg part.
+---@field render_layer? RenderLayer
+
+---Used by SpiderLegSpecification for SpiderVehiclePrototype, also known as spidertron.
+---@class SpiderLegPrototype : EntityWithOwnerPrototype
+---@field type "spider-leg"
+---A scalar that controls the amount of influence this leg has over the position of the torso. Must be greater than 0.
+---@field stretch_force_scalar? number
+---The flexibility of hip. Must be between 0 and 1 inclusive. 0 means the hip doesn't flex at all, and 1 means the hip can bend the entire range, from straight up to straight down. Values less than one will dampen the hip flexibility and cause the upper and lower leg parts to stretch and squish more to compensate. Does not affect movement, only graphics.
+---@field hip_flexibility? number
+---The resting height of the knee from the ground. Used to derive leg part length and size. If set too low, this could cause the knee to invert, bending inwards underneath the spider.
+---@field knee_height number
+---The placement of the knee relative to the torso of the spider and the end of the foot when at rest. Used to calculate the shape of the leg and the length of the individual parts. Values between 0 and 1 place the knee between the torso and the leg. Values closer to 0 will place the knee closer to the torso.
+---@field knee_distance_factor number
+---The height of the foot from the ground when at rest.
+---@field ankle_height? number
+---@field initial_movement_speed number
+---@field movement_acceleration number
+---@field target_position_randomisation_distance number
+---@field minimal_step_size number
+---@field base_position_selection_distance number
+---@field movement_based_position_selection_distance number
+---@field graphics_set? SpiderLegGraphicsSet
+---Cannot be negative.
+---@field walking_sound_volume_modifier? number
+---Must be larger than 0.
+---@field walking_sound_speed_modifier? number
+---@field upper_leg_dying_trigger_effects? SpiderLegTriggerEffect[]
+---@field lower_leg_dying_trigger_effects? SpiderLegTriggerEffect[]
+---The entity with the higher number is selectable before the entity with the lower number.
+---
+---The value `0` will be treated the same as `nil`.
+---@field selection_priority? integer
+
+---Used by SpiderEngineSpecification for SpiderVehiclePrototype.
+---@class SpiderLegSpecification
+---Name of a SpiderLegPrototype.
+---@field leg EntityID
+---Projected offset from the center of the spider's elevated torso to the point where the leg connects to the body of the spider when the spider is facing due north.
+---
+---This offset should already be projected, meaning that it should apply the camera's 45 degree overhead angle, same as the spider's torso sprites should. If this mount position rotates with the spider's torso and the torso sprite(s) apply projection, the mount position will automatically account for the camera projection when rotating. See RotatedAnimation::apply_projection.
+---
+---If the spider's torso sprites do not apply projection, then this mount_position should not apply projection either.
+---
+---This value rotates with the spider's orientation, which is rounded to match either the spider torso's SpiderTorsoGraphicsSet::base_animation directions or if not base sprite is defined, its SpiderTorsoGraphicsSet::animation directions if defined.
+---@field mount_position Vector
+---The unprojected offset from the center of the spider's non-elevated torso to the position where the leg touches the ground when the spider is facing due north.
+---
+---This value rotates with the spider's orientation, which is rounded to match either the spider torso's SpiderTorsoGraphicsSet::base_animation directions or if not base sprite is defined, its SpiderTorsoGraphicsSet::animation directions if defined.
+---@field ground_position Vector
+---Triggers to activate whenever the leg hits the ground, even if the owning spider is actively attacking an entity. For triggers, the source is the leg entity and the target is the leg's current position. Certain effects may not raise as desired, e.g. `"push-back"` does nothing.
+---@field leg_hit_the_ground_trigger? TriggerEffect
+---Triggers to activate whenever the leg hits the ground and the owning spider is actively attacking an entity. These effects will trigger after `leg_hit_the_ground_trigger` have triggered. For triggers, the source is the let entity and the target is the leg's current position. Certain effects may not raise as desired.
+---@field leg_hit_the_ground_when_attacking_trigger? TriggerEffect
+---The walking group this leg belongs to. Legs in the same walking group move or stay still at the same time, according to the engine that drives them. Walking groups must start at 1 and increment upward without skipping any numbers. If all legs are part of the same walking_group, they will all move simultaneously.
+---@field walking_group integer
+
+---@class SpiderLegTriggerEffect
+---A number between 0 and 1 (inclusive) representing the distance from the upper end of the leg (0) to the lower end of the leg (1) where the effects will be triggered. For the upper leg, position 0 represents the point that the leg connects to the entity's hip and position 1 represents the knee. For the lower leg, position 0 represents the knee and position 1 represents the foot.
+---@field position number
+---@field effect TriggerEffect
+
+---@class SpiderTorsoGraphicsSet
+---@field base_animation? RotatedAnimation
+---If no sprite flags are defined, then this animation is loaded and treated as a shadow by default.
+---@field shadow_base_animation? RotatedAnimation
+---@field animation? RotatedAnimation
+---If no sprite flags are defined, then this animation is loaded and treated as a shadow by default.
+---@field shadow_animation? RotatedAnimation
+---@field base_render_layer? RenderLayer
+---@field render_layer? RenderLayer
+---Refer to EntityPrototype::water_reflection.
+---@field water_reflection? WaterReflectionDefinition
+
+---@class SpiderUnitPrototype : EntityWithOwnerPrototype
+---@field type "spider-unit"
+---@field spider_engine SpiderEngineSpecification
+---The height of the spider affects the shooting height and the drawing of the graphics and lights.
+---@field height number
+---Cannot be negative.
+---@field torso_bob_speed? number
+---The orientation of the torso of the spider affects the shooting direction and the drawing of the graphics and lights.
+---@field torso_rotation_speed? number
+---@field graphics_set? SpiderTorsoGraphicsSet
+---@field absorptions_to_join_attack? table<AirbornePollutantID, number>
+---@field spawning_time_modifier? number
+---A list of entity prototypes that this spider unit can build when given the build base command.
+---
+---If empty or not specified, the spider unit cannot build anything.
+---@field buildable_entities? EntityID[]
+---In chunks. The radius of how many chunks this spider unit charts around itself.
+---@field radar_range? integer
+---@field steering? SteeringSettings
+---@field attack_parameters AttackParameters
+---@field dying_sound? Sound
+---A sound the spider unit makes when it sets out to attack.
+---@field warcry? Sound
+---Must be less than or equal to 100.
+---@field vision_distance number
+---@field distraction_cooldown integer
+---@field min_pursue_time? integer
+---@field max_pursue_distance? number
+---@field ai_settings? UnitAISettings
+
+---Used to specify the graphics for SpiderVehiclePrototype.
+---@class SpiderVehicleGraphicsSet : SpiderTorsoGraphicsSet
+---@field autopilot_destination_visualisation_render_layer? RenderLayer
+---@field light? LightDefinition
+---Placed in multiple positions, as determined by `light_positions`.
+---@field eye_light? LightDefinition
+---@field autopilot_destination_on_map_visualisation? Animation
+---@field autopilot_destination_queue_on_map_visualisation? Animation
+---@field autopilot_destination_visualisation? Animation
+---@field autopilot_destination_queue_visualisation? Animation
+---@field autopilot_path_visualisation_line_width? number
+---@field autopilot_path_visualisation_on_map_line_width? number
+---Defines where each `eye_light` is placed. One array per eye and each of those arrays should contain one position per body direction.
+---@field light_positions? Vector[][]
+---The default mask color for the spider vehicle. Defaults to orange.
+---@field default_color? number
+
+---A spidertron.
+---@class SpiderVehiclePrototype : VehiclePrototype
+---@field type "spider-vehicle"
+---@field energy_source BurnerEnergySource|VoidEnergySource
+---@field inventory_size ItemStackIndex
+---@field graphics_set? SpiderVehicleGraphicsSet
+---@field spider_engine SpiderEngineSpecification
+---The height of the spider affects the shooting height and the drawing of the graphics and lights.
+---@field height number
+---@field movement_energy_consumption Energy
+---@field automatic_weapon_cycling boolean
+---This is applied whenever the spider shoots (manual and automatic targeting), `automatic_weapon_cycling` is true and the next gun in line (which is then selected) has ammo. When all of the above is the case, the chain_shooting_cooldown_modifier is a multiplier on the remaining shooting cooldown: `cooldown = (remaining_cooldown × chain_shooting_cooldown_modifier)`.
+---
+---chain_shooting_cooldown_modifier is intended to be in the range of 0 to 1. This means that setting chain_shooting_cooldown_modifier to 0 reduces the remaining shooting cooldown to 0 while a chain_shooting_cooldown_modifier of 1 does not affect the remaining shooting cooldown at all.
+---@field chain_shooting_cooldown_modifier number
+---The orientation of the torso of the spider affects the shooting direction and the drawing of the graphics and lights.
+---@field torso_rotation_speed? number
+---Cannot be negative.
+---@field torso_bob_speed? number
+---If set to 0 then the spider will not have a Logistics tab.
+---@field trash_inventory_size? ItemStackIndex
+---The guns this spider vehicle uses.
+---@field guns? ItemID[]
+
+---The spidertron remote. This remote can only be used for entities of type SpiderVehiclePrototype.
+---@class SpidertronRemotePrototype : SelectionToolPrototype
+---@field type "spidertron-remote"
+---Color mask for the icon. This is used to show the color of the spidertron remote LEDS in the GUI.
+---@field icon_color_indicator_mask? FileName
+---Count of items of the same name that can be stored in one inventory slot. Must be 1 when the `"not-stackable"` flag is set.
+---@field stack_size 1
+
+---A splitter.
+---@class SplitterPrototype : TransportBeltConnectablePrototype
+---@field type "splitter"
+---@field structure? Animation4Way
+---Drawn 1 tile north of `structure` when the splitter is facing east or west.
+---@field structure_patch? Animation4Way
+---@field frozen_patch? Sprite4Way
+---@field structure_animation_speed_coefficient? number
+---@field structure_animation_movement_cooldown? integer
+---The name of the TransportBeltPrototype which is used for the sound of the underlying belt.
+---@field related_transport_belt? EntityID
+---The maximum circuit wire distance for this entity.
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---@field circuit_connector? [CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition]
+---@field default_input_left_condition? CircuitConditionConnector
+---@field default_input_right_condition? CircuitConditionConnector
+---@field default_output_left_condition? CircuitConditionConnector
+---@field default_output_right_condition? CircuitConditionConnector
+
+---@class SpoilToTriggerResult
+---@field trigger Trigger
+---Must be positive (larger than 0).
+---@field items_per_trigger ItemCountType
+
+---Specifies one picture that can be used in the game.
+---
+---When there is more than one sprite or Animation frame with the same source file and dimensions/position in the game, they all share the same memory.
+---@class Sprite : SpriteParameters
+---If this property is present, all Sprite definitions have to be placed as entries in the array, and they will all be loaded from there. `layers` may not be an empty table. Each definition in the array may also have the `layers` property.
+---
+---If this property is present, all other properties, including those inherited from SpriteParameters, are ignored.
+---@field layers? Sprite[]
+---Only loaded, and mandatory if `layers` is not defined.
+---
+---The path to the sprite file to use.
+---@field filename? FileName
+---Only loaded if `layers` is not defined.
+---
+---Number of slices this is sliced into when using the "optimized atlas packing" option. If you are a modder, you can just ignore this property. Example: If this is 4, the sprite will be sliced into a 4x4 grid.
+---@field dice? SpriteSizeType
+---Only loaded if `layers` is not defined.
+---
+---Same as `dice` above, but this specifies only how many slices there are on the x axis.
+---@field dice_x? SpriteSizeType
+---Only loaded if `layers` is not defined.
+---
+---Same as `dice` above, but this specifies only how many slices there are on the y axis.
+---@field dice_y? SpriteSizeType
+
+---A map of sprites for all 16 directions of the entity.
+---@class Sprite16Way
+---@field sheets? SpriteNWaySheet[]
+---Only loaded if `sheets` is not defined.
+---@field sheet? SpriteNWaySheet
+---Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
+---@field north? Sprite
+---Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
+---@field north_north_east? Sprite
+---Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
+---@field north_east? Sprite
+---Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
+---@field east_north_east? Sprite
+---Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
+---@field east? Sprite
+---Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
+---@field east_south_east? Sprite
+---Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
+---@field south_east? Sprite
+---Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
+---@field south_south_east? Sprite
+---Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
+---@field south? Sprite
+---Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
+---@field south_south_west? Sprite
+---Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
+---@field south_west? Sprite
+---Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
+---@field west_south_west? Sprite
+---Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
+---@field west? Sprite
+---Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
+---@field west_north_west? Sprite
+---Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
+---@field north_west? Sprite
+---Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
+---@field north_north_west? Sprite
+
+---Sprites for the 4 major directions of the entity. If this is loaded as a single Sprite, it applies to all directions.
+---
+---This struct is either loaded as `sheets` or `sheet` or a map of one sprite per direction. For per direction sprites, the sprites are loaded via `north`, `east`, `south` and `west`.
+---@class Sprite4Way
+---@field sheets? SpriteNWaySheet[]
+---Only loaded if `sheets` is not defined.
+---@field sheet? SpriteNWaySheet
+---Only loaded if both `sheets` and `sheet` are not defined.
+---@field north? Sprite
+---Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
+---
+---Only loaded if `north` is defined.
+---@field east? Sprite
+---Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
+---
+---Only loaded if `north` is defined.
+---@field south? Sprite
+---Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
+---
+---Only loaded if `north` is defined.
+---@field west? Sprite
+
+---A map of sprites for 8 directions of the entity.
+---@class Sprite8Way
+---@field sheets? SpriteNWaySheet[]
+---Only loaded if `sheets` is not defined.
+---@field sheet? SpriteNWaySheet
+---Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
+---@field north? Sprite
+---Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
+---@field north_east? Sprite
+---Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
+---@field east? Sprite
+---Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
+---@field south_east? Sprite
+---Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
+---@field south? Sprite
+---Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
+---@field south_west? Sprite
+---Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
+---@field west? Sprite
+---Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
+---@field north_west? Sprite
+
+---An array containing the following values.
+---@class SpriteFlags
+
+---@class SpriteNWaySheet : SpriteParameters
+---Specifies how many of the directions of the SpriteNWay are filled up with this sheet.
+---@field frames? integer
+---Specifies for how many directions each frame is used. Silently forced to always be at least `1`.
+---@field frame_repeat? integer
+---Unused.
+---@field generate_sdf? boolean
+
+---@class SpriteParameters : SpriteSource
+---@field priority? SpritePriority
+---@field flags? SpriteFlags
+---The shift in tiles. `util.by_pixel()` can be used to divide the shift by 32 which is the usual pixel height/width of 1 tile in normal resolution. Note that 32 pixel tile height/width is not enforced anywhere - any other tile height or width is also possible.
+---@field shift? Vector
+---Whether to rotate the `shift` alongside the sprite's rotation. This only applies to sprites which are procedurally rotated by the game engine (like projectiles, wires, inserter hands, etc).
+---@field rotate_shift? boolean
+---@field apply_special_effect? boolean
+---Values other than `1` specify the scale of the sprite on default zoom. A scale of `2` means that the picture will be two times bigger on screen (and thus more pixelated).
+---@field scale? number
+---Only one of `draw_as_shadow`, `draw_as_glow` and `draw_as_light` can be true. This takes precedence over `draw_as_glow` and `draw_as_light`.
+---@field draw_as_shadow? boolean
+---Only one of `draw_as_shadow`, `draw_as_glow` and `draw_as_light` can be true. This takes precedence over `draw_as_light`.
+---
+---Draws first as a normal sprite, then again as a light layer. See https://forums.factorio.com/91682.
+---@field draw_as_glow? boolean
+---Only one of `draw_as_shadow`, `draw_as_glow` and `draw_as_light` can be true.
+---@field draw_as_light? boolean
+---Loaded only if `draw_as_shadow`, `draw_as_glow` and `draw_as_light` are `false`, and only by sprites used by tile renderer (decals and underwater patches). The purpose of setting this to `false` is to preserve water mask from sprites that are supposed to be drawn under the water.
+---@field occludes_light? boolean
+---Only loaded if this is an icon, that is it has the flag `"group=icon"` or `"group=gui"`. Will be clamped to range `[0, 5]`.
+---@field mipmap_count? integer
+---@field apply_runtime_tint? boolean
+---@field tint_as_overlay? boolean
+---@field invert_colors? boolean
+---@field tint? Color
+---@field blend_mode? BlendMode
+---This property is only used by sprites used in UtilitySprites that have the `"icon"` flag set.
+---
+---If this is set to `true`, the game will generate an icon shadow (using signed distance fields) for the sprite.
+---@field generate_sdf? boolean
+---Provides hint to sprite atlas system, so it can try to put sprites that are intended to be used at the same locations to the same sprite atlas.
+---@field surface? SpriteUsageSurfaceHint
+---Provides hint to sprite atlas system, so it can pack sprites that are related to each other to the same sprite atlas.
+---@field usage? SpriteUsageHint
+
+---This sets the caching priority of a sprite, influencing whether it is kept in VRAM or streamed from disk in VRAM-limited situations. See here and here for context.
+---@class SpritePriority
+
+---Specifies an image that can be used with SpritePath at runtime.
+---@class SpritePrototype
+---@field type "sprite"
+---@field type "sprite"
+---Name of the sprite. Can be used as a SpritePath at runtime.
+---@field name string
+---If this property is present, all Sprite definitions have to be placed as entries in the array, and they will all be loaded from there. `layers` may not be an empty table. Each definition in the array may also have the `layers` property.
+---
+---If this property is present, all other properties besides `name` and `type` are ignored.
+---@field layers? Sprite[]
+---Only loaded, and mandatory if `layers` is not defined.
+---
+---The path to the sprite file to use.
+---@field filename? FileName
+---Only loaded if `layers` is not defined.
+---
+---Number of slices this is sliced into when using the "optimized atlas packing" option. If you are a modder, you can just ignore this property. Example: If this is 4, the sprite will be sliced into a 4x4 grid.
+---@field dice? SpriteSizeType
+---Only loaded if `layers` is not defined.
+---
+---Same as `dice` above, but this specifies only how many slices there are on the x axis.
+---@field dice_x? SpriteSizeType
+---Only loaded if `layers` is not defined.
+---
+---Same as `dice` above, but this specifies only how many slices there are on the y axis.
+---@field dice_y? SpriteSizeType
+---Only loaded if `layers` is not defined.
+---@field priority? SpritePriority
+---Only loaded if `layers` is not defined.
+---@field flags? SpriteFlags
+---Only loaded if `layers` is not defined.
+---
+---The width and height of the sprite. If this is a tuple, the first member of the tuple is the width and the second is the height. Otherwise the size is both width and height. Width and height may only be in the range of 0-4096.
+---@field size? SpriteSizeType|[SpriteSizeType, SpriteSizeType]
+---Only loaded if `layers` is not defined. Mandatory if `size` is not defined.
+---
+---Width of the picture in pixels, from 0-4096.
+---@field width? SpriteSizeType
+---Only loaded if `layers` is not defined. Mandatory if `size` is not defined.
+---
+---Height of the picture in pixels, from 0-4096.
+---@field height? SpriteSizeType
+---Only loaded if `layers` is not defined.
+---
+---Horizontal position of the sprite in the source file in pixels.
+---@field x? SpriteSizeType
+---Only loaded if `layers` is not defined.
+---
+---Vertical position of the sprite in the source file in pixels.
+---@field y? SpriteSizeType
+---Only loaded if `layers` is not defined.
+---
+---Loaded only when `x` and `y` are both `0`. The first member of the tuple is `x` and the second is `y`.
+---@field position? [SpriteSizeType, SpriteSizeType]
+---Only loaded if `layers` is not defined.
+---
+---The shift in tiles. `util.by_pixel()` can be used to divide the shift by 32 which is the usual pixel height/width of 1 tile in normal resolution. Note that 32 pixel tile height/width is not enforced anywhere - any other tile height or width is also possible.
+---@field shift? Vector
+---Only loaded if `layers` is not defined.
+---@field rotate_shift? boolean
+---Only loaded if `layers` is not defined.
+---@field apply_special_effect? boolean
+---Only loaded if `layers` is not defined.
+---
+---Values other than `1` specify the scale of the sprite on default zoom. A scale of `2` means that the picture will be two times bigger on screen (and thus more pixelated).
+---@field scale? number
+---Only loaded if `layers` is not defined.
+---
+---Only one of `draw_as_shadow`, `draw_as_glow` and `draw_as_light` can be true. This takes precedence over `draw_as_glow` and `draw_as_light`.
+---@field draw_as_shadow? boolean
+---Only loaded if `layers` is not defined.
+---
+---Only one of `draw_as_shadow`, `draw_as_glow` and `draw_as_light` can be true. This takes precedence over `draw_as_light`.
+---
+---Draws first as a normal sprite, then again as a light layer. See https://forums.factorio.com/91682.
+---@field draw_as_glow? boolean
+---Only loaded if `layers` is not defined.
+---
+---Only one of `draw_as_shadow`, `draw_as_glow` and `draw_as_light` can be true.
+---@field draw_as_light? boolean
+---Only loaded if `layers` is not defined.
+---
+---Only loaded if this is an icon, that is it has the flag `"group=icon"` or `"group=gui"`.
+---@field mipmap_count? integer
+---Only loaded if `layers` is not defined.
+---@field apply_runtime_tint? boolean
+---Only loaded if `layers` is not defined.
+---@field tint_as_overlay? boolean
+---Only loaded if `layers` is not defined.
+---@field invert_colors? boolean
+---Only loaded if `layers` is not defined.
+---@field tint? Color
+---Only loaded if `layers` is not defined.
+---@field blend_mode? BlendMode
+---Only loaded if `layers` is not defined.
+---
+---Minimal mode is entered when mod loading fails. You are in it when you see the gray box after (part of) the loading screen that tells you a mod error. Modders can ignore this property.
+---@field load_in_minimal_mode? boolean
+---Only loaded if `layers` is not defined.
+---
+---Whether alpha should be pre-multiplied.
+---@field premul_alpha? boolean
+---Only loaded if `layers` is not defined.
+---
+---If `true`, the sprite may be downsampled to half its size on load even when 'Sprite quality' graphics setting is set to 'High'. Whether downsampling happens depends on detected hardware and other graphics settings.
+---@field allow_forced_downscale? boolean
+---Only loaded if `layers` is not defined.
+---
+---Unused.
+---@field generate_sdf? boolean
+---Only loaded if `layers` is not defined.
+---
+---Provides hint to sprite atlas system, so it can try to put sprites that are intended to be used at the same locations to the same sprite atlas.
+---@field surface? SpriteUsageSurfaceHint
+---Only loaded if `layers` is not defined.
+---
+---Provides hint to sprite atlas system, so it can pack sprites that are related to each other to the same sprite atlas.
+---@field usage? SpriteUsageHint
+
+---@class SpriteSheet : SpriteParameters
+---If this property is present, all SpriteSheet definitions have to be placed as entries in the array, and they will all be loaded from there. `layers` may not be an empty table. Each definition in the array may also have the `layers` property.
+---
+---If this property is present, all other properties, including those inherited from SpriteParameters, are ignored.
+---@field layers? SpriteSheet[]
+---@field variation_count? integer
+---@field repeat_count? integer
+---@field line_length? integer
+---@field filenames? FileName[]
+---Mandatory if `filenames` is defined.
+---@field lines_per_file? integer
+---Number of slices this is sliced into when using the "optimized atlas packing" option. If you are a modder, you can just ignore this property. Example: If this is 4, the sprite will be sliced into a 4x4 grid.
+---@field dice? SpriteSizeType
+---Same as `dice` above, but this specifies only how many slices there are on the x axis.
+---@field dice_x? SpriteSizeType
+---Same as `dice` above, but this specifies only how many slices there are on the y axis.
+---@field dice_y? SpriteSizeType
+---Only loaded, and mandatory if `layers` and `filenames` are not defined.
+---
+---The path to the sprite file to use.
+---@field filename? FileName
+
+---@class SpriteSizeType
+
+---@class SpriteSource
+---The path to the sprite file to use.
+---@field filename FileName
+---The width and height of the sprite. If this is a tuple, the first member of the tuple is the width and the second is the height. Otherwise the size is both width and height. Width and height may only be in the range of 0-4096.
+---@field size? SpriteSizeType|[SpriteSizeType, SpriteSizeType]
+---Mandatory if `size` is not defined.
+---
+---Width of the sprite in pixels, from 0-4096.
+---@field width? SpriteSizeType
+---Mandatory if `size` is not defined.
+---
+---Height of the sprite in pixels, from 0-4096.
+---@field height? SpriteSizeType
+---Horizontal position of the sprite in the source file in pixels.
+---@field x? SpriteSizeType
+---Vertical position of the sprite in the source file in pixels.
+---@field y? SpriteSizeType
+---Loaded only when `x` and `y` are both `0`. The first member of the tuple is `x` and the second is `y`.
+---@field position? [SpriteSizeType, SpriteSizeType]
+---Minimal mode is entered when mod loading fails. You are in it when you see the gray box after (part of) the loading screen that tells you a mod error. Modders can ignore this property.
+---@field load_in_minimal_mode? boolean
+---Whether alpha should be pre-multiplied.
+---@field premul_alpha? boolean
+---If `true`, the sprite may be downsampled to half its size on load even when 'Sprite quality' graphics setting is set to 'High'. Whether downsampling happens depends on detected hardware and other graphics settings.
+---@field allow_forced_downscale? boolean
+---All textures have 4 channels by default. This property can be used for no-atlas textures to force their format to R, RG, RGB or RGBA with 8 bytes for each channel and save VRAM space. Compression setting is based on player config.
+---
+---We use BC4 compression for R, BC5 for RG, BC1 for RGB, and DXT5_BC3 for RGBA, see "S3 Texture Compression" to read more about compression ratios.
+---@field color_channels? 1|2|3|4
+
+---Provides hint to sprite atlas system, so it can pack sprites that are related to each other to the same sprite atlas.
+---@class SpriteUsageHint
+
+---Provides hint to sprite atlas system, so it can try to put sprites that are intended to be used at the same locations to the same sprite atlas.
+---@class SpriteUsageSurfaceHint
+
+---@class SpriteVariations
+---@field sheet SpriteSheet
+
+---@class StackTransferTipTrigger : CountBasedTipTrigger
+---@field type "stack-transfer"
+---@field transfer? "stack"|"inventory"|"whole-inventory"
+
+---@class StateSteeringSettings
+---Not including the radius of the unit.
+---@field radius? number
+---@field separation_factor? number
+---@field separation_force? number
+
+---@class StatelessVisualisation
+---One of `nested_visualisations`, `animation` and `light` needs to be defined.
+---@field animation? AnimationVariations
+---Shadow variation count must be equal to animation variation count.
+---
+---Only loaded if `animation` is defined.
+---@field shadow? AnimationVariations
+---One of `nested_visualisations`, `animation` and `light` needs to be defined.
+---@field light? LightDefinition
+---@field count? integer
+---Only loaded if `count` is not defined.
+---@field min_count? integer
+---Only loaded if `count` is not defined.
+---@field max_count? integer
+---@field period? integer
+---@field particle_tick_offset? number
+---Silently clamped to be between 0 and 1.
+---@field probability? number
+---@field offset_x? RangedValue
+---@field offset_y? RangedValue
+---@field offset_z? RangedValue
+---@field speed_x? RangedValue
+---@field speed_y? RangedValue
+---@field speed_z? RangedValue
+---@field acceleration_x? number
+---@field acceleration_y? number
+---@field acceleration_z? number
+---Silently clamped to be between 0 and 1.
+---@field movement_slowdown_factor_x? number
+---Silently clamped to be between 0 and 1.
+---@field movement_slowdown_factor_y? number
+---Silently clamped to be between 0 and 1.
+---@field movement_slowdown_factor_z? number
+---@field scale? RangedValue
+---@field begin_scale? number
+---@field end_scale? number
+---@field fade_in_progress_duration? number
+---@field fade_out_progress_duration? number
+---@field spread_progress_duration? number
+---@field adjust_animation_speed_by_base_scale? boolean
+---@field affected_by_wind? boolean
+---@field render_layer? RenderLayer
+---Array may be at most 32 elements.
+---@field positions? Vector[]
+---One of `nested_visualisations`, `animation` and `light` needs to be defined.
+---@field nested_visualisations? StatelessVisualisation|StatelessVisualisation[]
+---@field can_lay_on_the_ground? boolean
+
+---@class StatusColors
+---@field idle? Color
+---@field no_minable_resources? Color
+---@field full_output? Color
+---@field insufficient_input? Color
+---@field disabled? Color
+---@field no_power? Color
+---@field working? Color
+---@field low_power? Color
+
+---@class SteeringSettings
+---@field stay? StateSteeringSettings
+---@field move? StateSteeringSettings
+---Used only for special "to look good" purposes (like in trailer).
+---@field force_unit_fuzzy_goto_behavior? boolean
+
+---Entity that sticks to another entity, and damages/slows it. Stickers can only be attached to UnitPrototype, CharacterPrototype, CarPrototype and SpiderVehiclePrototype.
+---@class StickerPrototype : EntityPrototype
+---@field type "sticker"
+---Must be > 0.
+---@field duration_in_ticks integer
+---@field animation? Animation
+---@field render_layer? RenderLayer
+---Interval between application of `damage_per_tick`, in ticks.
+---@field damage_interval? integer
+---If this is given, this sticker is considered a "fire sticker" for some functions, such as BaseAttackParameters::fire_penalty and EntityPrototypeFlags::not-flammable.
+---@field spread_fire_entity? EntityID
+---@field fire_spread_cooldown? integer
+---@field fire_spread_radius? number
+---@field stickers_per_square_meter? number
+---@field force_visibility? ForceCondition
+---@field single_particle? boolean
+---@field use_damage_substitute? boolean
+---Applied every `damage_interval` ticks, so may not necessarily be "per tick".
+---@field damage_per_tick? DamageParameters
+---Less than 1 to reduce movement speed, more than 1 to increase it.
+---@field target_movement_modifier? number
+---The modifier value when the sticker is attached. It linearly changes over time to reach `target_movement_modifier_to`.
+---@field target_movement_modifier_from? number
+---The modifier value when the sticker expires. It linearly changes over time starting from `target_movement_modifier_from`.
+---@field target_movement_modifier_to? number
+---The maximum movement speed for the target.
+---
+---Negative values are ignored.
+---@field target_movement_max? number
+---The maximum movement speed for the target when the sticker is attached. It linearly changes over time to reach `target_movement_max_to`.
+---
+---Negative values are ignored.
+---@field target_movement_max_from? number
+---The maximum movement speed for the target when the sticker expires. It linearly changes over time starting from `target_movement_max_from`.
+---
+---Negative values are ignored.
+---@field target_movement_max_to? number
+---If true, causes the target entity to become "grounded", disabling flight. This only applies to Character entities wearing mech armor.
+---@field ground_target? boolean
+---Less than 1 to reduce vehicle speed, more than 1 to increase it.
+---@field vehicle_speed_modifier? number
+---Works similarly to `target_movement_modifier_from`.
+---@field vehicle_speed_modifier_from? number
+---Works similarly to `target_movement_modifier_to`.
+---@field vehicle_speed_modifier_to? number
+---The maximum movement speed for vehicles.
+---
+---Negative values are ignored.
+---@field vehicle_speed_max? number
+---The maximum movement speed for vehicles when the sticker is attached. It linearly changes over time to reach `vehicle_speed_max_to`.
+---
+---Negative values are ignored.
+---@field vehicle_speed_max_from? number
+---The maximum movement speed for vehicles when the sticker expires. It linearly changes over time starting from `vehicle_speed_max_from`.
+---
+---Negative values are ignored.
+---@field vehicle_speed_max_to? number
+---@field vehicle_friction_modifier? number
+---Works similarly to `target_movement_modifier_from`.
+---@field vehicle_friction_modifier_from? number
+---Works similarly to `target_movement_modifier_to`.
+---@field vehicle_friction_modifier_to? number
+---Using this property marks the sticker as a "selection sticker", meaning that the selection box will be rendered around the entity when the sticker is on it.
+---@field selection_box_type? CursorBoxType
+---Effects (with cooldowns) to trigger every tick.
+---@field update_effects? TriggerEffectWithCooldown[]
+---The `hidden` property of stickers is hardcoded to `true`.
+---@field hidden true
+---The `hidden_in_factoriopedia` property of stickers is hardcoded to `true`.
+---@field hidden_in_factoriopedia true
+---The entity with the higher number is selectable before the entity with the lower number.
+---
+---The value `0` will be treated the same as `nil`.
+---@field selection_priority? integer
+
+---@class StorageTankPictures
+---@field picture? Sprite4Way
+---@field frozen_patch? Sprite4Way
+---@field window_background? Sprite
+---@field fluid_background? Sprite
+---@field flow_sprite? Sprite
+---@field gas_flow? Animation
+
+---A storage tank.
+---@class StorageTankPrototype : EntityWithOwnerPrototype
+---@field type "storage-tank"
+---@field fluid_box FluidBox
+---The location of the window showing the contents. Note that for `window_background` the width and height are determined by the sprite and window_bounding_box only determines the drawing location. For `fluid_background` the width is determined by the sprite and the height and drawing location are determined by window_bounding_box.
+---@field window_bounding_box BoundingBox
+---@field pictures? StorageTankPictures
+---Must be positive.
+---
+---Used for determining the x position inside the `flow_sprite` when drawing the storage tank. Does not affect gameplay.
+---
+---The x position of the sprite will be `((game.tick % flow_length_in_ticks) ÷ flow_length_in_ticks) × (flow_sprite.width - 32)`. This means, that over `flow_length_in_ticks` ticks, the part of the `flow_sprite` that is drawn in-game is incrementally moved from most-left to most-right inside the actual sprite, that part always has a width of 32px. After `flow_length_in_ticks`, the part of the `flow_sprite` that is drawn will start from the left again.
+---@field flow_length_in_ticks integer
+---@field two_direction_only? boolean
+---Whether the "alt-mode icon" should be drawn at all.
+---@field show_fluid_icon? boolean
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---@field circuit_connector? [CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition]
+---@field default_fluid_temperature_signal? SignalIDConnector
+---When this is true, fluid pipelines will be visualized when this entity is held in the cursor.
+---@field show_fluid_visualization_when_in_cursor? boolean
+
+---A straight rail.
+---@class StraightRailPrototype : RailPrototype
+---@field type "straight-rail"
+---The collision_box of straight rail is hardcoded to `{{-0.7, -0.99}, {0.7, 0.99}}`.
+---@field collision_box? BoundingBox
+
+---@class StreamAttackParameters : BaseAttackParameters
+---@field type "stream"
+---@field fluid_consumption? FluidAmount
+---@field gun_barrel_length? number
+---@field projectile_creation_parameters? CircularProjectileCreationSpecification
+---@field gun_center_shift? Vector|GunShift4Way
+---Controls which fluids can fuel this stream attack and their potential damage bonuses.
+---@field fluids? StreamFluidProperties[]
+
+---@class StreamFluidProperties
+---@field type FluidID
+---@field damage_modifier? number
+
+---@class StreamTriggerDelivery : TriggerDeliveryItem
+---@field type "stream"
+---Name of a FluidStreamPrototype.
+---@field stream EntityID
+---@field source_offset? Vector
+
+---Sets whether a GUI element can be stretched or squashed.
+---@class StretchRule
+
+---Used as an alternative way to specify animations.
+---@class Stripe
+---@field width_in_frames integer
+---Mandatory when Stripe is used in Animation.
+---
+---Optional when it is used in RotatedAnimation, where it defaults to RotatedAnimation::direction_count.
+---@field height_in_frames integer
+---@field filename FileName
+---@field x? integer
+---@field y? integer
+
+---Loaded as one of the BaseStyleSpecification extensions, based on the value of the `type` key.
+---@class StyleSpecification
+
+---@class StyleWithClickableGraphicalSetSpecification : BaseStyleSpecification
+---@field default_graphical_set? ElementImageSet
+---@field hovered_graphical_set? ElementImageSet
+---@field clicked_graphical_set? ElementImageSet
+---@field disabled_graphical_set? ElementImageSet
+---@field selected_graphical_set? ElementImageSet
+---@field selected_hovered_graphical_set? ElementImageSet
+---@field game_controller_selected_hovered_graphical_set? ElementImageSet
+---@field selected_clicked_graphical_set? ElementImageSet
+---@field left_click_sound? Sound
+
+---Requires Space Age to use.
+---@class SurfaceCondition
+---@field property SurfacePropertyID
+---@field min? number
+---@field max? number
+
+---The name of a SurfacePrototype.
+---@class SurfaceID
+
+---The name of a SurfacePropertyPrototype.
+---@class SurfacePropertyID
+
+---@class SurfacePropertyPrototype : Prototype
+---@field type "surface-property"
+---The locale key of the unit of the property. In-game, the locale is provided the `__1__` parameter, which is the value of the property.
+---@field localised_unit_key? string
+---@field default_value number
+---@field is_time? boolean
+
+---@class SurfacePrototype : Prototype
+---@field type "surface"
+---@field surface_properties? table<SurfacePropertyID, number>
+---Can't be an empty array.
+---@field icons? IconData[]
+---Path to the icon file.
+---
+---Only loaded, and mandatory if `icons` is not defined.
+---@field icon? FileName
+---The size of the square icon, in pixels. E.g. `32` for a 32px by 32px icon. Must be larger than `0`.
+---
+---Only loaded if `icons` is not defined.
+---@field icon_size? SpriteSizeType
+
+---@class SurfaceRenderParameters
+---@field day_night_cycle_color_lookup? DaytimeColorLookupTable
+---@field shadow_opacity? number
+---When set to `true` and `clouds` property is not set, the legacy sprite clouds will be rendered on the surface.
+---@field draw_sprite_clouds? boolean
+---@field clouds? CloudsEffectProperties
+---@field fog? FogEffectProperties
+---@field terrain_tint_effect? GlobalTintEffectProperties
+---@field space_dust_background? SpaceDustEffectProperties
+---@field space_dust_foreground? SpaceDustEffectProperties
+---@field platform_backdrop? PlatformBackdrop
+
+---Root style: `"switch"`
+---@class SwitchStyleSpecification : BaseStyleSpecification
+---@field type "switch_style"
+---Required on the root style.
+---@field left_button_position? integer
+---Required on the root style.
+---@field middle_button_position? integer
+---Required on the root style.
+---@field right_button_position? integer
+---Required on the root style.
+---@field default_background? Sprite
+---Required on the root style.
+---@field hover_background? Sprite
+---Required on the root style.
+---@field disabled_background? Sprite
+---Required on the root style.
+---@field button? ButtonStyleSpecification
+---Required on the root style.
+---@field active_label? LabelStyleSpecification
+---Required on the root style.
+---@field inactive_label? LabelStyleSpecification
+
+---Root style: `"tab"`
+---@class TabStyleSpecification : StyleWithClickableGraphicalSetSpecification
+---@field type "tab_style"
+---Name of a FontPrototype.
+---
+---Required on the root style.
+---@field font? string
+---Name of a FontPrototype.
+---
+---Required on the root style.
+---@field badge_font? string
+---Required on the root style.
+---@field badge_horizontal_spacing? integer
+---Required on the root style.
+---@field default_font_color? Color
+---Required on the root style.
+---@field selected_font_color? Color
+---Required on the root style.
+---@field disabled_font_color? Color
+---Required on the root style.
+---@field default_badge_font_color? Color
+---Required on the root style.
+---@field selected_badge_font_color? Color
+---Required on the root style.
+---@field disabled_badge_font_color? Color
+---Required on the root style.
+---@field override_graphics_on_edges? boolean
+---Required on the root style.
+---@field increase_height_when_selected? boolean
+---Required on the root style.
+---@field left_edge_selected_graphical_set? ElementImageSet
+---Required on the root style.
+---@field right_edge_selected_graphical_set? ElementImageSet
+---Required on the root style.
+---@field default_badge_graphical_set? ElementImageSet
+---Required on the root style.
+---@field selected_badge_graphical_set? ElementImageSet
+---Required on the root style.
+---@field hover_badge_graphical_set? ElementImageSet
+---Required on the root style.
+---@field press_badge_graphical_set? ElementImageSet
+---Required on the root style.
+---@field disabled_badge_graphical_set? ElementImageSet
+---@field draw_grayscale_picture? boolean
+
+---Root style: `"tabbed_pane"`
+---@class TabbedPaneStyleSpecification : BaseStyleSpecification
+---@field type "tabbed_pane_style"
+---Required on the root style.
+---@field vertical_spacing? integer
+---Required on the root style.
+---@field tab_content_frame? FrameStyleSpecification
+---Required on the root style.
+---@field tab_container? TableStyleSpecification
+
+---Root style: `"table"`
+---@class TableStyleSpecification : BaseStyleSpecification
+---@field type "table_style"
+---Required on the root style.
+---@field horizontal_spacing? integer|SpacingItem[]
+---Required on the root style.
+---@field vertical_spacing? integer|SpacingItem[]
+---Sets `top_cell_padding`, `right_cell_padding`, `bottom_cell_padding` and `left_cell_padding` to the same value.
+---@field cell_padding? integer
+---@field top_cell_padding? integer
+---@field right_cell_padding? integer
+---@field bottom_cell_padding? integer
+---@field left_cell_padding? integer
+---@field apply_row_graphical_set_per_column? boolean
+---@field wide_as_column_count? boolean
+---@field column_graphical_set? ElementImageSet
+---@field default_row_graphical_set? ElementImageSet
+---@field even_row_graphical_set? ElementImageSet
+---@field odd_row_graphical_set? ElementImageSet
+---@field hovered_graphical_set? ElementImageSet
+---@field clicked_graphical_set? ElementImageSet
+---@field selected_graphical_set? ElementImageSet
+---@field selected_hovered_graphical_set? ElementImageSet
+---@field selected_clicked_graphical_set? ElementImageSet
+---@field background_graphical_set? ElementImageSet
+---@field column_alignments? ColumnAlignment[]
+---@field column_widths? ColumnWidthItem|ColumnWidth[]
+---@field hovered_row_color? Color
+---@field selected_row_color? Color
+---@field vertical_line_color? Color
+---@field horizontal_line_color? Color
+---@field column_ordering_ascending_button_style? ButtonStyleSpecification
+---@field column_ordering_descending_button_style? ButtonStyleSpecification
+---@field inactive_column_ordering_ascending_button_style? ButtonStyleSpecification
+---@field inactive_column_ordering_descending_button_style? ButtonStyleSpecification
+---Required on the root style.
+---@field border? BorderImageSet
+
+---The name of a TechnologyPrototype.
+---@class TechnologyID
+
+---A technology.
+---@class TechnologyPrototype : Prototype
+---@field type "technology"
+---If this name ends with `-<number>`, that number is ignored for localization purposes. E.g. if the name is `technology-3`, the game looks for the `technology-name.technology` localization. The technology tree will also show the number on the technology icon.
+---@field name string
+---Can't be an empty array.
+---@field icons? IconData[]
+---Path to the icon file.
+---
+---Only loaded, and mandatory if `icons` is not defined.
+---@field icon? FileName
+---The size of the square icon, in pixels. E.g. `32` for a 32px by 32px icon. Must be larger than `0`.
+---
+---The base game uses 256px icons for technologies.
+---
+---Only loaded if `icons` is not defined.
+---@field icon_size? SpriteSizeType
+---When set to true, and the technology contains several levels, only the relevant one is displayed in the technology screen.
+---@field upgrade? boolean
+---This can be `false` to disable the technology at the start of the game, or `true` to leave it enabled.
+---
+---Changes to this property do not affect existing save files, as the enabled state is saved in the save file and not reloaded from the prototype.
+---@field enabled? boolean
+---Whether the technology should be shown in the technology tree GUI when "Show only essential technologies" is enabled.
+---@field essential? boolean
+---Controls whether the technology is shown in the tech GUI when it is not `enabled`.
+---
+---Changes to this property do not affect existing save files, as the visible_when_disabled state is saved in the save file and not reloaded from the prototype.
+---@field visible_when_disabled? boolean
+---Controls whether the technology cost ignores the tech cost multiplier set in the DifficultySettings. E.g. `4` for the default expensive difficulty.
+---@field ignore_tech_cost_multiplier? boolean
+---@field allows_productivity? boolean
+---Mandatory if `unit` is not defined.
+---@field research_trigger? TechnologyTrigger
+---Determines the cost in items and time of the technology.
+---
+---Mandatory if `research_trigger` is not defined.
+---@field unit? TechnologyUnit
+---`"infinite"` for infinite technologies, otherwise `uint32`.
+---
+---Defaults to the same level as the technology, which is `0` for non-upgrades, and the level of the upgrade for upgrades.
+---@field max_level? integer|"infinite"
+---List of technologies needed to be researched before this one can be researched.
+---@field prerequisites? TechnologyID[]
+---Can be used to enable or disable showing levels info in technology slot.
+---@field show_levels_info? boolean
+---List of effects of the technology (applied when the technology is researched).
+---@field effects? Modifier[]
+---Hides the technology from the tech screen.
+---@field hidden? boolean
+
+---Root style: `"technology_slot"`
+---@class TechnologySlotStyleSpecification : ButtonStyleSpecification
+---@field type "technology_slot_style"
+---Required on the root style.
+---@field highlighted_graphical_set? ElementImageSet
+---Required on the root style.
+---@field default_background_shadow? ElementImageSet
+---Required on the root style.
+---@field level_band? ElementImageSet
+---Required on the root style.
+---@field hovered_level_band? ElementImageSet
+---Required on the root style.
+---@field level_offset_x? integer
+---Required on the root style.
+---@field level_offset_y? integer
+---Required on the root style.
+---@field level_band_width? integer
+---Required on the root style.
+---@field level_band_height? integer
+---Name of a FontPrototype.
+---
+---Required on the root style.
+---@field level_font? string
+---Name of a FontPrototype.
+---
+---Required on the root style.
+---@field level_range_font? string
+---Required on the root style.
+---@field level_font_color? Color
+---Required on the root style.
+---@field hovered_level_font_color? Color
+---Required on the root style.
+---@field level_range_font_color? Color
+---Required on the root style.
+---@field hovered_level_range_font_color? Color
+---Required on the root style.
+---@field level_range_band? ElementImageSet
+---Required on the root style.
+---@field hovered_level_range_band? ElementImageSet
+---Required on the root style.
+---@field level_range_offset_x? integer
+---Required on the root style.
+---@field level_range_offset_y? integer
+---Required on the root style.
+---@field ingredients_height? integer
+---Required on the root style.
+---@field default_ingredients_background? ElementImageSet
+---Required on the root style.
+---@field hovered_ingredients_background? ElementImageSet
+---Required on the root style.
+---@field clicked_ingredients_background? ElementImageSet
+---Required on the root style.
+---@field disabled_ingredients_background? ElementImageSet
+---Required on the root style.
+---@field highlighted_ingredients_background? ElementImageSet
+---Required on the root style.
+---@field ingredients_padding? integer
+---Required on the root style.
+---@field ingredient_icon_size? integer
+---Required on the root style.
+---@field ingredient_icon_overlap? integer
+---Required on the root style.
+---@field clicked_overlay? ElementImageSet
+---Required on the root style.
+---@field progress_bar_background? ElementImageSet
+---Required on the root style.
+---@field progress_bar? ElementImageSet
+---Required on the root style.
+---@field progress_bar_shadow? ElementImageSet
+---Required on the root style.
+---@field progress_bar_height? integer
+---Required on the root style.
+---@field progress_bar_color? Color
+---Required on the root style.
+---@field drag_handle_style? EmptyWidgetStyleSpecification
+
+---Loaded as one of the technology triggers, based on the value of the `type` key.
+---@class TechnologyTrigger
+
+---Either `count` or `count_formula` must be defined, never both.
+---@class TechnologyUnit
+---How many units are needed. Must be `> 0`.
+---@field count? integer
+---Formula that specifies how many units are needed per level of the technology.
+---
+---If the last characters of the prototype name are `-<number>`, the level is taken to be the number, e.g. `physical-projectile-damage-2` implies a number of `2`. This defaults to `1`. There does not need to be lower-level technologies for a technology to be detected as having a level, meaning a technology or sequence of upgrade technologies can begin at any number.
+---
+---For an infinite technology, the level begins at the given suffix (or `1` by default) and gains 1 level upon being researched, or if the `max_level` is reached, marked as completed. The initial level of a technology can not be greater than its `max_level`.
+---
+---`l` and `L` are provided as variables in the expression, they represent the current level of the technology.
+---
+---This formula can also be used at runtime.
+---@field count_formula? MathExpression
+---How much time one unit takes to research. In a lab with a crafting speed of `1`, it corresponds to the number of seconds.
+---@field time number
+---List of ingredients needed for one unit of research.
+---@field ingredients ResearchIngredient[]
+
+---A container that can automatically destroy itself when it is emptied or after it has existed for a certain time.
+---@class TemporaryContainerPrototype : ContainerPrototype
+---@field type "temporary-container"
+---Whether the container is automatically destroyed when it is emptied.
+---@field destroy_on_empty? boolean
+---Duration after which the container and its contents are automatically destroyed. In ticks, 0 for infinite.
+---@field time_to_live? integer
+---If the container has existed for this long, an alert is show on it. In ticks, 0 for no alert.
+---@field alert_after_time? integer
+
+---@class TerritorySettings
+---Names of the SegmentedUnitPrototype.
+---@field units? EntityID[]
+---Mandatory if `units` is not empty.
+---@field territory_index_expression? string
+---The result will be converted to integer, clamped and used as an index for `units` array. Negative values will result in empty spawn location.
+---@field territory_variation_expression? string
+---Minimum number of chunks a territory must have. Below this, it will get deleted.
+---@field minimum_territory_size? integer
+
+---Root style: `"textbox"`
+---@class TextBoxStyleSpecification : BaseStyleSpecification
+---@field type "textbox_style"
+---Name of a FontPrototype.
+---
+---Required on the root style.
+---@field font? string
+---Required on the root style.
+---@field font_color? Color
+---Required on the root style.
+---@field disabled_font_color? Color
+---Required on the root style.
+---@field selection_background_color? Color
+---Required on the root style.
+---@field default_background? ElementImageSet
+---Required on the root style.
+---@field active_background? ElementImageSet
+---Required on the root style.
+---@field game_controller_hovered_background? ElementImageSet
+---Required on the root style.
+---@field disabled_background? ElementImageSet
+---Required on the root style.
+---@field rich_text_setting? RichTextSetting
+---Required on the root style.
+---@field rich_text_highlight_error_color? Color
+---Required on the root style.
+---@field rich_text_highlight_warning_color? Color
+---Required on the root style.
+---@field rich_text_highlight_ok_color? Color
+---Required on the root style.
+---@field selected_rich_text_highlight_error_color? Color
+---Required on the root style.
+---@field selected_rich_text_highlight_warning_color? Color
+---Required on the root style.
+---@field selected_rich_text_highlight_ok_color? Color
+
+---@class ThrowCapsuleAction
+---@field type "throw"
+---@field attack_parameters AttackParameters
+---Whether using the capsule consumes an item from the stack.
+---@field uses_stack? boolean
+
+---@class ThrusterGraphicsSet : WorkingVisualisations
+---@field flame? Sprite
+---@field flame_effect? EffectTexture
+---@field flame_position? Vector
+---@field flame_effect_height? number
+---@field flame_effect_width? number
+---@field flame_half_height? number
+---@field flame_effect_offset? number
+---Refer to EntityPrototype::water_reflection.
+---@field water_reflection? WaterReflectionDefinition
+---If true the starting frame will be randomized upon placement.
+---@field animation_random_start_frame? boolean
+
+---@class ThrusterPerformancePoint
+---@field fluid_volume number
+---@field fluid_usage FluidAmount
+---@field effectivity number
+
+---Consumes two fluids as fuel to produce thrust for a space platform.
+---@class ThrusterPrototype : EntityWithOwnerPrototype
+---@field type "thruster"
+---@field min_performance ThrusterPerformancePoint
+---`max_performance.fluid_volume` must not be smaller than `min_performance.fluid_volume`.
+---@field max_performance ThrusterPerformancePoint
+---If a filter is set for this fluidbox it determines what the thruster considers the first fuel.
+---@field fuel_fluid_box FluidBox
+---If a filter is set for this fluidbox it determines what the thruster considers the second fuel.
+---@field oxidizer_fluid_box FluidBox
+---@field graphics_set? ThrusterGraphicsSet
+---@field plumes? PlumesSpecification
+
+---@class TileAndAlpha
+---@field tile TileID
+---@field alpha number
+
+---Used for particles created with apply_tile_tint defined.
+---@class TileBasedParticleTints
+---@field primary? Color
+---@field secondary? Color
+
+---@class TileBuildSound
+---@field small? Sound
+---@field medium? Sound
+---@field large? Sound
+---@field animated? Sound
+
+---Defines restrictions on what tiles an entity can or must be built on.
+---
+---Note that once the entity has been placed, placing new tiles is not always restricted by these rules for performance reasons. In particular, for most entities these rules are only checked when placing tiles within the collision box of the entity. The exception to this are thrusters and asteroid collectors, for which the rules are always checked.
+---@class TileBuildabilityRule
+---@field area SimpleBoundingBox
+---@field required_tiles? TileCollisionMaskConnector
+---@field colliding_tiles? TileCollisionMaskConnector
+---@field remove_on_collision? boolean
+
+---The base game provides common collision mask functions in a Lua file in the core lualib.
+---@class TileCollisionMaskConnector
+---Every key in the dictionary is the name of one layer the object collides with. The value is meaningless and always `true`. An empty table means that no layers are set.
+---@field layers table<CollisionLayerID, true>
+
+---Used to define the parameters for tile shaders.
+---@class TileEffectDefinition
+---@field type "tile-effect"
+---@field type "tile-effect"
+---Name of the tile-effect.
+---@field name string
+---@field shader "water"|"space"|"puddle"
+---Only loaded, and mandatory if `shader` is `"water"`.
+---@field water? WaterTileEffectParameters
+---Only loaded, and mandatory if `shader` is `"space"`.
+---@field space? SpaceTileEffectParameters
+---Only loaded, and mandatory if `shader` is `"puddle"`.
+---@field puddle? PuddleTileEffectParameters
+
+---The name of an TileEffectDefinition.
+---@class TileEffectDefinitionID
+
+---The entity used for tile ghosts.
+---@class TileGhostPrototype : EntityPrototype
+---@field type "tile-ghost"
+
+---The name of a TilePrototype.
+---@class TileID
+
+---Name of an allowed tile, or a list of two tile names for entities allowed on transitions.
+---@class TileIDRestriction
+
+---@class TileLightPictures : TileSpriteLayout
+---Only powers of 2 from 1 to 128 can be used. Square size of the tile arrangement this sprite is used for. Used to calculate the `width` and `height` of the sprite which cannot be set directly. (width or height) = size * 32 / scale.
+---@field size integer
+
+---@class TileMainPictures : TileSpriteLayout
+---Only powers of 2 from 1 to 128 can be used. Square size of the tile arrangement this sprite is used for. Used to calculate the `width` and `height` of the sprite which cannot be set directly. (width or height) = size * 32 / scale.
+---@field size integer
+---Probability of 1x1 (size = 1) version of tile must be 1.
+---@field probability? number
+---@field weights? number[]
+
+---Coordinates of a tile on a map where each integer `x`/`y` represents a different tile. This uses the same format as MapPosition, except it rounds any non-integer `x`/`y` down to whole numbers. It can be specified either with or without explicit keys.
+---@class TilePosition
+---@field x integer
+---@field y integer
+
+---A tile.
+---@class TilePrototype : Prototype
+---@field type "tile"
+---@field collision_mask TileCollisionMaskConnector
+---Specifies transition drawing priority. This represents the positive offset from this tile's `layer_group`. Internally, the final layer is computed as `layer_group + layer` (a uint16), wrapping back to `"zero"` after the `"top"` layer.
+---@field layer integer
+---The base group of render layers this tile belongs to. It can be moved up inside this group using the `layer` property. See the TileRenderLayer page to see the sizes of all layer groups.
+---@field layer_group? TileRenderLayer
+---The build animation used when this tile is built on a space platform.
+---@field build_animations? Animation4Way
+---@field build_animations_background? Animation4Way
+---When the build_animations frame reaches this point the tile is built.
+---
+---Mandatory if `build_animations` is defined.
+---@field built_animation_frame? integer
+---Graphics for this tile.
+---@field variants TileTransitionsVariants
+---@field map_color Color
+---Can't be an empty array. If this and `icon` is not set, the `material_background` in `variants` is used as the icon.
+---@field icons? IconData[]
+---Path to the icon file. If this and `icons` is not set, the `material_background` in `variants` is used as the icon.
+---
+---Only loaded if `icons` is not defined.
+---@field icon? FileName
+---The size of the square icon, in pixels. E.g. `32` for a 32px by 32px icon. Must be larger than `0`.
+---
+---Only loaded if `icons` is not defined.
+---@field icon_size? SpriteSizeType
+---For surfaces that use fog effect of type `gleba`, this property determines whether given tile should contribute to fog intensity on a chunk or not.
+---@field lowland_fog? boolean
+---@field transition_overlay_layer_offset? integer
+---@field sprite_usage_surface? SpriteUsageSurfaceHint
+---@field transition_merges_with_tile? TileID
+---@field effect_color? Color
+---@field tint? Color
+---@field particle_tints? TileBasedParticleTints
+---@field walking_sound? Sound
+---@field landing_steps_sound? Sound
+---@field driving_sound? InterruptibleSound
+---If this is loaded as one Sound, it is loaded as the "small" build sound.
+---@field build_sound? Sound|TileBuildSound
+---@field mined_sound? Sound
+---@field walking_speed_modifier? number
+---@field vehicle_friction_modifier? number
+---@field decorative_removal_probability? number
+---Array of tile names that are allowed next to this one.
+---@field allowed_neighbors? TileID[]
+---Whether the tile needs tile correction logic applied when it's generated in the world, to prevent graphical artifacts. The tile correction logic disallows 1-wide stripes of the tile, see Friday Facts #346.
+---@field needs_correction? boolean
+---If you want the tile to not be mineable, don't specify the minable property. Only non-mineable tiles become hidden tiles when placing mineable tiles on top of them.
+---@field minable? MinableProperties
+---@field fluid? FluidID
+---@field next_direction? TileID
+---@field can_be_part_of_blueprint? boolean
+---@field is_foundation? boolean
+---If items dropped on this tile are destroyed.
+---@field destroys_dropped_items? boolean
+---@field allows_being_covered? boolean
+---@field searchable? boolean
+---Must be equal to or greater than 0.
+---@field max_health? number
+---Mass which this tile adds to total space platform mass when placed.
+---@field weight? Weight
+---Triggers when a foundation tile is destroyed by an asteroid.
+---@field dying_explosion? ExplosionDefinition|ExplosionDefinition[]
+---@field absorptions_per_second? table<AirbornePollutantID, number>
+---@field default_cover_tile? TileID
+---@field frozen_variant? TileID
+---@field thawed_variant? TileID
+---@field effect? TileEffectDefinitionID
+---Called by InvokeTileEffectTriggerEffectItem.
+---@field trigger_effect? TriggerEffect
+---The effect/trigger that runs when an item is destroyed by being dropped on this tile.
+---
+---If the item defines its own trigger it will override this.
+---
+---If this is defined, `destroys_dropped_items` must be `true`.
+---@field default_destroyed_dropped_item_trigger? Trigger
+---@field scorch_mark_color? Color
+---If set to true, the game will check for collisions with entities before building or mining the tile. If entities are in the way it is not possible to mine/build the tile.
+---@field check_collision_with_entities? boolean
+---Used by the pollution shader.
+---@field effect_color_secondary? Color
+---@field effect_is_opaque? boolean
+---Extra transitions.
+---@field transitions? TileTransitionsToTiles[]
+---@field transitions_between_transitions? TileTransitionsBetweenTransitions[]
+---@field autoplace? AutoplaceSpecification
+---@field placeable_by? ItemToPlace|ItemToPlace[]
+---@field bound_decoratives? DecorativeID|DecorativeID[]
+---@field ambient_sounds_group? TileID
+---@field ambient_sounds? WorldAmbientSoundDefinition|WorldAmbientSoundDefinition[]
+
+---@class TileRenderLayer
+
+---@class TileSpriteLayout
+---@field picture FileName
+---@field scale? number
+---Horizontal position of the sprite in the source file in pixels.
+---@field x? SpriteSizeType
+---Vertical position of the sprite in the source file in pixels.
+---@field y? SpriteSizeType
+---Once the specified number of pictures is loaded, other pictures are loaded on other line. This is to allow having longer animations in matrix, to input files with too high width. The game engine limits the width of any input files to 8192px, so it is compatible with most graphics cards. 0 means that all the pictures are in one horizontal line.
+---@field line_length? integer
+---Frame count.
+---@field count? integer
+
+---@class TileSpriteLayoutVariant
+---@field spritesheet? FileName
+---@field scale? number
+---Horizontal position of the sprite in the source file in pixels.
+---@field x? SpriteSizeType
+---Vertical position of the sprite in the source file in pixels.
+---@field y? SpriteSizeType
+---Height of the transition sprite in tiles. May be 1 or 2. It is forced to 1 for mask layers and for o_transition. A tile is considered 32px with scale 1 (so 64px with scale 0.5). Shift of the sprite will be adjusted such that the top 1x1 tile is centered on a tile being drawn (so it will be
+---`
+---{0, 0.5*(tile_height - 1)}
+---`
+---) It can be anything between 1 to 8 for `background` layer if `draw_background_layer_under_tiles` is set to true.
+---@field tile_height? integer
+---Once the specified number of pictures is loaded, other pictures are loaded on other line. This is to allow having longer animations in matrix, to input files with too high width. The game engine limits the width of any input files to 8192px, so it is compatible with most graphics cards. 0 means that all the pictures are in one horizontal line.
+---@field line_length? integer
+---Frame count.
+---@field count? integer
+
+---The properties from the parent TileSpriteLayoutVariant provide defaults for the TileTransitionVariantLayouts.
+---
+---The `{inner_corner | outer_corner | side | double_side | u_transition | o_transition}_*` properties provide defaults for the corresponding properties in the TileTransitionVariantLayouts. They are used when the TileTransitionVariantLayouts have the same layout. See the example below.
+---@class TileTransitionSpritesheetLayout : TileSpriteLayoutVariant
+---Only loaded if TileTransitions::overlay_layout is not defined in the TileTransitions that load this.
+---@field overlay? TileTransitionVariantLayout
+---Only loaded if TileTransitions::mask_layout is not defined in the TileTransitions that load this.
+---@field mask? TileTransitionVariantLayout
+---Only loaded if TileTransitions::background_layout is not defined in the TileTransitions that load this.
+---@field background? TileTransitionVariantLayout
+---Only loaded if TileTransitions::background_mask_layout is not defined in the TileTransitions that load this.
+---@field background_mask? TileTransitionVariantLayout
+---Only loaded if TileTransitions::effect_map_layout is not defined in the TileTransitions that load this.
+---@field effect_map? TileTransitionVariantLayout
+---Only loaded if TileTransitions::lightmap_layout is not defined in the TileTransitions that load this.
+---@field lightmap? TileTransitionVariantLayout
+---Only loaded if TileTransitions::auxiliary_effect_mask_layout is not defined in the TileTransitions that load this.
+---@field auxiliary_effect_mask? TileTransitionVariantLayout
+---@field inner_corner_scale? number
+---Horizontal position of the sprite in the source file in pixels.
+---@field inner_corner_x? SpriteSizeType
+---Vertical position of the sprite in the source file in pixels.
+---@field inner_corner_y? SpriteSizeType
+---@field inner_corner_tile_height? integer
+---@field inner_corner_line_length? integer
+---@field inner_corner_count? integer
+---@field outer_corner_scale? number
+---Horizontal position of the sprite in the source file in pixels.
+---@field outer_corner_x? SpriteSizeType
+---Vertical position of the sprite in the source file in pixels.
+---@field outer_corner_y? SpriteSizeType
+---@field outer_corner_tile_height? integer
+---@field outer_corner_line_length? integer
+---@field outer_corner_count? integer
+---@field side_scale? number
+---Horizontal position of the sprite in the source file in pixels.
+---@field side_x? SpriteSizeType
+---Vertical position of the sprite in the source file in pixels.
+---@field side_y? SpriteSizeType
+---@field side_tile_height? integer
+---@field side_line_length? integer
+---@field side_count? integer
+---@field double_side_scale? number
+---Horizontal position of the sprite in the source file in pixels.
+---@field double_side_x? SpriteSizeType
+---Vertical position of the sprite in the source file in pixels.
+---@field double_side_y? SpriteSizeType
+---@field double_side_tile_height? integer
+---@field double_side_line_length? integer
+---@field double_side_count? integer
+---@field u_transition_scale? number
+---Horizontal position of the sprite in the source file in pixels.
+---@field u_transition_x? SpriteSizeType
+---Vertical position of the sprite in the source file in pixels.
+---@field u_transition_y? SpriteSizeType
+---@field u_transition_tile_height? integer
+---@field u_transition_line_length? integer
+---@field u_transition_count? integer
+---@field o_transition_scale? number
+---Horizontal position of the sprite in the source file in pixels.
+---@field o_transition_x? SpriteSizeType
+---Vertical position of the sprite in the source file in pixels.
+---@field o_transition_y? SpriteSizeType
+---@field o_transition_tile_height? integer
+---@field o_transition_line_length? integer
+---@field o_transition_count? integer
+
+---The properties from the parent TileSpriteLayoutVariant provide defaults for the properties defined here.
+---
+---The `{inner_corner | outer_corner | side | double_side | u_transition | o_transition}_*` properties provide defaults for the properties inside the specific variant. They are used to specify select values for the variant without creating the table for the variant.
+---
+---These various ways to define the variants are also shown in the examples below.
+---@class TileTransitionVariantLayout : TileSpriteLayoutVariant
+---@field x_offset? SpriteSizeType
+---@field y_offset? SpriteSizeType
+---Defaults to the values set in the `inner_corner_*` properties.
+---@field inner_corner? TileSpriteLayoutVariant
+---Defaults to the values set in the `outer_corner_*` properties.
+---@field outer_corner? TileSpriteLayoutVariant
+---Defaults to the values set in the `side_*` properties.
+---@field side? TileSpriteLayoutVariant
+---Defaults to the values set in the `double_side_*` properties.
+---@field double_side? TileSpriteLayoutVariant
+---Defaults to the values set in the `u_transition_*` properties.
+---@field u_transition? TileSpriteLayoutVariant
+---Defaults to the values set in the `o_transition_*` properties.
+---@field o_transition? TileSpriteLayoutVariant
+---@field inner_corner_scale? number
+---Horizontal position of the sprite in the source file in pixels.
+---@field inner_corner_x? SpriteSizeType
+---Vertical position of the sprite in the source file in pixels.
+---@field inner_corner_y? SpriteSizeType
+---@field inner_corner_tile_height? integer
+---@field inner_corner_line_length? integer
+---@field inner_corner_count? integer
+---@field outer_corner_scale? number
+---Horizontal position of the sprite in the source file in pixels.
+---@field outer_corner_x? SpriteSizeType
+---Vertical position of the sprite in the source file in pixels.
+---@field outer_corner_y? SpriteSizeType
+---@field outer_corner_tile_height? integer
+---@field outer_corner_line_length? integer
+---@field outer_corner_count? integer
+---@field side_scale? number
+---Horizontal position of the sprite in the source file in pixels.
+---@field side_x? SpriteSizeType
+---Vertical position of the sprite in the source file in pixels.
+---@field side_y? SpriteSizeType
+---@field side_tile_height? integer
+---@field side_line_length? integer
+---@field side_count? integer
+---@field double_side_scale? number
+---Horizontal position of the sprite in the source file in pixels.
+---@field double_side_x? SpriteSizeType
+---Vertical position of the sprite in the source file in pixels.
+---@field double_side_y? SpriteSizeType
+---@field double_side_tile_height? integer
+---@field double_side_line_length? integer
+---@field double_side_count? integer
+---@field u_transition_scale? number
+---Horizontal position of the sprite in the source file in pixels.
+---@field u_transition_x? SpriteSizeType
+---Vertical position of the sprite in the source file in pixels.
+---@field u_transition_y? SpriteSizeType
+---@field u_transition_tile_height? integer
+---@field u_transition_line_length? integer
+---@field u_transition_count? integer
+---@field o_transition_scale? number
+---Horizontal position of the sprite in the source file in pixels.
+---@field o_transition_x? SpriteSizeType
+---Vertical position of the sprite in the source file in pixels.
+---@field o_transition_y? SpriteSizeType
+---@field o_transition_tile_height? integer
+---@field o_transition_line_length? integer
+---@field o_transition_count? integer
+
+---Used for TilePrototype graphics.
+---
+---Use `layout` with `spritesheet` to define all the tile layers inside the `layout` property. The `*_enabled`, `*_layout` and `*_spritesheet` properties can be used to override specific layers of a reused layout.
+---@class TileTransitions
+---@field layout? TileTransitionSpritesheetLayout
+---Default spritesheet for all TileSpriteLayouts.
+---@field spritesheet? FileName
+---@field overlay_enabled? boolean
+---@field mask_enabled? boolean
+---@field background_enabled? boolean
+---@field background_mask_enabled? boolean
+---@field effect_map_enabled? boolean
+---@field lightmap_enabled? boolean
+---@field auxiliary_effect_mask_enabled? boolean
+---Overrides the `overlay` definition inside `layout`.
+---@field overlay_layout? TileTransitionVariantLayout
+---Overrides the `mask` definition inside `layout`.
+---@field mask_layout? TileTransitionVariantLayout
+---Overrides the `background` definition inside `layout`.
+---@field background_layout? TileTransitionVariantLayout
+---Overrides the `background_mask` definition inside `layout`.
+---@field background_mask_layout? TileTransitionVariantLayout
+---Overrides the `effect_map` definition inside `layout`.
+---@field effect_map_layout? TileTransitionVariantLayout
+---Overrides the `lightmap` definition inside `layout`.
+---@field lightmap_layout? TileTransitionVariantLayout
+---Overrides the `auxiliary_effect_mask` definition inside `layout`.
+---@field auxiliary_effect_mask_layout? TileTransitionVariantLayout
+---Only loaded if `layout` or `mask_layout` is defined.
+---
+---Default spritesheet for `mask_layout` and `layout.mask`.
+---@field mask_spritesheet? FileName
+---Only loaded if `layout` or `background_layout` is defined.
+---
+---Default spritesheet for `background_layout` and `layout.background`.
+---@field background_spritesheet? FileName
+---Only loaded if `layout` or `background_mask_layout` is defined.
+---
+---Default spritesheet for `background_mask_layout` and `layout.background_mask`.
+---@field background_mask_spritesheet? FileName
+---Only loaded if `layout` or `effect_map_layout` is defined.
+---
+---Default spritesheet for `effect_map_layout` and `layout.effect_map`.
+---@field effect_map_spritesheet? FileName
+---Only loaded if `layout` or `lightmap_layout` is defined.
+---
+---Default spritesheet for `lightmap_layout` and `layout.lightmap`.
+---@field lightmap_spritesheet? FileName
+---Only loaded if `layout` or `auxiliary_effect_mask_layout` is defined.
+---
+---Default spritesheet for `auxiliary_effect_mask_layout` and `layout.auxiliary_effect_mask`.
+---@field auxiliary_effect_mask_spritesheet? FileName
+---@field water_patch? Sprite
+---@field overlay_layer_group? TileRenderLayer
+---@field background_layer_group? TileRenderLayer
+---@field waving_effect_time_scale? number
+---@field overlay_layer_offset? integer
+---@field masked_overlay_layer_offset? integer
+---@field background_layer_offset? integer
+---@field masked_background_layer_offset? integer
+---@field draw_background_layer_under_tiles? boolean
+---If drawing under water which is supposed to yield water mask, set this to `false` to not mess up the water mask.
+---@field background_layer_occludes_light? boolean
+---@field apply_effect_color_to_overlay? boolean
+---@field apply_waving_effect_on_masks? boolean
+---@field apply_waving_effect_on_background_mask? boolean
+---@field draw_simple_outer_corner_over_diagonal? boolean
+---@field offset_background_layer_by_tile_layer? boolean
+---@field inner_corner_weights? number[]
+---@field outer_corner_weights? number[]
+---@field side_weights? number[]
+---@field side_variations_in_group? integer
+---@field double_side_weights? number[]
+---@field double_side_variations_in_group? integer
+---@field u_transition_weights? number[]
+
+---@class TileTransitionsBetweenTransitions : TileTransitions
+---@field transition_group1 integer
+---@field transition_group2 integer
+
+---@class TileTransitionsToTiles : TileTransitions
+---@field to_tiles TileID[]
+---@field transition_group integer
+
+---@class TileTransitionsVariants
+---@field main? TileMainPictures[]
+---@field material_texture_width_in_tiles? integer
+---@field material_texture_height_in_tiles? integer
+---@field material_background? MaterialTextureParameters
+---@field light? TileLightPictures[]
+---Must have the same `count` as material_background.
+---@field material_light? MaterialTextureParameters
+---@field empty_transitions? boolean
+---Only loaded, and mandatory if `empty_transitions` is `false`.
+---@field transition? TileTransitions
+
+---@class TimeElapsedTipTrigger
+---@field type "time-elapsed"
+---@field ticks integer
+
+---@class TimeSinceLastTipActivationTipTrigger
+---@field type "time-since-last-tip-activation"
+---@field ticks MapTick
+
+---One frame in time for a Bezier interpolation.
+---@class TintProcessionBezierControlPoint
+---Mandatory if `opacity` or `tint_upper` or `tint_lower` is defined.
+---@field timestamp? MapTick
+---`opacity` and `opacity_t` interpolate a double smoothly over time.
+---@field opacity? number
+---Bidirectional tangent at the given timestamp.
+---@field opacity_t? number
+---`tint_upper` and `tint_upper_t` interpolate a color smoothly over time.
+---@field tint_upper? Color
+---Bidirectional tangent at the given timestamp.
+---@field tint_upper_t? Color
+---`tint_lower` and `tint_lower_t` interpolate a color smoothly over time.
+---@field tint_lower? Color
+---Bidirectional tangent at the given timestamp.
+---@field tint_lower_t? Color
+
+---Fullscreen overlay which blends gradient from top to bottom edge of the screen using pre-multiplied alpha blending.
+---@class TintProcessionLayer
+---@field type "tint"
+---@field render_layer? RenderLayer
+---@field frames TintProcessionBezierControlPoint[]
+
+---This is used by TipsAndTricksItem for the initial starting status. One of the following values:
+---@class TipStatus
+
+---Loaded as one of the tip triggers, based on the value of the `type` key.
+---@class TipTrigger
+
+---A tips and tricks entry.
+---@class TipsAndTricksItem : PrototypeBase
+---@field type "tips-and-tricks-item"
+---@field image? FileName
+---@field simulation? SimulationDefinition
+---String to add in front of the tips and trick entries name. Can be anything, the base game tends to use rich text tags for items, e.g. `[item=wooden-chest]` here.
+---@field tag? string
+---Name of a TipsAndTricksItemCategory, used for the sorting of this tips and tricks entry. Tips and trick entries are sorted first by category and then by their `order` within that category.
+---@field category? string
+---The tips and tricks entry is indented by `indent`×6 spaces.
+---@field indent? integer
+---Whether the tip title on the left in the tips and tricks GUI should use the "title_tip_item" style (semi bold font).
+---@field is_title? boolean
+---Condition for when the tip notification should be shown to the player.
+---@field trigger? TipTrigger
+---Condition for never showing the tip notification to the player.
+---@field skip_trigger? TipTrigger
+---Name of a TutorialDefinition.
+---@field tutorial? string
+---@field starting_status? TipStatus
+---An array of names of other tips and tricks items. This tips and tricks entry is only shown to the player once they have marked all dependencies as read.
+---@field dependencies? string[]
+---@field player_input_method_filter? PlayerInputMethodFilter
+---Can't be an empty array.
+---@field icons? IconData[]
+---Path to the icon file.
+---
+---Only loaded if `icons` is not defined.
+---@field icon? FileName
+---The size of the square icon, in pixels. E.g. `32` for a 32px by 32px icon. Must be larger than `0`.
+---
+---Only loaded if `icons` is not defined.
+---@field icon_size? SpriteSizeType
+---Used to order prototypes in inventory, recipes and GUIs. May not exceed a length of 200 characters.
+---@field order? Order
+
+---A TipsAndTricksItem category, used for sorting of tips and tricks entries: Tips and trick entries are sorted first by category and then by their order within that category.
+---@class TipsAndTricksItemCategory
+---@field type "tips-and-tricks-item-category"
+---@field type "tips-and-tricks-item-category"
+---@field name string
+---Tips and trick categories are sorted by `order`, and then the tips and tips entries are sorted by their own order within those categories.
+---@field order Order
+
+---@class ToggleRailLayerTipTrigger : CountBasedTipTrigger
+---@field type "toggle-rail-layer"
+
+---Triggered when the player turns "alt-mode" on or off.
+---@class ToggleShowEntityInfoTipTrigger : CountBasedTipTrigger
+---@field type "toggle-show-entity-info"
+
+---Items with a "durability".
+---@class ToolPrototype : ItemPrototype
+---@field type "tool"
+---The durability of this tool. Must be positive. Mandatory if `infinite` is false. Ignored if <code>infinite</code> is true.
+---@field durability? number
+---May not be longer than 200 characters.
+---@field durability_description_key? string
+---May not be longer than 200 characters.
+---
+---In-game, the game provides the locale with three parameters:
+---
+---`__1__`: remaining durability
+---
+---`__2__`: total durability
+---
+---`__3__`: durability as a percentage
+---
+---So when a locale key that has the following translation
+---
+---`Remaining durability is __1__ out of __2__ which is __3__ %`
+---
+---is applied to a tool with 2 remaining durability out of 8 it will be displayed as
+---
+---`Remaining durability is 2 out of 8 which is 25 %`
+---@field durability_description_value? string
+---Whether this tool has infinite durability. If this is false, `durability` must be specified.
+---@field infinite? boolean
+
+---@class TrainBrakingForceBonusModifier : SimpleModifier
+---@field type "train-braking-force-bonus"
+---If set to `false`, use the icon from UtilitySprites for this technology effect icon.
+---@field infer_icon? boolean
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---This prototype is used for receiving an achievement when the player has a specified train path length.
+---@class TrainPathAchievementPrototype : AchievementPrototype
+---@field type "train-path-achievement"
+---The achievement will trigger if a train path is longer than this.
+---@field minimum_distance number
+
+---@class TrainPathFinderConstants
+---@field train_stop_penalty integer
+---@field stopped_manually_controlled_train_penalty integer
+---@field stopped_manually_controlled_train_without_passenger_penalty integer
+---@field signal_reserved_by_circuit_network_penalty integer
+---@field train_in_station_penalty integer
+---@field train_in_station_with_no_other_valid_stops_in_schedule integer
+---@field train_arriving_to_station_penalty integer
+---@field train_arriving_to_signal_penalty integer
+---@field train_waiting_at_signal_penalty integer
+---Must be >= 0.
+---@field train_waiting_at_signal_tick_multiplier_penalty number
+---@field train_with_no_path_penalty integer
+---@field train_auto_without_schedule_penalty integer
+
+---@class TrainStopDrawingBoxes
+---@field north BoundingBox
+---@field east BoundingBox
+---@field south BoundingBox
+---@field west BoundingBox
+
+---@class TrainStopLight
+---@field picture Sprite4Way
+---@field red_picture Sprite4Way
+---@field light LightDefinition
+
+---A train stop.
+---@class TrainStopPrototype : EntityWithOwnerPrototype
+---@field type "train-stop"
+---@field animation_ticks_per_frame integer
+---@field rail_overlay_animations? Animation4Way
+---@field animations? Animation4Way
+---@field top_animations? Animation4Way
+---@field default_train_stopped_signal? SignalIDConnector
+---@field default_trains_count_signal? SignalIDConnector
+---@field default_trains_limit_signal? SignalIDConnector
+---@field default_priority_signal? SignalIDConnector
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---@field color? Color
+---@field chart_name? boolean
+---@field light1? TrainStopLight
+---@field light2? TrainStopLight
+---@field drawing_boxes? TrainStopDrawingBoxes
+---@field circuit_connector? [CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition, CircuitConnectorDefinition]
+---Has to be 2 for 2x2 grid.
+---@field build_grid_size? 2
+
+---@class TrainVisualizationConstants
+---@field not_last_box_color Color
+---@field last_box_color Color
+---@field reverse_box_color Color
+---@field last_reverse_box_color Color
+---@field box_width number
+---@field box_length number
+---@field joint_distance number
+---@field connection_distance number
+---@field final_margin number
+---@field stock_number_scale number
+
+---@class TransitionApplication
+---@field offset? boolean
+---@field pod_offset? boolean
+---@field rotation? boolean
+
+---@class TransportBeltAnimationSet
+---@field animation_set RotatedAnimation
+---@field east_index? integer
+---@field west_index? integer
+---@field north_index? integer
+---@field south_index? integer
+---@field starting_south_index? integer
+---@field ending_south_index? integer
+---@field starting_west_index? integer
+---@field ending_west_index? integer
+---@field starting_north_index? integer
+---@field ending_north_index? integer
+---@field starting_east_index? integer
+---@field ending_east_index? integer
+---@field frozen_patch? RotatedSprite
+---Only loaded if `frozen_patch` is defined.
+---@field east_index_frozen? integer
+---Only loaded if `frozen_patch` is defined.
+---@field west_index_frozen? integer
+---Only loaded if `frozen_patch` is defined.
+---@field north_index_frozen? integer
+---Only loaded if `frozen_patch` is defined.
+---@field south_index_frozen? integer
+---Only loaded if `frozen_patch` is defined.
+---@field starting_south_index_frozen? integer
+---Only loaded if `frozen_patch` is defined.
+---@field ending_south_index_frozen? integer
+---Only loaded if `frozen_patch` is defined.
+---@field starting_west_index_frozen? integer
+---Only loaded if `frozen_patch` is defined.
+---@field ending_west_index_frozen? integer
+---Only loaded if `frozen_patch` is defined.
+---@field starting_north_index_frozen? integer
+---Only loaded if `frozen_patch` is defined.
+---@field ending_north_index_frozen? integer
+---Only loaded if `frozen_patch` is defined.
+---@field starting_east_index_frozen? integer
+---Only loaded if `frozen_patch` is defined.
+---@field ending_east_index_frozen? integer
+---@field alternate? boolean
+---@field belt_reader? BeltReaderLayer[]
+
+---@class TransportBeltAnimationSetWithCorners : TransportBeltAnimationSet
+---@field east_to_north_index? integer
+---@field north_to_east_index? integer
+---@field west_to_north_index? integer
+---@field north_to_west_index? integer
+---@field south_to_east_index? integer
+---@field east_to_south_index? integer
+---@field south_to_west_index? integer
+---@field west_to_south_index? integer
+---Only loaded if `frozen_patch` is defined.
+---@field east_to_north_index_frozen? integer
+---Only loaded if `frozen_patch` is defined.
+---@field north_to_east_index_frozen? integer
+---Only loaded if `frozen_patch` is defined.
+---@field west_to_north_index_frozen? integer
+---Only loaded if `frozen_patch` is defined.
+---@field north_to_west_index_frozen? integer
+---Only loaded if `frozen_patch` is defined.
+---@field south_to_east_index_frozen? integer
+---Only loaded if `frozen_patch` is defined.
+---@field east_to_south_index_frozen? integer
+---Only loaded if `frozen_patch` is defined.
+---@field south_to_west_index_frozen? integer
+---Only loaded if `frozen_patch` is defined.
+---@field west_to_south_index_frozen? integer
+
+---Abstract class that anything that is a belt or can connect to belts uses.
+---@class TransportBeltConnectablePrototype : EntityWithOwnerPrototype
+---@field belt_animation_set? TransportBeltAnimationSet
+---The speed of the belt: `speed × 480 = x Items/second`.
+---
+---The raw value is expressed as the number of tiles traveled by each item on the belt per tick, relative to the belt's maximum density - e.g. `x items/second ÷ (4 items/lane × 2 lanes/belt × 60 ticks/second) = <speed> belts/tick` where a "belt" is the size of one tile. See Transport_belts/Physics for more details.
+---
+---Must be a positive non-infinite number. The number is a fixed point number with 8 bits reserved for decimal precision, meaning the smallest value step is `1/2^8 = 0.00390625`. In the simple case of a non-curved belt, the rate is multiples of `1.875` items/s, even though the entity tooltip may show a different rate.
+---@field speed number
+---@field animation_speed_coefficient? number
+---Transport belt connectable entities must have collision_box of an appropriate minimal size, they should occupy more than half of every tile the entity covers.
+---@field collision_box? BoundingBox
+---Transport belt connectable entities cannot have the `"building-direction-8-way"` flag.
+---@field flags? EntityPrototypeFlags
+---The entity with the higher number is selectable before the entity with the lower number.
+---
+---The value `0` will be treated the same as `nil`.
+---@field selection_priority? integer
+
+---Used to define the graphics for the (in vanilla) yellow frame that is used when a TransportBeltPrototype is connected to the circuit network.
+---@class TransportBeltConnectorFrame
+---@field frame_main AnimationVariations
+---@field frame_shadow AnimationVariations
+---@field frame_main_scanner Animation
+---@field frame_main_scanner_movement_speed number
+---@field frame_main_scanner_horizontal_start_shift Vector
+---@field frame_main_scanner_horizontal_end_shift Vector
+---@field frame_main_scanner_horizontal_y_scale number
+---@field frame_main_scanner_horizontal_rotation RealOrientation
+---@field frame_main_scanner_vertical_start_shift Vector
+---@field frame_main_scanner_vertical_end_shift Vector
+---@field frame_main_scanner_vertical_y_scale number
+---@field frame_main_scanner_vertical_rotation RealOrientation
+---@field frame_main_scanner_cross_horizontal_start_shift Vector
+---@field frame_main_scanner_cross_horizontal_end_shift Vector
+---@field frame_main_scanner_cross_horizontal_y_scale number
+---@field frame_main_scanner_cross_horizontal_rotation RealOrientation
+---@field frame_main_scanner_cross_vertical_start_shift Vector
+---@field frame_main_scanner_cross_vertical_end_shift Vector
+---@field frame_main_scanner_cross_vertical_y_scale number
+---@field frame_main_scanner_cross_vertical_rotation RealOrientation
+---@field frame_main_scanner_nw_ne Animation
+---@field frame_main_scanner_sw_se Animation
+---@field frame_back_patch? SpriteVariations
+---@field frame_front_patch? SpriteVariations
+
+---A transport belt.
+---@class TransportBeltPrototype : TransportBeltConnectablePrototype
+---@field type "transport-belt"
+---@field connector_frame_sprites? TransportBeltConnectorFrame
+---The maximum circuit wire distance for this entity.
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---Set of 7 circuit connector definitions in order: X, H, V, SE, SW, NE and NW.
+---@field circuit_connector? CircuitConnectorDefinition[]
+---@field belt_animation_set? TransportBeltAnimationSetWithCorners
+---The name of the UndergroundBeltPrototype which is used in quick-replace fashion when the smart belt dragging behavior is triggered.
+---@field related_underground_belt? EntityID
+
+---@class TravelToSpacePlatformsModifier : BoolModifier
+---@field type "unlock-travel-to-space-platforms"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---TreePrototypes develop over time. To introduce visual fidelity, the shape of the plant is shrunk and distorted using a warp texture, and it slowly retracts back into its grown state.
+---@class TreeGrowth
+---Encodes the initial UV offset at a given pixel, used to sample TreeGrowth::trunk_warp.
+---
+---The offset is calculated like in the following pseudocode:
+---`
+---vec2 growthWarpLinear = vec2((growthWarp.r - 0.5) * 2 * pow(time, 2.546872), 0);
+---vec2 growthWarpQuadratic = (uv - vec2(0.3, 0.2)) * pow(growthWarp.g * pow(time, 4.06187), 2) * 1000;
+---vec2 growthWarpUVOffset = clamp(growthWarpLinear + growthWarpQuadratic + uv, 0, 1);
+---`
+---@field growth_warp Sprite
+---Encodes the UV offset at a given pixel, used to sample the trunk texture, and TreeGrowth::harvest_warp.
+---
+---The final UV is calculated like in the following pseudocode:
+---`
+---vec2 trunkWarpLinear = (trunkWarp.rg - 0.5) * 2 * pow(time, 2.546872);
+---vec2 trunkUV = clamp(growthWarpUVOffset + trunkWarpLinear + growthWarpQuadratic, 0, 1);
+---`
+---
+---See TreeGrowth::growth_warp for how `growthWarpQuadratic` and `growthWarpUVOffset` are calculated.
+---@field trunk_warp Sprite
+---Encodes the UV offset at a given pixel, used to sample the leaves texture.
+---
+---The final UV is calculated like in the following pseudocode:
+---`
+---vec2 harvestWarpLinear = (harvestWarp.rg - 0.5) * 2 * pow(time, 2.546872);
+---vec2 harvestUV = clamp(trunkUV + harvestWarpLinear, 0, 1);
+---`
+---
+---See TreeGrowth::trunk_warp for how `trunkUV` is calculated.
+---@field harvest_warp Sprite
+---Encodes the UV offset at a given pixel, used to sample the shadow texture.
+---
+---The final UV is calculated like in the following pseudocode:
+---`
+---vec2 shadowWarpLinear = (shadowWarp.rg - 0.5) * 2 * pow(time, 2.546872);
+---vec2 shadowUV = clamp(uv + shadowWarpLinear, 0, 1);
+---`
+---@field shadow_warp Sprite
+---Encodes the point in time (0-1) since the plant started growing, at which a given pixel of the *trunk* texture becomes visible.
+---
+---This is a grayscale texture where white is t=0 (beginning of growth) and black is t=1 (end of growth).
+---@field trunk_alpha Sprite
+---Encodes the point in time (0-1) since the plant started growing, at which a given pixel of the *leaves* texture becomes visible.
+---
+---This is a grayscale texture where white is t=0 (beginning of growth) and black is t=1 (end of growth).
+---@field harvest_alpha Sprite
+---Encodes the point in time (0-1) since the plant started growing, at which a given pixel of the *shadow* texture becomes visible.
+---
+---This is a grayscale texture where white is t=0 (beginning of growth) and black is t=1 (end of growth).
+---@field shadow_alpha Sprite
+---Exponent for the easing function of the growth progress (progress ^ progressExponent) which is used by the growth animation.
+---@field progress_exponent number
+
+---A tree.
+---@class TreePrototype : EntityWithHealthPrototype
+---@field type "tree"
+---@field variation_weights? number[]
+---@field darkness_of_burnt_tree? number
+---Mandatory if `variations` is not defined.
+---@field pictures? SpriteVariations
+---If defined, it can't be empty.
+---@field variations? TreeVariation[]
+---Mandatory if `variations` is defined.
+---@field colors? Color[]
+---@field stateless_visualisation_variations? StatelessVisualisation|StatelessVisualisation[][]
+---The amount of health automatically regenerated.
+---@field healing_per_tick? number
+
+---Tree has number of "dying" stages, which is deduced from frame count of `shadow` if shadow is defined, otherwise from frame count of `trunk`. Frame count of `leaves` has to be one less than deduced number stages, as last stage is always assumed to be leafless.
+---@class TreeVariation
+---If `shadow` is not specified, this has to have one more frame than `leaves`.
+---@field trunk Animation
+---@field leaves Animation
+---@field leaf_generation CreateParticleTriggerEffectItem
+---@field branch_generation CreateParticleTriggerEffectItem
+---Shadow must have 1 more `frame_count` than `leaves`.
+---@field shadow? Animation
+---Only loaded if `shadow` is present. Defaults to `shadow.frame_count - 1`.
+---@field disable_shadow_distortion_beginning_at_frame? integer
+---Normal must have the same frame_count as `leaves`.
+---@field normal? Animation
+---Overlay must have the same frame_count as `leaves`. Won't be tinted by the tree color unless `apply_runtime_tint` is set to `true` in the sprite definition. See here.
+---@field overlay? Animation
+---@field underwater? Animation
+---@field underwater_layer_offset? integer
+---@field leaves_when_mined_manually? integer
+---@field leaves_when_mined_automatically? integer
+---This value is multiplied with the percent of health lost.
+---@field leaves_when_damaged? integer
+---@field leaves_when_destroyed? integer
+---@field branches_when_mined_manually? integer
+---@field branches_when_mined_automatically? integer
+---This value is multiplied with the percent of health lost.
+---@field branches_when_damaged? integer
+---@field branches_when_destroyed? integer
+---@field water_reflection? WaterReflectionDefinition
+
+---Loaded as one of the TriggerItem extensions, based on the value of the `type` key.
+---@class Trigger
+
+---Loaded as one of the TriggerDeliveryItem extensions, based on the value of the `type` key.
+---@class TriggerDelivery
+
+---The abstract base of all TriggerDeliveries.
+---@class TriggerDeliveryItem
+---Provides the source of the TriggerDelivery as both the source and target of the effect.
+---@field source_effects? TriggerEffect
+---@field target_effects? TriggerEffect
+
+---Loaded as one of the TriggerEffectItem extensions, based on the value of the `type` key.
+---@class TriggerEffect
+
+---The abstract base of all TriggerEffects.
+---@class TriggerEffectItem
+---@field repeat_count? integer
+---@field repeat_count_deviation? integer
+---Must be greater than `0` and less than or equal to `1`.
+---@field probability? number
+---@field affects_target? boolean
+---@field show_in_tooltip? boolean
+---Guaranteed to work with EntityWithHealthPrototype::damaged_trigger_effect and EntityWithHealthPrototype::dying_trigger_effect. Unknown if it works with other properties that use TriggerEffect.
+---@field damage_type_filters? DamageTypeFilters
+
+---A TriggerEffect with cooldown conditions, used to limit the frequency of trigger effects that would otherwise fire every single tick. If multiple cooldown conditions are defined, then all cooldowns must be satisfied before the effect can be triggered.
+---@class TriggerEffectWithCooldown
+---The travel distance between triggers that the triggerer must travel between effects. Negative values will mean there is no cooldown.
+---@field distance_cooldown? number
+---The initial state of the distance cooldown. In other words, the distance the triggerer must travel before the first effect can be triggered. Useful for staggering multiple effects.
+---@field initial_distance_cooldown? number
+---The number of ticks that elapse between triggers.
+---@field time_cooldown? MapTick
+---The initial amount of time to wait before triggering the effect for the first time.
+---@field initial_time_cooldown? MapTick
+---@field effect TriggerEffect
+
+---The abstract base of all Triggers.
+---@class TriggerItem
+---Only prototypes with these flags are affected by the trigger item.
+---@field entity_flags? EntityPrototypeFlags
+---Only prototypes with these collision masks are affected by the trigger item.
+---@field collision_mask? CollisionMaskConnector
+---@field ignore_collision_condition? boolean
+---The trigger affects only prototypes with these masks.
+---@field trigger_target_mask? TriggerTargetMask
+---@field repeat_count? integer
+---Must be greater than 0 and less than or equal to 1.
+---@field probability? number
+---@field action_delivery? TriggerDelivery|TriggerDelivery[]
+---Only entities meeting the force condition are affected by the trigger item.
+---@field force? ForceCondition
+
+---An array of names of TriggerTargetType. See Design discussion: Trigger target type and Blacklist for prototypes turrets shouldn't attack.
+---@class TriggerTargetMask
+
+---The base game always internally defines a "common" trigger target type. See Design discussion: Trigger target type.
+---@class TriggerTargetType
+---@field type "trigger-target-type"
+---@field type "trigger-target-type"
+---@field name string
+
+---The name of a TrivialSmokePrototype.
+---@class TrivialSmokeID
+
+---Smoke, but it's not an entity for optimization purposes.
+---@class TrivialSmokePrototype : Prototype
+---@field type "trivial-smoke"
+---@field animation Animation
+---Can't be 0 - the smoke will never render.
+---@field duration integer
+---@field glow_animation? Animation
+---@field color? Color
+---@field start_scale? number
+---@field end_scale? number
+---Value between 0 and 1, with 1 being no slowdown and 0 being no movement.
+---@field movement_slow_down_factor? number
+---@field spread_duration? integer
+---`fade_in_duration` + `fade_away_duration` must be <= `duration`.
+---@field fade_away_duration? integer
+---`fade_in_duration` + `fade_away_duration` must be <= `duration`.
+---@field fade_in_duration? integer
+---@field glow_fade_away_duration? integer
+---@field cyclic? boolean
+---Smoke always moves randomly unless `movement_slow_down_factor` is 0. If `affected_by_wind` is true, the smoke will also be moved by wind.
+---@field affected_by_wind? boolean
+---@field show_when_smoke_off? boolean
+---@field render_layer? RenderLayer
+
+---@class TurretAttackModifier : BaseModifier
+---@field type "turret-attack"
+---If set to `false`, use the icon from UtilitySprites for this technology effect icon.
+---@field infer_icon? boolean
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+---Name of the EntityPrototype that is affected. This also works for non-turrets such as tanks, however, the bonus does not appear in the entity's tooltips.
+---@field turret_id EntityID
+---Modification value, which will be added to the current turret attack modifier upon researching.
+---@field modifier number
+
+---@class TurretBaseVisualisation
+---@field render_layer? RenderLayer
+---@field secondary_draw_order? integer
+---If not defined, visualisation will be drawn in all states.
+---@field enabled_states? TurretState[]
+---@field draw_when_has_energy? boolean
+---@field draw_when_no_energy? boolean
+---@field draw_when_has_ammo? boolean
+---@field draw_when_no_ammo? boolean
+---@field draw_when_frozen? boolean
+---@field draw_when_not_frozen? boolean
+---@field animation Animation4Way
+
+---@class TurretGraphicsSet
+---@field base_visualisation? TurretBaseVisualisation|TurretBaseVisualisation[]
+---Refer to EntityPrototype::water_reflection.
+---@field water_reflection? WaterReflectionDefinition
+
+---A turret that needs no extra ammunition. See the children for turrets that need some kind of ammunition.
+---@class TurretPrototype : EntityWithOwnerPrototype
+---@field type "turret"
+---Requires ammo_type in attack_parameters unless this is a AmmoTurretPrototype.
+---@field attack_parameters AttackParameters
+---@field folded_animation RotatedAnimation8Way
+---@field call_for_help_radius number
+---@field attack_target_mask? TriggerTargetMask
+---@field ignore_target_mask? TriggerTargetMask
+---@field shoot_in_prepare_state? boolean
+---When `false` the turret will enter `starting_attack` state without checking its ammo or energy levels. FluidTurretPrototype forces this to `true`.
+---@field start_attacking_only_when_can_shoot? boolean
+---@field leave_attacking_if_shoot_fails? boolean
+---When `true` the turret's collision box will affected by its rotation.
+---@field turret_base_has_direction? boolean
+---@field random_animation_offset? boolean
+---@field attack_from_start_frame? boolean
+---@field allow_turning_when_starting_attack? boolean
+---@field gun_animation_secondary_draw_order? integer
+---@field gun_animation_render_layer? RenderLayer
+---@field graphics_set TurretGraphicsSet
+---@field preparing_animation? RotatedAnimation8Way
+---@field prepared_animation? RotatedAnimation8Way
+---@field prepared_alternative_animation? RotatedAnimation8Way
+---@field starting_attack_animation? RotatedAnimation8Way
+---@field attacking_animation? RotatedAnimation8Way
+---@field energy_glow_animation? RotatedAnimation8Way
+---@field resource_indicator_animation? RotatedAnimation8Way
+---@field ending_attack_animation? RotatedAnimation8Way
+---@field folding_animation? RotatedAnimation8Way
+---@field integration? Sprite
+---@field special_effect? TurretSpecialEffect
+---The intensity of light in the form of `energy_glow_animation` drawn on top of `energy_glow_animation`.
+---@field glow_light_intensity? number
+---The range of the flickering of the alpha of `energy_glow_animation`. Default is range 0.2, so animation alpha can be anywhere between 0.8 and 1.0.
+---@field energy_glow_animation_flicker_strength? number
+---@field starting_attack_sound? Sound
+---@field dying_sound? Sound
+---@field preparing_sound? Sound
+---@field folding_sound? Sound
+---@field prepared_sound? Sound
+---@field prepared_alternative_sound? Sound
+---@field rotating_sound? InterruptibleSound
+---@field default_speed? number
+---@field default_speed_secondary? number
+---@field default_speed_when_killed? number
+---@field default_starting_progress_when_killed? number
+---@field rotation_speed? number
+---@field rotation_speed_secondary? number
+---@field rotation_speed_when_killed? number
+---@field rotation_starting_progress_when_killed? number
+---Controls the speed of the preparing_animation: `1 ÷ preparing_speed = duration of the preparing_animation`
+---@field preparing_speed? number
+---@field preparing_speed_secondary? number
+---@field preparing_speed_when_killed? number
+---@field preparing_starting_progress_when_killed? number
+---It's randomized whether a particular turret uses the primary or the secondary speed for its animations.
+---
+---Controls the speed of the folded_animation: `1 ÷ folded_speed = duration of the folded_animation`
+---@field folded_speed? number
+---It's randomized whether a particular turret uses the primary or the secondary speed for its animations.
+---
+---Controls the speed of the folded_animation: `1 ÷ folded_speed_secondary = duration of the folded_animation`
+---@field folded_speed_secondary? number
+---@field folded_speed_when_killed? number
+---@field folded_starting_progress_when_killed? number
+---It's randomized whether a particular turret uses the primary or the secondary speed for its animations.
+---
+---Controls the speed of the prepared_animation: `1 ÷ prepared_speed = duration of the prepared_animation`
+---@field prepared_speed? number
+---It's randomized whether a particular turret uses the primary or the secondary speed for its animations.
+---
+---Controls the speed of the prepared_animation: `1 ÷ prepared_speed_secondary = duration of the prepared_animation`
+---@field prepared_speed_secondary? number
+---@field prepared_speed_when_killed? number
+---@field prepared_starting_progress_when_killed? number
+---It's randomized whether a particular turret uses the primary or the secondary speed for its animations.
+---
+---Controls the speed of the prepared_alternative_animation: `1 ÷ prepared_alternative_speed = duration of the prepared_alternative_animation`
+---@field prepared_alternative_speed? number
+---It's randomized whether a particular turret uses the primary or the secondary speed for its animations.
+---
+---Controls the speed of the prepared_alternative_animation: `1 ÷ prepared_alternative_speed_secondary = duration of the prepared_alternative_animation`
+---@field prepared_alternative_speed_secondary? number
+---@field prepared_alternative_speed_when_killed? number
+---@field prepared_alternative_starting_progress_when_killed? number
+---The chance for `prepared_alternative_animation` to be used.
+---@field prepared_alternative_chance? number
+---Controls the speed of the starting_attack_animation: `1 ÷ starting_attack_speed = duration of the starting_attack_animation`
+---@field starting_attack_speed? number
+---@field starting_attack_speed_secondary? number
+---@field starting_attack_speed_when_killed? number
+---@field starting_attack_starting_progress_when_killed? number
+---Controls the speed of the attacking_animation: `1 ÷ attacking_speed = duration of the attacking_animation`
+---@field attacking_speed? number
+---Controls the speed of the ending_attack_animation: `1 ÷ ending_attack_speed = duration of the ending_attack_animation`
+---@field ending_attack_speed? number
+---@field ending_attack_speed_secondary? number
+---@field ending_attack_speed_when_killed? number
+---@field ending_attack_starting_progress_when_killed? number
+---Controls the speed of the folding_animation: `1 ÷ folding_speed = duration of the folding_animation`
+---@field folding_speed? number
+---@field folding_speed_secondary? number
+---@field folding_speed_when_killed? number
+---@field folding_starting_progress_when_killed? number
+---@field prepare_range? number
+---@field alert_when_attacking? boolean
+---Whether `spawn_decoration` should be spawned when this turret is created through enemy expansion.
+---@field spawn_decorations_on_expansion? boolean
+---@field folded_animation_is_stateless? boolean
+---@field unfolds_before_dying? boolean
+---Decoratives to be created when the spawner is created by the map generator. Placed when enemies expand if `spawn_decorations_on_expansion` is set to true.
+---@field spawn_decoration? CreateDecorativesTriggerEffectItem[]
+---@field folded_state_corpse? EntityID|EntityID[]
+---@field can_retarget_while_starting_attack? boolean
+---Whether this prototype should be a high priority target for enemy forces. See Military units and structures.
+---@field is_military_target? boolean
+---The maximum circuit wire distance for this entity.
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---Set of circuit connector definitions for all directions used by this turret. Required amount of elements is based on other prototype values: 8 elements if building-direction-8-way flag is set, or 16 elements if building-direction-16-way flag is set, or 4 elements if turret_base_has_direction is set to true, or 1 element.
+---@field circuit_connector? CircuitConnectorDefinition[]
+
+---@class TurretSpecialEffect
+---@field type "mask-by-circle"
+---@field center? TurretSpecialEffectCenter
+---Only loaded if `type` is `"mask-by-circle"`.
+---@field min_radius? number
+---Only loaded, and mandatory if `type` is `"mask-by-circle"`.
+---@field max_radius? number
+---Only loaded if `type` is `"mask-by-circle"`.
+---@field falloff? number
+---Only loaded if `type` is `"mask-by-circle"`.
+---@field attacking_min_radius? number
+---Only loaded if `type` is `"mask-by-circle"`.
+---@field attacking_max_radius? number
+---Only loaded if `type` is `"mask-by-circle"`.
+---@field attacking_falloff? number
+
+---If this is loaded as a single Vector, it is used for all directions.
+---@class TurretSpecialEffectCenter
+---@field default? Vector
+---@field north? Vector
+---@field north_east? Vector
+---@field east? Vector
+---@field south_east? Vector
+---@field south? Vector
+---@field south_west? Vector
+---@field west? Vector
+---@field north_west? Vector
+
+---@class TurretState
+
+---The definition of the tutorial to be used in the tips and tricks, see TipsAndTricksItem. The actual tutorial scripting code is defined in the tutorial scenario. The scenario must be placed in the `tutorials` folder in the mod.
+---@class TutorialDefinition : PrototypeBase
+---@field type "tutorial"
+---Name of the folder for this tutorial scenario in the `tutorials` folder.
+---@field scenario string
+---Used to order prototypes in inventory, recipes and GUIs. May not exceed a length of 200 characters.
+---@field order? Order
+
+---An underground belt.
+---@class UndergroundBeltPrototype : TransportBeltConnectablePrototype
+---@field type "underground-belt"
+---@field max_distance integer
+---@field structure? UndergroundBeltStructure
+---@field underground_sprite? Sprite
+---@field underground_remove_belts_sprite? Sprite
+---@field max_distance_underground_remove_belts_sprite? Sprite
+---@field underground_collision_mask? CollisionMaskConnector
+---@field max_distance_tint? Color
+
+---@class UndergroundBeltStructure
+---@field direction_in? Sprite4Way
+---@field direction_out? Sprite4Way
+---@field back_patch? Sprite4Way
+---@field front_patch? Sprite4Way
+---@field direction_in_side_loading? Sprite4Way
+---@field direction_out_side_loading? Sprite4Way
+---@field frozen_patch_in? Sprite4Way
+---@field frozen_patch_out? Sprite4Way
+
+---Used by UnitPrototype and SpiderUnitPrototype.
+---@class UnitAISettings
+---If enabled, units that repeatedly fail to succeed at commands will be destroyed.
+---@field destroy_when_commands_fail? boolean
+---If enabled, units that have nothing else to do will attempt to return to a spawner.
+---@field allow_try_return_to_spawner? boolean
+---If enabled, units will try to separate themselves from nearby friendly units.
+---@field do_separation? boolean
+---Must be between -8 and 8.
+---@field path_resolution_modifier? integer
+---@field strafe_settings? PrototypeStrafeSettings
+---The amount of slots in a unit group this unit takes up. For example, a unit with `groupingSize` of 2 will count as 2 normal-sized units when filling up a unit group. Must be greater than 0.
+---@field size_in_group? number
+---If enabled, the unit is permitted to join attack groups.
+---@field join_attacks? boolean
+
+---@class UnitAlternativeFrameSequence
+---Indices of frames from the attack parameter animation.
+---@field warmup_frame_sequence integer[]
+---Indices of frames from the attack parameter animation.
+---@field warmup2_frame_sequence integer[]
+---Indices of frames from the attack parameter animation.
+---@field attacking_frame_sequence integer[]
+---Indices of frames from the attack parameter animation.
+---@field cooldown_frame_sequence integer[]
+---Indices of frames from the attack parameter animation.
+---@field prepared_frame_sequence integer[]
+---Indices of frames from the attack parameter animation.
+---@field back_to_walk_frame_sequence integer[]
+---@field warmup_animation_speed number
+---@field attacking_animation_speed number
+---@field cooldown_animation_speed number
+---@field prepared_animation_speed number
+---@field back_to_walk_animation_speed number
+
+---@class UnitGroupSettings
+---Pollution triggered group waiting time is a random time between min and max gathering time
+---@field min_group_gathering_time integer
+---@field max_group_gathering_time integer
+---After the gathering is finished the group can still wait for late members, but it doesn't accept new ones anymore.
+---@field max_wait_time_for_late_members integer
+---Limits for group radius (calculated by number of numbers).
+---@field max_group_radius number
+---@field min_group_radius number
+---When a member falls behind the group he can speedup up till this much of his regular speed.
+---@field max_member_speedup_when_behind number
+---When a member gets ahead of its group, it will slow down to at most this factor of its speed.
+---@field max_member_slowdown_when_ahead number
+---When members of a group are behind, the entire group will slow down to at most this factor of its max speed.
+---@field max_group_slowdown_factor number
+---If a member falls behind more than this times the group radius, the group will slow down to max_group_slowdown_factor.
+---@field max_group_member_fallback_factor number
+---If a member falls behind more than this time the group radius, it will be removed from the group.
+---@field member_disown_distance number
+---@field tick_tolerance_when_member_arrives integer
+---Maximum number of automatically created unit groups gathering for attack at any time.
+---@field max_gathering_unit_groups integer
+---Maximum size of an attack unit group. This only affects automatically-created unit groups; manual groups created through the API are unaffected.
+---@field max_unit_group_size integer
+
+---Entity that moves around and attacks players, for example biters and spitters.
+---@class UnitPrototype : EntityWithOwnerPrototype
+---@field type "unit"
+---@field run_animation RotatedAnimation
+---@field steering? SteeringSettings
+---Requires `animation` in attack_parameters. Requires `ammo_type` in attack_parameters.
+---@field attack_parameters AttackParameters
+---A sound this unit makes when it sets out to attack.
+---@field warcry? Sound
+---Movement speed of this unit in the world, in tiles per tick. Must be equal to or greater than 0.
+---@field movement_speed number
+---How fast the `run_animation` frames are advanced. The animations are advanced animation_speed frames per `distance_per_frame` that the unit moves.
+---
+---`frames_advanced = (distance_moved ÷ distance_per_frame) * animation_speed`
+---@field distance_per_frame number
+---@field distraction_cooldown integer
+---Max is 100.
+---
+---Note: Setting to 50 or above can lead to undocumented behavior of individual units creating groups on their own when attacking or being attacked.
+---@field vision_distance number
+---@field rotation_speed? number
+---The sound file to play this unit dies.
+---@field dying_sound? Sound
+---In ticks.
+---@field min_pursue_time? integer
+---If this unit is immune to movement by belts.
+---@field has_belt_immunity? boolean
+---@field max_pursue_distance? number
+---In chunks. The radius of how many chunks this unit charts around itself.
+---@field radar_range? integer
+---@field ai_settings? UnitAISettings
+---@field move_while_shooting? boolean
+---@field can_open_gates? boolean
+---Whether this unit is affected by tile walking speed modifiers.
+---@field affected_by_tiles? boolean
+---@field render_layer? RenderLayer
+---@field light? LightDefinition
+---The pollution amount that has to be absorbed by the unit's spawner before the unit will leave the spawner and attack the source of the pollution.
+---@field absorptions_to_join_attack? table<AirbornePollutantID, number>
+---Multiplier for the EnemySpawnerPrototype::spawning_cooldown after it spawns this unit.
+---@field spawning_time_modifier? number
+---A list of entity prototypes that this unit can build when given the build base command.
+---
+---If empty or not specified, the unit cannot build anything.
+---@field buildable_entities? EntityID[]
+---@field walking_sound? Sound
+---@field alternative_attacking_frame_sequence? UnitAlternativeFrameSequence
+---List of positions in the `run_animation` when the `walking_sound` is played.
+---
+---Only loaded if `walking_sound` is defined.
+---@field running_sound_animation_positions? number[]
+---Whether this prototype should be a high priority target for enemy forces. See Military units and structures.
+---@field is_military_target? true
+---If this is true, this entities `is_military_target property` can be changed runtime (on the entity, not on the prototype itself).
+---@field allow_run_time_change_of_is_military_target? false
+
+---It can be specified as a table with named or numbered keys, but not a mix of both. If this is specified as a table with numbered keys then the first value is the unit and the second is the spawn points.
+---@class UnitSpawnDefinition
+---@field unit EntityID
+---Array of evolution and probability info, with the following conditions:
+---
+---- The `evolution_factor` must be ascending from entry to entry.
+---
+---- The last entry's weight will be used when the `evolution_factor` is larger than the last entry.
+---
+---- Weights are linearly interpolated between entries.
+---
+---- Individual weights are scaled linearly so that the cumulative weight is `1`.
+---@field spawn_points SpawnPoint[]
+
+---@class UnlockLogisticNetworkModifier : BoolModifier
+---@field type "unlock-logistic-network"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---@class UnlockQualityModifier : BaseModifier
+---@field type "unlock-quality"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+---@field quality QualityID
+
+---@class UnlockRecipeModifier : BaseModifier
+---@field type "unlock-recipe"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+---Prototype name of the RecipePrototype that is unlocked upon researching.
+---@field recipe RecipeID
+
+---@class UnlockRecipeTipTrigger
+---@field type "unlock-recipe"
+---@field recipe RecipeID
+
+---@class UnlockSpaceLocationModifier : BaseModifier
+---@field type "unlock-space-location"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+---@field space_location SpaceLocationID
+
+---An upgrade planner.
+---
+---For an entity to be allowed as an upgrade source, it must be minable, may not have "not-upgradable" flag set and may not be hidden. Additionally, the source entity's mining result must not be an item product that is hidden. Mining results with no item products are allowed.
+---
+---For an entity to be allowed as an upgrade target, it must have least 1 item that builds it that isn't hidden.
+---
+---For two entities to be upgrades of each other, the two entities must have the same fast replaceable group, the same collision box and the same collision mask. Additionally, underground belts cannot be upgraded to transport belts and vice versa.
+---
+---For an entity to be automatically upgraded to another entity without configuring the upgrade planner, the next upgrade of the upgrade source entity must be set.
+---@class UpgradeItemPrototype : SelectionToolPrototype
+---@field type "upgrade-item"
+---Count of items of the same name that can be stored in one inventory slot. Must be 1 when the `"not-stackable"` flag is set.
+---@field stack_size 1
+---If the item will draw its label when held in the cursor in place of the item count.
+---@field draw_label_for_cursor_render? boolean
+---The SelectionModeData::mode is hardcoded to `"upgrade"`.
+---
+---The filters are parsed, but then ignored and forced to be empty.
+---@field select SelectionModeData
+---The SelectionModeData::mode is hardcoded to `"cancel-upgrade"`.
+---
+---The filters are parsed, but then ignored and forced to be empty.
+---@field alt_select SelectionModeData
+---This property is hardcoded to `false`.
+---@field always_include_tiles? boolean
+
+---Triggered when using E to confirm a GUI that allows to pick from a certain kind of prototype.
+---@class UseConfirmTipTrigger : CountBasedTipTrigger
+---@field type "use-confirm"
+
+---This prototype is used for receiving an achievement when the player produces energy by entity.
+---@class UseEntityInEnergyProductionAchievementPrototype : AchievementPrototype
+---@field type "use-entity-in-energy-production-achievement"
+---This entity is needed to produce energy, for the player to complete the achievement.
+---@field entity EntityID
+---This item need to be consumed before gaining the achievement.
+---@field consumed_condition? ItemIDFilter
+---This item needs to be produced before gaining the achievement.
+---@field produced_condition? ItemIDFilter
+---This item need to be built before gaining the achievement.
+---@field required_to_build? EntityID
+
+---This prototype is used for receiving an achievement when the player uses a capsule.
+---@class UseItemAchievementPrototype : AchievementPrototype
+---@field type "use-item-achievement"
+---This will trigger the achievement, if this capsule is used.
+---@field to_use ItemID
+---@field limit_quality QualityID
+---How many capsules need to be used.
+---@field amount? integer
+---If this is false, the player carries over their statistics from this achievement through all their saves.
+---@field limited_to_one_game? boolean
+
+---@class UseOnSelfCapsuleAction
+---@field type "use-on-self"
+---@field attack_parameters AttackParameters
+---Whether using the capsule consumes an item from the stack.
+---@field uses_stack? boolean
+
+---@class UsePipetteTipTrigger : CountBasedTipTrigger
+---@field type "use-pipette"
+
+---@class UseRailPlannerTipTrigger : CountBasedTipTrigger
+---@field type "use-rail-planner"
+---@field build_mode BuildMode
+
+---Constants used by the game that are not specific to certain prototypes. See utility-constants.lua for the values used by the base game.
+---@class UtilityConstants : PrototypeBase
+---@field type "utility-constants"
+---Chart means map and minimap.
+---@field chart ChartUtilityConstants
+---The base game uses more entries here that are applied via the `ammo-category.lua` file.
+---@field bonus_gui_ordering BonusUtilityConstants
+---@field map_editor EditorUtilityConstants
+---@field entity_button_background_color Color
+---@field building_buildable_too_far_tint Color
+---@field building_buildable_tint Color
+---@field building_not_buildable_tint Color
+---@field building_ignorable_tint Color
+---@field building_no_tint Color
+---Tall entities will be tinted with this value when "Hide tall entities" mode is active.
+---@field tall_entity_tint Color
+---All trivial smoke will be tinted with this value when "Hide tall entities" mode is active.
+---@field tall_entity_smoke_tint Color
+---@field underground_belt_max_distance_tint Color
+---@field underground_pipe_max_distance_tint Color
+---@field ghost_shader_tint GhostTintSet
+---@field ghost_shaderless_tint GhostTintSet
+---@field ghost_shimmer_settings GhostShimmerConfig
+---@field probability_product_count_tint Color
+---@field ghost_product_count_tint Color
+---@field zero_count_value_tint Color
+---@field equipment_default_background_color Color
+---@field equipment_default_background_border_color Color
+---@field equipment_default_grabbed_background_color Color
+---@field equipment_disabled_background_tint Color
+---@field equipment_disabled_tint Color
+---@field turret_range_visualization_color Color
+---@field capsule_range_visualization_color Color
+---@field agricultural_range_visualization_color Color
+---@field artillery_range_visualization_color Color
+---@field gui_remark_color Color
+---@field gui_search_match_foreground_color Color
+---@field gui_search_match_background_color Color
+---@field default_player_force_color Color
+---@field default_enemy_force_color Color
+---@field default_other_force_color Color
+---@field deconstruct_mark_tint Color
+---@field rail_planner_count_button_color Color
+---@field count_button_size integer
+---@field logistic_gui_unselected_network_highlight_tint Color
+---@field logistic_gui_selected_network_highlight_tint Color
+---@field chart_search_highlight Color
+---@field selected_chart_search_highlight Color
+---@field zoom_to_world_can_use_nightvision boolean
+---@field zoom_to_world_effect_strength number
+---@field max_logistic_filter_count LogisticFilterIndex
+---Will be clamped to the range [1, 100].
+---@field select_group_row_count integer
+---Will be clamped to the range [1, 100].
+---@field select_slot_row_count integer
+---Will be clamped to the range [2, 100].
+---@field logistic_slots_per_row integer
+---Will be clamped to the range [1, 100].
+---@field crafting_queue_slots_per_row integer
+---Will be clamped to the range [2, 100].
+---@field blueprint_big_slots_per_row integer
+---Will be clamped to the range [2, 100].
+---@field blueprint_small_slots_per_row integer
+---Will be clamped to the range [1, 100].
+---@field inventory_width integer
+---Will be clamped to the range [1, 100].
+---@field module_inventory_width integer
+---Will be clamped to the range [1, 100].
+---@field trash_inventory_width integer
+---@field max_terrain_building_size integer
+---@field small_area_size number
+---@field medium_area_size number
+---@field large_area_size number
+---@field huge_area_size number
+---@field huge_platform_animation_sound_area number
+---@field small_blueprint_area_size number
+---@field medium_blueprint_area_size number
+---@field large_blueprint_area_size number
+---@field enabled_recipe_slot_tint Color
+---@field disabled_recipe_slot_tint Color
+---@field disabled_recipe_slot_background_tint Color
+---@field forced_enabled_recipe_slot_background_tint Color
+---@field rail_segment_colors Color[]
+---The table with `name = "default"` must exist and be the first member of the array.
+---@field player_colors PlayerColorData[]
+---@field server_command_console_chat_color Color
+---@field script_command_console_chat_color Color
+---@field default_alert_icon_scale number
+---@field default_alert_icon_shift_by_type? table<string, Vector>
+---@field default_alert_icon_scale_by_type? table<string, number>
+---If not set, defaults to `true` when modded and `false` when vanilla.
+---@field merge_bonus_gui_production_bonuses? boolean
+---@field daytime_color_lookup DaytimeColorLookupTable
+---@field zoom_to_world_daytime_color_lookup DaytimeColorLookupTable
+---@field frozen_color_lookup ColorLookupTable
+---@field default_platform_surface_render_parameters SurfaceRenderParameters
+---@field drop_item_radius number
+---@field checkerboard_white Color
+---@field checkerboard_black Color
+---@field item_outline_color Color
+---@field item_outline_radius number
+---@field item_outline_inset number
+---@field item_outline_sharpness number
+---@field item_default_random_tint_strength Color
+---@field spawner_evolution_factor_health_modifier number
+---There must be one array item with a threshold of `0`.
+---@field item_health_bar_colors ItemHealthColorData[]
+---@field item_ammo_magazine_left_bar_color Color
+---@field item_tool_durability_bar_color Color
+---@field filter_outline_color Color
+---@field icon_shadow_radius number
+---@field icon_shadow_inset number
+---@field icon_shadow_sharpness number
+---@field icon_shadow_color Color
+---@field clipboard_history_size integer
+---@field recipe_step_limit integer
+---@field manual_rail_building_reach_modifier number
+---@field train_temporary_stop_wait_time integer
+---@field train_time_wait_condition_default integer
+---@field train_inactivity_wait_condition_default integer
+---The strings are entity types.
+---@field default_trigger_target_mask_by_type? table<string, TriggerTargetMask>
+---@field unit_group_pathfind_resolution integer
+---@field unit_group_max_pursue_distance number
+---@field dynamic_recipe_overload_factor number
+---@field minimum_recipe_overload_multiplier integer
+---@field maximum_recipe_overload_multiplier integer
+---@field entity_renderer_search_box_limits EntityRendererSearchBoxLimits
+---Can be set to anything from range 0 to 255, but larger values will be clamped to 160. Setting it to larger values can have performance impact (growing geometrically).
+---@field light_renderer_search_distance_limit integer
+---@field far_away_chunk_generation_radius integer
+---@field tree_leaf_distortion_strength_far Vector
+---@field tree_leaf_distortion_distortion_far Vector
+---@field tree_leaf_distortion_speed_far Vector
+---@field tree_leaf_distortion_strength_near Vector
+---@field tree_leaf_distortion_distortion_near Vector
+---@field tree_leaf_distortion_speed_near Vector
+---@field tree_shadow_roughness number
+---@field tree_shadow_speed number
+---@field missing_preview_sprite_location FileName
+---@field main_menu_background_image_location FileName
+---The strings represent the names of the simulations.
+---@field main_menu_simulations? table<string, SimulationDefinition>
+---@field main_menu_background_vignette_intensity number
+---@field main_menu_background_vignette_sharpness number
+---@field feedback_screenshot_subfolder_name string
+---@field feedback_screenshot_file_name string
+---@field default_scorch_mark_color Color
+---@field color_filters? ColorFilterData[]
+---@field clear_cursor_volume_modifier number
+---@field weapons_in_simulation_volume_modifier number
+---@field explosions_in_simulation_volume_modifier number
+---@field enemies_in_simulation_volume_modifier number
+---@field low_energy_robot_estimate_multiplier number
+---@field asteroid_spawning_offset SimpleBoundingBox
+---@field asteroid_fading_range number
+---Asteroid damage will be multiplied by this value when space platform speed is zero and will linearly increase until asteroid_spawning_with_random_orientation_max_speed is reached.
+---@field asteroid_min_damage_modifier number
+---In km per tick.
+---@field asteroid_spawning_with_random_orientation_max_speed number
+---@field asteroid_position_offset_to_speed_coefficient number
+---@field asteroid_collector_navmesh_refresh_tick_interval integer
+---@field asteroid_collector_blockage_update_tile_distance integer
+---@field asteroid_collector_max_nurbs_control_point_separation number
+---@field asteroid_collector_static_head_swing_strength_scale number
+---@field asteroid_collector_static_head_swing_segment_count integer
+---Variables: `speed, thrust, weight, width, height`
+---@field space_platform_acceleration_expression MathExpression
+---@field space_platform_relative_speed_factor number
+---@field space_platform_starfield_movement_vector Vector
+---@field space_platform_max_size SimpleBoundingBox
+---Determines how fast space platforms will send items in drop slots to the surface. Each item type has its own cooldown.
+---@field space_platform_dump_cooldown integer
+---Delay after manual transfer until space platform sends items in drop slots to the surface. Overrides remaining space_platform_dump_cooldown in this instance.
+---@field space_platform_manual_dump_cooldown integer
+---Space platform remembers relative speed range which asteroids use while it moves. When the range is larger than the specified deviation, the platform will start updating cached trajectories of all asteroid chunks over multiple ticks.
+---@field space_platform_max_relative_speed_deviation_for_asteroid_chunks_update number
+---How many asteroid chunks should be processed per tick, see space_platform_max_relative_speed_deviation_for_asteroid_chunks_update.
+---@field space_platform_asteroid_chunk_trajectory_updates_per_tick integer
+---@field default_item_weight Weight
+---Used for "Rocket capacity" item tooltip and for comparing rocket silo lift weight in GUI to this value.
+---@field default_rocket_lift_weight Weight
+---@field factoriopedia_recycling_recipe_categories RecipeCategoryID[]
+---The default value of FluidBox::max_pipeline_extent.
+---@field default_pipeline_extent number
+---Must contain arrival and departure with procession_style containing 0.
+---@field default_platform_procession_set ProcessionSet
+---Must contain arrival and departure with procession_style containing 0.
+---@field default_planet_procession_set ProcessionSet
+---Radius of area where cargo pods won't land.
+---@field landing_area_clear_zone_radius number
+---Max radius where cargo pods will land.
+---@field landing_area_max_radius number
+---@field lightning_attractor_collection_range_color Color
+---@field lightning_attractor_protection_range_color Color
+---@field landing_squash_immunity MapTick
+---Silently clamped to be between 1 tick and 5 minutes (`5 * 60 * 60` ticks).
+---@field ejected_item_lifetime MapTick
+---Silently clamped to be between 0 and 1/60.
+---@field ejected_item_speed number
+---Silently clamped to be between 0 and 0.99.
+---@field ejected_item_direction_variation number
+---Silently clamped to be between 0 and 1.
+---@field ejected_item_friction number
+---@field train_visualization TrainVisualizationConstants
+---The strings can be entity types or custom strings.
+---@field default_collision_masks table<string, CollisionMaskConnector>
+---@field show_chunk_components_collision_mask CollisionMaskConnector
+---@field building_collision_mask CollisionMaskConnector
+---@field water_collision_mask TileCollisionMaskConnector
+---@field ghost_layer CollisionLayerID
+---@field train_pushed_by_player_max_speed number
+---@field train_pushed_by_player_max_acceleration number
+---@field train_pushed_by_player_ignores_friction boolean
+---Must be >= 1.
+---@field tooltip_monitor_edge_border integer
+---Must be >= 1.
+---@field flying_text_ttl integer
+---@field train_path_finding TrainPathFinderConstants
+---Will be clamped to a positive number, starting at 0.
+---@field freezing_temperature number
+---@field train_on_elevated_rail_shadow_shift_multiplier Vector
+---Must be >= 1.
+---@field max_belt_stack_size integer
+---Must be >= 1.
+---@field inserter_hand_stack_items_per_sprite ItemCountType
+---Must be >= 1.
+---@field inserter_hand_stack_max_sprites ItemCountType
+---@field remote_view_LPF_min_cutoff_frequency number
+---@field remote_view_LPF_max_cutoff_frequency number
+---@field space_LPF_min_cutoff_frequency number
+---@field space_LPF_max_cutoff_frequency number
+---Silently clamped to be between 0 and 1.
+---@field walking_sound_count_reduction_rate number
+---Silently clamped to be between 0 and 1.
+---@field moving_sound_count_reduction_rate number
+---@field environment_sounds_transition_fade_in_ticks integer
+---@field sound_fade_ticks integer
+---@field starmap_orbit_default_color Color
+---@field starmap_orbit_hovered_color Color
+---@field starmap_orbit_clicked_color Color
+---@field starmap_orbit_disabled_color Color
+---The number of ticks to show a segmented unit's health bar after fully regenerating.
+---@field time_to_show_full_health_bar MapTick
+---Layer within `ground-natural` tile render layer group, before which terrain lightmap alpha channel is copied into water mask. Decals, which need to be masked by water should have their DecorativePrototype::tile_layer set to only slightly larger value than `capture_water_mask_at_layer`, to avoid risk of undefined behavior caused by rendering tiles into layers between `capture_water_mask_at_layer` and decal's `tile_layer`.
+---@field capture_water_mask_at_layer integer
+---@field logistic_robots_use_busy_robots_queue boolean
+---@field construction_robots_use_busy_robots_queue boolean
+---@field quality_selector_dropdown_threshold integer
+---Cap for how many steps of quality the output of something (miner/crafter) may be higher than the input (resource/ingredients). Must be >= 1.
+---@field maximum_quality_jump integer
+
+---Sounds used by the game that are not specific to certain prototypes.
+---@class UtilitySounds : PrototypeBase
+---@field type "utility-sounds"
+---Sound category `"enemy"`.
+---
+---Only present when the Space Age mod is loaded.
+---@field segment_dying_sound? Sound
+---Sound category `"gui-effect"`.
+---@field gui_click Sound
+---Sound category `"gui-effect"`.
+---@field gui_switch Sound
+---Sound category `"gui-effect"`.
+---@field gui_toggle Sound
+---Sound category `"gui-effect"`.
+---@field gui_tab Sound
+---Sound category `"gui-effect"`.
+---@field machine_gui_open Sound
+---Sound category `"gui-effect"`.
+---@field machine_gui_close Sound
+---Sound category `"gui-effect"`.
+---@field list_box_click Sound
+---Sound category `"game-effect"`.
+---@field build_small Sound
+---Sound category `"game-effect"`.
+---@field build_medium Sound
+---Sound category `"game-effect"`.
+---@field build_large Sound
+---Sound category `"game-effect"`.
+---@field build_huge Sound
+---Sound category `"game-effect"`.
+---@field build_behemoth Sound
+---Sound category `"gui-effect"`.
+---@field cannot_build Sound
+---Sound category `"game-effect"`.
+---@field build_blueprint_small Sound
+---Sound category `"game-effect"`.
+---@field build_blueprint_medium Sound
+---Sound category `"game-effect"`.
+---@field build_blueprint_large Sound
+---Sound category `"game-effect"`.
+---@field build_blueprint_huge Sound
+---Sound category `"game-effect"`.
+---@field build_ghost_upgrade Sound
+---Sound category `"game-effect"`.
+---@field build_ghost_upgrade_cancel Sound
+---Sound category `"game-effect"`.
+---@field build_animated_small Sound
+---Sound category `"game-effect"`.
+---@field build_animated_medium Sound
+---Sound category `"game-effect"`.
+---@field build_animated_large Sound
+---Sound category `"game-effect"`.
+---@field build_animated_huge Sound
+---Sound category `"game-effect"`.
+---@field deconstruct_small Sound
+---Sound category `"game-effect"`.
+---@field deconstruct_medium Sound
+---Sound category `"game-effect"`.
+---@field deconstruct_large Sound
+---Sound category `"game-effect"`.
+---@field deconstruct_huge Sound
+---Sound category `"game-effect"`.
+---@field deconstruct_behemoth Sound
+---Sound category `"game-effect"`.
+---@field deconstruct_robot Sound
+---Sound category `"game-effect"`.
+---@field rotated_small Sound
+---Sound category `"game-effect"`.
+---@field rotated_medium Sound
+---Sound category `"game-effect"`.
+---@field rotated_large Sound
+---Sound category `"game-effect"`.
+---@field rotated_huge Sound
+---Sound category `"game-effect"`.
+---@field axe_mining_ore Sound
+---Sound category `"game-effect"`.
+---@field axe_mining_stone Sound
+---Sound category `"game-effect"`.
+---@field mining_wood Sound
+---Sound category `"game-effect"`.
+---@field axe_fighting Sound
+---Sound category `"alert"`.
+---@field alert_destroyed Sound
+---Sound category `"alert"`.
+---@field alert_expansion_base_built Sound
+---Sound category `"gui-effect"`.
+---@field console_message Sound
+---Sound category `"gui-effect"`.
+---@field console_player_joined Sound
+---Sound category `"gui-effect"`.
+---@field console_player_respawned Sound
+---Sound category `"gui-effect"`.
+---@field console_player_left Sound
+---Sound category `"gui-effect"`.
+---@field console_player_paused_game Sound
+---Sound category `"gui-effect"`.
+---@field console_player_resumed_game Sound
+---Sound category `"gui-effect"`.
+---@field console_player_died Sound
+---Sound category `"gui-effect"`.
+---@field console_player_research Sound
+---Sound category `"gui-effect"`.
+---@field console_platform_created Sound
+---Sound category `"gui-effect"`.
+---@field console_platform_destroyed Sound
+---Sound category `"gui-effect"`.
+---@field console_player_changed_logistic_group Sound
+---Sound category `"gui-effect"`.
+---@field scenario_message Sound
+---Sound category `"gui-effect"`.
+---@field new_objective Sound
+---Sound category `"gui-effect"`.
+---@field game_lost Sound
+---Sound category `"gui-effect"`.
+---@field game_won Sound
+---Sound category `"walking"`.
+---@field metal_walking_sound Sound
+---Sound category `"walking"`.
+---@field heat_pipe_walking_sound Sound
+---Sound category `"gui-effect"`.
+---@field research_completed Sound
+---Sound category `"game-effect"`.
+---@field default_manual_repair Sound
+---Sound category `"gui-effect"`.
+---@field crafting_finished Sound
+---Sound category `"gui-effect"`.
+---@field inventory_click Sound
+---Sound category `"gui-effect"`.
+---@field inventory_move Sound
+---Sound category `"gui-effect"`.
+---@field clear_cursor Sound
+---Sound category `"gui-effect"`.
+---@field armor_insert Sound
+---Sound category `"gui-effect"`.
+---@field armor_remove Sound
+---Sound category `"gui-effect"`.
+---@field achievement_unlocked Sound
+---Sound category `"game-effect"`.
+---@field wire_connect_pole Sound
+---Sound category `"game-effect"`.
+---@field wire_disconnect Sound
+---Sound category `"game-effect"`.
+---@field wire_pickup Sound
+---Sound category `"gui-effect"`.
+---@field tutorial_notice Sound
+---Sound category `"gui-effect"`.
+---@field smart_pipette Sound
+---Sound category `"gui-effect"`.
+---@field switch_gun Sound
+---Sound category `"game-effect"`.
+---@field picked_up_item Sound
+---Sound category `"gui-effect"`.
+---@field paste_activated Sound
+---Sound category `"gui-effect"`.
+---@field item_deleted Sound
+---Sound category `"gui-effect"`.
+---@field entity_settings_pasted Sound
+---Sound category `"gui-effect"`.
+---@field entity_settings_copied Sound
+---Sound category `"gui-effect"`.
+---@field item_spawned Sound
+---Sound category `"gui-effect"`.
+---@field confirm Sound
+---Sound category `"gui-effect"`.
+---@field undo Sound
+---Sound category `"game-effect"`.
+---@field drop_item Sound
+---Sound category `"gui-effect"`.
+---@field rail_plan_start Sound
+---Sound category `"walking"`.
+---@field default_driving_sound InterruptibleSound
+---Sound category `"walking"`.
+---@field default_landing_steps Sound
+---Sound category `"gui-effect"`.
+---@field toggle_show_entity_info Sound
+---Sound category `"gui-effect"`.
+---@field cycle_blueprint_book Sound
+---Sound category `"gui-effect"`.
+---@field blueprint_preview_build Sound
+---Sound category `"gui-effect"`.
+---@field blueprint_preview_mine Sound
+---Sound category `"gui-effect"`.
+---@field adjust_blueprint_snapping Sound
+---Sound category `"gui-effect"`.
+---@field change_quality Sound
+
+---Sprites used by the game that are not specific to certain prototypes.
+---@class UtilitySprites : PrototypeBase
+---@field type "utility-sprites"
+---@field cursor_box CursorBoxSpecification
+---Only present when the Space Age mod is loaded.
+---@field platform_entity_build_animations? EntityBuildAnimations
+---Only present when the space travel flag is enabled.
+---@field starmap_star? Sprite
+---@field bookmark Sprite
+---@field center Sprite
+---@field check_mark Sprite
+---@field check_mark_white Sprite
+---@field check_mark_green Sprite
+---@field check_mark_dark_green Sprite
+---@field not_played_yet_green Sprite
+---@field not_played_yet_dark_green Sprite
+---@field played_green Sprite
+---@field played_dark_green Sprite
+---@field close_fat Sprite
+---@field close Sprite
+---@field close_black Sprite
+---@field backward_arrow Sprite
+---@field backward_arrow_black Sprite
+---@field forward_arrow Sprite
+---@field forward_arrow_black Sprite
+---@field recipe_arrow Sprite
+---@field recipe_ghost_arrow Sprite
+---@field recipe_potential_arrow Sprite
+---@field close_map_preview Sprite
+---@field color_picker Sprite
+---@field change_recipe Sprite
+---@field dropdown Sprite
+---@field downloading Sprite
+---@field downloaded Sprite
+---@field equipment_grid Sprite
+---@field equipment_grid_small Sprite
+---@field expand_dots Sprite
+---@field export Sprite
+---@field import Sprite
+---@field map Sprite
+---@field map_exchange_string Sprite
+---@field missing_mod_icon Sprite
+---@field not_available Sprite
+---@field not_available_black Sprite
+---@field play Sprite
+---@field stop Sprite
+---@field preset Sprite
+---@field refresh Sprite
+---@field reset Sprite
+---@field reset_white Sprite
+---@field shuffle Sprite
+---@field station_name Sprite
+---@field search Sprite
+---@field sync_mods Sprite
+---@field trash Sprite
+---@field trash_white Sprite
+---@field copy Sprite
+---@field reassign Sprite
+---@field warning Sprite
+---@field warning_white Sprite
+---@field list_view Sprite
+---@field grid_view Sprite
+---@field slots_view Sprite
+---@field reference_point Sprite
+---@field mouse_cursor Sprite
+---@field mouse_cursor_macos Sprite
+---@field mod_category Sprite
+---@field mod_last_updated Sprite
+---@field mod_downloads_count Sprite
+---@field item_to_be_delivered_symbol Sprite
+---@field rebuild_mark Sprite
+---@field any_quality Sprite
+---@field mod_dependency_arrow Sprite
+---@field add Sprite
+---@field add_white Sprite
+---@field clone Sprite
+---@field go_to_arrow Sprite
+---@field pause Sprite
+---@field speed_down Sprite
+---@field speed_up Sprite
+---@field editor_speed_down Sprite
+---@field editor_pause Sprite
+---@field editor_play Sprite
+---@field editor_speed_up Sprite
+---@field tick_once Sprite
+---@field tick_sixty Sprite
+---@field tick_custom Sprite
+---@field search_icon Sprite
+---@field too_far Sprite
+---@field shoot_cursor_green Sprite
+---@field shoot_cursor_red Sprite
+---@field electricity_icon Sprite
+---@field lightning_warning_icon Sprite
+---@field fuel_icon Sprite
+---@field ammo_icon Sprite
+---The sprite will be drawn on top of fluid turrets that are out of fluid ammunition and don't have FluidTurretPrototype::out_of_ammo_alert_icon set.
+---@field fluid_icon Sprite
+---@field warning_icon Sprite
+---@field danger_icon Sprite
+---@field expansion_base_built_icon Sprite
+---@field destroyed_icon Sprite
+---@field recharge_icon Sprite
+---@field no_path_icon Sprite
+---@field destination_full_icon Sprite
+---@field too_far_from_roboport_icon Sprite
+---@field pump_cannot_connect_icon Sprite
+---@field not_enough_repair_packs_icon Sprite
+---@field not_enough_construction_robots_icon Sprite
+---@field no_building_material_icon Sprite
+---@field no_storage_space_icon Sprite
+---@field no_platform_storage_space_icon Sprite
+---@field asteroid_collector_path_blocked_icon Sprite
+---@field unclaimed_cargo_icon Sprite
+---@field no_roboport_storage_space_icon Sprite
+---@field cargo_bay_not_connected_icon Sprite
+---@field cargo_bay_too_far_from_source_icon Sprite
+---@field frozen_icon Sprite
+---@field pipeline_disabled_icon Sprite
+---@field fluid_mixing_icon Sprite
+---@field electricity_icon_unplugged Sprite
+---@field tooltip_category_spoilable Sprite
+---@field resources_depleted_icon Sprite
+---@field game_stopped_visualization Sprite
+---@field health_bar_green_pip Sprite
+---@field health_bar_yellow_pip Sprite
+---@field health_bar_red_pip Sprite
+---@field ghost_bar_pip Sprite
+---@field bar_gray_pip Sprite
+---@field shield_bar_pip Sprite
+---@field hand Sprite
+---@field hand_black Sprite
+---@field entity_info_dark_background Sprite
+---@field medium_gui_arrow Sprite
+---@field small_gui_arrow Sprite
+---@field light_medium Sprite
+---@field light_small Sprite
+---@field light_cone Sprite
+---@field color_effect Sprite
+---@field clock Sprite
+---@field default_ammo_damage_modifier_icon Sprite
+---@field default_gun_speed_modifier_icon Sprite
+---@field default_turret_attack_modifier_icon Sprite
+---@field hint_arrow_up Sprite
+---@field hint_arrow_down Sprite
+---@field hint_arrow_right Sprite
+---@field hint_arrow_left Sprite
+---@field fluid_indication_arrow Sprite
+---@field fluid_indication_arrow_both_ways Sprite
+---@field heat_exchange_indication Sprite
+---@field indication_arrow Sprite
+---@field rail_planner_indication_arrow Sprite
+---@field rail_planner_indication_arrow_anchored Sprite
+---@field rail_planner_indication_arrow_too_far Sprite
+---@field rail_path_not_possible Sprite
+---@field indication_line Sprite
+---@field short_indication_line Sprite
+---@field short_indication_line_green Sprite
+---@field empty_module_slot Sprite
+---@field empty_armor_slot Sprite
+---@field empty_gun_slot Sprite
+---@field empty_ammo_slot Sprite
+---@field empty_robot_slot Sprite
+---@field empty_robot_material_slot Sprite
+---@field empty_inserter_hand_slot Sprite
+---@field empty_trash_slot Sprite
+---@field empty_drop_cargo_slot Sprite
+---@field upgrade_blueprint Sprite
+---@field slot Sprite
+---@field equipment_slot Sprite
+---@field equipment_collision Sprite
+---@field battery Sprite
+---@field green_circle Sprite
+---@field green_dot Sprite
+---@field robot_slot Sprite
+---@field set_bar_slot Sprite
+---@field missing_icon Sprite
+---@field deconstruction_mark Sprite
+---@field buildability_collision Sprite
+---@field buildability_elevated_collision_line Sprite
+---@field buildability_elevated_collision_top Sprite
+---@field buildability_elevated_collision_bottom Sprite
+---@field buildability_collision_elevated Sprite
+---@field upgrade_mark Sprite
+---@field confirm_slot Sprite
+---@field export_slot Sprite
+---@field import_slot Sprite
+---@field none_editor_icon Sprite
+---@field cable_editor_icon Sprite
+---@field tile_editor_icon Sprite
+---@field decorative_editor_icon Sprite
+---@field asteroid_chunk_editor_icon Sprite
+---@field resource_editor_icon Sprite
+---@field entity_editor_icon Sprite
+---@field item_editor_icon Sprite
+---@field force_editor_icon Sprite
+---@field clone_editor_icon Sprite
+---@field scripting_editor_icon Sprite
+---@field paint_bucket_icon Sprite
+---@field surface_editor_icon Sprite
+---@field time_editor_icon Sprite
+---@field cliff_editor_icon Sprite
+---@field brush_icon Sprite
+---@field spray_icon Sprite
+---@field cursor_icon Sprite
+---@field area_icon Sprite
+---@field line_icon Sprite
+---@field variations_tool_icon Sprite
+---@field lua_snippet_tool_icon Sprite
+---@field editor_selection Sprite
+---@field brush_square_shape Sprite
+---@field brush_circle_shape Sprite
+---@field player_force_icon Sprite
+---@field neutral_force_icon Sprite
+---@field enemy_force_icon Sprite
+---@field nature_icon Sprite
+---@field no_nature_icon Sprite
+---@field multiplayer_waiting_icon Sprite
+---@field spawn_flag Sprite
+---@field questionmark Sprite
+---@field copper_wire Sprite
+---@field green_wire Sprite
+---@field red_wire Sprite
+---@field copper_wire_highlight Sprite
+---@field green_wire_highlight Sprite
+---@field red_wire_highlight Sprite
+---@field wire_shadow Sprite
+---@field and_or Sprite
+---@field left_arrow Sprite
+---@field right_arrow Sprite
+---@field down_arrow Sprite
+---@field enter Sprite
+---@field move_tag Sprite
+---@field side_menu_blueprint_library_icon Sprite
+---@field side_menu_production_icon Sprite
+---@field side_menu_bonus_icon Sprite
+---@field side_menu_tutorials_icon Sprite
+---@field side_menu_factoriopedia_icon Sprite
+---@field side_menu_train_icon Sprite
+---@field side_menu_achievements_icon Sprite
+---@field side_menu_menu_icon Sprite
+---@field side_menu_map_icon Sprite
+---@field side_menu_space_platforms_icon Sprite
+---@field side_menu_technology_icon Sprite
+---@field side_menu_logistic_networks_icon Sprite
+---@field side_menu_players_icon Sprite
+---@field circuit_network_panel Sprite
+---@field logistic_network_panel_white Sprite
+---@field logistic_network_panel_black Sprite
+---@field rename_icon Sprite
+---@field achievement_warning Sprite
+---@field achievement_label Sprite
+---@field achievement_label_completed Sprite
+---@field achievement_label_failed Sprite
+---@field rail_signal_placement_indicator Sprite
+---@field train_stop_placement_indicator Sprite
+---@field rail_support_placement_indicator Sprite
+---@field placement_indicator_leg Sprite
+---@field grey_rail_signal_placement_indicator Sprite
+---@field grey_placement_indicator_leg Sprite
+---@field logistic_radius_visualization Sprite
+---@field construction_radius_visualization Sprite
+---@field track_button Sprite
+---@field track_button_white Sprite
+---@field show_logistics_network_in_map_view Sprite
+---@field show_electric_network_in_map_view Sprite
+---@field show_turret_range_in_map_view Sprite
+---@field show_train_station_names_in_map_view Sprite
+---@field show_player_names_in_map_view Sprite
+---@field show_tags_in_map_view Sprite
+---@field show_worker_robots_in_map_view Sprite
+---@field show_rail_signal_states_in_map_view Sprite
+---@field show_recipe_icons_in_map_view Sprite
+---@field show_pipelines_in_map_view Sprite
+---@field train_stop_in_map_view Sprite
+---@field train_stop_disabled_in_map_view Sprite
+---@field train_stop_full_in_map_view Sprite
+---@field custom_tag_in_map_view Sprite
+---@field covered_chunk Sprite
+---@field white_square Sprite
+---@field white_square_icon Sprite
+---@field white_mask Sprite
+---@field crafting_machine_recipe_not_unlocked Sprite
+---@field filter_blacklist Sprite
+---@field gps_map_icon Sprite
+---@field custom_tag_icon Sprite
+---@field space_age_icon Sprite
+---@field tip_icon Sprite
+---@field underground_remove_belts Sprite
+---@field max_distance_underground_remove_belts Sprite
+---@field underground_remove_pipes Sprite
+---@field underground_pipe_connection Sprite
+---@field ghost_cursor Sprite
+---@field tile_ghost_cursor Sprite
+---@field force_ghost_cursor Sprite
+---@field force_tile_ghost_cursor Sprite
+---@field cross_select Sprite
+---@field crosshair Sprite
+---@field expand Sprite
+---@field collapse Sprite
+---@field collapse_dark Sprite
+---@field status_working Sprite
+---@field status_not_working Sprite
+---@field status_yellow Sprite
+---@field status_blue Sprite
+---@field status_inactive Sprite
+---@field gradient Sprite
+---@field output_console_gradient Sprite
+---@field select_icon_white Sprite
+---@field select_icon_black Sprite
+---@field notification Sprite
+---@field alert_arrow Sprite
+---@field pin_arrow Sprite
+---@field pin_center Sprite
+---@field technology_white Sprite
+---@field feedback Sprite
+---@field sort_by_name Sprite
+---@field sort_by_time Sprite
+---@field parametrise Sprite
+---@field fluid_visualization_connection Sprite
+---@field fluid_visualization_connection_both_ways Sprite
+---@field fluid_visualization_connection_underground Sprite
+---@field starmap_platform_moving Sprite
+---@field starmap_platform_moving_hovered Sprite
+---@field starmap_platform_moving_clicked Sprite
+---@field starmap_platform_stopped Sprite
+---@field starmap_platform_stopped_hovered Sprite
+---@field starmap_platform_stopped_clicked Sprite
+---@field starmap_platform_stacked Sprite
+---@field starmap_platform_stacked_hovered Sprite
+---@field starmap_platform_stacked_clicked Sprite
+---@field controller_joycon_a Sprite
+---@field controller_joycon_b Sprite
+---@field controller_joycon_x Sprite
+---@field controller_joycon_y Sprite
+---@field controller_joycon_back Sprite
+---@field controller_joycon_start Sprite
+---@field controller_joycon_leftstick Sprite
+---@field controller_joycon_rightstick Sprite
+---@field controller_joycon_leftshoulder Sprite
+---@field controller_joycon_rightshoulder Sprite
+---@field controller_joycon_dpup Sprite
+---@field controller_joycon_dpdown Sprite
+---@field controller_joycon_dpleft Sprite
+---@field controller_joycon_dpright Sprite
+---@field controller_joycon_paddle1 Sprite
+---@field controller_joycon_paddle2 Sprite
+---@field controller_joycon_paddle3 Sprite
+---@field controller_joycon_paddle4 Sprite
+---@field controller_joycon_righttrigger Sprite
+---@field controller_joycon_lefttrigger Sprite
+---@field controller_joycon_left_stick Sprite
+---@field controller_joycon_right_stick Sprite
+---@field controller_joycon_black_a Sprite
+---@field controller_joycon_black_b Sprite
+---@field controller_joycon_black_x Sprite
+---@field controller_joycon_black_y Sprite
+---@field controller_joycon_black_back Sprite
+---@field controller_joycon_black_start Sprite
+---@field controller_joycon_black_leftstick Sprite
+---@field controller_joycon_black_rightstick Sprite
+---@field controller_joycon_black_leftshoulder Sprite
+---@field controller_joycon_black_rightshoulder Sprite
+---@field controller_joycon_black_dpup Sprite
+---@field controller_joycon_black_dpdown Sprite
+---@field controller_joycon_black_dpleft Sprite
+---@field controller_joycon_black_dpright Sprite
+---@field controller_joycon_black_paddle1 Sprite
+---@field controller_joycon_black_paddle2 Sprite
+---@field controller_joycon_black_paddle3 Sprite
+---@field controller_joycon_black_paddle4 Sprite
+---@field controller_joycon_black_righttrigger Sprite
+---@field controller_joycon_black_lefttrigger Sprite
+---@field controller_joycon_black_left_stick Sprite
+---@field controller_joycon_black_right_stick Sprite
+---@field controller_xbox_a Sprite
+---@field controller_xbox_b Sprite
+---@field controller_xbox_x Sprite
+---@field controller_xbox_y Sprite
+---@field controller_xbox_back Sprite
+---@field controller_xbox_start Sprite
+---@field controller_xbox_leftstick Sprite
+---@field controller_xbox_rightstick Sprite
+---@field controller_xbox_leftshoulder Sprite
+---@field controller_xbox_rightshoulder Sprite
+---@field controller_xbox_dpup Sprite
+---@field controller_xbox_dpdown Sprite
+---@field controller_xbox_dpleft Sprite
+---@field controller_xbox_dpright Sprite
+---@field controller_xbox_righttrigger Sprite
+---@field controller_xbox_lefttrigger Sprite
+---@field controller_xbox_left_stick Sprite
+---@field controller_xbox_right_stick Sprite
+---@field controller_xbox_black_a Sprite
+---@field controller_xbox_black_b Sprite
+---@field controller_xbox_black_x Sprite
+---@field controller_xbox_black_y Sprite
+---@field controller_xbox_black_back Sprite
+---@field controller_xbox_black_start Sprite
+---@field controller_xbox_black_leftstick Sprite
+---@field controller_xbox_black_rightstick Sprite
+---@field controller_xbox_black_leftshoulder Sprite
+---@field controller_xbox_black_rightshoulder Sprite
+---@field controller_xbox_black_dpup Sprite
+---@field controller_xbox_black_dpdown Sprite
+---@field controller_xbox_black_dpleft Sprite
+---@field controller_xbox_black_dpright Sprite
+---@field controller_xbox_black_righttrigger Sprite
+---@field controller_xbox_black_lefttrigger Sprite
+---@field controller_xbox_black_left_stick Sprite
+---@field controller_xbox_black_right_stick Sprite
+---@field controller_ps_a Sprite
+---@field controller_ps_b Sprite
+---@field controller_ps_x Sprite
+---@field controller_ps_y Sprite
+---@field controller_ps_back Sprite
+---@field controller_ps_start Sprite
+---@field controller_ps_leftstick Sprite
+---@field controller_ps_rightstick Sprite
+---@field controller_ps_leftshoulder Sprite
+---@field controller_ps_rightshoulder Sprite
+---@field controller_ps_dpup Sprite
+---@field controller_ps_dpdown Sprite
+---@field controller_ps_dpleft Sprite
+---@field controller_ps_dpright Sprite
+---@field controller_ps_righttrigger Sprite
+---@field controller_ps_lefttrigger Sprite
+---@field controller_ps_left_stick Sprite
+---@field controller_ps_right_stick Sprite
+---@field controller_ps_black_a Sprite
+---@field controller_ps_black_b Sprite
+---@field controller_ps_black_x Sprite
+---@field controller_ps_black_y Sprite
+---@field controller_ps_black_back Sprite
+---@field controller_ps_black_start Sprite
+---@field controller_ps_black_leftstick Sprite
+---@field controller_ps_black_rightstick Sprite
+---@field controller_ps_black_leftshoulder Sprite
+---@field controller_ps_black_rightshoulder Sprite
+---@field controller_ps_black_dpup Sprite
+---@field controller_ps_black_dpdown Sprite
+---@field controller_ps_black_dpleft Sprite
+---@field controller_ps_black_dpright Sprite
+---@field controller_ps_black_righttrigger Sprite
+---@field controller_ps_black_lefttrigger Sprite
+---@field controller_ps_black_left_stick Sprite
+---@field controller_ps_black_right_stick Sprite
+---@field controller_steamdeck_a Sprite
+---@field controller_steamdeck_b Sprite
+---@field controller_steamdeck_x Sprite
+---@field controller_steamdeck_y Sprite
+---@field controller_steamdeck_back Sprite
+---@field controller_steamdeck_start Sprite
+---@field controller_steamdeck_leftstick Sprite
+---@field controller_steamdeck_rightstick Sprite
+---@field controller_steamdeck_leftshoulder Sprite
+---@field controller_steamdeck_rightshoulder Sprite
+---@field controller_steamdeck_dpup Sprite
+---@field controller_steamdeck_dpdown Sprite
+---@field controller_steamdeck_dpleft Sprite
+---@field controller_steamdeck_dpright Sprite
+---@field controller_steamdeck_paddle1 Sprite
+---@field controller_steamdeck_paddle2 Sprite
+---@field controller_steamdeck_paddle3 Sprite
+---@field controller_steamdeck_paddle4 Sprite
+---@field controller_steamdeck_righttrigger Sprite
+---@field controller_steamdeck_lefttrigger Sprite
+---@field controller_steamdeck_left_stick Sprite
+---@field controller_steamdeck_right_stick Sprite
+---@field controller_steamdeck_black_a Sprite
+---@field controller_steamdeck_black_b Sprite
+---@field controller_steamdeck_black_x Sprite
+---@field controller_steamdeck_black_y Sprite
+---@field controller_steamdeck_black_back Sprite
+---@field controller_steamdeck_black_start Sprite
+---@field controller_steamdeck_black_leftstick Sprite
+---@field controller_steamdeck_black_rightstick Sprite
+---@field controller_steamdeck_black_leftshoulder Sprite
+---@field controller_steamdeck_black_rightshoulder Sprite
+---@field controller_steamdeck_black_dpup Sprite
+---@field controller_steamdeck_black_dpdown Sprite
+---@field controller_steamdeck_black_dpleft Sprite
+---@field controller_steamdeck_black_dpright Sprite
+---@field controller_steamdeck_black_paddle1 Sprite
+---@field controller_steamdeck_black_paddle2 Sprite
+---@field controller_steamdeck_black_paddle3 Sprite
+---@field controller_steamdeck_black_paddle4 Sprite
+---@field controller_steamdeck_black_righttrigger Sprite
+---@field controller_steamdeck_black_lefttrigger Sprite
+---@field controller_steamdeck_black_left_stick Sprite
+---@field controller_steamdeck_black_right_stick Sprite
+---@field clouds Animation
+---@field arrow_button Animation
+---@field explosion_chart_visualization Animation
+---@field refresh_white Animation
+---@field navmesh_pending_icon Animation
+---@field inserter_stack_size_bonus_modifier_icon Sprite
+---@field inserter_stack_size_bonus_modifier_constant? Sprite
+---@field bulk_inserter_capacity_bonus_modifier_icon Sprite
+---@field bulk_inserter_capacity_bonus_modifier_constant? Sprite
+---@field laboratory_speed_modifier_icon Sprite
+---@field laboratory_speed_modifier_constant? Sprite
+---@field character_logistic_trash_slots_modifier_icon Sprite
+---@field character_logistic_trash_slots_modifier_constant? Sprite
+---@field maximum_following_robots_count_modifier_icon Sprite
+---@field maximum_following_robots_count_modifier_constant? Sprite
+---@field worker_robot_speed_modifier_icon Sprite
+---@field worker_robot_speed_modifier_constant? Sprite
+---@field worker_robot_storage_modifier_icon Sprite
+---@field worker_robot_storage_modifier_constant? Sprite
+---@field create_ghost_on_entity_death_modifier_icon Sprite
+---@field create_ghost_on_entity_death_modifier_constant? Sprite
+---@field turret_attack_modifier_icon Sprite
+---@field turret_attack_modifier_constant? Sprite
+---@field ammo_damage_modifier_icon Sprite
+---@field ammo_damage_modifier_constant? Sprite
+---@field give_item_modifier_icon Sprite
+---@field give_item_modifier_constant? Sprite
+---@field gun_speed_modifier_icon Sprite
+---@field gun_speed_modifier_constant? Sprite
+---@field unlock_recipe_modifier_icon Sprite
+---@field unlock_recipe_modifier_constant? Sprite
+---@field character_crafting_speed_modifier_icon Sprite
+---@field character_crafting_speed_modifier_constant? Sprite
+---@field character_mining_speed_modifier_icon Sprite
+---@field character_mining_speed_modifier_constant? Sprite
+---@field character_running_speed_modifier_icon Sprite
+---@field character_running_speed_modifier_constant? Sprite
+---@field character_build_distance_modifier_icon Sprite
+---@field character_build_distance_modifier_constant? Sprite
+---@field character_item_drop_distance_modifier_icon Sprite
+---@field character_item_drop_distance_modifier_constant? Sprite
+---@field character_reach_distance_modifier_icon Sprite
+---@field character_reach_distance_modifier_constant? Sprite
+---@field character_resource_reach_distance_modifier_icon Sprite
+---@field character_resource_reach_distance_modifier_constant? Sprite
+---@field character_item_pickup_distance_modifier_icon Sprite
+---@field character_item_pickup_distance_modifier_constant? Sprite
+---@field character_loot_pickup_distance_modifier_icon Sprite
+---@field character_loot_pickup_distance_modifier_constant? Sprite
+---@field character_inventory_slots_bonus_modifier_icon Sprite
+---@field character_inventory_slots_bonus_modifier_constant? Sprite
+---@field deconstruction_time_to_live_modifier_icon Sprite
+---@field deconstruction_time_to_live_modifier_constant? Sprite
+---@field max_failed_attempts_per_tick_per_construction_queue_modifier_icon Sprite
+---@field max_failed_attempts_per_tick_per_construction_queue_modifier_constant? Sprite
+---@field max_successful_attempts_per_tick_per_construction_queue_modifier_icon Sprite
+---@field max_successful_attempts_per_tick_per_construction_queue_modifier_constant? Sprite
+---@field character_health_bonus_modifier_icon Sprite
+---@field character_health_bonus_modifier_constant? Sprite
+---@field mining_drill_productivity_bonus_modifier_icon Sprite
+---@field mining_drill_productivity_bonus_modifier_constant? Sprite
+---@field train_braking_force_bonus_modifier_icon Sprite
+---@field train_braking_force_bonus_modifier_constant? Sprite
+---@field worker_robot_battery_modifier_icon Sprite
+---@field worker_robot_battery_modifier_constant? Sprite
+---@field laboratory_productivity_modifier_icon Sprite
+---@field laboratory_productivity_modifier_constant? Sprite
+---@field follower_robot_lifetime_modifier_icon Sprite
+---@field follower_robot_lifetime_modifier_constant? Sprite
+---@field artillery_range_modifier_icon Sprite
+---@field artillery_range_modifier_constant? Sprite
+---@field nothing_modifier_icon Sprite
+---@field nothing_modifier_constant? Sprite
+---@field character_additional_mining_categories_modifier_icon Sprite
+---@field character_additional_mining_categories_modifier_constant? Sprite
+---@field character_logistic_requests_modifier_icon Sprite
+---@field character_logistic_requests_modifier_constant? Sprite
+---@field unlock_space_location_modifier_icon Sprite
+---@field unlock_space_location_modifier_constant? Sprite
+---@field unlock_quality_modifier_icon Sprite
+---@field unlock_quality_modifier_constant? Sprite
+---@field unlock_space_platforms_modifier_icon Sprite
+---@field unlock_space_platforms_modifier_constant? Sprite
+---@field unlock_circuit_network_modifier_icon Sprite
+---@field unlock_circuit_network_modifier_constant? Sprite
+---@field cargo_landing_pad_count_modifier_icon Sprite
+---@field cargo_landing_pad_count_modifier_constant? Sprite
+---@field max_cargo_bay_unloading_distance_modifier_icon Sprite
+---@field max_cargo_bay_unloading_distance_modifier_constant? Sprite
+---@field change_recipe_productivity_modifier_icon Sprite
+---@field change_recipe_productivity_modifier_constant? Sprite
+---@field cliff_deconstruction_enabled_modifier_icon Sprite
+---@field cliff_deconstruction_enabled_modifier_constant? Sprite
+---@field mining_with_fluid_modifier_icon Sprite
+---@field mining_with_fluid_modifier_constant? Sprite
+---@field rail_support_on_deep_oil_ocean_modifier_icon Sprite
+---@field rail_support_on_deep_oil_ocean_modifier_constant? Sprite
+---@field rail_planner_allow_elevated_rails_modifier_icon Sprite
+---@field rail_planner_allow_elevated_rails_modifier_constant? Sprite
+---@field beacon_distribution_modifier_icon Sprite
+---@field beacon_distribution_modifier_constant? Sprite
+---@field belt_stack_size_bonus_modifier_icon Sprite
+---@field belt_stack_size_bonus_modifier_constant? Sprite
+---@field vehicle_logistics_modifier_icon Sprite
+---@field vehicle_logistics_modifier_constant? Sprite
+---@field unlock_logistic_network_modifier_icon Sprite
+---@field unlock_logistic_network_modifier_constant? Sprite
+---@field unlock_travel_to_space_platforms_modifier_icon Sprite
+---@field unlock_travel_to_space_platforms_modifier_constant? Sprite
+
+---Defines the mode of operation for a ValvePrototype.
+---@class ValveMode
+
+---A passive device that provides limited control of fluid flow between pipelines.
+---@class ValvePrototype : EntityWithOwnerPrototype
+---@field type "valve"
+---@field mode ValveMode
+---Ignored if ValvePrototype::mode is `"one-way"`. Must be between `0` and `1` inclusive.
+---@field threshold? number
+---Must have at least one `"output"` FluidFlowDirection and at least one `"input-output"` FluidFlowDirection.
+---@field fluid_box FluidBox
+---The max flow rate through the valve per tick.
+---@field flow_rate FluidAmount
+---@field animations? Animation4Way
+---@field frozen_patch? Sprite4Way
+
+---Defines how are individual samples selected and played after each other.
+---@class VariableAmbientSoundCompositionMode
+
+---@class VariableAmbientSoundLayer
+---Name has to be unique across all layers.
+---@field name string
+---Cannot be empty.
+---
+---Samples within a layer are the Sound::variations.
+---
+---Number of samples must be the same across all variants.
+---
+---Samples cannot have variable volume and all samples must have the same default volume.
+---
+---Samples are required to have sampling frequency of 44.1kHz. This is checked at runtime.
+---@field variants Sound[]
+---@field composition_mode VariableAmbientSoundCompositionMode
+---Name of a layer which controls this layer, a layer cannot control itself.
+---
+---Only loaded, and mandatory if `composition_mode` is `"layer-controlled"`.
+---@field control_layer? string
+---Defines a mapping between controlling layer's samples and this (controlled) layer's samples. The number of items in the mapping must be the same as the number of samples in the controlling layer. Item in the mapping with index N defines which samples of this layer can play when the sample N is playing in the controlling layer.
+---
+---Only loaded, and mandatory if `composition_mode` is `"layer-controlled"`.
+---@field control_layer_sample_mapping? integer[][]
+---If `true`, the first of Sound::variations is played at the start of a sequence. The start sample counts towards the VariableAmbientSoundLayerStateProperties::sequence_length
+---@field has_start_sample? boolean
+---If `true`, the last of Sound::variations is played at the end of a sequence (if the sequence is long enough). The end sample counts towards the VariableAmbientSoundLayerStateProperties::sequence_length.
+---@field has_end_sample? boolean
+---If greater than one, samples are composed in overlapping sub-layers, offset from each other.
+---
+---If greater than one, one of `sublayer_starting_offset` or `sublayer_offset` must be defined. Both cannot be defined together.
+---
+---Cannot be defined for layers with `"shuffled"` `composition_mode`.
+---
+---Cannot be zero.
+---@field number_of_sublayers? integer
+---Specifies starting offset of the second sub-layer.
+---
+---Only loaded if `number_of_sublayers` is greater than one.
+---
+---Cannot be defined together with `sublayer_offset`.
+---
+---The minimum of RandomRange variant cannot be zero.
+---@field sublayer_starting_offset? RandomRange|ProbabilityTable
+---Specifies offset between two sub-layers' samples.
+---
+---This implicitly dictates the sample lengths as two sub-layer offsets.
+---
+---Only loaded if `number_of_sublayers` is greater than one.
+---
+---Cannot be defined together with `sublayer_starting_offset`.
+---
+---The minimum of RandomRange variant cannot be zero.
+---@field sublayer_offset? RandomRange|ProbabilityTable
+---Explicitly defines sample lengths. The whole sample is played when this is not specified.
+---
+---Cannot be defined together with `sublayer_offset`.
+---
+---The minimum cannot be zero.
+---@field sample_length? RandomRange
+
+---First property is the name of a layer.
+---
+---Second property is the sample index.
+---@class VariableAmbientSoundLayerSample
+
+---@class VariableAmbientSoundLayerStateProperties
+---@field enabled? boolean
+---Index of a layer's variant.
+---
+---Cannot be zero.
+---@field variant? integer
+---Number of samples in a sequence.
+---
+---The minimum cannot be zero.
+---
+---Mandatory for layers with `"semi-randomized"` VariableAmbientSoundCompositionMode.
+---
+---Applicable for layers with `"randomized"` VariableAmbientSoundCompositionMode.
+---
+---Cannot be defined for layers with `"shuffled"` VariableAmbientSoundCompositionMode.
+---@field sequence_length? RandomRange
+---The number of times a layer repeats itself until it's considered finished. If it's not defined, the layer never finishes on its own. What counts as repetition depends on the VariableAmbientSoundCompositionMode.
+---
+---Each sample played is counted as a repetition of `"randomized"` layer.
+---
+---Repetition of `"semi-randomized"` layer is counted when its sequence is finished.
+---
+---Repetition of `"shuffled"` layer is counted when all samples play once.
+---
+---Each sample played is counted as a repetition of `"layer-controlled"` layer.
+---
+---If `number_of_repetitions` of VariableAmbientSoundLayer::control_layer of `"layer-controlled"` layer is smaller than `number_of_repetitions` of the controlled layer, `number_of_repetitions` of the control layer is used for the purposes of `pause_between_repetitions` and `end_pause`.
+---
+---Cannot be zero.
+---@field number_of_repetitions? RandomRange|ProbabilityTable
+---Pause before a layer starts playing.
+---@field start_pause? RandomRange
+---Pause between individual samples within a sequence.
+---
+---Cannot be defined for `"randomized"` layers without defining `sequence_length` as well. Alternatively, use `pause_between_repetitions` instead.
+---
+---Cannot be defined for layers with `sublayer_offset` defined.
+---@field pause_between_samples? RandomRange
+---Pause between each repetition of a layer. The repetition is not counted until the pause finishes.
+---@field pause_between_repetitions? RandomRange
+---Pause before a layer finishes playing. The last repetition and consequently the layer being finished is not counted until the pause finishes.
+---@field end_pause? RandomRange
+---A sample replaced by silence still counts as played for the purposes of sequence count, repetition count, pauses, etc.
+---
+---Must be in the `[0.0, 1.0]` interval.
+---@field silence_instead_of_sample_probability? number
+
+---@class VariableAmbientSoundNextStateConditions
+---Cannot be zero.
+---@field weight integer
+---Specified sample must be playing in the specified layer.
+---@field layer_sample? VariableAmbientSoundLayerSample
+---@field previous_state? string
+
+---@class VariableAmbientSoundNextStateItem
+---Name of the state.
+---@field state string
+---Transition to `state` is possible only if all conditions are met.
+---@field conditions VariableAmbientSoundNextStateConditions
+
+---Defines how a transition to next state is triggered.
+---@class VariableAmbientSoundNextStateTrigger
+
+---@class VariableAmbientSoundState
+---Name has to be unique across all states.
+---@field name string
+---@field type? VariableAmbientSoundStateType
+---Cannot be defined if `next_states` is defined.
+---
+---Doesn't need to be defined if there is only one state.
+---@field next_state? string
+---Cannot be defined if `next_state` is defined.
+---
+---Cannot be defined if there is only one state.
+---
+---Cannot be empty.
+---@field next_states? VariableAmbientSoundNextStateItem[]
+---Mandatory if there is more than one state or if the only state transitions to itself.
+---
+---Can be defined for `regular` states only.
+---@field next_state_trigger? VariableAmbientSoundNextStateTrigger
+---List of name of layers used to trigger state transition.
+---
+---Only loaded, and mandatory if `next_state_trigger` is `"layers-finished"`.
+---@field next_state_layers_finished_layers? string[]
+---Defines for how long this state will be active.
+---
+---Mandatory if `next_state_trigger` is `"duration"`.
+---
+---Optionally loaded for `intermezzo` states.
+---@field state_duration_seconds? integer
+---Must contain as many items as there is layers in the variable track. The items themselves can be empty. The order of items corresponds to the order of layers as they appear in the prototype definition.
+---
+---Mandatory for `regular` and `final` states.
+---
+---Cannot be defined for `intermezzo` or `stop` states.
+---@field layers_properties? VariableAmbientSoundLayerStateProperties[]
+---Pause before a layer starts playing.
+---
+---Optionally loaded for `intermezzo` states.
+---@field start_pause? RandomRange
+---Pause before a layer finishes playing. The layer being finished is not counted until the pause finishes.
+---
+---Optionally loaded for `intermezzo` states.
+---@field end_pause? RandomRange
+---Defines how many layers will be playing. Which layers will be playing is selected randomly.
+---
+---The minimum cannot be zero, the maximum cannot be greater than the number of layers.
+---
+---Cannot be defined if any of `layers_properties` define the `enabled` property.
+---
+---Cannot be defined for `intermezzo` or `stop` states.
+---@field number_of_enabled_layers? RandomRange
+
+---@class VariableAmbientSoundStateType
+
+---@class VariableAmbientSoundVariableSound
+---Cannot be empty.
+---@field layers VariableAmbientSoundLayer[]
+---@field intermezzo? Sound
+---The first state is used as the starting state and cannot be an intermezzo state.
+---
+---Cannot be empty.
+---@field states VariableAmbientSoundState[]
+---Cannot be zero.
+---@field length_seconds integer
+---Number of audio signal samples (sampling frequency is 44.1kHz) defining a time grid. Music samples are aligned with this grid when queued.
+---@field alignment_samples? integer
+
+---A vector is a two-element array or dictionary containing the x and y components. Positive x goes east, positive y goes south.
+---@class Vector
+---@field x number
+---@field y number
+
+---If this is specified as a three-element array then the array items are x, y and z, in that order.
+---@class Vector3D
+---@field x number
+---@field y number
+---@field z number
+
+---@class Vector4f
+---@field x number
+---@field y number
+---@field z number
+---@field w number
+
+---@class VectorRotation
+---The size of all `frames` must be the same.
+---@field frames Vector[]
+---@field render_layer? RenderLayer
+
+---@class VehicleLogisticsModifier : BoolModifier
+---@field type "vehicle-logistics"
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---Abstract base of all vehicles.
+---@class VehiclePrototype : EntityWithOwnerPrototype
+---Must be positive. Weight of the entity used for physics calculation when car hits something.
+---@field weight number
+---Must be positive.
+---@field braking_force number
+---Must be positive.
+---@field friction_force number
+---The (movement) energy used per hit point (1 hit point = 1 health damage) taken and dealt for this vehicle during collisions. The smaller the number, the more damage this vehicle and the rammed entity take during collisions: `damage = energy / energy_per_hit_point`.
+---@field energy_per_hit_point number
+---Must be in the [0, 1] interval.
+---@field terrain_friction_modifier? number
+---@field impact_speed_to_volume_ratio? number
+---@field stop_trigger_speed? number
+---@field crash_trigger? TriggerEffect
+---@field stop_trigger? TriggerEffect
+---The name of the EquipmentGridPrototype this vehicle has.
+---@field equipment_grid? EquipmentGridID
+---The sprite that represents this vehicle on the map/minimap.
+---@field minimap_representation? Sprite
+---The sprite that represents this vehicle on the map/minimap when it is selected.
+---@field selected_minimap_representation? Sprite
+---Determines whether this vehicle accepts passengers. This includes both drivers and gunners, if applicable.
+---@field allow_passengers? boolean
+---Name of a DeliverCategory.
+---@field deliver_category? string
+---In chunks. The radius of the radar range of the vehicle, so how many chunks it charts around itself.
+---@field chunk_exploration_radius? integer
+---@field allow_remote_driving? boolean
+
+---@class VerticalAlign
+
+---Root style: `"vertical_flow"`
+---@class VerticalFlowStyleSpecification : BaseStyleSpecification
+---@field type "vertical_flow_style"
+---Required on the root style.
+---@field vertical_spacing? integer
+
+---Root style: `"vertical_scrollbar"`
+---@class VerticalScrollBarStyleSpecification : ScrollBarStyleSpecification
+---@field type "vertical_scrollbar_style"
+
+---The name of a VirtualSignalPrototype.
+---@class VirtualSignalID
+
+---A virtual signal.
+---@class VirtualSignalPrototype : Prototype
+---@field type "virtual-signal"
+---The icon that is used to represent this virtual signal. Can't be an empty array.
+---@field icons? IconData[]
+---Path to the icon file that is used to represent this virtual signal.
+---
+---Only loaded, and mandatory if `icons` is not defined.
+---@field icon? FileName
+---The size of the square icon, in pixels. E.g. `32` for a 32px by 32px icon. Must be larger than `0`.
+---
+---Only loaded if `icons` is not defined.
+---@field icon_size? SpriteSizeType
+
+---@class VisualState
+---@field name string
+---@field next_active string
+---@field next_inactive string
+---@field duration integer
+---@field color? Color
+
+---Void energy sources provide unlimited free energy.
+---@class VoidEnergySource : BaseEnergySource
+---@field type "void"
+
+---@class WallPictures
+---@field single? SpriteVariations
+---@field straight_vertical? SpriteVariations
+---@field straight_horizontal? SpriteVariations
+---@field corner_right_down? SpriteVariations
+---@field corner_left_down? SpriteVariations
+---@field t_up? SpriteVariations
+---@field ending_right? SpriteVariations
+---@field ending_left? SpriteVariations
+---@field filling? SpriteVariations
+---@field water_connection_patch? Sprite4Way
+---@field gate_connection_patch? Sprite4Way
+
+---A wall.
+---@class WallPrototype : EntityWithOwnerPrototype
+---@field type "wall"
+---@field pictures? WallPictures
+---Different walls will visually connect to each other if their merge group is the same.
+---@field visual_merge_group? integer
+---The maximum circuit wire distance for this entity.
+---@field circuit_wire_max_distance? number
+---@field draw_copper_wires? boolean
+---@field draw_circuit_wires? boolean
+---@field circuit_connector? CircuitConnectorDefinition
+---@field default_output_signal? SignalIDConnector
+---@field wall_diode_green? Sprite4Way
+---@field wall_diode_red? Sprite4Way
+---@field wall_diode_green_light_top? LightDefinition
+---@field wall_diode_green_light_right? LightDefinition
+---@field wall_diode_green_light_bottom? LightDefinition
+---@field wall_diode_green_light_left? LightDefinition
+---@field wall_diode_red_light_top? LightDefinition
+---@field wall_diode_red_light_right? LightDefinition
+---@field wall_diode_red_light_bottom? LightDefinition
+---@field wall_diode_red_light_left? LightDefinition
+---@field connected_gate_visualization? Sprite
+
+---Entity water reflection. Currently only renders for EntityWithHealthPrototype.
+---@class WaterReflectionDefinition
+---@field pictures? SpriteVariations
+---@field orientation_to_variation? boolean
+---@field rotate? boolean
+
+---@class WaterTileEffectParameters
+---@field specular_lightness Color
+---@field foam_color Color
+---@field foam_color_multiplier number
+---@field tick_scale number
+---@field animation_speed number
+---@field animation_scale number|[number, number]
+---@field dark_threshold number|[number, number]
+---@field reflection_threshold number|[number, number]
+---@field specular_threshold number|[number, number]
+---Texture size must be 512x512. Shader variant `"water"` must have 1 texture, `"lava"` and `"wetland-water"` must have 2 textures and `"oil"` must have 4 textures.
+---@field textures EffectTexture[]
+---@field near_zoom? number
+---@field far_zoom? number
+---Value 0 makes water appear as water in water mask, but does not occlude lights, and doesn't overwrite lightmap alpha drawn to pixel previously (by background layer of tile transition, or underwater sprite). Light emitted by water-like-tile (for example lava) will blend additively with previously rendered light. Value 1 makes water occlude lights, but won't be recognized as water in water mask used for masking decals by water.
+---@field lightmap_alpha? number
+---@field shader_variation? EffectVariation
+---@field texture_variations_rows? integer
+---@field texture_variations_columns? integer
+---@field secondary_texture_variations_rows? integer
+---@field secondary_texture_variations_columns? integer
+
+---Weight of an object. The weight is stored as a fixed-size 64 bit integer, with 16 bits reserved for decimal precision, meaning the smallest value step is `1/2^16`.
+---@class Weight
+
+---Definition of a point where circuit network wires can be connected to an entity.
+---@class WireConnectionPoint
+---@field wire WirePosition
+---@field shadow WirePosition
+
+---Used by WireConnectionPoint.
+---@class WirePosition
+---@field copper? Vector
+---@field red? Vector
+---@field green? Vector
+
+---@class WorkerRobotBatteryModifier : SimpleModifier
+---@field type "worker-robot-battery"
+---If set to `false`, use the icon from UtilitySprites for this technology effect icon.
+---@field infer_icon? boolean
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---@class WorkerRobotSpeedModifier : SimpleModifier
+---@field type "worker-robot-speed"
+---If set to `false`, use the icon from UtilitySprites for this technology effect icon.
+---@field infer_icon? boolean
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---@class WorkerRobotStorageModifier : SimpleModifier
+---@field type "worker-robot-storage"
+---If set to `false`, use the icon from UtilitySprites for this technology effect icon.
+---@field infer_icon? boolean
+---If `false`, do not draw the small "constant" icon over the technology effect icon.
+---@field use_icon_overlay_constant? boolean
+
+---This type is used to produce sound from in-game entities when they are working/idle.
+---@class WorkingSound : MainSound
+---If this property is defined, all properties inherited from MainSound (and not overridden here) are ignored.
+---@field main_sounds? MainSound|MainSound[]
+---Sets a maximum limit on how many entities of the same prototype will play their working sound.
+---
+---Inactive entities without an `idle_sound` don't count towards this limit.
+---
+---Entities with their working sound fading out don't count towards this limit.
+---
+---Unused when `persistent` is `true`.
+---@field max_sounds_per_prototype? integer
+---If `true`, entities playing their extra sound don't count towards `max_sounds_per_prototype` limit. 'extra sound' refers to `idle_sound`, `activate_sound` or `deactivate_sound`.
+---
+---Unused when `persistent` is `true`.
+---@field extra_sounds_ignore_limit? boolean
+---When `true`, working sounds for all entities of the same prototype are combined into one.
+---@field persistent? boolean
+---@field use_doppler_shift? boolean
+---The sound to be played when the entity is idle. Might not work with all entities that use working_sound.
+---
+---Unused when `persistent` is `true`.
+---@field idle_sound? Sound
+---Might not work with all entities that use working_sound.
+---
+---Unused when `persistent` is `true`.
+---@field activate_sound? Sound
+---Might not work with all entities that use working_sound.
+---
+---Unused when `persistent` is `true`.
+---@field deactivate_sound? Sound
+---Unused when `persistent` is `true`.
+---@field sound_accents? SoundAccent|SoundAccent[]
+
+---Used by crafting machines to display different graphics when the machine is running.
+---@class WorkingVisualisation
+---@field render_layer? RenderLayer
+---@field fadeout? boolean
+---@field synced_fadeout? boolean
+---Whether the animations are always played at the same speed, not adjusted to the machine speed.
+---@field constant_speed? boolean
+---@field always_draw? boolean
+---@field animated_shift? boolean
+---@field align_to_waypoint? boolean
+---@field mining_drill_scorch_mark? boolean
+---Used to determine render order for sprites with the same `render_layer` in the same position. Sprites with a higher `secondary_draw_order` are drawn on top.
+---@field secondary_draw_order? integer
+---@field light? LightDefinition
+---@field effect? "flicker"|"uranium-glow"|"none"
+---Used by CraftingMachinePrototype. Has precedence over `apply_tint`.
+---@field apply_recipe_tint? "primary"|"secondary"|"tertiary"|"quaternary"|"none"
+---Used by CraftingMachinePrototype ("status" and "visual-state-color" only) and MiningDrillPrototype.
+---
+---For "status" on CraftingMachine and MiningDrill, the colors are specified via WorkingVisualisations::status_colors. For "resource-color", the colors are specified via ResourceEntityPrototype::mining_visualisation_tint.
+---@field apply_tint? "resource-color"|"input-fluid-base-color"|"input-fluid-flow-color"|"status"|"none"|"visual-state-color"
+---@field north_animation? Animation
+---@field east_animation? Animation
+---@field south_animation? Animation
+---@field west_animation? Animation
+---@field north_position? Vector
+---@field east_position? Vector
+---@field south_position? Vector
+---@field west_position? Vector
+---@field north_secondary_draw_order? integer
+---@field east_secondary_draw_order? integer
+---@field south_secondary_draw_order? integer
+---@field west_secondary_draw_order? integer
+---If defined, animation in this visualisation layer will be used only as mask for fog effect and will not render in world.
+---@field north_fog_mask? FogMaskShapeDefinition
+---If defined, animation in this visualisation layer will be used only as mask for fog effect and will not render in world.
+---@field east_fog_mask? FogMaskShapeDefinition
+---If defined, animation in this visualisation layer will be used only as mask for fog effect and will not render in world.
+---@field south_fog_mask? FogMaskShapeDefinition
+---If defined, animation in this visualisation layer will be used only as mask for fog effect and will not render in world.
+---@field west_fog_mask? FogMaskShapeDefinition
+---Loaded only if at least one of north_fog_mask, east_fog_mask, south_fog_mask, west_fog_mask is not specified.
+---
+---If defined, animation in this visualisation layer will be used only as mask for fog effect and will not render in world.
+---@field fog_mask? FogMaskShapeDefinition
+---@field animation? Animation
+---Only loaded if WorkingVisualisations::states is defined in the WorkingVisualisations that loads this.
+---@field draw_in_states? string[]
+---Only loaded if WorkingVisualisations::states is defined in the WorkingVisualisations that loads this.
+---@field draw_when_state_filter_matches? boolean
+---@field enabled_by_name? boolean
+---Used by MainSound::play_for_working_visualisations, SoundAccent::play_for_working_visualisation, FluidBox::enable_working_visualisations, and PipeConnectionDefinition::enable_working_visualisations.
+---@field name? string
+---@field enabled_in_animated_shift_during_waypoint_stop? boolean
+---@field enabled_in_animated_shift_during_transition? boolean
+---@field frame_based_on_shift_animation_progress? boolean
+---Only loaded, and mandatory if `mining_drill_scorch_mark` is `true`. Cannot be larger than `scorch_mark_lifetime`.
+---@field scorch_mark_fade_out_duration? integer
+---Only loaded, and mandatory if `mining_drill_scorch_mark` is `true`.
+---@field scorch_mark_lifetime? integer
+---Only loaded, and mandatory if `mining_drill_scorch_mark` is `true`.
+---@field scorch_mark_fade_in_frames? integer
+
+---@class WorkingVisualisations
+---@field animation? Animation4Way
+---Idle animation must have the same frame count as animation.
+---@field idle_animation? Animation4Way
+---Only loaded if `idle_animation` is defined.
+---@field always_draw_idle_animation? boolean
+---@field default_recipe_tint? GlobalRecipeTints
+---@field recipe_not_set_tint? GlobalRecipeTints
+---At least 2 visual states must be defined or no states at all. At most 32 states may be defined.
+---@field states? VisualState[]
+---Used to display different animations when the machine is running, for example tinted based on the current recipe.
+---@field working_visualisations? WorkingVisualisation[]
+---Only loaded if one of `shift_animation_waypoint_stop_duration` or `shift_animation_transition_duration` is not 0.
+---@field shift_animation_waypoints? ShiftAnimationWaypoints
+---Only loaded if `shift_animation_waypoints` is defined.
+---@field shift_animation_waypoint_stop_duration? integer
+---Only loaded if `shift_animation_waypoints` is defined.
+---@field shift_animation_transition_duration? integer
+---Used by WorkingVisualisation::apply_tint.
+---@field status_colors? StatusColors
+
+---@class WorldAmbientSoundDefinition
+---@field sound? Sound
+---@field radius? number
+---Has to be less than or equal to `max_entity_count`.
+---@field min_entity_count? integer
+---@field max_entity_count? integer
+---@field entity_to_sound_ratio? number
+---@field average_pause_seconds? number
+
+---A variable type which can have one of two values: `true` or `false`. Wikipedia has a comprehensive article on Booleans.
+---@class boolean
+
+---Format uses a dot as its decimal delimiter. Doubles are stored in the double precision floating point format.
+---
+---May not be NaN.
+---@class double
+
+---Format uses a dot as its decimal delimiter. Floats are stored in the single precision floating point format.
+---
+---May not be NaN.
+---@class float
+
+---16 bit signed integer. Ranges from `-32 768` to `32 767`, or `[-2^15, 2^15-1]`.
+---
+---Decimal numbers are automatically truncated when used in place of `int16`.
+---@class int16
+
+---32 bit signed integer. Ranges from `-2 147 483 648` to `2 147 483 647`, or `[-2^31, 2^31-1]`.
+---
+---Decimal numbers are automatically truncated when used in place of `int32`.
+---@class int32
+
+---8 bit signed integer. Ranges from `-128` to `127`, or `[-2^7, 2^7-1]`.
+---
+---Decimal numbers are automatically truncated when used in place of `int8`.
+---@class int8
+
+---Any kind of integer or floating point number.
+---@class number
+
+---Strings are enclosed in double-quotes.
+---@class string
+
+---A simple Lua table. An array is a table that uses continuous integer keys starting at `1`, while a dictionary can use numeric or string keys in any order or combination.
+---
+---Tables used by prototypes may be parsed via an internal class called "property tree". Errors that reference this class treat tables as 0-indexed. For example `Value must be a number in property tree at ROOT.technology.steel-plate-productivity.effects[0].change` refers to element 0 of the property tree array which in Lua is at index 1.
+---@class table
+
+---16 bit unsigned integer. Ranges from `0` to `65 535`, or `[0, 2^16-1]`.
+---
+---Decimal numbers are automatically truncated when used in place of `uint16`.
+---@class uint16
+
+---32 bit unsigned integer. Ranges from `0` to `4 294 967 295`, or `[0, 2^32-1]`.
+---
+---Decimal numbers are automatically truncated when used in place of `uint32`.
+---@class uint32
+
+---64 bit unsigned integer. Ranges from `0` to `18 446 744 073 709 551 615`, or `[0, 2^64-1]`.
+---
+---Decimal numbers are automatically truncated when used in place of `uint64`.
+---@class uint64
+
+---8 bit unsigned integer. Ranges from `0` to `255`, or `[0, 2^8-1]`.
+---
+---Decimal numbers are automatically truncated when used in place of `uint8`.
+---@class uint8
+
+---The data.raw prototype tables indexed by prototype type and prototype name.
+---@class FactorioDataRaw
+---Entity with energy source with specialised animation for charging/discharging. Used for the accumulator entity.
+---@field accumulator table<string, AccumulatorPrototype>
+---This prototype definition is used for the in-game achievements.
+---@field achievement table<string, AchievementPrototype>
+---Used by discharge defense and personal laser defense.
+---@field ["active-defense-equipment"] table<string, ActiveDefenseEquipmentPrototype>
+---@field ["agricultural-tower"] table<string, AgriculturalTowerPrototype>
+---A type of pollution that can spread throughout the chunks of a map.
+---@field ["airborne-pollutant"] table<string, AirbornePollutantPrototype>
+---This prototype is used to make sound while playing the game. This includes the base game's music, composed by Daniel James Taylor and the Space Age's music, composed by Petr Wajsar.
+---@field ["ambient-sound"] table<string, AmbientSound>
+---Ammo used for a gun.
+---@field ammo table<string, AmmoItemPrototype>
+---An ammo category. Each weapon has an ammo category, and can use any ammo with the same ammo category. Ammo categories can also be upgraded by technologies.
+---@field ["ammo-category"] table<string, AmmoCategory>
+---A turret that consumes ammo items.
+---@field ["ammo-turret"] table<string, AmmoTurretPrototype>
+---Specifies an animation that can be used with LuaRendering::draw_animation at runtime.
+---@field animation table<string, AnimationPrototype>
+---An arithmetic combinator.
+---@field ["arithmetic-combinator"] table<string, ArithmeticCombinatorPrototype>
+---Armor to wear on your in-game character for defense and buffs.
+---@field armor table<string, ArmorPrototype>
+---The arrows used for example in the campaign, they are literally just arrows.
+---@field arrow table<string, ArrowPrototype>
+---The entity spawned by the artillery targeting remote.
+---@field ["artillery-flare"] table<string, ArtilleryFlarePrototype>
+---The projectile shot by artillery.
+---@field ["artillery-projectile"] table<string, ArtilleryProjectilePrototype>
+---An artillery turret.
+---@field ["artillery-turret"] table<string, ArtilleryTurretPrototype>
+---An artillery wagon.
+---@field ["artillery-wagon"] table<string, ArtilleryWagonPrototype>
+---An assembling machine - like the assembling machines 1/2/3 in the game, but you can use your own recipe categories.
+---@field ["assembling-machine"] table<string, AssemblingMachinePrototype>
+---@field asteroid table<string, AsteroidPrototype>
+---@field ["asteroid-chunk"] table<string, AsteroidChunkPrototype>
+---@field ["asteroid-collector"] table<string, AsteroidCollectorPrototype>
+---A setting in the map creation GUI. Used by the autoplace system.
+---@field ["autoplace-control"] table<string, AutoplaceControl>
+---Used by personal battery.
+---@field ["battery-equipment"] table<string, BatteryEquipmentPrototype>
+---Entity with the ability to transfer module effects to its neighboring entities.
+---@field beacon table<string, BeaconPrototype>
+---Used as a laser beam.
+---@field beam table<string, BeamPrototype>
+---Used by belt immunity equipment.
+---@field ["belt-immunity-equipment"] table<string, BeltImmunityEquipmentPrototype>
+---A blueprint.
+---@field blueprint table<string, BlueprintItemPrototype>
+---A blueprint book.
+---@field ["blueprint-book"] table<string, BlueprintBookPrototype>
+---A boiler. It heats fluid and optionally outputs it as a different fluid.
+---@field boiler table<string, BoilerPrototype>
+---This prototype is used for receiving an achievement when the player builds an entity.
+---@field ["build-entity-achievement"] table<string, BuildEntityAchievementPrototype>
+---An entity that produces power from a burner energy source.
+---@field ["burner-generator"] table<string, BurnerGeneratorPrototype>
+---Set of data affecting tooltips, looks of gui slots etc when burner is not supposed to be burning items but eating them.
+---@field ["burner-usage"] table<string, BurnerUsagePrototype>
+---A capsule, for example a combat robot capsule or the raw fish.
+---@field capsule table<string, CapsulePrototype>
+---@field ["capture-robot"] table<string, CaptureRobotPrototype>
+---Entity with specialized properties for acceleration, braking, and turning.
+---@field car table<string, CarPrototype>
+---@field ["cargo-bay"] table<string, CargoBayPrototype>
+---@field ["cargo-landing-pad"] table<string, CargoLandingPadPrototype>
+---@field ["cargo-pod"] table<string, CargoPodPrototype>
+---A cargo wagon.
+---@field ["cargo-wagon"] table<string, CargoWagonPrototype>
+---Jumps between targets and applies a Trigger to them.
+---@field ["chain-active-trigger"] table<string, ChainActiveTriggerPrototype>
+---This prototype is used for receiving an achievement when the player changes to a surface.
+---@field ["change-surface-achievement"] table<string, ChangedSurfaceAchievementPrototype>
+---Entity that you move around on the screen during the campaign and freeplay.
+---@field character table<string, CharacterPrototype>
+---The corpse of a CharacterPrototype.
+---@field ["character-corpse"] table<string, CharacterCorpsePrototype>
+---A cliff.
+---@field cliff table<string, CliffPrototype>
+---A collision layer. Used for collision masks.
+---
+---It's recommend to use underscores instead of dashes in `name` so that the name can easily be used as a table key when defining collision masks.
+---@field ["collision-layer"] table<string, CollisionLayerPrototype>
+---A combat robot. Can attack enemies.
+---@field ["combat-robot"] table<string, CombatRobotPrototype>
+---This prototype is used for receiving an achievement when the player has a certain robot follower count.
+---@field ["combat-robot-count-achievement"] table<string, CombatRobotCountAchievementPrototype>
+---@field ["complete-objective-achievement"] table<string, CompleteObjectiveAchievementPrototype>
+---A constant combinator.
+---@field ["constant-combinator"] table<string, ConstantCombinatorPrototype>
+---This prototype is used for receiving an achievement when the player constructs enough entities with construction robots.
+---@field ["construct-with-robots-achievement"] table<string, ConstructWithRobotsAchievementPrototype>
+---A construction robot.
+---@field ["construction-robot"] table<string, ConstructionRobotPrototype>
+---A generic container, such as a chest.
+---@field container table<string, ContainerPrototype>
+---A copy-paste or cut-paste tool.
+---@field ["copy-paste-tool"] table<string, CopyPasteToolPrototype>
+---Used for corpses, for example the remnants when destroying buildings.
+---@field corpse table<string, CorpsePrototype>
+---This prototype is used for receiving an achievement when the player creates a space platform.
+---@field ["create-platform-achievement"] table<string, CreatePlatformAchievementPrototype>
+---A curved-A rail.
+---@field ["curved-rail-a"] table<string, CurvedRailAPrototype>
+---A curved-B rail.
+---@field ["curved-rail-b"] table<string, CurvedRailBPrototype>
+---Custom events share the same namespace as custom inputs and built-in events for subscribing to and raising them.
+---@field ["custom-event"] table<string, CustomEventPrototype>
+---Used for custom keyboard shortcuts/key bindings in mods. The key associated with the custom input can be changed in the options. This means that `key_sequence` is simply the default key binding.
+---@field ["custom-input"] table<string, CustomInputPrototype>
+---A damage type. This is used in the damage system. A list of built-in damage types can be found here.
+---@field ["damage-type"] table<string, DamageType>
+---A decider combinator.
+---@field ["decider-combinator"] table<string, DeciderCombinatorPrototype>
+---This prototype is used for receiving an achievement when the player deconstructs enough entities with construction robots.
+---@field ["deconstruct-with-robots-achievement"] table<string, DeconstructWithRobotsAchievementPrototype>
+---Entity used to signify that the tile below it should be deconstructed.
+---@field ["deconstructible-tile-proxy"] table<string, DeconstructibleTileProxyPrototype>
+---A deconstruction planner.
+---@field ["deconstruction-item"] table<string, DeconstructionItemPrototype>
+---Delays the delivery of triggered effect by some number of ticks.
+---@field ["delayed-active-trigger"] table<string, DelayedActiveTriggerPrototype>
+---This prototype is used for receiving an achievement, when the player requests and receives enough items using logistic robots.
+---@field ["deliver-by-robots-achievement"] table<string, DeliverByRobotsAchievementPrototype>
+---@field ["deliver-category"] table<string, DeliverCategory>
+---@field ["deliver-impact-combination"] table<string, DeliverImpactCombination>
+---This prototype is used for receiving an achievement when a resource entity is depleted.
+---@field ["deplete-resource-achievement"] table<string, DepleteResourceAchievementPrototype>
+---@field ["destroy-cliff-achievement"] table<string, DestroyCliffAchievementPrototype>
+---Entity that display a signal icon and some text, either configured directly in the entity or through the circuit network.
+---@field ["display-panel"] table<string, DisplayPanelPrototype>
+---This prototype is used for receiving an achievement when the player finishes the game without building a specific entity.
+---@field ["dont-build-entity-achievement"] table<string, DontBuildEntityAchievementPrototype>
+---This prototype is used for receiving an achievement when the player finishes the game without crafting more than a set amount.
+---@field ["dont-craft-manually-achievement"] table<string, DontCraftManuallyAchievementPrototype>
+---This prototype is used for receiving an achievement when the player kill first entity using artillery.
+---@field ["dont-kill-manually-achievement"] table<string, DontKillManuallyAchievementPrototype>
+---This prototype is used for receiving an achievement when the player researches with a specific science pack before unlocking another.
+---@field ["dont-research-before-researching-achievement"] table<string, DontResearchBeforeResearchingAchievementPrototype>
+---This prototype is used for receiving an achievement when the player finishes the game without receiving energy from a specific energy source.
+---@field ["dont-use-entity-in-energy-production-achievement"] table<string, DontUseEntityInEnergyProductionAchievementPrototype>
+---Properties of the editor controller.
+---@field ["editor-controller"] table<string, EditorControllerPrototype>
+---Entity with electric energy source with that can have some of its values changed runtime. Useful for modding in energy consumers/producers.
+---@field ["electric-energy-interface"] table<string, ElectricEnergyInterfacePrototype>
+---Provides or consumes power in equipment grids.
+---@field ["electric-energy-interface-equipment"] table<string, ElectricEnergyInterfaceEquipmentPrototype>
+---An electric pole - part of the electric system.
+---@field ["electric-pole"] table<string, ElectricPolePrototype>
+---A turret that uses electricity as ammunition.
+---@field ["electric-turret"] table<string, ElectricTurretPrototype>
+---An elevated curved-A rail.
+---@field ["elevated-curved-rail-a"] table<string, ElevatedCurvedRailAPrototype>
+---An elevated curved-B rail.
+---@field ["elevated-curved-rail-b"] table<string, ElevatedCurvedRailBPrototype>
+---An elevated half diagonal rail.
+---@field ["elevated-half-diagonal-rail"] table<string, ElevatedHalfDiagonalRailPrototype>
+---An elevated straight rail.
+---@field ["elevated-straight-rail"] table<string, ElevatedStraightRailPrototype>
+---Used by energy shield.
+---@field ["energy-shield-equipment"] table<string, EnergyShieldEquipmentPrototype>
+---The entity used for ghosts of entities. In-game, the inner entity (the entity this is a ghost of) is rendered with a UtilityConstants::ghost_tint.
+---@field ["entity-ghost"] table<string, EntityGhostPrototype>
+---This prototype is used for receiving an achievement when the player equips armor.
+---@field ["equip-armor-achievement"] table<string, EquipArmorAchievementPrototype>
+---Defines a category to be available to equipment and equipment grids.
+---@field ["equipment-category"] table<string, EquipmentCategory>
+---The equipment used for ghosts of equipment.
+---@field ["equipment-ghost"] table<string, EquipmentGhostPrototype>
+---The prototype of an equipment grid, for example the one used in a power armor.
+---@field ["equipment-grid"] table<string, EquipmentGridPrototype>
+---Used to play an animation and a sound.
+---@field explosion table<string, ExplosionPrototype>
+---A fire.
+---@field fire table<string, FireFlamePrototype>
+---Entity that spawns in water tiles, which can be mined. Moves around unless it is LuaEntity::disabled_by_script or marked for deconstruction.
+---@field fish table<string, FishPrototype>
+---A fluid.
+---@field fluid table<string, FluidPrototype>
+---A turret that uses fluid as ammunition.
+---@field ["fluid-turret"] table<string, FluidTurretPrototype>
+---A fluid wagon.
+---@field ["fluid-wagon"] table<string, FluidWagonPrototype>
+---Fonts are used in all GUIs in the game.
+---@field font table<string, FontPrototype>
+---Each item which has a fuel_value must have a fuel category. The fuel categories are used to allow only certain fuels to be used in EnergySource.
+---@field ["fuel-category"] table<string, FuelCategory>
+---A furnace. Normal furnaces only process "smelting" category recipes, but you can make furnaces that process other recipe categories.
+---
+---The difference to assembling machines is that furnaces automatically choose their recipe based on input. See Furnace Recipe Selection for how the recipe is chosen.
+---@field furnace table<string, FurnacePrototype>
+---Consumes a fluid to generate electricity and create another fluid.
+---@field ["fusion-generator"] table<string, FusionGeneratorPrototype>
+---Fusion reactor. Consumes fluid, fuel and additional energy to produce other fluid. Kind of advanced boiler. Can also have neighbour bonus.
+---@field ["fusion-reactor"] table<string, FusionReactorPrototype>
+---A gate.
+---@field gate table<string, GatePrototype>
+---An entity that produces power from fluids, for example a steam engine.
+---@field generator table<string, GeneratorPrototype>
+---Used by portable fusion reactor. Provides power in equipment grids. Can produce power for free or use a burner energy source.
+---@field ["generator-equipment"] table<string, GeneratorEquipmentPrototype>
+---Properties of the god controller.
+---@field ["god-controller"] table<string, GodControllerPrototype>
+---This prototype is used for receiving an achievement when the player gets attacked due to pollution.
+---@field ["group-attack-achievement"] table<string, GroupAttackAchievementPrototype>
+---The available GUI styles.
+---@field ["gui-style"] table<string, GuiStyle>
+---A gun. A weapon to deal damage to entities.
+---@field gun table<string, GunPrototype>
+---A half diagonal rail.
+---@field ["half-diagonal-rail"] table<string, HalfDiagonalRailPrototype>
+---This entity produces or consumes heat. Its heat settings can be changed runtime.
+---@field ["heat-interface"] table<string, HeatInterfacePrototype>
+---A heat pipe.
+---@field ["heat-pipe"] table<string, HeatPipePrototype>
+---Used to attach graphics for cursor boxes to entities during runtime. HighlightBoxEntity can also be independent from entities so it is simply drawn somewhere in the world. See LuaSurface::create_entity for the available options for type "highlight-box".
+---
+---The collision_box of the highlight box prototype is ignored during runtime, instead the "bounding_box" given in create_entity() or the selection box of the target entity is used.
+---@field ["highlight-box"] table<string, HighlightBoxEntityPrototype>
+---@field ["impact-category"] table<string, ImpactCategory>
+---A cargo wagon that can spawn or void items at will.
+---@field ["infinity-cargo-wagon"] table<string, InfinityCargoWagonPrototype>
+---A generic container, such as a chest, that can spawn or void items and interact with the logistics network.
+---@field ["infinity-container"] table<string, InfinityContainerPrototype>
+---This entity produces or consumes fluids. Its fluid settings can be changed runtime.
+---@field ["infinity-pipe"] table<string, InfinityPipePrototype>
+---An inserter.
+---@field inserter table<string, InserterPrototype>
+---@field ["inventory-bonus-equipment"] table<string, InventoryBonusEquipmentPrototype>
+---Possible configuration for all items.
+---@field item table<string, ItemPrototype>
+---The entity used for items on the ground.
+---@field ["item-entity"] table<string, ItemEntityPrototype>
+---An item group. Item groups are the tabs shown above the list of craftable items in the player's inventory GUI. The built-in groups are "logistics", "production", "intermediate-products" and "combat" but mods can define their own.
+---
+---Items are sorted into item groups by sorting them into a subgroup which then belongs to an item group.
+---@field ["item-group"] table<string, ItemGroup>
+---Entity used to signify that an entity is requesting items, for example modules for an assembling machine after it was blueprinted with modules inside.
+---@field ["item-request-proxy"] table<string, ItemRequestProxyPrototype>
+---An item subgroup. Item subgroups are the rows in the recipe list in the player's inventory GUI. The subgroup of a prototype also determines its item group (tab in the recipe list).
+---
+---The built-in subgroups can be found here. See ItemPrototype::subgroup for setting the subgroup of an item.
+---@field ["item-subgroup"] table<string, ItemSubGroup>
+---ItemWithEntityData saves data associated with the entity that it represents, for example the content of the equipment grid of a car.
+---@field ["item-with-entity-data"] table<string, ItemWithEntityDataPrototype>
+---The inventory allows setting player defined filters similar to cargo wagon inventories.
+---@field ["item-with-inventory"] table<string, ItemWithInventoryPrototype>
+---Like a normal item but with the ability to have a colored label.
+---@field ["item-with-label"] table<string, ItemWithLabelPrototype>
+---Item type that can store any basic arbitrary Lua data, see LuaItemStack::tags.
+---@field ["item-with-tags"] table<string, ItemWithTagsPrototype>
+---This prototype is used for receiving an achievement when the player destroys a certain amount of an entity, with a specific damage type.
+---@field ["kill-achievement"] table<string, KillAchievementPrototype>
+---A lab. It consumes science packs (items) to research technologies.
+---@field lab table<string, LabPrototype>
+---A lamp to provide light, using energy.
+---@field lamp table<string, LampPrototype>
+---A land mine.
+---@field ["land-mine"] table<string, LandMinePrototype>
+---@field ["lane-splitter"] table<string, LaneSplitterPrototype>
+---A legacy curved rail.
+---@field ["legacy-curved-rail"] table<string, LegacyCurvedRailPrototype>
+---A legacy straight rail.
+---@field ["legacy-straight-rail"] table<string, LegacyStraightRailPrototype>
+---Lightning randomly hits entities on planets with lightning_properties.
+---
+---If a lightning attractor is hit by lightning it will absorb the lightning hit for energy.
+---
+---If a something that is not an attractor is hit by lightning it will be damaged by the strike.
+---@field lightning table<string, LightningPrototype>
+---Absorbs lightning and optionally converts it into electricity.
+---@field ["lightning-attractor"] table<string, LightningAttractorPrototype>
+---A belt that can be connected to a belt anywhere else, including on a different surface. The linked belts have to be connected with console commands or runtime scripting in mods or scenarios. LuaEntity::connect_linked_belts and other runtime functions.
+---@field ["linked-belt"] table<string, LinkedBeltPrototype>
+---A container that shares its inventory with containers with the same link_id, which can be set via the GUI. The link IDs are per prototype and force, so only containers with the **same ID**, **same prototype name** and **same force** will share inventories.
+---@field ["linked-container"] table<string, LinkedContainerPrototype>
+---Continuously loads and unloads machines, as an alternative to inserters.
+---
+---This loader type is identical to Loader1x1Prototype with the exception of its hardcoded belt_distance. The belt_distance of the loader determines the distance between the position of this loader and the tile of the loader's belt target.
+---
+---This loader type always has a belt_distance of 0.5, meaning by default it is 2 tiles long in total. For a loader type with a belt_distance of 0, see Loader1x1Prototype.
+---@field loader table<string, Loader1x2Prototype>
+---Continuously loads and unloads machines, as an alternative to inserters.
+---
+---This loader type is identical to Loader1x2Prototype with the exception of its hardcoded belt_distance. The belt_distance of the loader determines the distance between the position of this loader and the tile of the loader's belt target.
+---
+---This loader type always has a belt_distance of 0, meaning by default it is 1 tile long in total. For a loader type with a belt_distance of 0.5, see Loader1x2Prototype.
+---@field ["loader-1x1"] table<string, Loader1x1Prototype>
+---A locomotive.
+---@field locomotive table<string, LocomotivePrototype>
+---A generic container, such as a chest, that interacts with the logistics network.
+---@field ["logistic-container"] table<string, LogisticContainerPrototype>
+---A logistic robot.
+---@field ["logistic-robot"] table<string, LogisticRobotPrototype>
+---The available map gen presets.
+---@field ["map-gen-presets"] table<string, MapGenPresets>
+---The default map settings.
+---@field ["map-settings"] table<string, MapSettings>
+---Offers can be added to a market and they are shown when opening the entity. Offers allow to spend items to get research bonuses or items.
+---@field market table<string, MarketPrototype>
+---A mining drill for automatically extracting resources from resource entities. This prototype type is used by burner mining drill, electric mining drill and pumpjack in vanilla.
+---@field ["mining-drill"] table<string, MiningDrillPrototype>
+---Block of arbitrary data set by mods in prototype stage.
+---
+---During runtime stage, this arbitrary data can be accessed through LuaPrototypes::mod_data.
+---@field ["mod-data"] table<string, ModData>
+---A module. They are used to affect the capabilities of existing machines, for example by increasing the crafting speed of a crafting machine.
+---@field module table<string, ModulePrototype>
+---A module category. The built-in categories can be found here. See ModulePrototype::category.
+---@field ["module-category"] table<string, ModuleCategory>
+---This prototype is used for receiving an achievement when the player moves a module with the cursor.
+---@field ["module-transfer-achievement"] table<string, ModuleTransferAchievementPrototype>
+---Used by SelectionToolPrototype::mouse_cursor.
+---@field ["mouse-cursor"] table<string, MouseCursor>
+---Used by exoskeleton. Increases max speed of characters or acceleration of vehicles if they have this equipment in their grid.
+---@field ["movement-bonus-equipment"] table<string, MovementBonusEquipmentPrototype>
+---Used by nightvision.
+---@field ["night-vision-equipment"] table<string, NightVisionEquipmentPrototype>
+---A NoiseExpression with a name. The base game uses named noise expressions to specify functions for many map properties to be used in map generation; e.g. the "elevation" expression is used to calculate elevation for every point on a map. For a list of the built-in named noise expressions, see data.raw.
+---
+---Named noise expressions can be used by MapGenSettings and MapGenPreset to override which named expression is used to calculate a given property by having an entry in `property_expression_names`, e.g. `elevation = "elevation_island"`.
+---
+---Alternate expressions can be made available in the map generator GUI by setting their `intended_property` to the name of the property they should override.
+---
+---Named noise expressions can also be used as noise variables e.g. `var("my-noise-expression")`.
+---@field ["noise-expression"] table<string, NamedNoiseExpression>
+---Named noise functions are defined in the same way as NamedNoiseExpression except that they also have parameters.
+---
+---Named noise functions are available to be used in NoiseExpressions.
+---@field ["noise-function"] table<string, NamedNoiseFunction>
+---An offshore pump.
+---@field ["offshore-pump"] table<string, OffshorePumpPrototype>
+---Simple decorative purpose objects on the map, they have no health and some of them are removed when the player builds over. Usually used for grass patches, roots, small plants etc.
+---@field ["optimized-decorative"] table<string, DecorativePrototype>
+---An entity with a limited lifetime that can use trigger effects.
+---@field ["optimized-particle"] table<string, ParticlePrototype>
+---Creates particles.
+---@field ["particle-source"] table<string, ParticleSourcePrototype>
+---An entity to transport fluids over a distance and between machines.
+---@field pipe table<string, PipePrototype>
+---A pipe to ground.
+---@field ["pipe-to-ground"] table<string, PipeToGroundPrototype>
+---@field ["place-equipment-achievement"] table<string, PlaceEquipmentAchievementPrototype>
+---@field planet table<string, PlanetPrototype>
+---@field plant table<string, PlantPrototype>
+---This prototype is used for receiving an achievement when the player receives damage.
+---@field ["player-damaged-achievement"] table<string, PlayerDamagedAchievementPrototype>
+---Deprecated in 2.0.
+---@field ["player-port"] table<string, PlayerPortPrototype>
+---A power switch.
+---@field ["power-switch"] table<string, PowerSwitchPrototype>
+---Describes the duration and visuals of a departure, arrival or an intermezzo while traveling between surfaces. Usually provided inside of a ProcessionSet.
+---@field procession table<string, ProcessionPrototype>
+---Helps ProcessionLayers pass properties between subsequent transitions if they belong to the same group.
+---@field ["procession-layer-inheritance-group"] table<string, ProcessionLayerInheritanceGroup>
+---This prototype is used for receiving an achievement when the player produces more than the specified amount of items.
+---@field ["produce-achievement"] table<string, ProduceAchievementPrototype>
+---This prototype is used for receiving an achievement when the player crafts a specified item a certain amount, in an hour.
+---@field ["produce-per-hour-achievement"] table<string, ProducePerHourAchievementPrototype>
+---A programmable speaker.
+---@field ["programmable-speaker"] table<string, ProgrammableSpeakerPrototype>
+---Entity with limited lifetime that can hit other entities and has triggers when this happens.
+---@field projectile table<string, ProjectilePrototype>
+---A container that must be set to point at other entity and inventory index so it can forward all inventory interactions to the other entity.
+---@field ["proxy-container"] table<string, ProxyContainerPrototype>
+---The pump is used to transfer fluids between tanks, fluid wagons and pipes.
+---@field pump table<string, PumpPrototype>
+---One quality step. Its effects are specified by the level and the various multiplier and bonus properties. Properties ending in `_multiplier` are applied multiplicatively to their base property, properties ending in `_bonus` are applied additively.
+---@field quality table<string, QualityPrototype>
+---A radar.
+---@field radar table<string, RadarPrototype>
+---A rail chain signal.
+---@field ["rail-chain-signal"] table<string, RailChainSignalPrototype>
+---A rail planner.
+---@field ["rail-planner"] table<string, RailPlannerPrototype>
+---A rail ramp.
+---@field ["rail-ramp"] table<string, RailRampPrototype>
+---Used for rail corpses.
+---@field ["rail-remnants"] table<string, RailRemnantsPrototype>
+---A rail signal.
+---@field ["rail-signal"] table<string, RailSignalPrototype>
+---@field ["rail-support"] table<string, RailSupportPrototype>
+---A reactor.
+---@field reactor table<string, ReactorPrototype>
+---A recipe. It can be a crafting recipe, a smelting recipe, or a custom type of recipe, see RecipeCategory.
+---@field recipe table<string, RecipePrototype>
+---A recipe category. The built-in categories can be found here. See RecipePrototype::category. Recipe categories can be used to specify which machine can craft which recipes.
+---
+---The recipe category with the name "crafting" cannot contain recipes with fluid ingredients or products.
+---@field ["recipe-category"] table<string, RecipeCategory>
+---Properties of the remote controller.
+---@field ["remote-controller"] table<string, RemoteControllerPrototype>
+---A repair pack. Using the tool decreases durability to restore entity health.
+---@field ["repair-tool"] table<string, RepairToolPrototype>
+---This prototype is used for receiving an achievement when the player completes a specific research.
+---@field ["research-achievement"] table<string, ResearchAchievementPrototype>
+---@field ["research-with-science-pack-achievement"] table<string, ResearchWithSciencePackAchievementPrototype>
+---A mineable/gatherable entity.
+---@field resource table<string, ResourceEntityPrototype>
+---A resource category. The built-in categories can be found here. See ResourceEntityPrototype::category.
+---@field ["resource-category"] table<string, ResourceCategory>
+---A roboport.
+---@field roboport table<string, RoboportPrototype>
+---Used by personal roboport.
+---@field ["roboport-equipment"] table<string, RoboportEquipmentPrototype>
+---A rocket silo.
+---@field ["rocket-silo"] table<string, RocketSiloPrototype>
+---The rocket inside the rocket silo.
+---@field ["rocket-silo-rocket"] table<string, RocketSiloRocketPrototype>
+---The shadow of the rocket inside the rocket silo.
+---@field ["rocket-silo-rocket-shadow"] table<string, RocketSiloRocketShadowPrototype>
+---Entity representing an individual segment in a SegmentedUnitPrototype
+---@field segment table<string, SegmentPrototype>
+---Entity composed of multiple segment entities that trail behind the head.
+---@field ["segmented-unit"] table<string, SegmentedUnitPrototype>
+---Used in the base game as a base for the blueprint item and the deconstruction item.
+---@field ["selection-tool"] table<string, SelectionToolPrototype>
+---@field ["selector-combinator"] table<string, SelectorCombinatorPrototype>
+---This prototype is used for receiving an achievement when the player shoots certain ammo.
+---@field ["shoot-achievement"] table<string, ShootAchievementPrototype>
+---Definition for a shortcut button in the shortcut bar.
+---
+---This is **not** a custom keybinding (keyboard shortcut), for that see CustomInputPrototype.
+---@field shortcut table<string, ShortcutPrototype>
+---An extremely basic entity with no special functionality. Used for minable rocks. Cannot be rotated.
+---@field ["simple-entity"] table<string, SimpleEntityPrototype>
+---By default, this entity will be a priority target for units/turrets, who will choose to attack it even if it does not block their path. Setting EntityWithOwnerPrototype::is_military_target to `false` will turn this off, which then makes this type equivalent to SimpleEntityWithOwnerPrototype.
+---@field ["simple-entity-with-force"] table<string, SimpleEntityWithForcePrototype>
+---Has a force, but unlike SimpleEntityWithForcePrototype it is only attacked if the biters get stuck on it (or if EntityWithOwnerPrototype::is_military_target set to true to make the two entity types equivalent).
+---
+---Can be rotated in 4 directions. `picture` can be used to specify different graphics per direction.
+---@field ["simple-entity-with-owner"] table<string, SimpleEntityWithOwnerPrototype>
+---An entity with animation and a trigger.
+---@field ["smoke-with-trigger"] table<string, SmokeWithTriggerPrototype>
+---A solar panel.
+---@field ["solar-panel"] table<string, SolarPanelPrototype>
+---A portable solar panel.
+---@field ["solar-panel-equipment"] table<string, SolarPanelEquipmentPrototype>
+---Specifies a sound that can be used with SoundPath at runtime.
+---@field sound table<string, SoundPrototype>
+---@field ["space-connection"] table<string, SpaceConnectionPrototype>
+---@field ["space-connection-distance-traveled-achievement"] table<string, SpaceConnectionDistanceTraveledAchievementPrototype>
+---A space location, such as a planet or the solar system edge.
+---@field ["space-location"] table<string, SpaceLocationPrototype>
+---@field ["space-platform-hub"] table<string, SpacePlatformHubPrototype>
+---@field ["space-platform-starter-pack"] table<string, SpacePlatformStarterPackPrototype>
+---Properties of the spectator controller.
+---@field ["spectator-controller"] table<string, SpectatorControllerPrototype>
+---A speech bubble. It floats in the world and can display text.
+---@field ["speech-bubble"] table<string, SpeechBubblePrototype>
+---Used by SpiderLegSpecification for SpiderVehiclePrototype, also known as spidertron.
+---@field ["spider-leg"] table<string, SpiderLegPrototype>
+---@field ["spider-unit"] table<string, SpiderUnitPrototype>
+---A spidertron.
+---@field ["spider-vehicle"] table<string, SpiderVehiclePrototype>
+---The spidertron remote. This remote can only be used for entities of type SpiderVehiclePrototype.
+---@field ["spidertron-remote"] table<string, SpidertronRemotePrototype>
+---A splitter.
+---@field splitter table<string, SplitterPrototype>
+---Specifies an image that can be used with SpritePath at runtime.
+---@field sprite table<string, SpritePrototype>
+---Entity that sticks to another entity, and damages/slows it. Stickers can only be attached to UnitPrototype, CharacterPrototype, CarPrototype and SpiderVehiclePrototype.
+---@field sticker table<string, StickerPrototype>
+---A storage tank.
+---@field ["storage-tank"] table<string, StorageTankPrototype>
+---A straight rail.
+---@field ["straight-rail"] table<string, StraightRailPrototype>
+---Used for example for the handheld flamethrower.
+---@field stream table<string, FluidStreamPrototype>
+---@field surface table<string, SurfacePrototype>
+---@field ["surface-property"] table<string, SurfacePropertyPrototype>
+---A technology.
+---@field technology table<string, TechnologyPrototype>
+---A container that can automatically destroy itself when it is emptied or after it has existed for a certain time.
+---@field ["temporary-container"] table<string, TemporaryContainerPrototype>
+---Consumes two fluids as fuel to produce thrust for a space platform.
+---@field thruster table<string, ThrusterPrototype>
+---A tile.
+---@field tile table<string, TilePrototype>
+---Used to define the parameters for tile shaders.
+---@field ["tile-effect"] table<string, TileEffectDefinition>
+---The entity used for tile ghosts.
+---@field ["tile-ghost"] table<string, TileGhostPrototype>
+---A tips and tricks entry.
+---@field ["tips-and-tricks-item"] table<string, TipsAndTricksItem>
+---A TipsAndTricksItem category, used for sorting of tips and tricks entries: Tips and trick entries are sorted first by category and then by their order within that category.
+---@field ["tips-and-tricks-item-category"] table<string, TipsAndTricksItemCategory>
+---Items with a "durability".
+---@field tool table<string, ToolPrototype>
+---This prototype is used for receiving an achievement when the player has a specified train path length.
+---@field ["train-path-achievement"] table<string, TrainPathAchievementPrototype>
+---A train stop.
+---@field ["train-stop"] table<string, TrainStopPrototype>
+---A transport belt.
+---@field ["transport-belt"] table<string, TransportBeltPrototype>
+---A tree.
+---@field tree table<string, TreePrototype>
+---The base game always internally defines a "common" trigger target type. See Design discussion: Trigger target type.
+---@field ["trigger-target-type"] table<string, TriggerTargetType>
+---Smoke, but it's not an entity for optimization purposes.
+---@field ["trivial-smoke"] table<string, TrivialSmokePrototype>
+---A turret that needs no extra ammunition. See the children for turrets that need some kind of ammunition.
+---@field turret table<string, TurretPrototype>
+---The definition of the tutorial to be used in the tips and tricks, see TipsAndTricksItem. The actual tutorial scripting code is defined in the tutorial scenario. The scenario must be placed in the `tutorials` folder in the mod.
+---@field tutorial table<string, TutorialDefinition>
+---An underground belt.
+---@field ["underground-belt"] table<string, UndergroundBeltPrototype>
+---Entity that moves around and attacks players, for example biters and spitters.
+---@field unit table<string, UnitPrototype>
+---Can spawn entities. Used for biter/spitter nests.
+---@field ["unit-spawner"] table<string, EnemySpawnerPrototype>
+---An upgrade planner.
+---
+---For an entity to be allowed as an upgrade source, it must be minable, may not have "not-upgradable" flag set and may not be hidden. Additionally, the source entity's mining result must not be an item product that is hidden. Mining results with no item products are allowed.
+---
+---For an entity to be allowed as an upgrade target, it must have least 1 item that builds it that isn't hidden.
+---
+---For two entities to be upgrades of each other, the two entities must have the same fast replaceable group, the same collision box and the same collision mask. Additionally, underground belts cannot be upgraded to transport belts and vice versa.
+---
+---For an entity to be automatically upgraded to another entity without configuring the upgrade planner, the next upgrade of the upgrade source entity must be set.
+---@field ["upgrade-item"] table<string, UpgradeItemPrototype>
+---This prototype is used for receiving an achievement when the player produces energy by entity.
+---@field ["use-entity-in-energy-production-achievement"] table<string, UseEntityInEnergyProductionAchievementPrototype>
+---This prototype is used for receiving an achievement when the player uses a capsule.
+---@field ["use-item-achievement"] table<string, UseItemAchievementPrototype>
+---Constants used by the game that are not specific to certain prototypes. See utility-constants.lua for the values used by the base game.
+---@field ["utility-constants"] table<string, UtilityConstants>
+---Sounds used by the game that are not specific to certain prototypes.
+---@field ["utility-sounds"] table<string, UtilitySounds>
+---Sprites used by the game that are not specific to certain prototypes.
+---@field ["utility-sprites"] table<string, UtilitySprites>
+---A passive device that provides limited control of fluid flow between pipelines.
+---@field valve table<string, ValvePrototype>
+---A virtual signal.
+---@field ["virtual-signal"] table<string, VirtualSignalPrototype>
+---A wall.
+---@field wall table<string, WallPrototype>
+
+---The Factorio data-stage interface used to register prototypes.
+---@class FactorioData
+---@field raw FactorioDataRaw
+---@field extend fun(self: FactorioData, prototypes: table[])
+
+---@type FactorioData
+data = data
+
+---@type table<string, string>
+mods = mods
+
+---@type table
+settings = settings

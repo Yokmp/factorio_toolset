@@ -14,13 +14,13 @@ This folder is intentionally not a Factorio mod and must not contain an `info.js
 Run the UI:
 
 ```powershell
-python C:\Path\to\Fatorio\mods\Toolsets\factorio-toolset\ui.py
+python F:\Games\Factorio_ModTest\mods\Toolsets\factorio-toolset\ui.py
 ```
 
 Run a mod's harness directly:
 
 ```powershell
-python C:\Path\to\Fatorio\mods\Toolsets\testharness\run_tests.py --mod-root F:\Games\Factorio_ModTest\mods\Ingredient_Scrap --profile default --no-color
+python F:\Games\Factorio_ModTest\mods\Toolsets\testharness\run_tests.py --mod-root F:\Games\Factorio_ModTest\mods\Ingredient_Scrap --profile default --no-color
 ```
 
 The target mod still owns its Lua test files under `tools/test`, because Factorio loads those files from the active mod.
