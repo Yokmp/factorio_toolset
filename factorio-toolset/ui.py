@@ -9,6 +9,7 @@ Run with:
 from __future__ import annotations
 
 import argparse
+import ast
 import json
 import queue
 import re
@@ -75,6 +76,20 @@ GITHUB_URL = "https://github.com/Yokmp/factorio_toolset"
 TOOL_DIR = Path(__file__).resolve().parent
 
 
+def module_version(filename: str) -> str | None:
+    """Read a tool's APP_VERSION without executing its module-level code."""
+    path = TOOL_DIR / filename
+    try:
+        tree = ast.parse(path.read_text(encoding="utf-8-sig"), filename=str(path))
+    except (OSError, SyntaxError, UnicodeError):
+        return None
+    for node in tree.body:
+        if isinstance(node, ast.Assign) and any(isinstance(target, ast.Name) and target.id == "APP_VERSION" for target in node.targets):
+            if isinstance(node.value, ast.Constant) and isinstance(node.value.value, str):
+                return node.value.value
+    return None
+
+
 def find_mod_root(start: Path) -> Path | None:
     """Return the nearest parent directory containing a Factorio mod info.json."""
     current = start.resolve()
@@ -120,7 +135,7 @@ class ToolDefinition:
         if self.frame_type is None:
             return f"{self.name} has no UI frame registered"
         if self.version is None:
-            return None
+            return "version unavailable" if self.min_version is not None or self.max_version is not None else None
         if self.min_version is not None and compare_versions(self.version, self.min_version) < 0:
             return f"{self.name} {self.version} is older than required {self.min_version}"
         if self.max_version is not None and compare_versions(self.version, self.max_version) >= 0:
@@ -2906,15 +2921,15 @@ TOOL_MAP: dict[str, dict[str, Any]] = {
     },
     "deploy": {
         "title": "Deploy",
-        "version": "1.0.1",
+        "version": module_version("deploy.py"),
         "filename": "deploy.py",
         "frame_type": DeployTool,
-        "min_version": "1.0.0",
-        "max_version": "2.0.0",
+        "min_version": "2.0.0",
+        "max_version": "3.0.0",
     },
     "mipmap": {
         "title": "Mipmaps",
-        "version": "1.2.0",
+        "version": module_version("mipmap.py"),
         "filename": "mipmap.py",
         "frame_type": MipmapTool,
         "min_version": "1.2.0",

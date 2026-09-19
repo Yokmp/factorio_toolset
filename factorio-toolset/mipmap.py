@@ -7,7 +7,8 @@
 # You need the Pillow module for this script to work
 # python -m pip install --upgrade Pillow
 #
-# version 1.2.0
+
+APP_VERSION = "1.2.0"
 
 from PIL import Image
 import argparse

@@ -37,6 +37,8 @@ directory shown above.
   capture their output in the tool window.
 - Deploy: build filtered Factorio mod release archives and optionally publish
   `public.zip` to a Git branch.
+- Mipmaps: generate Factorio-style mipmap strips from square PNG icons, with
+  per-image size detection and a visible output log.
 - JSON Tree Viewer: inspect any JSON file as a collapsible tree, or inspect Ingredient Scrap material-flow data as a production/recipe graph.
 
 Future ideas are tracked in [`TOOLS_ROADMAP.md`](TOOLS_ROADMAP.md).
@@ -48,7 +50,8 @@ Material Flow dump integration details are documented in [`MATERIAL_FLOW.md`](MA
 - Python 3 with Tkinter
 - A local Factorio installation
 
-No external Python packages are required.
+The Mipmaps tool additionally requires Pillow (`python -m pip install Pillow`).
+The other tools do not require external Python packages.
 
 ## Files To Package
 
@@ -60,6 +63,7 @@ Required:
 - `material_flow.py`
 - `ancestry_flow.py`
 - `deploy.py`
+- `mipmap.py`
 - `json-tree-viewer.html`
 - `treeview-example.json`
 
@@ -263,6 +267,12 @@ python factorio-toolset\ancestry_flow.py --dump-dir ..\Ingredient_Scrap\tools\to
 This regenerates the hybrid comparison review, decision groups, mixed-limit
 simulation, and effective-output preview from the same input JSON files.
 
+For mod profile testing:
+
+```powershell
+python testharness\run_tests.py --mod-root ..\Ingredient_Scrap --mod-profile vanilla_dlc --profile default --no-color
+```
+
 ## Deploy
 
 The deploy tool is path independent. In the external Toolsets layout, pass the
@@ -273,14 +283,12 @@ python factorio-toolset\deploy.py check --mod-root ..\Wood_Gasification_updated
 ```
 
 In the Toolset UI, the Deploy tab scans direct subdirectories of the Factorio
-`mods` directory for source mods containing a valid `info.json`. Select a mod
-from the **Target Mod** list to see its title, internal name, versions, author,
-dependencies, source path, and description. Refresh repeats the scan; Browse
-can select a source mod outside the detected `mods` directory. Every Deploy
-command automatically receives the selected directory as `--mod-root`, and the
-selection is saved as the shared Toolset mod root. The Deploy tab intentionally
-starts without a selected target so a build cannot accidentally use a mod chosen
-in another Toolset tab or an earlier session.
+`mods` directory for mods with `info.json`. Select a mod from the dropdown to
+preview its `info.json`. The version field can be edited and saved there. Every
+Deploy command receives the selected directory as `--mod-root`. The sidebar
+provides Build, Gitignore, Clean and Publish; command output appears below the
+preview. There is no separate Check button in the UI, but `deploy.py check`
+remains available on the CLI.
 
 Build release archives:
 
@@ -292,6 +300,32 @@ This writes both release files under `<mod-root>/_release_/`:
 
 - `<internal-name>_<version>.zip` for the Mod Portal.
 - `public.zip` for a clean public source branch.
+
+On the first `build` or `check`, the tool creates `<mod-root>/.deployignore`
+if it does not exist and prints its path. The template contains the filters
+previously built into `deploy.py`. Edit it in the mod root to add or remove
+exclusions; existing files are never overwritten. Blank lines and lines
+starting with `#` are ignored. Patterns without `/` match names at any depth;
+patterns ending in `/` target directories. Paths containing `/` are relative
+to the mod root. The sections select which ZIP is affected:
+
+```text
+[common]
+test/
+*.py
+
+[public]
+private-notes.txt
+
+[portal]
+*.md
+shot_*
+```
+
+`[common]` applies to both ZIPs. `[public]` applies only to `public.zip`, and
+`[portal]` only to the Mod Portal ZIP. `.deployignore` itself stays in
+`public.zip` by default but is always excluded from the Mod Portal ZIP. The
+release output directory is always excluded from both.
 
 The tool does not copy anything into Factorio/mods. Use `ensure-gitignore` to
 make sure `_release_` stays local:
@@ -310,12 +344,29 @@ python factorio-toolset\deploy.py publish-public --mod-root ..\Wood_Gasification
 
 The default publish target is `main`; `--branch` can publish to another branch.
 Publishing uses a temporary Git worktree under `_release_` and removes it again.
-In the UI, Check, Build and Clean are followed by a compact Git section:
-Gitignore and Publish share one row, while the branch and publish options are
-shown directly below them. Dry run is enabled by default.
+In the UI, Gitignore and Clean share one row. Publish has branch, build-first
+and dry-run options; dry run is enabled by default.
 
-For mod profile testing:
+## Mipmaps
+
+The Mipmaps tab selects input and output folders (initially `_single` and
+`_multi` under the selected mod root), the number of levels, and optional
+crop/verbose switches. The verbose output appears in the tab. The output
+folder must already exist. Each input PNG must be square; icons of different
+sizes can be processed together. The original image height stays unchanged,
+while smaller mipmap squares are appended to the right. For example, two
+levels turn a 64x64 icon into a 96x64 PNG.
+
+The same operation is available from the CLI. Run this from the mod root so
+the tool can read its `info.json`:
 
 ```powershell
-python testharness\run_tests.py --mod-root ..\Ingredient_Scrap --mod-profile vanilla_dlc --profile default --no-color
+python ..\Toolsets\factorio-toolset\mipmap.py 2 --in .\_single --out .\_multi --verbose
 ```
+
+Without a level argument, `mipmap.py` defaults to two levels. `-c`/`--crop`
+crops transparent canvas before generating levels; `-h`/`--help` shows the
+complete CLI help. From the mod root, use
+`python ..\Toolsets\factorio-toolset\mipmap.py -h` rather than launching the
+`.py` file directly on Windows if its file association opens a temporary
+console.

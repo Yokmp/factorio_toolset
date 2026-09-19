@@ -10,6 +10,7 @@ is stored elsewhere.
 from __future__ import annotations
 
 import argparse
+import fnmatch
 import json
 import os
 import shutil
@@ -23,6 +24,7 @@ from typing import Iterable
 APP_VERSION = "2.0.0"
 ARTIFACT_PUBLIC = "public"
 ARTIFACT_PORTAL = "portal"
+IGNORE_FILENAME = ".deployignore"
 
 EXCLUDE_DIRS = {
     "_legacy",
@@ -121,6 +123,62 @@ class CollectStats:
     bytes_written: int = 0
 
 
+def default_ignore_text() -> str:
+    """Render the existing release filters as an editable mod-local template."""
+    common = [f"{name}/" for name in sorted(EXCLUDE_DIRS)]
+    common += sorted(EXCLUDE_FILES)
+    common += [f"*{ext}" for ext in sorted(EXCLUDE_EXTENSIONS)]
+    common += [f"{prefix}*" for prefix in EXCLUDE_NAME_PREFIXES]
+    common += [f"*{fragment}*" for fragment in EXCLUDE_NAME_CONTAINS]
+    portal = [f"*{ext}" for ext in sorted(PORTAL_EXCLUDE_EXTENSIONS)]
+    portal += [f"{prefix}*" for prefix in PORTAL_EXCLUDE_NAME_PREFIXES]
+    return ("# Paths are relative to the mod root. A pattern without / matches any name.\n"
+            "# A trailing / matches directories; # starts a comment.\n"
+            "[common]\n" + "\n".join(common) + "\n\n"
+            "[public]\n\n"
+            "[portal]\n" + "\n".join(portal) + "\n")
+
+
+def load_ignore_patterns(mod_root: Path) -> dict[str, list[str]]:
+    """Create the template if absent and load common and archive-specific patterns."""
+    path = mod_root / IGNORE_FILENAME
+    if not path.exists():
+        path.write_text(default_ignore_text(), encoding="utf-8")
+        print(f"Created ignore template: {path}")
+    patterns: dict[str, list[str]] = {"common": [], ARTIFACT_PUBLIC: [], ARTIFACT_PORTAL: []}
+    section = "common"
+    for number, raw in enumerate(path.read_text(encoding="utf-8-sig").splitlines(), start=1):
+        line = raw.strip()
+        if not line or line.startswith("#"):
+            continue
+        if line.startswith("[") and line.endswith("]"):
+            section = line[1:-1].lower()
+            if section not in patterns:
+                raise SystemExit(f"Unknown section in {path}:{number}: {line}")
+            continue
+        patterns[section].append(line.replace("\\", "/"))
+    return patterns
+
+
+def matches_ignore(relative: str, is_dir: bool, patterns: list[str]) -> bool:
+    """Match root-relative paths, names at any depth, and directory rules."""
+    parts = relative.split("/")
+    for pattern in patterns:
+        directory_only = pattern.endswith("/")
+        rule = pattern.rstrip("/")
+        if not rule:
+            continue
+        candidates = parts if is_dir else parts[:-1] if directory_only else parts
+        if "/" in rule:
+            if fnmatch.fnmatchcase(relative, rule) and (is_dir or not directory_only):
+                return True
+            if directory_only and any(fnmatch.fnmatchcase("/".join(parts[:index]), rule) for index in range(1, len(parts))):
+                return True
+        elif any(fnmatch.fnmatchcase(part, rule) for part in candidates):
+            return True
+    return False
+
+
 def find_mod_root(start: Path) -> Path:
     """Return the nearest parent directory containing info.json."""
     current = start.resolve()
@@ -188,28 +246,21 @@ def safe_empty_directory(path: Path, allowed_root: Path) -> None:
             child.unlink()
 
 
-def should_exclude(path: Path, mod_root: Path, is_dir: bool = False, artifact: str = ARTIFACT_PUBLIC) -> bool:
+def should_exclude(
+    path: Path, mod_root: Path, is_dir: bool = False, artifact: str = ARTIFACT_PUBLIC,
+    patterns: dict[str, list[str]] | None = None, release_dir: Path | None = None,
+) -> bool:
     """Return true when a path must not be included in release archives."""
     if path.resolve() == mod_root.resolve():
         return False
 
-    relative = relpath(path, mod_root)
-    parts = relative.split("/")
-    name = parts[-1]
+    if (artifact == ARTIFACT_PORTAL and path.name == IGNORE_FILENAME) or (release_dir is not None and is_relative_to(path, release_dir)):
+        return True
 
-    if any(part in EXCLUDE_DIRS for part in parts):
-        return True
-    if relative in EXCLUDE_FILES:
-        return True
-    if name.startswith(EXCLUDE_NAME_PREFIXES):
-        return True
-    if artifact == ARTIFACT_PORTAL and name.startswith(PORTAL_EXCLUDE_NAME_PREFIXES):
-        return True
-    if any(fragment in name for fragment in EXCLUDE_NAME_CONTAINS):
-        return True
-    if path.suffix in EXCLUDE_EXTENSIONS:
-        return True
-    if artifact == ARTIFACT_PORTAL and path.suffix.lower() in PORTAL_EXCLUDE_EXTENSIONS:
+    relative = relpath(path, mod_root)
+    name = path.name
+
+    if patterns is not None and matches_ignore(relative, is_dir, patterns["common"] + patterns[artifact]):
         return True
     if is_dir and name.endswith("_" + load_info(mod_root).version):
         return True
@@ -277,28 +328,36 @@ def copy_release_file(source: Path, target: Path, config: DeployConfig, stats: C
     return True
 
 
-def iter_release_files(config: DeployConfig, artifact: str = ARTIFACT_PUBLIC) -> Iterable[Path]:
+def iter_release_files(
+    config: DeployConfig, artifact: str = ARTIFACT_PUBLIC,
+    patterns: dict[str, list[str]] | None = None,
+) -> Iterable[Path]:
     """Yield files that belong in release archives."""
+    if patterns is None:
+        patterns = load_ignore_patterns(config.mod_root)
     for root, subdirs, files in os.walk(config.mod_root):
         root_path = Path(root)
         subdirs[:] = [
             subdir
             for subdir in sorted(subdirs)
-            if not should_exclude(root_path / subdir, config.mod_root, is_dir=True, artifact=artifact)
+            if not should_exclude(root_path / subdir, config.mod_root, is_dir=True, artifact=artifact, patterns=patterns, release_dir=config.release_dir)
         ]
-        if should_exclude(root_path, config.mod_root, is_dir=True, artifact=artifact):
+        if should_exclude(root_path, config.mod_root, is_dir=True, artifact=artifact, patterns=patterns, release_dir=config.release_dir):
             continue
         for filename in sorted(files):
             path = root_path / filename
-            if not should_exclude(path, config.mod_root, artifact=artifact):
+            if not should_exclude(path, config.mod_root, artifact=artifact, patterns=patterns, release_dir=config.release_dir):
                 yield path
 
 
-def collect_release_tree(config: DeployConfig, target_root: Path, artifact: str = ARTIFACT_PUBLIC) -> CollectStats:
+def collect_release_tree(
+    config: DeployConfig, target_root: Path, artifact: str = ARTIFACT_PUBLIC,
+    patterns: dict[str, list[str]] | None = None,
+) -> CollectStats:
     """Copy filtered release files into target_root."""
     stats = CollectStats()
     target_root.mkdir(parents=True, exist_ok=True)
-    for source in iter_release_files(config, artifact):
+    for source in iter_release_files(config, artifact, patterns):
         relative = source.relative_to(config.mod_root)
         target = target_root / relative
         copied = copy_release_file(source, target, config, stats)
@@ -309,11 +368,14 @@ def collect_release_tree(config: DeployConfig, target_root: Path, artifact: str 
     return stats
 
 
-def scan_release(config: DeployConfig, artifact: str = ARTIFACT_PUBLIC) -> CollectStats:
+def scan_release(
+    config: DeployConfig, artifact: str = ARTIFACT_PUBLIC,
+    patterns: dict[str, list[str]] | None = None,
+) -> CollectStats:
     """Validate release files and debug regions without copying them."""
     stats = CollectStats()
     all_files = {path for path in config.mod_root.rglob("*") if path.is_file()}
-    included = set(iter_release_files(config, artifact))
+    included = set(iter_release_files(config, artifact, patterns))
     stats.excluded = len(all_files - included)
     for source in sorted(included):
         if config.strip_debug and source.suffix == ".lua":
@@ -347,6 +409,7 @@ def create_zip_from_tree(source_dir: Path, zip_path: Path, root_arcname: str) ->
 def build_release(config: DeployConfig) -> None:
     """Build release archives."""
     info = load_info(config.mod_root)
+    patterns = load_ignore_patterns(config.mod_root)
     full_name = f"{info.name}_{info.version}"
     portal_zip = config.release_dir / f"{full_name}.zip"
     public_zip = config.release_dir / "public.zip"
@@ -354,10 +417,10 @@ def build_release(config: DeployConfig) -> None:
     safe_remove_tree(config.work_dir, config.release_dir)
     config.release_dir.mkdir(parents=True, exist_ok=True)
     try:
-        public_stats = collect_release_tree(config, config.public_work_dir / info.name, ARTIFACT_PUBLIC)
+        public_stats = collect_release_tree(config, config.public_work_dir / info.name, ARTIFACT_PUBLIC, patterns)
         if config.public:
             create_zip_from_tree(config.public_work_dir / info.name, public_zip, info.name)
-        portal_stats = collect_release_tree(config, config.portal_work_dir / full_name, ARTIFACT_PORTAL)
+        portal_stats = collect_release_tree(config, config.portal_work_dir / full_name, ARTIFACT_PORTAL, patterns)
         create_zip_from_tree(config.portal_work_dir / full_name, portal_zip, full_name)
     finally:
         safe_remove_tree(config.work_dir, config.release_dir)
@@ -374,8 +437,9 @@ def build_release(config: DeployConfig) -> None:
 def check_release(config: DeployConfig) -> None:
     """Validate release inputs without creating final archives."""
     info = load_info(config.mod_root)
-    public_stats = scan_release(config, ARTIFACT_PUBLIC)
-    portal_stats = scan_release(config, ARTIFACT_PORTAL)
+    patterns = load_ignore_patterns(config.mod_root)
+    public_stats = scan_release(config, ARTIFACT_PUBLIC, patterns)
+    portal_stats = scan_release(config, ARTIFACT_PORTAL, patterns)
     print(f"Mod root: {config.mod_root}")
     print(f"Release dir: {config.release_dir}")
     print(f"Mod: {info.name} {info.version}")
